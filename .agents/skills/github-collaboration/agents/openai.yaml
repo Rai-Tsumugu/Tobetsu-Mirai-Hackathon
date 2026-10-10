@@ -1,0 +1,6 @@
+interface:
+  display_name: "学生チームのGit共同作業"
+  short_description: "作業の分離、担当記録、コミット、レビューへの引き継ぎを自動で管理"
+  default_prompt: "Use $github-collaboration to implement this task with an isolated worktree, owned checkpoint commits, and a verified review handoff."
+policy:
+  allow_implicit_invocation: true
