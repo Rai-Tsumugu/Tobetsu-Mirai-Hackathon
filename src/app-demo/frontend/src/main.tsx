@@ -553,7 +553,7 @@ function App() {
   }
   async function openCase(c: EstimateCase) {
     if (
-      currentCase?.id !== c.id &&
+      (currentCase?.id !== c.id || currentCase?.vehicle_id !== c.vehicle_id) &&
       !saved &&
       (vehicle || drafts.length) &&
       !window.confirm(
@@ -564,6 +564,10 @@ function App() {
     const estimate = c.latest_estimate_id
       ? await api<Saved>("/estimates/" + c.latest_estimate_id)
       : null;
+    const selectedVehicle =
+      !estimate && c.vehicle_id
+        ? await api<Vehicle>("/vehicles/" + encodeURIComponent(c.vehicle_id))
+        : null;
     const updated =
       c.status === "unestimated"
         ? await caseRequest<EstimateCase>("/" + c.id, "PUT", {
@@ -571,9 +575,25 @@ function App() {
             status: "estimating",
           })
         : c;
-    if (currentCase?.id !== c.id || saved) {
+    if (
+      currentCase?.id !== c.id ||
+      currentCase?.vehicle_id !== c.vehicle_id ||
+      saved
+    ) {
       reset();
       if (estimate) loadEstimate(estimate, false);
+      else if (selectedVehicle) {
+        chooseVehicle(selectedVehicle);
+        setQuery(selectedVehicle.model_code);
+        setYear(
+          String(
+            selectedVehicle.years.includes(2022)
+              ? 2022
+              : (selectedVehicle.years[0] ?? ""),
+          ),
+        );
+        setGrade(selectedVehicle.grades[0] ?? "");
+      }
     }
     setCurrentCase(updated);
     setEstimateScreen("editor");

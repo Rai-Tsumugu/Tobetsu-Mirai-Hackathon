@@ -45,6 +45,21 @@ class CaseTest(unittest.TestCase):
         self.assertEqual(self.client.post('/api/cases', json=dict(title='試験', recipient_name='a' * 121)).status_code, 422)
         self.assertEqual(self.client.post('/api/cases', json=dict(title='試験', phone_memo='a' * 6001)).status_code, 422)
 
+    def test_selected_vehicle_persists_and_quote_updates_selection(self):
+        response = self.client.post('/api/cases', json=dict(title='車両選択', vehicle_id='JB64W'))
+        self.assertEqual(response.status_code, 201)
+        case = response.json()
+        self.assertEqual(case['vehicle_label'], 'スズキ ジムニー / JB64W')
+        with TestClient(module.app) as restarted:
+            self.assertEqual(restarted.get('/api/cases').json()[0]['vehicle_id'], 'JB64W')
+        self.assertEqual(self.client.post('/api/cases', json=dict(title='不存在', vehicle_id='unknown')).status_code, 404)
+        updated = self.client.put('/api/cases/' + case['id'], json=dict(title='旧クライアント', status='estimating')).json()
+        self.assertEqual(updated['vehicle_id'], 'JB64W')
+        self.client.post('/api/estimates', json=self.quote(case['id']))
+        stored = self.client.get('/api/cases').json()[0]
+        self.assertEqual(stored['vehicle_id'], 'FL4')
+        self.assertIn('FL4', stored['vehicle_label'])
+
     def test_unique_ids_and_restart_persistence(self):
         first = self.client.post('/api/cases', json={'title': '同じ案件名'}).json()
         second = self.client.post('/api/cases', json={'title': '同じ案件名'}).json()
@@ -125,6 +140,7 @@ class CaseTest(unittest.TestCase):
         cases = self.client.get('/api/cases').json()
         self.assertEqual(len(cases), 1)
         migrated = self.client.get('/api/estimates/' + saved['id']).json()
+        self.assertEqual(cases[0]['vehicle_id'], 'FL4')
         self.assertEqual(migrated.pop('case_id'), cases[0]['id'])
         self.assertEqual(migrated, saved)
         module.initialize()

@@ -7,6 +7,7 @@ export type EstimateCase = {
   id: string;
   title: string;
   vehicle_label: string;
+  vehicle_id: string | null;
   status: CaseStatus;
   amount: number | null;
   due_date: string | null;
@@ -50,6 +51,7 @@ export function caseFields(c: EstimateCase) {
   return {
     title: c.title,
     vehicle_label: c.vehicle_label,
+    vehicle_id: c.vehicle_id,
     status: c.status,
     amount: c.amount,
     due_date: c.due_date,
@@ -65,6 +67,7 @@ const yen = (value: number) =>
 const blank = {
   title: "",
   vehicle_label: "",
+  vehicle_id: "",
   status: "unestimated" as CaseStatus,
   amount: "",
   due_date: "",
@@ -80,6 +83,24 @@ export default function CasesDashboard({
   revision: number;
   onOpen: (c: EstimateCase) => Promise<void>;
 }) {
+  const [vehicleOptions, setVehicleOptions] = useState<
+    {
+      id: string;
+      maker: string;
+      model: string;
+      model_code: string;
+      source_name: string;
+    }[]
+  >([]);
+  useEffect(() => {
+    fetch("/api/vehicles")
+      .then((r) => {
+        if (!r.ok) throw new Error("車両の選択肢を取得できませんでした。");
+        return r.json();
+      })
+      .then(setVehicleOptions)
+      .catch((e) => setError(e.message));
+  }, []);
   const [cases, setCases] = useState<EstimateCase[]>([]);
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<CaseStatus | "all">("all");
@@ -160,6 +181,7 @@ export default function CasesDashboard({
         ? {
             title: c.title,
             vehicle_label: c.vehicle_label,
+            vehicle_id: c.vehicle_id ?? "",
             status: c.status,
             amount: c.amount === null ? "" : String(c.amount),
             due_date: c.due_date ?? "",
@@ -174,6 +196,9 @@ export default function CasesDashboard({
   }
   async function save(event: React.FormEvent) {
     event.preventDefault();
+    const continueToEstimate =
+      (event.nativeEvent as SubmitEvent).submitter?.getAttribute("value") ===
+      "estimate";
     if (!form) return;
     setBusy(true);
     setError("");
@@ -183,6 +208,7 @@ export default function CasesDashboard({
         editing ? "PUT" : "POST",
         {
           ...form,
+          vehicle_id: form.vehicle_id || null,
           amount: form.amount === "" ? null : Number(form.amount),
           due_date: form.due_date || null,
         },
@@ -191,6 +217,7 @@ export default function CasesDashboard({
       if (documentCase?.id === c.id) setDocumentCase(c);
       setNotice(`${c.title}を${editing ? "更新" : "登録"}しました。`);
       setReload((n) => n + 1);
+      if (continueToEstimate) await onOpen(c);
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -308,11 +335,42 @@ export default function CasesDashboard({
                 onChange={(e) => setForm({ ...form, title: e.target.value })}
               />
             </label>
+            <label className="case-form-notes">
+              車両を選択
+              <select
+                aria-label="車両を選択"
+                value={form.vehicle_id}
+                onChange={(e) => {
+                  const v = vehicleOptions.find((v) => v.id === e.target.value);
+                  setForm({
+                    ...form,
+                    vehicle_id: e.target.value,
+                    vehicle_label: v
+                      ? `${v.maker} ${v.model} / ${v.model_code}`
+                      : form.vehicle_label,
+                  });
+                }}
+              >
+                <option value="">後で選ぶ・手入力する</option>
+                {vehicleOptions.map((v) => (
+                  <option key={v.id} value={v.id}>
+                    {v.maker} {v.model} / {v.model_code}
+                    {v.source_name === "simulator"
+                      ? "（サンプル）"
+                      : "（登録済み）"}
+                  </option>
+                ))}
+              </select>
+              <span className="muted">
+                サンプル車両を選ぶと、見積もり画面に車両・デモ用の年式と仕様を引き継ぎます。実車の条件は確認・変更してください。
+              </span>
+            </label>
             <label>
               車両メモ
               <input
                 maxLength={160}
                 value={form.vehicle_label}
+                readOnly={!!form.vehicle_id}
                 placeholder="例：ホンダ シビック / FL4"
                 onChange={(e) =>
                   setForm({ ...form, vehicle_label: e.target.value })
@@ -408,6 +466,16 @@ export default function CasesDashboard({
               >
                 {busy ? "保存中…" : editing ? "変更を保存" : "案件を登録"}
               </button>
+              {!editing && (
+                <button
+                  type="submit"
+                  value="estimate"
+                  className="primary-button"
+                  disabled={busy || !form.title.trim()}
+                >
+                  登録して見積もりへ
+                </button>
+              )}
             </div>
           </form>
         </section>
