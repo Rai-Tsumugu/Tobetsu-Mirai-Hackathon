@@ -1,0 +1,178 @@
+{
+  "_kind": "今回の見積もり入力（車両・入庫時の観察）",
+  "case_id": "EX-2027-01-20",
+  "vehicle_key": "ABC-XYZ10/2014-01",
+  "e_shakensho": {
+    "車名": "架空メーカーA",
+    "型式": "ABC-XYZ10",
+    "原動機の型式": "1AB",
+    "初度登録年月": "平成26年1月",
+    "車両重量": "1600kg"
+  },
+  "vehicle": {
+    "model": "架空SUV-X",
+    "drive": "4WD",
+    "body_class": "普通車SUV",
+    "tire_size": "225/65R17",
+    "tire_with_wheel_weight_kg": {
+      "value": 23,
+      "status": "仮定（資料値の確認なし）"
+    },
+    "odometer_km": 128000,
+    "cold_climate_spec": {
+      "value": true,
+      "status": "現車で確認済み（車検証では不明）"
+    },
+    "wheels": "社外アルミホイール（ハブ径リングあり、顧客申告）"
+  },
+  "intake": {
+    "date": "2027-01-20",
+    "outside_temp_c": -8
+  },
+  "jobs": [
+    "J1",
+    "J2"
+  ],
+  "condition": {
+    "snow_on_body": {
+      "state": "問題あり",
+      "detail": "屋根・ボンネットに約15cm"
+    },
+    "ice_in_wheel_house": {
+      "state": "問題あり",
+      "locations": 2,
+      "detail": "前輪ホイールハウス2か所。後輪は少量で除去不要"
+    },
+    "underbody_rust_grade": {
+      "_scale": "0=問題を観察していない, 1=表面錆, 2=進行錆（浮き錆）, 3=重度（層状剥離・欠損）, null=未確認",
+      "front_suspension": 2,
+      "brake_area": 3,
+      "wheel_hub": 2,
+      "muffler": 2,
+      "subframe": null,
+      "rear_suspension": 1,
+      "_unconfirmed_reason": {
+        "subframe": "アンダーカバーで見えず、撮影なし"
+      }
+    },
+    "fasteners": [
+      {
+        "id": "F-L-BRK-1",
+        "name": "左キャリパーブラケットボルト1",
+        "job": "J2",
+        "rust": "重（頭部腐食）"
+      },
+      {
+        "id": "F-L-BRK-2",
+        "name": "左キャリパーブラケットボルト2",
+        "job": "J2",
+        "rust": "重（頭部腐食）"
+      },
+      {
+        "id": "F-R-BRK-1",
+        "name": "右キャリパーブラケットボルト1",
+        "job": "J2",
+        "rust": "中"
+      },
+      {
+        "id": "F-R-BRK-2",
+        "name": "右キャリパーブラケットボルト2",
+        "job": "J2",
+        "rust": "中"
+      },
+      {
+        "id": "F-L-SLD-1",
+        "name": "左スライドボルト1",
+        "job": "J2",
+        "rust": "未確認（ブーツに隠れて見えない）"
+      },
+      {
+        "id": "F-L-SLD-2",
+        "name": "左スライドボルト2",
+        "job": "J2",
+        "rust": "未確認（ブーツに隠れて見えない）"
+      },
+      {
+        "id": "F-R-SLD-1",
+        "name": "右スライドボルト1",
+        "job": "J2",
+        "rust": "未確認（ブーツに隠れて見えない）"
+      },
+      {
+        "id": "F-R-SLD-2",
+        "name": "右スライドボルト2",
+        "job": "J2",
+        "rust": "未確認（ブーツに隠れて見えない）"
+      },
+      {
+        "id": "F-WHEELNUT-x20",
+        "name": "ホイールナット20本",
+        "job": "J1",
+        "rust": "軽",
+        "count": 20
+      }
+    ],
+    "rotor_hub_seizure": {
+      "state": "未確認",
+      "detail": "分解前のため不明。ハブ錆グレード2"
+    },
+    "slide_pin_boots": {
+      "left": "問題あり（硬化）",
+      "right": "未確認"
+    },
+    "rustproof_undercoat": {
+      "value": true,
+      "status": "申告",
+      "detail": "2022年に下回り全体へ施工（顧客申告）。コートの上から腐食が見えにくい可能性"
+    },
+    "modification": "社外アルミホイール（ハブ径リングあり）",
+    "electrical": "対象外"
+  },
+  "weather_forecast": {
+    "min_temp_c": -12,
+    "max_temp_c": -4,
+    "snowfall_forecast_cm": 15
+  },
+  "photos": {
+    "taken": [
+      "左ブラケット",
+      "右ブラケット",
+      "左ハブ",
+      "右ハブ",
+      "左スライドピンブーツ",
+      "左ローター裏"
+    ],
+    "missing_reason": {
+      "右スライドピンブーツ": "泥と氷で撮影不可",
+      "サブフレーム前部": "アンダーカバーで見えない"
+    },
+    "ai_items": [
+      {
+        "area": "brake_area",
+        "ai_grade": 3,
+        "ai_confidence": 0.72,
+        "mechanic_grade": 3
+      },
+      {
+        "area": "wheel_hub",
+        "ai_grade": 1,
+        "ai_confidence": 0.55,
+        "mechanic_grade": 2
+      },
+      {
+        "area": "front_suspension",
+        "ai_grade": 2,
+        "ai_confidence": 0.81,
+        "mechanic_grade": 2
+      },
+      {
+        "area": "subframe",
+        "ai_grade": null,
+        "ai_confidence": null,
+        "mechanic_grade": null,
+        "note": "写真なし"
+      }
+    ]
+  },
+  "voice_memo": "左前、ブラケットボルト2本とも固着。1本は加熱で外れた、もう1本も外れた。左ローター固着、叩いて外した。右前は普通に外れた。右ブーツも硬化してる、交換。サブフレームは見てない。"
+}

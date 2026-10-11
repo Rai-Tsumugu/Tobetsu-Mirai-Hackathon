@@ -1,0 +1,583 @@
+{
+  "_kind": "工場パラメータ（変数: 最新の情報・工場方針・整備士の判断で変動）",
+  "version": "仮置き 2027-01-20",
+  "provisional_rates_v1": {
+    "_note": "整備士の暫定値（人時）。承認済みの版",
+    "ops": {
+      "PRE-SNOW": {
+        "name": "雪下ろし",
+        "per": "入庫1回",
+        "low": 0.1,
+        "typical": 0.15,
+        "high": 0.25,
+        "per_visit": true,
+        "billable": true
+      },
+      "PRE-ICE": {
+        "name": "氷塊除去",
+        "per": "ホイールハウス1か所",
+        "low": 0.05,
+        "typical": 0.08,
+        "high": 0.15,
+        "billable": true,
+        "per_visit": false
+      },
+      "PRE-WASH": {
+        "name": "下回り洗浄",
+        "per": "入庫1回",
+        "low": 0.15,
+        "typical": 0.2,
+        "high": 0.3,
+        "per_visit": true,
+        "billable": false
+      },
+      "FX-SEIZE": {
+        "name": "固着した締結部の対応（浸透剤＋加熱）",
+        "per": "締結部1本",
+        "low": 0.05,
+        "typical": 0.15,
+        "high": 0.3,
+        "billable": true,
+        "per_visit": false
+      },
+      "FX-BROKEN": {
+        "name": "折れ込みボルトの抜き取り",
+        "per": "1本",
+        "low": 0.5,
+        "typical": 0.8,
+        "high": 1.5,
+        "billable": true,
+        "per_visit": false
+      },
+      "FX-THREAD": {
+        "name": "ねじ山の修正",
+        "per": "1か所",
+        "low": 0.2,
+        "typical": 0.3,
+        "high": 0.5,
+        "billable": true,
+        "per_visit": false
+      },
+      "FX-ROTOR": {
+        "name": "ローターの固着除去",
+        "per": "片側",
+        "low": 0.1,
+        "typical": 0.2,
+        "high": 0.4,
+        "billable": true,
+        "per_visit": false
+      },
+      "FX-HUBCLEAN": {
+        "name": "ハブ当たり面の錆落とし・防錆",
+        "per": "片側",
+        "low": 0.05,
+        "typical": 0.1,
+        "high": 0.15,
+        "billable": true,
+        "per_visit": false
+      },
+      "AG-BOOT": {
+        "name": "スライドピンブーツ交換",
+        "per": "片側",
+        "low": 0.1,
+        "typical": 0.15,
+        "high": 0.2,
+        "billable": true,
+        "per_visit": false
+      },
+      "AG-CLIP": {
+        "name": "樹脂クリップ破損交換",
+        "per": "1個",
+        "low": 0.02,
+        "typical": 0.03,
+        "high": 0.05,
+        "billable": true,
+        "per_visit": false
+      },
+      "AG-HOSE": {
+        "name": "ブレーキホース交換（左右）",
+        "per": "左右一式",
+        "low": 0.6,
+        "typical": 0.8,
+        "high": 1.0,
+        "billable": true,
+        "per_visit": false
+      }
+    }
+  },
+  "adopted_rate_table": "v1",
+  "rate_update_rule": {
+    "_note": "実績から v2 候補を作る規則（自動適用しない）。統計量の名前: min / median / max",
+    "min_records": 3,
+    "low": "min",
+    "typical": "median",
+    "high": "max"
+  },
+  "tag_to_op": {
+    "_note": "原因タグ → 工程。unit=count は実績の count で割って1単位あたりにする、visit は入庫1回あたり",
+    "固着対応": {
+      "op": "FX-SEIZE",
+      "unit": "count"
+    },
+    "ボルト折れ": {
+      "op": "FX-BROKEN",
+      "unit": "count"
+    },
+    "ローター固着": {
+      "op": "FX-ROTOR",
+      "unit": "count"
+    },
+    "雪下ろし": {
+      "op": "PRE-SNOW",
+      "unit": "visit"
+    },
+    "氷塊除去": {
+      "op": "PRE-ICE",
+      "unit": "count"
+    },
+    "ブーツ交換": {
+      "op": "AG-BOOT",
+      "unit": "count"
+    }
+  },
+  "fastener_rust_classes": {
+    "_note": "錆の観察（先頭語）→ リスク区分",
+    "重": "折れ込みの可能性",
+    "中": "固着対応の可能性",
+    "軽": "通常",
+    "未確認": "不明"
+  },
+  "fastener_treatment": {
+    "_note": "リスク区分ごとに、low/typical/high に入れる工程と、その工程の値（low/typical/high）",
+    "折れ込みの可能性": {
+      "low": [
+        [
+          "FX-SEIZE",
+          "low"
+        ]
+      ],
+      "typical": [
+        [
+          "FX-SEIZE",
+          "typical"
+        ]
+      ],
+      "high": [
+        [
+          "FX-SEIZE",
+          "high"
+        ],
+        [
+          "FX-BROKEN",
+          "high"
+        ],
+        [
+          "FX-THREAD",
+          "high"
+        ]
+      ]
+    },
+    "固着対応の可能性": {
+      "low": [],
+      "typical": [
+        [
+          "FX-SEIZE",
+          "typical"
+        ]
+      ],
+      "high": [
+        [
+          "FX-SEIZE",
+          "high"
+        ]
+      ]
+    },
+    "不明": {
+      "low": [],
+      "typical": [],
+      "high": [
+        [
+          "FX-SEIZE",
+          "high"
+        ]
+      ]
+    },
+    "通常": {
+      "low": [],
+      "typical": [],
+      "high": []
+    },
+    "_label": {
+      "factor": "HK01/AG01",
+      "from": "S03"
+    }
+  },
+  "state_treatment": {
+    "_note": "状態ごとに、low/typical/high で工程のどの値を使うか。null は入れない",
+    "問題あり": {
+      "low": "low",
+      "typical": "typical",
+      "high": "high"
+    },
+    "仮定": {
+      "low": null,
+      "typical": "typical",
+      "high": "high"
+    },
+    "未確認": {
+      "low": null,
+      "typical": null,
+      "high": "high"
+    },
+    "問題を観察していない": {
+      "low": null,
+      "typical": null,
+      "high": null
+    }
+  },
+  "condition_rules": [
+    {
+      "id": "snow",
+      "kind": "state",
+      "path": "snow_on_body",
+      "op": "PRE-SNOW",
+      "quantity": "per_visit",
+      "factor": "HK02",
+      "from": "S05"
+    },
+    {
+      "id": "ice",
+      "kind": "state",
+      "path": "ice_in_wheel_house",
+      "op": "PRE-ICE",
+      "quantity": "locations",
+      "factor": "HK03",
+      "from": "S05"
+    },
+    {
+      "id": "wash",
+      "kind": "work_area_grade",
+      "min_grade": 2,
+      "op": "PRE-WASH",
+      "quantity": "per_visit",
+      "factor": "HK01",
+      "from": "S05"
+    },
+    {
+      "id": "hubclean",
+      "kind": "area_grade",
+      "area": "wheel_hub",
+      "min_grade": 2,
+      "job": "J2",
+      "op": "FX-HUBCLEAN",
+      "quantity": "sides",
+      "factor": "HK01",
+      "from": "S02/S15"
+    },
+    {
+      "id": "rotor",
+      "kind": "state",
+      "path": "rotor_hub_seizure",
+      "job": "J2",
+      "op": "FX-ROTOR",
+      "quantity": "sides",
+      "factor": "AG01",
+      "from": "S15"
+    },
+    {
+      "id": "boot",
+      "kind": "side_state",
+      "path": "slide_pin_boots",
+      "job": "J2",
+      "op": "AG-BOOT",
+      "factor": "AG03",
+      "from": "S22"
+    }
+  ],
+  "waits": {
+    "_note": "作業者を拘束しない待機（時間）。人時に入れず経過時間にだけ足す",
+    "by_op": {
+      "PRE-ICE": "thaw",
+      "FX-SEIZE": "penetrant_soak",
+      "FX-HUBCLEAN": "rustproof_dry"
+    },
+    "hours": {
+      "thaw": {
+        "default": 0.5
+      },
+      "penetrant_soak": {
+        "default": 0.25
+      },
+      "rustproof_dry": {
+        "default": 0.2,
+        "winter": 0.3
+      }
+    }
+  },
+  "season": {
+    "winter_months": [
+      11,
+      12,
+      1,
+      2,
+      3
+    ]
+  },
+  "tire_handling": {
+    "_note": "ホイール付き1本の重量で運搬の人数を決める（工場の暫定ルール）",
+    "one_person_max_wheel_kg": 20,
+    "has_lifter": false,
+    "lifter_labor_hours": null,
+    "two_person": {
+      "persons": 2,
+      "hours_each": 0.1
+    },
+    "weight_status_to_state": {
+      "仮定": "仮定",
+      "未確認": "未確認",
+      "申告": "仮定",
+      "確認済み": "問題あり",
+      "現車で確認済み": "問題あり"
+    },
+    "factor": "HK05",
+    "from": "S07"
+  },
+  "check_intensity": {
+    "age_years": 10,
+    "odometer_km": 100000,
+    "extra_items": [
+      "下回りの撮影",
+      "締結部の観察",
+      "ゴム部品の状態"
+    ]
+  },
+  "weather_prompt": {
+    "min_temp_c_le": -5,
+    "snowfall_cm_ge": 5
+  },
+  "contact_threshold": {
+    "labor_hours_gt": 0.5,
+    "yen_gt": 5000
+  },
+  "priority_score": {
+    "_note": "工場が承認した加点表（架空）。各項目は満たす段のうち最大の点を使う",
+    "age_years": [
+      {
+        "min": 10,
+        "points": 2
+      },
+      {
+        "min": 15,
+        "points": 3
+      }
+    ],
+    "odometer_km": [
+      {
+        "min": 100000,
+        "points": 1
+      },
+      {
+        "min": 150000,
+        "points": 2
+      }
+    ],
+    "work_area_rust_grade": [
+      {
+        "min": 2,
+        "points": 2
+      },
+      {
+        "min": 3,
+        "points": 3
+      }
+    ],
+    "unconfirmed_area_exists": 1,
+    "rustproof_coat_history": 1,
+    "previous_seizure_record": 2,
+    "bands": [
+      {
+        "name": "低",
+        "min": 0,
+        "when": "作業中に確認"
+      },
+      {
+        "name": "中",
+        "min": 4,
+        "when": "分解前に確認"
+      },
+      {
+        "name": "高",
+        "min": 8,
+        "when": "見積もり確定前に確認"
+      }
+    ]
+  },
+  "companion_parts": {
+    "display_threshold": 0.15,
+    "items": {
+      "スライドピンブーツ": {
+        "op": "AG-BOOT",
+        "freq": 0.3,
+        "unit": "片側"
+      },
+      "キャリパーブラケットボルト交換": {
+        "op": null,
+        "freq": 0.2,
+        "labor_hours_each": 0.0,
+        "note": "工数は固着対応に含む。部品のみ"
+      },
+      "パッド摩耗センサー": {
+        "op": null,
+        "freq": 0.1,
+        "labor_hours_each": 0.05
+      },
+      "ブレーキホース": {
+        "op": "AG-HOSE",
+        "freq": 0.05,
+        "unit": "左右一式"
+      }
+    }
+  },
+  "photo_required_shots": {
+    "J2": [
+      "左ブラケット",
+      "右ブラケット",
+      "左ハブ",
+      "右ハブ",
+      "左スライドピンブーツ",
+      "右スライドピンブーツ",
+      "サブフレーム前部",
+      "左ローター裏"
+    ]
+  },
+  "voice_memo_tags": {
+    "_note": "文字起こしの文に含まれる語 → 原因タグ（整備士が確認する）",
+    "ボルト折れ": [
+      "折れ"
+    ],
+    "ローター固着": [
+      "ローター固着"
+    ],
+    "固着対応": [
+      "固着"
+    ],
+    "ブーツ交換": [
+      "ブーツ"
+    ],
+    "未確認": [
+      "見てない",
+      "未確認"
+    ]
+  },
+  "diff_log_age_bands": [
+    10
+  ],
+  "similar_case": {
+    "_note": "方式Bの比較条件（docs S08）。exclude_if_differs に入れた条件が相違する実績は除外する。実績が少ない間は空にして相違を表示するだけにする",
+    "conditions": [
+      "brake_rust",
+      "age_band",
+      "season"
+    ],
+    "exclude_if_differs": [],
+    "exclude_same_vehicle": true,
+    "rust_area": "brake_area"
+  },
+  "out_of_scope_areas": {
+    "subframe": "J1・J2 では外さない。腐食があれば作業範囲の拡大（AG04）として見積もりを変更し、顧客の了承を得る"
+  },
+  "labor_rate": {
+    "mode": "annual",
+    "_note": "annual=暖房費を年間で配賦 / seasonal=冬季だけに配賦（工場の経営判断）。cost_keys に入れた経費（目標利益を含む）を単価の分子にする",
+    "cost_yen": {
+      "labor_cost_yen": 18000000,
+      "rent_yen": 2400000,
+      "heating_yen": 1800000,
+      "equipment_yen": 3000000,
+      "utilities_excl_heating_yen": 600000,
+      "target_profit_yen": 3000000
+    },
+    "heating_winter_yen": 1700000,
+    "billable_hours": {
+      "annual": 3600,
+      "winter": 1450,
+      "non_winter": 2150
+    },
+    "cost_keys": [
+      "labor_cost_yen",
+      "rent_yen",
+      "heating_yen",
+      "equipment_yen",
+      "utilities_excl_heating_yen",
+      "target_profit_yen"
+    ],
+    "heating_key": "heating_yen"
+  },
+  "materials": {
+    "prices": {
+      "penetrant": {
+        "price_yen": 980,
+        "uses": 10,
+        "per": "締結部"
+      },
+      "heating_gas": {
+        "price_yen": 600,
+        "uses": 20,
+        "per": "締結部"
+      },
+      "rustproof_hub": {
+        "price_yen": 1650,
+        "uses": 8,
+        "per": "片側"
+      },
+      "bracket_bolt": {
+        "price_yen": 450,
+        "per": "1本",
+        "uses": 1
+      },
+      "boot": {
+        "price_yen": 1200,
+        "per": "1個",
+        "uses": 1
+      },
+      "thread_insert_kit": {
+        "price_yen": 2200,
+        "per": "1か所",
+        "uses": 1
+      }
+    },
+    "by_op": {
+      "FX-SEIZE": [
+        "penetrant",
+        "heating_gas"
+      ],
+      "FX-HUBCLEAN": [
+        "rustproof_hub"
+      ],
+      "AG-BOOT": [
+        "boot"
+      ],
+      "FX-BROKEN": [
+        "bracket_bolt"
+      ],
+      "FX-THREAD": [
+        "thread_insert_kit"
+      ]
+    }
+  },
+  "rounding": {
+    "_note": "表示・請求の丸め（工場に確認する事項、README §4）。mode は decimal モジュールの丸めモード名",
+    "hours_decimals": 2,
+    "hours_mode": "ROUND_HALF_UP",
+    "yen_decimals": 0,
+    "yen_mode": "ROUND_HALF_UP"
+  },
+  "vehicle_history_compare": {
+    "_note": "同一車両の前回と比べる部位（S09）",
+    "wheel_hub_grade": "wheel_hub"
+  },
+  "e_shakensho_excluded": [
+    "使用者",
+    "所有者"
+  ]
+}

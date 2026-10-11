@@ -1,0 +1,415 @@
+{
+  "_kind": "過去の実績（変数: 作業のたびに追加・更新される）",
+  "historical_records": [
+    {
+      "id": "R01",
+      "date": "2025-12",
+      "body": "SUV",
+      "drive": "4WD",
+      "age_years": 11,
+      "km": 98000,
+      "brake_rust": 2,
+      "jobs": [
+        "J2"
+      ],
+      "estimate": 1.4,
+      "actual": 1.7,
+      "tags": {
+        "固着対応": {
+          "hours": 0.3,
+          "count": 2
+        }
+      }
+    },
+    {
+      "id": "R02",
+      "date": "2026-01",
+      "body": "SUV",
+      "drive": "4WD",
+      "age_years": 14,
+      "km": 140000,
+      "brake_rust": 3,
+      "jobs": [
+        "J2"
+      ],
+      "estimate": 1.4,
+      "actual": 2.6,
+      "tags": {
+        "固着対応": {
+          "hours": 0.35,
+          "count": 3
+        },
+        "ボルト折れ": {
+          "hours": 0.85,
+          "count": 1
+        }
+      }
+    },
+    {
+      "id": "R03",
+      "date": "2026-02",
+      "body": "軽",
+      "drive": "FF",
+      "age_years": 9,
+      "km": 70000,
+      "brake_rust": 1,
+      "jobs": [
+        "J2"
+      ],
+      "estimate": 1.4,
+      "actual": 1.3,
+      "tags": {}
+    },
+    {
+      "id": "R04",
+      "date": "2026-02",
+      "body": "SUV",
+      "drive": "4WD",
+      "age_years": 12,
+      "km": 121000,
+      "brake_rust": 3,
+      "jobs": [
+        "J2"
+      ],
+      "estimate": 1.4,
+      "actual": 2.1,
+      "tags": {
+        "固着対応": {
+          "hours": 0.3,
+          "count": 2
+        },
+        "ローター固着": {
+          "hours": 0.4,
+          "count": 2
+        }
+      }
+    },
+    {
+      "id": "R05",
+      "date": "2026-03",
+      "body": "セダン",
+      "drive": "4WD",
+      "age_years": 15,
+      "km": 150000,
+      "brake_rust": 2,
+      "jobs": [
+        "J2"
+      ],
+      "estimate": 1.4,
+      "actual": 1.8,
+      "tags": {
+        "固着対応": {
+          "hours": 0.15,
+          "count": 1
+        },
+        "ローター固着": {
+          "hours": 0.25,
+          "count": 1
+        }
+      }
+    },
+    {
+      "id": "R06",
+      "date": "2026-06",
+      "body": "SUV",
+      "drive": "4WD",
+      "age_years": 13,
+      "km": 132000,
+      "brake_rust": 3,
+      "jobs": [
+        "J2"
+      ],
+      "estimate": 1.4,
+      "actual": 1.9,
+      "tags": {
+        "固着対応": {
+          "hours": 0.3,
+          "count": 2
+        },
+        "ブーツ交換": {
+          "hours": 0.15,
+          "count": 1
+        },
+        "その他": {
+          "hours": 0.05
+        }
+      }
+    },
+    {
+      "id": "R07",
+      "date": "2026-07",
+      "body": "ミニバン",
+      "drive": "FF",
+      "age_years": 6,
+      "km": 52000,
+      "brake_rust": 1,
+      "jobs": [
+        "J2"
+      ],
+      "estimate": 1.4,
+      "actual": 1.4,
+      "tags": {}
+    },
+    {
+      "id": "R08",
+      "date": "2025-11",
+      "body": "SUV",
+      "drive": "4WD",
+      "age_years": 10,
+      "km": 105000,
+      "brake_rust": 2,
+      "jobs": [
+        "J1",
+        "J2"
+      ],
+      "estimate": 1.7,
+      "actual": 2.3,
+      "tags": {
+        "雪下ろし": {
+          "hours": 0.15
+        },
+        "固着対応": {
+          "hours": 0.2,
+          "count": 1
+        },
+        "その他": {
+          "hours": 0.25
+        }
+      }
+    },
+    {
+      "id": "R09",
+      "date": "2026-01",
+      "body": "SUV",
+      "drive": "4WD",
+      "age_years": 13,
+      "km": 126000,
+      "brake_rust": 3,
+      "jobs": [
+        "J1",
+        "J2"
+      ],
+      "estimate": 1.7,
+      "actual": 3.0,
+      "tags": {
+        "雪下ろし": {
+          "hours": 0.2
+        },
+        "氷塊除去": {
+          "hours": 0.15,
+          "count": 2
+        },
+        "固着対応": {
+          "hours": 0.55,
+          "count": 3
+        },
+        "ローター固着": {
+          "hours": 0.3,
+          "count": 1
+        },
+        "その他": {
+          "hours": 0.1
+        }
+      }
+    },
+    {
+      "id": "R10",
+      "date": "2026-12",
+      "body": "SUV",
+      "drive": "4WD",
+      "age_years": 12,
+      "km": 118000,
+      "brake_rust": null,
+      "jobs": [
+        "J1",
+        "J2"
+      ],
+      "estimate": 1.7,
+      "actual": 2.4,
+      "tags": {
+        "雪下ろし": {
+          "hours": 0.15
+        },
+        "その他": {
+          "hours": 0.55,
+          "note": "原因の記録なし"
+        }
+      }
+    },
+    {
+      "id": "R11",
+      "date": "2025-01",
+      "body": "SUV",
+      "drive": "4WD",
+      "age_years": 11,
+      "km": 112000,
+      "brake_rust": 2,
+      "jobs": [
+        "J1",
+        "J2"
+      ],
+      "estimate": 1.5,
+      "actual": 1.9,
+      "tags": {
+        "固着対応": {
+          "hours": 0.25,
+          "count": 1
+        },
+        "雪下ろし": {
+          "hours": 0.15
+        }
+      },
+      "same_vehicle": true
+    },
+    {
+      "id": "R12",
+      "date": "2026-02",
+      "body": "軽",
+      "drive": "FF",
+      "age_years": 8,
+      "km": 64000,
+      "brake_rust": 1,
+      "jobs": [
+        "J1"
+      ],
+      "estimate": 0.6,
+      "actual": 0.6,
+      "tags": {}
+    }
+  ],
+  "tap_logs": {
+    "R09": [
+      {
+        "step": "雪下ろし",
+        "persons": 1,
+        "hours": 0.2
+      },
+      {
+        "step": "氷塊除去（2か所）",
+        "persons": 1,
+        "hours": 0.15
+      },
+      {
+        "step": "融解待ち",
+        "persons": 0,
+        "hours": 0.5,
+        "wait": true
+      },
+      {
+        "step": "リフトアップ",
+        "persons": 1,
+        "hours": 0.1
+      },
+      {
+        "step": "4輪取り外し",
+        "persons": 1,
+        "hours": 0.2
+      },
+      {
+        "step": "タイヤ運搬・積み替え",
+        "persons": 2,
+        "hours": 0.1
+      },
+      {
+        "step": "前ブレーキ分解（キャリパー・ブラケット）",
+        "persons": 1,
+        "hours": 0.3
+      },
+      {
+        "step": "固着対応（3本、浸透剤＋加熱）",
+        "persons": 1,
+        "hours": 0.55
+      },
+      {
+        "step": "浸透待ち",
+        "persons": 0,
+        "hours": 0.25,
+        "wait": true
+      },
+      {
+        "step": "ローター脱着（通常分）",
+        "persons": 1,
+        "hours": 0.2
+      },
+      {
+        "step": "ローター固着除去（1側）",
+        "persons": 1,
+        "hours": 0.3
+      },
+      {
+        "step": "パッド・ローター組付け・清掃・グリスアップ",
+        "persons": 1,
+        "hours": 0.3
+      },
+      {
+        "step": "4輪取り付け・トルク",
+        "persons": 1,
+        "hours": 0.15
+      },
+      {
+        "step": "空気圧・最終確認",
+        "persons": 1,
+        "hours": 0.05
+      },
+      {
+        "step": "試運転",
+        "persons": 1,
+        "hours": 0.2
+      },
+      {
+        "step": "その他（工具準備・清掃）",
+        "persons": 1,
+        "hours": 0.1
+      }
+    ]
+  },
+  "vehicle_history": [
+    {
+      "vehicle_key": "ABC-XYZ10/2014-01",
+      "record_id": "R11",
+      "date": "2025-01",
+      "odometer_km": 112000,
+      "observed": {
+        "wheel_hub_grade": 1,
+        "seized_fasteners": [
+          "F-L-BRK-1"
+        ]
+      }
+    }
+  ],
+  "other_shops": {
+    "shop_X": {
+      "固着対応_per_bolt": {
+        "median": 0.18,
+        "n": 25
+      },
+      "ボルト折れ_per_bolt": {
+        "median": 0.9,
+        "n": 6
+      },
+      "ローター固着_per_side": {
+        "median": 0.22,
+        "n": 14
+      }
+    },
+    "shop_Y": {
+      "固着対応_per_bolt": {
+        "median": 0.12,
+        "n": 40
+      },
+      "ボルト折れ_per_bolt": {
+        "median": 0.7,
+        "n": 9
+      },
+      "ローター固着_per_side": {
+        "median": 0.18,
+        "n": 20
+      }
+    }
+  },
+  "other_shop_tag_to_op": {
+    "固着対応_per_bolt": "FX-SEIZE",
+    "ボルト折れ_per_bolt": "FX-BROKEN",
+    "ローター固着_per_side": "FX-ROTOR"
+  }
+}

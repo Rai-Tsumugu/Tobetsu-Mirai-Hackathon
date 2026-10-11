@@ -1,0 +1,99 @@
+{
+  "_kind": "基準工数（変数: 基準データの版が変わると変動）",
+  "version": "架空基準 2027-01",
+  "jobs": {
+    "J1": {
+      "name": "冬タイヤへの季節交換（ホイール付き4本の脱着、組替なし）",
+      "base_labor_hours": 0.6,
+      "basis_unit": "人時",
+      "basis_source": "架空の基準値（1本18kg以下のタイヤを1人で扱う前提）",
+      "included_operations": [
+        {
+          "op": "OP-LIFT",
+          "name": "リフトアップ",
+          "hours": 0.1,
+          "shared": true
+        },
+        {
+          "op": "OP-WHEEL-F2",
+          "name": "前2輪の脱着",
+          "hours": 0.2,
+          "shared": true
+        },
+        {
+          "op": "OP-WHEEL-R2",
+          "name": "後2輪の脱着",
+          "hours": 0.2,
+          "shared": false
+        },
+        {
+          "op": "OP-CHECK-TIRE",
+          "name": "空気圧調整・トルク確認",
+          "hours": 0.1,
+          "shared": false
+        }
+      ],
+      "tire_carry": {
+        "op": "OP-TIRE-CARRY",
+        "persons": 1,
+        "labor_hours": 0.12,
+        "_note": "基準 0.6 人時に含まれる1人運搬。ホイール付き basis_max_wheel_kg 以下が前提",
+        "basis_max_wheel_kg": 18
+      },
+      "work_areas": []
+    },
+    "J2": {
+      "name": "フロントブレーキパッド＋ローター交換（左右）",
+      "base_labor_hours": 1.4,
+      "basis_unit": "人時",
+      "basis_source": "架空の基準値（固着なしの前提）",
+      "included_operations": [
+        {
+          "op": "OP-LIFT",
+          "name": "リフトアップ",
+          "hours": 0.1,
+          "shared": true
+        },
+        {
+          "op": "OP-WHEEL-F2",
+          "name": "前2輪の脱着",
+          "hours": 0.2,
+          "shared": true
+        },
+        {
+          "op": "OP-CALIPER",
+          "name": "キャリパー・ブラケット脱着（左右、締結部計8本）",
+          "hours": 0.3,
+          "shared": false
+        },
+        {
+          "op": "OP-ROTOR",
+          "name": "ローター脱着（左右）",
+          "hours": 0.2,
+          "shared": false
+        },
+        {
+          "op": "OP-PAD",
+          "name": "パッド交換・清掃・グリスアップ",
+          "hours": 0.4,
+          "shared": false
+        },
+        {
+          "op": "OP-TEST",
+          "name": "試運転・確認",
+          "hours": 0.2,
+          "shared": false
+        }
+      ],
+      "work_areas": [
+        "brake_area",
+        "wheel_hub",
+        "front_suspension"
+      ],
+      "sides": {
+        "left": "左",
+        "right": "右"
+      }
+    }
+  }
+}

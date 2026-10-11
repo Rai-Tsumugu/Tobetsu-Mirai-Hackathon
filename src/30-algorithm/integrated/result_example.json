@@ -1,0 +1,1198 @@
+{
+  "case_id": "EX-2027-01-20",
+  "status": "提案（未確定）。確定は整備士・見積もり担当者が行い、修正理由を残す",
+  "vehicle": {
+    "first_registration": "2014-01",
+    "elapsed_months": 156,
+    "elapsed_years": 13,
+    "odometer_km": 128000,
+    "season": "冬季",
+    "imported": {
+      "車名": "架空メーカーA",
+      "型式": "ABC-XYZ10",
+      "原動機の型式": "1AB",
+      "初度登録年月": "平成26年1月",
+      "車両重量": "1600kg"
+    },
+    "note": "初度登録年月は製造年ではない。使用者の情報は取り込まない"
+  },
+  "estimate": {
+    "method": "A/C: 基準＋状態に応じた工程の積み上げ",
+    "labor_hours": {
+      "low": 2.35,
+      "typical": 3.24,
+      "high": 10.53
+    },
+    "billed_hours": {
+      "low": 2.2,
+      "typical": 3.04,
+      "high": 10.23
+    },
+    "elapsed_hours": {
+      "low": 3.4,
+      "typical": 4.27,
+      "high": 11.56
+    },
+    "waits_hours": {
+      "low": {
+        "penetrant_soak": 0.25,
+        "rustproof_dry": 0.3,
+        "thaw": 0.5
+      },
+      "typical": {
+        "penetrant_soak": 0.25,
+        "rustproof_dry": 0.3,
+        "thaw": 0.5
+      },
+      "high": {
+        "penetrant_soak": 0.25,
+        "rustproof_dry": 0.3,
+        "thaw": 0.5
+      }
+    },
+    "rate_table": "v1",
+    "note": "typical は観察済みの状態から見込む値。high はこの見積もりの範囲での上限で、未確認項目の上限を含む"
+  },
+  "base": {
+    "jobs": [
+      {
+        "id": "J1",
+        "name": "冬タイヤへの季節交換（ホイール付き4本の脱着、組替なし）",
+        "base_labor_hours": 0.6
+      },
+      {
+        "id": "J2",
+        "name": "フロントブレーキパッド＋ローター交換（左右）",
+        "base_labor_hours": 1.4
+      }
+    ],
+    "gross_hours": 2.0,
+    "deductions": [
+      {
+        "op": "OP-LIFT",
+        "name": "リフトアップ",
+        "jobs": 2,
+        "deducted_hours": 0.1
+      },
+      {
+        "op": "OP-WHEEL-F2",
+        "name": "前2輪の脱着",
+        "jobs": 2,
+        "deducted_hours": 0.2
+      }
+    ],
+    "base_hours": 1.7,
+    "per_visit_ops": [
+      "PRE-SNOW",
+      "PRE-WASH"
+    ],
+    "per_visit_double_count_avoided_typical": 0.35,
+    "per_visit_note": "前処理を作業ごとに重ねた場合との差（参考）。前処理は入庫1回だけ計上しているので差し引きはしない",
+    "catalog_version": "架空基準 2027-01"
+  },
+  "items": [
+    {
+      "id": "snow",
+      "group": "snow",
+      "label": "雪下ろし",
+      "factor": "HK02",
+      "from": "S05",
+      "state": "問題あり",
+      "quantity": 1,
+      "billable": true,
+      "hours": {
+        "low": 0.1,
+        "typical": 0.15,
+        "high": 0.25
+      },
+      "op_units": {
+        "low": {
+          "PRE-SNOW": 1
+        },
+        "typical": {
+          "PRE-SNOW": 1
+        },
+        "high": {
+          "PRE-SNOW": 1
+        }
+      },
+      "elapsed_adjust": {
+        "low": 0.0,
+        "typical": 0.0,
+        "high": 0.0
+      }
+    },
+    {
+      "id": "ice",
+      "group": "ice",
+      "label": "氷塊除去",
+      "factor": "HK03",
+      "from": "S05",
+      "state": "問題あり",
+      "quantity": 2,
+      "billable": true,
+      "hours": {
+        "low": 0.1,
+        "typical": 0.16,
+        "high": 0.3
+      },
+      "op_units": {
+        "low": {
+          "PRE-ICE": 2
+        },
+        "typical": {
+          "PRE-ICE": 2
+        },
+        "high": {
+          "PRE-ICE": 2
+        }
+      },
+      "elapsed_adjust": {
+        "low": 0.0,
+        "typical": 0.0,
+        "high": 0.0
+      }
+    },
+    {
+      "id": "wash",
+      "group": "wash",
+      "label": "下回り洗浄",
+      "factor": "HK01",
+      "from": "S05",
+      "state": "問題あり",
+      "quantity": 1,
+      "billable": false,
+      "hours": {
+        "low": 0.15,
+        "typical": 0.2,
+        "high": 0.3
+      },
+      "op_units": {
+        "low": {
+          "PRE-WASH": 1
+        },
+        "typical": {
+          "PRE-WASH": 1
+        },
+        "high": {
+          "PRE-WASH": 1
+        }
+      },
+      "elapsed_adjust": {
+        "low": 0.0,
+        "typical": 0.0,
+        "high": 0.0
+      }
+    },
+    {
+      "id": "hubclean",
+      "group": "hubclean",
+      "label": "ハブ当たり面の錆落とし・防錆",
+      "factor": "HK01",
+      "from": "S02/S15",
+      "state": "問題あり",
+      "quantity": 2,
+      "billable": true,
+      "hours": {
+        "low": 0.1,
+        "typical": 0.2,
+        "high": 0.3
+      },
+      "op_units": {
+        "low": {
+          "FX-HUBCLEAN": 2
+        },
+        "typical": {
+          "FX-HUBCLEAN": 2
+        },
+        "high": {
+          "FX-HUBCLEAN": 2
+        }
+      },
+      "elapsed_adjust": {
+        "low": 0.0,
+        "typical": 0.0,
+        "high": 0.0
+      }
+    },
+    {
+      "id": "rotor",
+      "group": "rotor",
+      "label": "ローターの固着除去",
+      "factor": "AG01",
+      "from": "S15",
+      "state": "未確認",
+      "quantity": 2,
+      "billable": true,
+      "hours": {
+        "low": 0.0,
+        "typical": 0.0,
+        "high": 0.8
+      },
+      "op_units": {
+        "low": {},
+        "typical": {},
+        "high": {
+          "FX-ROTOR": 2
+        }
+      },
+      "elapsed_adjust": {
+        "low": 0.0,
+        "typical": 0.0,
+        "high": 0.0
+      }
+    },
+    {
+      "id": "boot:left",
+      "group": "boot:left",
+      "label": "スライドピンブーツ交換（左）",
+      "factor": "AG03",
+      "from": "S22",
+      "state": "問題あり",
+      "quantity": 1,
+      "billable": true,
+      "hours": {
+        "low": 0.1,
+        "typical": 0.15,
+        "high": 0.2
+      },
+      "op_units": {
+        "low": {
+          "AG-BOOT": 1
+        },
+        "typical": {
+          "AG-BOOT": 1
+        },
+        "high": {
+          "AG-BOOT": 1
+        }
+      },
+      "elapsed_adjust": {
+        "low": 0.0,
+        "typical": 0.0,
+        "high": 0.0
+      }
+    },
+    {
+      "id": "boot:right",
+      "group": "boot:right",
+      "label": "スライドピンブーツ交換（右）",
+      "factor": "AG03",
+      "from": "S22",
+      "state": "未確認",
+      "quantity": 1,
+      "billable": true,
+      "hours": {
+        "low": 0.0,
+        "typical": 0.0,
+        "high": 0.2
+      },
+      "op_units": {
+        "low": {},
+        "typical": {},
+        "high": {
+          "AG-BOOT": 1
+        }
+      },
+      "elapsed_adjust": {
+        "low": 0.0,
+        "typical": 0.0,
+        "high": 0.0
+      }
+    },
+    {
+      "id": "fastener:F-L-BRK-1",
+      "group": "締結部（折れ込みの可能性）",
+      "label": "左キャリパーブラケットボルト1",
+      "factor": "HK01/AG01",
+      "from": "S03",
+      "state": "折れ込みの可能性",
+      "quantity": 1,
+      "billable": true,
+      "hours": {
+        "low": 0.05,
+        "typical": 0.15,
+        "high": 2.3
+      },
+      "op_units": {
+        "low": {
+          "FX-SEIZE": 1
+        },
+        "typical": {
+          "FX-SEIZE": 1
+        },
+        "high": {
+          "FX-SEIZE": 1,
+          "FX-BROKEN": 1,
+          "FX-THREAD": 1
+        }
+      },
+      "elapsed_adjust": {
+        "low": 0.0,
+        "typical": 0.0,
+        "high": 0.0
+      }
+    },
+    {
+      "id": "fastener:F-L-BRK-2",
+      "group": "締結部（折れ込みの可能性）",
+      "label": "左キャリパーブラケットボルト2",
+      "factor": "HK01/AG01",
+      "from": "S03",
+      "state": "折れ込みの可能性",
+      "quantity": 1,
+      "billable": true,
+      "hours": {
+        "low": 0.05,
+        "typical": 0.15,
+        "high": 2.3
+      },
+      "op_units": {
+        "low": {
+          "FX-SEIZE": 1
+        },
+        "typical": {
+          "FX-SEIZE": 1
+        },
+        "high": {
+          "FX-SEIZE": 1,
+          "FX-BROKEN": 1,
+          "FX-THREAD": 1
+        }
+      },
+      "elapsed_adjust": {
+        "low": 0.0,
+        "typical": 0.0,
+        "high": 0.0
+      }
+    },
+    {
+      "id": "fastener:F-R-BRK-1",
+      "group": "締結部（固着対応の可能性）",
+      "label": "右キャリパーブラケットボルト1",
+      "factor": "HK01/AG01",
+      "from": "S03",
+      "state": "固着対応の可能性",
+      "quantity": 1,
+      "billable": true,
+      "hours": {
+        "low": 0.0,
+        "typical": 0.15,
+        "high": 0.3
+      },
+      "op_units": {
+        "low": {},
+        "typical": {
+          "FX-SEIZE": 1
+        },
+        "high": {
+          "FX-SEIZE": 1
+        }
+      },
+      "elapsed_adjust": {
+        "low": 0.0,
+        "typical": 0.0,
+        "high": 0.0
+      }
+    },
+    {
+      "id": "fastener:F-R-BRK-2",
+      "group": "締結部（固着対応の可能性）",
+      "label": "右キャリパーブラケットボルト2",
+      "factor": "HK01/AG01",
+      "from": "S03",
+      "state": "固着対応の可能性",
+      "quantity": 1,
+      "billable": true,
+      "hours": {
+        "low": 0.0,
+        "typical": 0.15,
+        "high": 0.3
+      },
+      "op_units": {
+        "low": {},
+        "typical": {
+          "FX-SEIZE": 1
+        },
+        "high": {
+          "FX-SEIZE": 1
+        }
+      },
+      "elapsed_adjust": {
+        "low": 0.0,
+        "typical": 0.0,
+        "high": 0.0
+      }
+    },
+    {
+      "id": "fastener:F-L-SLD-1",
+      "group": "締結部（不明）",
+      "label": "左スライドボルト1",
+      "factor": "HK01/AG01",
+      "from": "S03",
+      "state": "不明",
+      "quantity": 1,
+      "billable": true,
+      "hours": {
+        "low": 0.0,
+        "typical": 0.0,
+        "high": 0.3
+      },
+      "op_units": {
+        "low": {},
+        "typical": {},
+        "high": {
+          "FX-SEIZE": 1
+        }
+      },
+      "elapsed_adjust": {
+        "low": 0.0,
+        "typical": 0.0,
+        "high": 0.0
+      }
+    },
+    {
+      "id": "fastener:F-L-SLD-2",
+      "group": "締結部（不明）",
+      "label": "左スライドボルト2",
+      "factor": "HK01/AG01",
+      "from": "S03",
+      "state": "不明",
+      "quantity": 1,
+      "billable": true,
+      "hours": {
+        "low": 0.0,
+        "typical": 0.0,
+        "high": 0.3
+      },
+      "op_units": {
+        "low": {},
+        "typical": {},
+        "high": {
+          "FX-SEIZE": 1
+        }
+      },
+      "elapsed_adjust": {
+        "low": 0.0,
+        "typical": 0.0,
+        "high": 0.0
+      }
+    },
+    {
+      "id": "fastener:F-R-SLD-1",
+      "group": "締結部（不明）",
+      "label": "右スライドボルト1",
+      "factor": "HK01/AG01",
+      "from": "S03",
+      "state": "不明",
+      "quantity": 1,
+      "billable": true,
+      "hours": {
+        "low": 0.0,
+        "typical": 0.0,
+        "high": 0.3
+      },
+      "op_units": {
+        "low": {},
+        "typical": {},
+        "high": {
+          "FX-SEIZE": 1
+        }
+      },
+      "elapsed_adjust": {
+        "low": 0.0,
+        "typical": 0.0,
+        "high": 0.0
+      }
+    },
+    {
+      "id": "fastener:F-R-SLD-2",
+      "group": "締結部（不明）",
+      "label": "右スライドボルト2",
+      "factor": "HK01/AG01",
+      "from": "S03",
+      "state": "不明",
+      "quantity": 1,
+      "billable": true,
+      "hours": {
+        "low": 0.0,
+        "typical": 0.0,
+        "high": 0.3
+      },
+      "op_units": {
+        "low": {},
+        "typical": {},
+        "high": {
+          "FX-SEIZE": 1
+        }
+      },
+      "elapsed_adjust": {
+        "low": 0.0,
+        "typical": 0.0,
+        "high": 0.0
+      }
+    },
+    {
+      "id": "fastener:F-WHEELNUT-x20",
+      "group": "締結部（通常）",
+      "label": "ホイールナット20本",
+      "factor": "HK01/AG01",
+      "from": "S03",
+      "state": "通常",
+      "quantity": 20,
+      "billable": true,
+      "hours": {
+        "low": 0.0,
+        "typical": 0.0,
+        "high": 0.0
+      },
+      "op_units": {
+        "low": {},
+        "typical": {},
+        "high": {}
+      },
+      "elapsed_adjust": {
+        "low": 0.0,
+        "typical": 0.0,
+        "high": 0.0
+      }
+    },
+    {
+      "id": "tire_carry",
+      "group": "tire_carry",
+      "label": "タイヤ運搬を2人作業にする差分（ホイール付き 23kg）",
+      "factor": "HK05",
+      "from": "S07",
+      "state": "仮定",
+      "quantity": 1,
+      "billable": true,
+      "elapsed_reason": "2人作業は運搬を同時に行うので、経過時間は1人あたりの時間になる（重量は仮定（資料値の確認なし））",
+      "hours": {
+        "low": 0.0,
+        "typical": 0.08,
+        "high": 0.08
+      },
+      "op_units": {
+        "low": {},
+        "typical": {},
+        "high": {}
+      },
+      "elapsed_adjust": {
+        "low": 0.0,
+        "typical": -0.02,
+        "high": -0.02
+      }
+    }
+  ],
+  "method_comparison": {
+    "a_c": {
+      "labor_hours": {
+        "low": 2.35,
+        "typical": 3.24,
+        "high": 10.53
+      },
+      "basis": "基準工数＋現車の状態から展開した工程"
+    },
+    "b": {
+      "method": "B: 類似実績の参照",
+      "n": 3,
+      "enough_records": true,
+      "labor_hours": {
+        "low": 2.3,
+        "typical": 2.4,
+        "high": 3.0
+      },
+      "cases": [
+        {
+          "id": "R08",
+          "actual": 2.3,
+          "conditions": {
+            "brake_rust": "相違（2）",
+            "age_band": "一致",
+            "season": "一致"
+          },
+          "adopted": true,
+          "excluded_by": []
+        },
+        {
+          "id": "R09",
+          "actual": 3.0,
+          "conditions": {
+            "brake_rust": "一致",
+            "age_band": "一致",
+            "season": "一致"
+          },
+          "adopted": true,
+          "excluded_by": []
+        },
+        {
+          "id": "R10",
+          "actual": 2.4,
+          "conditions": {
+            "brake_rust": "条件不明",
+            "age_band": "一致",
+            "season": "一致"
+          },
+          "adopted": true,
+          "excluded_by": []
+        }
+      ],
+      "same_vehicle_cases": [
+        {
+          "id": "R11",
+          "actual": 1.9,
+          "conditions": {
+            "brake_rust": "相違（2）",
+            "age_band": "一致",
+            "season": "一致"
+          }
+        }
+      ],
+      "note": "実績には雪下ろし等すべての要因が含まれる。件数が足りなければ参考扱い。同一車両の前回実績は集計に入れず別に示す（車の状態が変わっているため）"
+    },
+    "note": "方式を平均しない。担当者が選ぶか手で入力し、理由を残す"
+  },
+  "rates": {
+    "adopted": "v1",
+    "candidate": "v2",
+    "candidate_labor_hours": {
+      "low": 2.53,
+      "typical": 3.24,
+      "high": 9.88
+    },
+    "evidence": [
+      {
+        "tag": "固着対応",
+        "op": "FX-SEIZE",
+        "n": 8,
+        "min": 0.12,
+        "median": 0.15,
+        "max": 0.25,
+        "used_for_v2": true
+      },
+      {
+        "tag": "ボルト折れ",
+        "op": "FX-BROKEN",
+        "n": 1,
+        "min": 0.85,
+        "median": 0.85,
+        "max": 0.85,
+        "used_for_v2": false
+      },
+      {
+        "tag": "ローター固着",
+        "op": "FX-ROTOR",
+        "n": 3,
+        "min": 0.2,
+        "median": 0.25,
+        "max": 0.3,
+        "used_for_v2": true
+      },
+      {
+        "tag": "雪下ろし",
+        "op": "PRE-SNOW",
+        "n": 4,
+        "min": 0.15,
+        "median": 0.15,
+        "max": 0.2,
+        "used_for_v2": true
+      },
+      {
+        "tag": "氷塊除去",
+        "op": "PRE-ICE",
+        "n": 1,
+        "min": 0.08,
+        "median": 0.08,
+        "max": 0.08,
+        "used_for_v2": false
+      },
+      {
+        "tag": "ブーツ交換",
+        "op": "AG-BOOT",
+        "n": 1,
+        "min": 0.15,
+        "median": 0.15,
+        "max": 0.15,
+        "used_for_v2": false
+      }
+    ],
+    "other_shops": [
+      {
+        "op": "FX-SEIZE",
+        "other_shops_min": 0.12,
+        "other_shops_max": 0.18,
+        "own_typical": 0.15,
+        "inside": true,
+        "note": "参照幅だけに使う。他工場の値を自工場の値にしない"
+      },
+      {
+        "op": "FX-BROKEN",
+        "other_shops_min": 0.7,
+        "other_shops_max": 0.9,
+        "own_typical": 0.8,
+        "inside": true,
+        "note": "参照幅だけに使う。他工場の値を自工場の値にしない"
+      },
+      {
+        "op": "FX-ROTOR",
+        "other_shops_min": 0.18,
+        "other_shops_max": 0.22,
+        "own_typical": 0.2,
+        "inside": true,
+        "note": "参照幅だけに使う。他工場の値を自工場の値にしない"
+      }
+    ],
+    "note": "候補の版は自動で適用しない。整備士が承認した版を shop_params.adopted_rate_table に書く"
+  },
+  "checks": {
+    "check_intensity": {
+      "level": "強",
+      "extra_items": [
+        "下回りの撮影",
+        "締結部の観察",
+        "ゴム部品の状態"
+      ],
+      "note": "経過年数・走行距離は確認の強さだけに使い、人時は増やさない"
+    },
+    "weather_prompt": {
+      "prompt": true,
+      "forecast": {
+        "min_temp_c": -12,
+        "max_temp_c": -4,
+        "snowfall_forecast_cm": 15
+      },
+      "note": "気象は確認を促すだけ。前処理の人時は入庫時の現車確認で決める"
+    },
+    "priority": {
+      "score": 10,
+      "breakdown": {
+        "経過年数": 2,
+        "走行距離": 1,
+        "作業部位の錆グレード": 3,
+        "未確認の部位あり": 1,
+        "防錆施工歴": 1,
+        "前回の固着記録": 2
+      },
+      "band": "高",
+      "when": "見積もり確定前に確認",
+      "note": "確認の順番と時期に使う。人時には変換しない"
+    },
+    "checklist": [
+      {
+        "item": "ローターの固着除去",
+        "state": "未確認",
+        "high_only_hours": 0.8
+      },
+      {
+        "item": "左スライドボルト1",
+        "state": "不明",
+        "high_only_hours": 0.3
+      },
+      {
+        "item": "左スライドボルト2",
+        "state": "不明",
+        "high_only_hours": 0.3
+      },
+      {
+        "item": "右スライドボルト1",
+        "state": "不明",
+        "high_only_hours": 0.3
+      },
+      {
+        "item": "右スライドボルト2",
+        "state": "不明",
+        "high_only_hours": 0.3
+      },
+      {
+        "item": "スライドピンブーツ交換（右）",
+        "state": "未確認",
+        "high_only_hours": 0.2
+      }
+    ],
+    "out_of_scope": [
+      "subframe: 未確認。J1・J2 では外さない。腐食があれば作業範囲の拡大（AG04）として見積もりを変更し、顧客の了承を得る"
+    ],
+    "photos": {
+      "required": 8,
+      "taken": 6,
+      "coverage_percent": 75,
+      "missing": {
+        "右スライドピンブーツ": "泥と氷で撮影不可",
+        "サブフレーム前部": "アンダーカバーで見えない"
+      }
+    },
+    "ai_classification": {
+      "compared": 3,
+      "agree": 2,
+      "disagree": [
+        "wheel_hub"
+      ],
+      "note": "計算には整備士の確定値だけを使う"
+    },
+    "same_vehicle": {
+      "previous_record": "R11",
+      "previous_date": "2025-01",
+      "km_since_previous": 16000,
+      "grades": {
+        "wheel_hub_grade": {
+          "previous": 1,
+          "now": 2
+        }
+      },
+      "previously_seized_now": [
+        {
+          "id": "F-L-BRK-1",
+          "now": "折れ込みの可能性"
+        }
+      ],
+      "note": "前回の実績値はそのまま使わない。前回固着した箇所と錆の進行を確認箇所として示す"
+    }
+  },
+  "conditional_quote": {
+    "confirmed_typical_basis": "typical に入っている工程は見積もりに含める",
+    "conditions": [
+      {
+        "condition": "締結部（折れ込みの可能性）",
+        "items": [
+          "左キャリパーブラケットボルト1",
+          "左キャリパーブラケットボルト2"
+        ],
+        "state": "折れ込みの可能性",
+        "extra_hours": 4.3,
+        "extra_yen": 34400,
+        "contact_before_work": true
+      },
+      {
+        "condition": "締結部（不明）",
+        "items": [
+          "左スライドボルト1",
+          "左スライドボルト2",
+          "右スライドボルト1",
+          "右スライドボルト2"
+        ],
+        "state": "不明",
+        "extra_hours": 1.2,
+        "extra_yen": 9600,
+        "contact_before_work": true
+      },
+      {
+        "condition": "ローターの固着除去",
+        "items": [
+          "ローターの固着除去"
+        ],
+        "state": "未確認",
+        "extra_hours": 0.8,
+        "extra_yen": 6400,
+        "contact_before_work": true
+      },
+      {
+        "condition": "スライドピンブーツ交換（右）",
+        "items": [
+          "スライドピンブーツ交換（右）"
+        ],
+        "state": "未確認",
+        "extra_hours": 0.2,
+        "extra_yen": 1600,
+        "contact_before_work": false
+      }
+    ],
+    "all_conditions_extra_hours": 6.5,
+    "note": "条件が発生したら記録し、作業前連絡が「要」なら顧客の了承を得てから作業する"
+  },
+  "money": {
+    "labor_rate": {
+      "mode": "annual",
+      "applied_yen_per_hour": 8000,
+      "annual_yen_per_hour": 8000,
+      "seasonal_winter_yen_per_hour": 8672,
+      "seasonal_non_winter_yen_per_hour": 7547,
+      "note": "暖房費は人時に足さず、時間単価の側で扱う。配賦方法は工場の経営判断"
+    },
+    "labor_yen": {
+      "low": 17600,
+      "typical": 24320,
+      "high": 81840
+    },
+    "labor_yen_basis": "請求人時（請求しない工程を除く）× 時間単価",
+    "materials_yen": {
+      "low": 1869,
+      "typical": 2125,
+      "high": 9137
+    },
+    "note": "材料費・部品代は工賃と別に記載する"
+  },
+  "companion_parts": {
+    "shown": [
+      {
+        "part": "スライドピンブーツ",
+        "freq": 0.3,
+        "same_op_in_estimate": true,
+        "note": ""
+      },
+      {
+        "part": "キャリパーブラケットボルト交換",
+        "freq": 0.2,
+        "same_op_in_estimate": false,
+        "note": "工数は固着対応に含む。部品のみ"
+      }
+    ],
+    "reference_below_threshold": [
+      {
+        "part": "パッド摩耗センサー",
+        "freq": 0.1,
+        "same_op_in_estimate": false,
+        "note": ""
+      },
+      {
+        "part": "ブレーキホース",
+        "freq": 0.05,
+        "same_op_in_estimate": false,
+        "note": ""
+      }
+    ],
+    "note": "候補は見積もり本体に入れない。観察で必要が分かったものだけ工程として入る"
+  },
+  "customer_sheet": [
+    {
+      "line": "基準作業: 冬タイヤへの季節交換（ホイール付き4本の脱着、組替なし）",
+      "typical": 0.6,
+      "high": 0.6,
+      "basis": "基準工数"
+    },
+    {
+      "line": "基準作業: フロントブレーキパッド＋ローター交換（左右）",
+      "typical": 1.4,
+      "high": 1.4,
+      "basis": "基準工数"
+    },
+    {
+      "line": "共通工程の重複分: リフトアップ",
+      "typical": -0.1,
+      "high": -0.1,
+      "basis": "同時作業で1回だけ計上"
+    },
+    {
+      "line": "共通工程の重複分: 前2輪の脱着",
+      "typical": -0.2,
+      "high": -0.2,
+      "basis": "同時作業で1回だけ計上"
+    },
+    {
+      "line": "見込む追加: 雪下ろし",
+      "typical": 0.15,
+      "high": 0.25,
+      "basis": "現車の状態: 問題あり",
+      "billed": true
+    },
+    {
+      "line": "見込む追加: 氷塊除去",
+      "typical": 0.16,
+      "high": 0.3,
+      "basis": "現車の状態: 問題あり",
+      "billed": true
+    },
+    {
+      "line": "見込む追加: 下回り洗浄",
+      "typical": 0.2,
+      "high": 0.3,
+      "basis": "現車の状態: 問題あり",
+      "billed": false
+    },
+    {
+      "line": "見込む追加: ハブ当たり面の錆落とし・防錆",
+      "typical": 0.2,
+      "high": 0.3,
+      "basis": "現車の状態: 問題あり",
+      "billed": true
+    },
+    {
+      "line": "発生した場合だけの追加: ローターの固着除去",
+      "typical": 0.0,
+      "high": 0.8,
+      "basis": "現車の状態: 未確認",
+      "billed": true
+    },
+    {
+      "line": "見込む追加: スライドピンブーツ交換（左）",
+      "typical": 0.15,
+      "high": 0.2,
+      "basis": "現車の状態: 問題あり",
+      "billed": true
+    },
+    {
+      "line": "発生した場合だけの追加: スライドピンブーツ交換（右）",
+      "typical": 0.0,
+      "high": 0.2,
+      "basis": "現車の状態: 未確認",
+      "billed": true
+    },
+    {
+      "line": "見込む追加: 左キャリパーブラケットボルト1",
+      "typical": 0.15,
+      "high": 2.3,
+      "basis": "現車の状態: 折れ込みの可能性",
+      "billed": true
+    },
+    {
+      "line": "見込む追加: 左キャリパーブラケットボルト2",
+      "typical": 0.15,
+      "high": 2.3,
+      "basis": "現車の状態: 折れ込みの可能性",
+      "billed": true
+    },
+    {
+      "line": "見込む追加: 右キャリパーブラケットボルト1",
+      "typical": 0.15,
+      "high": 0.3,
+      "basis": "現車の状態: 固着対応の可能性",
+      "billed": true
+    },
+    {
+      "line": "見込む追加: 右キャリパーブラケットボルト2",
+      "typical": 0.15,
+      "high": 0.3,
+      "basis": "現車の状態: 固着対応の可能性",
+      "billed": true
+    },
+    {
+      "line": "発生した場合だけの追加: 左スライドボルト1",
+      "typical": 0.0,
+      "high": 0.3,
+      "basis": "現車の状態: 不明",
+      "billed": true
+    },
+    {
+      "line": "発生した場合だけの追加: 左スライドボルト2",
+      "typical": 0.0,
+      "high": 0.3,
+      "basis": "現車の状態: 不明",
+      "billed": true
+    },
+    {
+      "line": "発生した場合だけの追加: 右スライドボルト1",
+      "typical": 0.0,
+      "high": 0.3,
+      "basis": "現車の状態: 不明",
+      "billed": true
+    },
+    {
+      "line": "発生した場合だけの追加: 右スライドボルト2",
+      "typical": 0.0,
+      "high": 0.3,
+      "basis": "現車の状態: 不明",
+      "billed": true
+    },
+    {
+      "line": "見込む追加: タイヤ運搬を2人作業にする差分（ホイール付き 23kg）",
+      "typical": 0.08,
+      "high": 0.08,
+      "basis": "現車の状態: 仮定",
+      "billed": true
+    }
+  ],
+  "analysis": {
+    "diff_log": {
+      "age_band_thresholds_years": [
+        10
+      ],
+      "rows": [
+        {
+          "season": "冬季",
+          "age_band": 0,
+          "n": 2,
+          "mean_diff": -0.05,
+          "median_diff": -0.05,
+          "tag_hours": {}
+        },
+        {
+          "season": "冬季",
+          "age_band": 1,
+          "n": 8,
+          "mean_diff": 0.7,
+          "median_diff": 0.65,
+          "tag_hours": {
+            "固着対応": 2.1,
+            "ボルト折れ": 0.85,
+            "ローター固着": 0.95,
+            "雪下ろし": 0.65,
+            "その他": 0.9,
+            "氷塊除去": 0.15
+          }
+        },
+        {
+          "season": "冬季以外",
+          "age_band": 0,
+          "n": 1,
+          "mean_diff": 0.0,
+          "median_diff": 0.0,
+          "tag_hours": {}
+        },
+        {
+          "season": "冬季以外",
+          "age_band": 1,
+          "n": 1,
+          "mean_diff": 0.5,
+          "median_diff": 0.5,
+          "tag_hours": {
+            "固着対応": 0.3,
+            "ブーツ交換": 0.15,
+            "その他": 0.05
+          }
+        }
+      ],
+      "note": "区分ごとの差を人時に足すと季節・年式による一律加算になるので、単価の更新（v2）の元データとしてだけ使う"
+    },
+    "tap_logs": {
+      "R09": {
+        "labor_hours": 3.0,
+        "wait_hours": 0.75,
+        "elapsed_hours": 3.65
+      }
+    },
+    "voice_memo": {
+      "rows": [
+        {
+          "sentence": "左前、ブラケットボルト2本とも固着",
+          "tags": [
+            "固着対応"
+          ]
+        },
+        {
+          "sentence": "1本は加熱で外れた、もう1本も外れた",
+          "tags": []
+        },
+        {
+          "sentence": "左ローター固着、叩いて外した",
+          "tags": [
+            "ローター固着"
+          ]
+        },
+        {
+          "sentence": "右前は普通に外れた",
+          "tags": []
+        },
+        {
+          "sentence": "右ブーツも硬化してる、交換",
+          "tags": [
+            "ブーツ交換"
+          ]
+        },
+        {
+          "sentence": "サブフレームは見てない",
+          "tags": [
+            "未確認"
+          ]
+        }
+      ],
+      "note": "振り分けは候補。整備士が確認してから実績（records.json）に記録する"
+    }
+  },
+  "unknowns": [
+    "subframe: 未確認。J1・J2 では外さない。腐食があれば作業範囲の拡大（AG04）として見積もりを変更し、顧客の了承を得る"
+  ],
+  "data_versions": {
+    "shop_params": "仮置き 2027-01-20",
+    "job_catalog": "架空基準 2027-01",
+    "records": 12
+  }
+}
