@@ -286,7 +286,9 @@ function App() {
   const [step, setStep] = useState(0);
   const [mode, setMode] = useState<"simulator" | "live">("simulator");
   const [geminiReady, setGeminiReady] = useState(false);
-  const [winterConditions, setWinterConditions] = useState<string[]>([]);
+  const [legacyWinterConditions, setLegacyWinterConditions] = useState<
+    string[]
+  >([]);
   const [webPrices, setWebPrices] = useState<WebResult | null>(null);
   const [researchId, setResearchId] = useState<string | null>(null);
   useEffect(() => {
@@ -380,6 +382,7 @@ function App() {
   function chooseVehicle(v: Vehicle) {
     setManual(false);
     setVehicle(v);
+    setLegacyWinterConditions([]);
     setYear("");
     setGrade("");
     setSources({});
@@ -397,19 +400,11 @@ function App() {
     setResearchId(null);
     setError("");
   }
-  function changeWinterCondition(id: string, checked: boolean) {
-    setWinterConditions((current) =>
-      checked ? [...current, id] : current.filter((value) => value !== id),
-    );
-    setSources({});
-    setDrafts([]);
-    setResearchId(null);
-    setWebPrices(null);
-  }
   async function research() {
     if (!vehicle) return;
     setBusy(true);
     setError("");
+    setLegacyWinterConditions([]);
     try {
       const response = await api<Record<string, Source[]> | WebResult>(
         "/price-research",
@@ -418,7 +413,6 @@ function App() {
           year: Number(year),
           grade,
           job_ids: jobIds,
-          winter_conditions: winterConditions,
           mode,
         },
       );
@@ -443,15 +437,7 @@ function App() {
                 selected_source_ids: selected,
                 labor_price: median(result[id], selected) ?? 0,
                 parts_price: 0,
-                conditions: [
-                  jobs.find((j) => j.id === id)!.description,
-                  ...winterOptions
-                    .filter((o) => winterConditions.includes(o.id))
-                    .map((o) => o.label),
-                  ...(winterConditions.length
-                    ? ["追加作業・追加工賃は現車確認後に相談"]
-                    : []),
-                ].join(" / "),
+                conditions: jobs.find((j) => j.id === id)!.description,
                 adjustment_reason: "",
               };
         }),
@@ -502,7 +488,7 @@ function App() {
           vehicle_id: vehicle.id,
           year: Number(year),
           grade,
-          winter_conditions: winterConditions,
+          winter_conditions: legacyWinterConditions,
           items: drafts,
           notes,
         }),
@@ -539,7 +525,7 @@ function App() {
     setYear("");
     setGrade("");
     setJobIds([]);
-    setWinterConditions([]);
+    setLegacyWinterConditions([]);
     setDrafts([]);
     setSources({});
     setSaved(null);
@@ -548,7 +534,7 @@ function App() {
   }
   function reuse(item: Saved) {
     setMode(item.mode ?? "simulator");
-    setWinterConditions(item.winter_conditions ?? []);
+    setLegacyWinterConditions(item.winter_conditions ?? []);
     setResearchId(item.research_id ?? null);
     setWebPrices(null);
     setVehicle(item.vehicle);
@@ -995,45 +981,6 @@ function App() {
                         ))}
                     </div>
                   </div>
-                  <div className="panel winter-panel">
-                    <div className="winter-heading">
-                      <span className="winter-mark" aria-hidden="true">
-                        ❄
-                      </span>
-                      <div>
-                        <h2>雪国の作業条件</h2>
-                        <p>当別・北海道での使い方を、工賃調査の条件に。</p>
-                      </div>
-                    </div>
-                    <div className="winter-options">
-                      {winterOptions.map((option) => (
-                        <label
-                          key={option.id}
-                          className={
-                            winterConditions.includes(option.id)
-                              ? "selected"
-                              : ""
-                          }
-                        >
-                          <input
-                            type="checkbox"
-                            checked={winterConditions.includes(option.id)}
-                            disabled={busy}
-                            onChange={(e) =>
-                              changeWinterCondition(option.id, e.target.checked)
-                            }
-                          />
-                          <span>
-                            <strong>{option.label}</strong>
-                            <small>{option.detail}</small>
-                          </span>
-                        </label>
-                      ))}
-                    </div>
-                    <p className="help-text">
-                      選択した条件をAIの工賃調査と見積もり記録へ引き継ぎます。サビ・固着の有無は現車で確認し、追加工賃は担当者が判断します。
-                    </p>
-                  </div>
                   <div className="info-strip">
                     <Icon name="info" />
                     <span>
@@ -1072,7 +1019,6 @@ function App() {
                         : "すべて架空の価格です。税込の工賃は税抜に換算し、採用した工賃の中央値を算出します。"}
                     </span>
                   </div>
-                  <WinterSummary conditions={winterConditions} />
                   <ResearchNotes result={webPrices} />
                   {chosenJobs.map((j) => {
                     const draft = drafts.find((i) => i.job_id === j.id)!;
@@ -1489,7 +1435,6 @@ function App() {
                 <span>合計（税込）</span>
                 <strong>{step >= 2 && validMoney ? yen(total) : "—"}</strong>
               </div>
-              <WinterSummary conditions={winterConditions} />
               <p className="summary-footnote">
                 {mode === "live"
                   ? "Web資料による参考概算です。"

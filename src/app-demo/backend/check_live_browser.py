@@ -49,13 +49,11 @@ def check():
         page.get_by_role('button', name='作業を選ぶ', exact=True).click()
         page.get_by_role('button', name='AIで工賃を調査（Gemini）', exact=True).click()
         page.get_by_label('フロントブレーキパッド交換').check()
-        page.get_by_label('融雪剤を使う道路での走行').check()
-        page.get_by_label('サビ・ボルトの固着を現車で確認').check()
+        expect(page.get_by_role('heading', name='雪国の作業条件')).to_have_count(0)
         page.screenshot(path='/tmp/repair-winter-conditions.png', full_page=True)
         page.get_by_role('button', name='参考価格を比較する', exact=True).click()
         expect(page.locator('.source-card')).to_have_count(3)
         assert len(outbound) == 1 and '/api/price-research' in outbound[0], outbound
-        expect(page.locator('.editor .winter-summary')).to_contain_text('融雪剤')
         expect(page.locator('.median-strip strong')).to_have_text('算出不可')
         expect(page.locator('.source-card').nth(1).get_by_role('checkbox')).to_be_disabled()
         expect(page.locator('.source-card').nth(1)).to_contain_text('税区分不明')
@@ -78,16 +76,14 @@ def check():
         page.locator('.history-list > button').first.click()
         expect(page.locator('.detail-total strong')).to_have_text('￥19,800')
         expect(page.locator('.history-detail')).to_contain_text('Gemini Web調査')
-        expect(page.locator('.history-detail .winter-summary')).to_contain_text('サビ・ボルトの固着')
         page.locator('.history-item summary').click()
         expect(page.get_by_role('link', name='出典ページ', exact=True)).to_have_count(3)
         page.get_by_role('button', name='この条件で見積もりを作る', exact=True).click()
         expect(page.get_by_label('フロントブレーキパッド交換の確定工賃')).to_have_value('6000')
-        expect(page.locator('.winter-summary').first).to_contain_text('融雪剤')
         expect(page.get_by_role('button', name='金額を確定して保存', exact=True)).to_be_enabled()
         assert not errors, errors
         browser.close()
-        print('PASS: manual vehicle without AI calls, winter context, mocked labor search, attribution, exclusions, adoption, save/reload/reuse, mobile, no browser errors')
+        print('PASS: manual vehicle without AI calls, winter inputs removed, mocked labor search, attribution, exclusions, adoption, save/reload/reuse, mobile, no browser errors')
 
 
 if __name__ == '__main__':

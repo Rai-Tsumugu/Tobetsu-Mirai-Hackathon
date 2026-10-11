@@ -161,11 +161,6 @@ def jobs():
     return JOBS
 
 
-WINTER_LABELS = {
-    'salt_roads': '融雪剤を使う道路での走行',
-    'rust_check': 'サビ・ボルトの固着を現車で確認',
-    'cold_start': '寒い日の始動・補機バッテリーを相談',
-}
 WinterCondition = Literal['salt_roads', 'rust_check', 'cold_start']
 
 
@@ -174,7 +169,6 @@ class Research(StrictModel):
     year: int
     grade: str
     job_ids: list[str] = Field(min_length=1, max_length=5)
-    winter_conditions: list[WinterCondition] = Field(default_factory=list, max_length=3)
     mode: str = Field(default="simulator", pattern="^(simulator|live)$")
 
 
@@ -206,8 +200,6 @@ def research(body: Research):
     if body.mode == 'simulator':
         return {job['id']: sources_for(job) for job in JOBS if job['id'] in body.job_ids}
     target = dict(vehicle_id=vehicle['id'], maker=vehicle['maker'], model=vehicle['model'], model_code=vehicle['model_code'], year=body.year, grade=body.grade,
-                  region='当別町・北海道', winter_conditions=sorted(set(body.winter_conditions)),
-                  winter_notes=[WINTER_LABELS[k] for k in sorted(set(body.winter_conditions))],
                   jobs=[{k: job[k] for k in ('id', 'name', 'description')} for job in JOBS if job['id'] in body.job_ids])
     result = cached_investigation('prices', target, gemini.Prices.model_json_schema(), lambda r: gemini.extract_prices(r, body.job_ids))
     return {**result, 'sources': result['values']}

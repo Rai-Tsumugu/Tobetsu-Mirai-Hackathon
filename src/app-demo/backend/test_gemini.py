@@ -133,27 +133,38 @@ class GeminiTest(unittest.TestCase):
             self.assertEqual(self.client.post('/api/price-research', json=self.context).status_code, 429)
             request.assert_not_called()
 
-    def test_vehicle_ai_is_removed_and_winter_context_is_bound(self):
+    def test_vehicle_ai_removed_and_winter_conditions_not_sent(self):
         with mock_google([]) as request:
             self.assertNotIn('/api/vehicle-research', [getattr(route, 'path', '') for route in module.app.routes])
             self.assertIn(self.client.post('/api/vehicle-research', json={'query': 'トヨタ'}).status_code, (404, 405))
             request.assert_not_called()
-        self.context['winter_conditions'] = ['salt_roads', 'rust_check']
         result, request = self.post_research([price()])
         prompt = request.call_args_list[0].kwargs['json']['contents'][0]['parts'][0]['text']
-        self.assertIn('融雪剤を使う道路での走行', prompt)
-        self.assertIn('サビ・ボルトの固着を現車で確認', prompt)
-        self.assertIn('加算しない', prompt)
-        body = self.estimate(result, winter_conditions=['salt_roads', 'rust_check'])
-        saved = self.client.post('/api/estimates', json=body)
+        self.assertNotIn('冬', prompt)
+        self.assertNotIn('融雪剤', prompt)
+        self.assertNotIn('region', result['context'])
+        self.assertNotIn('winter_conditions', result['context'])
+        saved = self.client.post('/api/estimates', json=self.estimate(result))
         self.assertEqual(saved.status_code, 201, saved.text)
-        self.assertEqual(saved.json()['winter_conditions'], ['rust_check', 'salt_roads'])
         self.assertEqual(saved.json()['total_amount'], 19800)
-        self.assertEqual(self.client.get('/api/estimates/' + saved.json()['id']).json()['winter_conditions'], ['rust_check', 'salt_roads'])
-        body['winter_conditions'] = []
-        self.assertEqual(self.client.post('/api/estimates', json=body).status_code, 422)
-        self.context['winter_conditions'] = ['invented']
-        self.assertEqual(self.client.post('/api/price-research', json=self.context).status_code, 422)
+
+    def test_transient_failure_retries_once_and_permanent_errors_are_explicit(self):
+        with patch('gemini.time.sleep'), mock_google([httpx.Response(503), httpx.Response(200, json=grounded()), httpx.Response(200, json=extracted({'sources': [price()]}))]) as request:
+            response = self.client.post('/api/price-research', json=self.context)
+            self.assertEqual(response.status_code, 200, response.text)
+            self.assertEqual(request.call_count, 3)
+        for status in [400, 404, 503]:
+            gemini._last_request = 0
+            with patch('gemini.time.sleep'), mock_google([httpx.Response(status), httpx.Response(status)]) as request:
+                with self.assertRaises(Exception) as raised:
+                    gemini.generate('test')
+                self.assertIn(str(status), raised.exception.detail)
+                self.assertEqual(request.call_count, 2 if status == 503 else 1)
+        with mock_google([httpx.Response(400, json={'error': {'message': 'API key not valid. SECRET'}})]):
+            with self.assertRaises(Exception) as raised:
+                gemini.generate('test')
+            self.assertIn('APIキー', raised.exception.detail)
+            self.assertNotIn('SECRET', raised.exception.detail)
 
     def test_no_sources_no_invented_candidates(self):
         with mock_google([httpx.Response(200, json={'candidates': [{'content': {'parts': [{'text': '見つかりません'}]}}]})]) as request:

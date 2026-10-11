@@ -1,6 +1,7 @@
 """Bounded Gemini free-tier requests; all extracted values remain human-unverified."""
 import ipaddress
 import json
+import logging
 import os
 import re
 import threading
@@ -70,9 +71,16 @@ def generate(prompt, *, tools=None, schema=None):
     payload = {'contents': [{'parts': [{'text': prompt}]}], 'generationConfig': config}
     if tools:
         payload['tools'] = tools
+    stage = '料金抽出' if schema else '検索'
     try:
         with httpx.Client(timeout=90.0) as client:
-            response = client.post(ENDPOINT, headers={'x-goog-api-key': os.environ['GEMINI_API_KEY']}, json=payload)
+            for attempt in range(2):
+                response = client.post(ENDPOINT, headers={'x-goog-api-key': os.environ['GEMINI_API_KEY']}, json=payload)
+                if response.status_code not in (500, 502, 503, 504) or attempt == 1:
+                    break
+                logging.getLogger(__name__).warning('Gemini transient failure: stage=%s status=%s; retrying once', stage, response.status_code)
+                time.sleep(1)
+
     except httpx.RequestError:
         raise HTTPException(502, 'Geminiへの接続に失敗しました。通信状態を確認するかSimulatorに切り替えてください。') from None
     if response.status_code == 429:
@@ -80,7 +88,21 @@ def generate(prompt, *, tools=None, schema=None):
     if response.status_code in (401, 403):
         raise HTTPException(503, 'GeminiのAPIキーまたはプロジェクトの利用権限を確認してください。')
     if response.status_code != 200:
-        raise HTTPException(502, 'Geminiが検索を完了できませんでした。Simulatorまたは手入力をご利用ください。')
+        logging.getLogger(__name__).warning('Gemini failure: stage=%s status=%s', stage, response.status_code)
+        if response.status_code == 404:
+            raise HTTPException(503, f'このAPIキーでは {MODEL} を利用できません（404／{stage}）。モデルへのアクセスがあるプロジェクトのキーを確認してください。')
+        if response.status_code in (500, 502, 503, 504):
+            raise HTTPException(503, f'Gemini側で一時障害・混雑が発生しています（{response.status_code}／{stage}）。1回再試行しましたが復旧しませんでした。少し時間を空けて再度お試しください。')
+        if response.status_code == 400:
+            try:
+                message = response.json().get('error', {}).get('message', '').lower()
+            except (ValueError, AttributeError):
+                message = ''
+            if 'api key' in message or 'api_key' in message:
+                raise HTTPException(503, 'APIキーがGoogleに拒否されました（400）。.env の設定を確認し、バックエンドを再起動してください。')
+            raise HTTPException(502, f'Googleがリクエストを拒否しました（400／{stage}）。時間を空けても解消しない実装上のエラーです。')
+        raise HTTPException(502, f'Geminiが処理を完了できませんでした（HTTP {response.status_code}／{stage}）。')
+
     try:
         result = response.json()
         candidate = (result.get('candidates') or [])[0]
@@ -100,8 +122,6 @@ def investigate(target, schema):
         '日本国内の車両・整備情報をWeb検索し、公開ページを参照して回答してください。'
         '入力された車両・型式は利用者が確定した条件として扱い、型式の特定・変更はしない。'
         '修理料金は整備業者のブログ・料金表を参照。'
-        '北海道・雪国の選択条件も調査するが、融雪剤使用や寒冷地という理由だけで加算しない。'
-        'サビ・固着の有無や追加作業は現車確認が必要。根拠のある基本工賃と追加作業を区別する。'
         '資料の版、対象年式、グレード、工賃、部品代、総額、税込/税抜、掲載日、'
         '作業条件を区別。円の正確な金額が書かれていない場合は不明。'
         '同じ型式でも年式・仕様を推定しない。値やURLを創作せず、見つからない場合は見つからないと報告。'
