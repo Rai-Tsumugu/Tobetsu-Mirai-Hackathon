@@ -1,0 +1,17 @@
+{
+  "fictional_fixture": true,
+  "period_label": "架空デモ期間",
+  "daily_pay_yen": 10000,
+  "paid_days_per_year": 240,
+  "approved_multiplier": 3,
+  "multiplier_approved_by": "架空の社長",
+  "salary_basis_acknowledged": true,
+  "period_total_person_hours": 1600,
+  "u_period": 0.75,
+  "hours_basis": "total_person_hours",
+  "job_person_hours": {"low": 1, "typical": 1.5, "high": 2.5},
+  "job_billable_ratio": 0.8,
+  "expected_denominator_person_hours": 1200,
+  "expected_candidate_yen_per_person_hour": 6000,
+  "note": "日給・日数・倍率・時間はすべて架空例。3倍は一般相場や正式原価式ではない。"
+}

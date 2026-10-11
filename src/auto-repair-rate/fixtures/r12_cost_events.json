@@ -1,0 +1,5 @@
+{
+  "fictional_fixture": true,
+  "event":{"category":"heating","old_amount_yen":600000,"new_amount_yen":720000,"effective_from":"2026-11-01","entered_by":"架空の入力者","source":"架空シミュレータ","source_date":"2026-10-31","evidence_ref":"架空例 R12-2026-01","notes":"説明用の架空イベント"},
+  "preview":{"base_costs":{"rent":1200000,"heating":600000,"payroll":5200000},"H_period_bill":1200,"as_of":"2026-11-01","period_start":"2026-01-01","effective_from":"2026-11-01","source":"架空シミュレータ","source_date":"2026-10-31","evidence_ref":"架空例 R12-2026-01","evidence_notes":"すべて説明用の架空値です。","materials_yen":40000}
+}

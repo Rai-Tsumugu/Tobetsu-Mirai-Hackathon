@@ -1,0 +1,19 @@
+{
+  "fictional_fixture": true,
+  "annual_period_start": "2026-01-01",
+  "annual_period_end": "2026-12-31",
+  "source_date": "2026-10-01",
+  "winter_start_month": 11,
+  "winter_end_month": 3,
+  "effective_from": "2026-11-01",
+  "winter_cost_yen": 300000,
+  "winter_billable_hours": 240,
+  "annual_baseline_rate": 6000,
+  "annual_billable_hours": 1200,
+  "selected_scenario": "winter_scenario",
+  "price_policy_confirmed": true,
+  "materials_yen": 30000,
+  "source": "架空シミュレータ",
+  "evidence_ref": "架空例 R09-2026-01",
+  "evidence_notes": "すべて説明用の架空値です。"
+}

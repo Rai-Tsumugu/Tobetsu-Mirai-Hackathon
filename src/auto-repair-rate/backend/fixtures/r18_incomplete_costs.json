@@ -1,0 +1,22 @@
+{
+  "fictional_fixture": true,
+  "known_cost_yen": 4800000,
+  "unknown_items": [
+    {
+      "label": "未確認の光熱費",
+      "lower_yen": 100000,
+      "upper_yen": 300000,
+      "source": "架空シミュレータの仮定"
+    }
+  ],
+  "H_period_bill": 1200,
+  "accept_uncertainty": true,
+  "period_start": "2026-01-01",
+  "period_end": "2026-12-31",
+  "effective_from": "2027-01-01",
+  "source": "架空シミュレータ",
+  "source_date": "2026-12-31",
+  "evidence_ref": "架空例 R18-2026",
+  "evidence_notes": "人手入力レンジによる暫定試算",
+  "materials_excluded": true
+}

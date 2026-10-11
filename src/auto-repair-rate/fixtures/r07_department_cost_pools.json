@@ -1,0 +1,17 @@
+{
+  "fictional_fixture": true,
+  "period_start": "2026-01-01",
+  "source_date": "2026-10-01",
+  "effective_from": "2026-11-01",
+  "direct_cost_yen": {"整備": 800000, "鈑金塗装": 500000},
+  "shared_cost_yen": 1000000,
+  "allocation_key": {"整備": 3, "鈑金塗装": 2},
+  "total_person_hours": {"整備": 1200, "鈑金塗装": 700},
+  "u_period": {"整備": 0.75, "鈑金塗装": 0.7},
+  "selected_category": "整備",
+  "allocation_confirmed": true,
+  "materials_yen": 80000,
+  "source": "架空シミュレータ",
+  "evidence_ref": "架空例 R07-2026-01",
+  "evidence_notes": "すべて説明用の架空値です。"
+}

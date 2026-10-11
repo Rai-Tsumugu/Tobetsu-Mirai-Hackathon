@@ -1,0 +1,9 @@
+{
+  "fictional_fixture": true,
+  "csv_contents":"date,account,amount,tax_mode\n2026-01-31,家賃,1200000,tax_exempt\n2026-01-31,給与,5200000,tax_exempt\n2026-01-31,部品材料,350000,tax_excluded\n",
+  "mappings":[{"account":"家賃","category":"rent","approved":true},{"account":"給与","category":"payroll","approved":true},{"account":"部品材料","category":"materials","approved":true}],
+  "confirm_materials_exclusion":true,"confirm_duplicate_exclusion":true,
+  "period_start":"2026-01-01","period_end":"2026-12-31","effective_from":"2026-11-01",
+  "source":"架空CSVデモ","source_date":"2026-10-31","evidence_ref":"架空例 R14-2026-01","evidence_notes":"説明用の架空CSVです。",
+  "H_period_total":1600,"u_period":0.75
+}

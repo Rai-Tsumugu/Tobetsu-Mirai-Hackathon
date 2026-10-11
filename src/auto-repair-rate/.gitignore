@@ -1,0 +1,11 @@
+.venv/
+node_modules/
+dist/
+*.sqlite3
+__pycache__/
+
+.pytest_cache/
+*.tsbuildinfo
+*.sqlite3-wal
+*.sqlite3-shm
+.DS_Store

@@ -1,0 +1,10 @@
+{
+  "fictional_fixture": true,
+  "cards":[
+    {"category":"rent","label":"家賃","amount":100000,"period":"monthly","include_flag":true,"status":"estimated","source":"架空シミュレータ","notes":"架空例"},
+    {"category":"heating","label":"暖房費","amount":600000,"period":"annual","include_flag":true,"status":"estimated","source":"架空シミュレータ","notes":"架空例"},
+    {"category":"equipment","label":"設備費","amount":360000,"period":"annual","include_flag":true,"status":"estimated","source":"架空シミュレータ","notes":"架空例"},
+    {"category":"payroll","label":"人件費","amount":5200000,"period":"annual","include_flag":true,"status":"estimated","source":"架空シミュレータ","notes":"架空例"},
+    {"category":"materials","label":"別請求材料","amount":300000,"period":"annual","include_flag":false,"status":"estimated","source":"架空シミュレータ","notes":"架空例"}
+  ],"total_person_hours":1600,"u_period":0.75,"period_start":"2026-01-01","period_end":"2026-12-31","effective_from":"2026-11-01","source_date":"2026-10-31","source":"架空シミュレータ","evidence_ref":"架空例 R13-2026-01","evidence_notes":"説明用の架空費目カードです。"
+}

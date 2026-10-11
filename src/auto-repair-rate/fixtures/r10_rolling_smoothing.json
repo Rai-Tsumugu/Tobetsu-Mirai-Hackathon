@@ -1,0 +1,16 @@
+{
+  "fictional_fixture": true,
+  "period_start": "2025-11-01",
+  "period_end": "2026-10-31",
+  "source_date": "2026-10-31",
+  "invoice_month": 12,
+  "effective_from": "2026-11-01",
+  "monthly_cost_yen": [100000,100000,100000,100000,100000,100000,100000,100000,100000,100000,100000,300000],
+  "monthly_total_person_hours": [100,100,100,100,100,100,100,100,100,100,100,100],
+  "monthly_u_period": [0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.75],
+  "seasonal_allocation_already_applied": false,
+  "materials_yen": 40000,
+  "source": "架空シミュレータ",
+  "evidence_ref": "架空例 R10-2026-01",
+  "evidence_notes": "すべて説明用の架空値です。"
+}

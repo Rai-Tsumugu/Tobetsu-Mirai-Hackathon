@@ -1,0 +1,19 @@
+{
+  "fictional_fixture": true,
+  "period_label": "架空デモ期間",
+  "period_start": "2026-01-01",
+  "period_end": "2026-12-31",
+  "effective_from": "2026-11-01",
+  "allocable_cost_yen": 5400000,
+  "period_total_person_hours": 1500,
+  "u_period": 0.75,
+  "target_type": "profit_amount",
+  "target_value": 1350000,
+  "source": "fictional_fixture",
+  "cost_evidence": "架空の費用台帳",
+  "target_evidence": "架空の経営目標",
+  "hours_basis": "total_person_hours",
+  "job_person_hours": {"low": 1, "typical": 1.5, "high": 2.5},
+  "job_billable_ratio": 0.8,
+  "materials_yen": 300000
+}
