@@ -1,0 +1,459 @@
+.app-header[data-view="profit"] ~ .demo-banner,
+.app-header[data-view="profit"] ~ .workspace,
+.app-header[data-view="profit"] ~ .modal-backdrop {
+  display: none;
+}
+[hidden] {
+  display: none !important;
+}
+.view-tabs {
+  display: flex;
+  gap: 5px;
+  background: #123253;
+  padding: 5px;
+  border-radius: 8px;
+}
+.view-tabs button {
+  border: 0;
+  color: #c2d2e2;
+  padding: 9px 25px;
+  border-radius: 5px;
+  background: transparent;
+  font-weight: 600;
+}
+.view-tabs button[aria-pressed="true"] {
+  color: #173b63;
+  background: #fff;
+}
+.profit-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 38px 32px;
+  font-variant-numeric: tabular-nums;
+}
+.profit-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.profit-location {
+  font-size: 12px;
+  color: #527391;
+  margin-bottom: 6px;
+}
+.profit-heading h1 {
+  font-size: 29px;
+}
+.profit-description {
+  color: #607b93;
+  margin-top: 9px;
+}
+.profit-mock-badge {
+  font-size: 12px;
+  border: 1px solid #bacddd;
+  color: #4c6b87;
+  padding: 6px 12px;
+  white-space: nowrap;
+  border-radius: 4px;
+}
+.profit-period-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+.profit-period-bar > p {
+  font-size: 12px;
+  color: #5c7690;
+}
+.profit-periods {
+  display: flex;
+  border-bottom: 1px solid #becfdf;
+  gap: 5px;
+}
+.profit-periods button {
+  padding: 11px 22px;
+  border: 0;
+  background: transparent;
+  border-bottom: 3px solid transparent;
+  color: #607b93;
+}
+.profit-periods button[aria-pressed="true"] {
+  color: #173b63;
+  font-weight: 700;
+  border-bottom-color: #226a9f;
+}
+.profit-overview {
+  display: grid;
+  grid-template-columns: 1fr 1.08fr;
+  background: white;
+  border: 1px solid #d0deea;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.profit-ring-section {
+  padding: 24px 30px;
+}
+.profit-section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.profit-section-heading h2 {
+  font-size: 15px;
+  color: #234666;
+}
+.profit-section-heading > span {
+  font-size: 11px;
+  color: #688198;
+  white-space: nowrap;
+}
+.profit-ring-wrap {
+  width: 290px;
+  max-width: 100%;
+  position: relative;
+  margin: 13px auto 5px;
+}
+.profit-ring-wrap svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.profit-ring-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 8px;
+}
+.profit-ring-center > span {
+  font-size: 13px;
+  color: #547a76;
+}
+.profit-ring-center strong {
+  font-size: 30px;
+  color: #207c72;
+  letter-spacing: -0.045em;
+  white-space: nowrap;
+}
+.profit-ring-center strong.large-amount {
+  font-size: 26px;
+}
+.profit-ring-center small {
+  font-size: 12px;
+  color: #698b87;
+}
+.profit-ring-center small b {
+  color: #207c72;
+  font-size: 15px;
+  margin-left: 5px;
+}
+.profit-legend {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  font-size: 12px;
+  color: #52708b;
+}
+.profit-legend span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.profit-legend i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+.profit-dot {
+  background: #248f85;
+}
+.cost-dot {
+  background: #f0b26c;
+}
+.profit-numbers {
+  border-left: 1px solid #e1e9f0;
+  padding: 32px;
+  background: #fbfdff;
+}
+.profit-sale-line,
+.profit-cost-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 0;
+}
+.profit-sale-line {
+  border-bottom: 1px solid #e1e9f0;
+}
+.profit-sale-line span,
+.profit-cost-line span {
+  font-weight: 600;
+  font-size: 14px;
+}
+.profit-sale-line p,
+.profit-cost-line p {
+  font-size: 11px;
+  color: #7590a8;
+  margin-top: 3px;
+}
+.profit-sale-line strong,
+.profit-cost-line strong {
+  font-size: 27px;
+  color: #234d73;
+  letter-spacing: -0.03em;
+}
+.profit-cost-line strong {
+  color: #a06b31;
+}
+.profit-balance-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 0;
+  border-top: 2px solid #c9dbdf;
+  color: #247f76;
+}
+.profit-balance-line strong {
+  font-size: 30px;
+  letter-spacing: -0.04em;
+}
+.profit-balance-line span {
+  font-weight: 700;
+}
+.profit-work-count {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  padding: 13px 0;
+  color: #607f99;
+}
+.profit-work-count strong {
+  color: #345d7e;
+}
+.profit-calculation {
+  font-size: 11px;
+  color: #7690a5;
+  margin-top: 4px;
+  line-height: 1.8;
+}
+.profit-details-grid {
+  display: grid;
+  grid-template-columns: 1.8fr 1fr;
+  gap: 22px;
+  margin-top: 24px;
+}
+.profit-table-section,
+.profit-cost-section {
+  background: white;
+  border: 1px solid #d0deea;
+  border-radius: 8px;
+  padding: 24px;
+  min-width: 0;
+}
+.profit-table-scroll {
+  overflow-x: auto;
+  margin-top: 17px;
+}
+.profit-table-section table {
+  width: 100%;
+  border-collapse: collapse;
+  white-space: nowrap;
+  font-size: 12px;
+}
+.profit-table-section th,
+.profit-table-section td {
+  padding: 14px 8px;
+  border-bottom: 1px solid #e3ebf2;
+  text-align: right;
+}
+.profit-table-section th:first-child {
+  text-align: left;
+}
+.profit-table-section thead th {
+  color: #6a839a;
+  font-size: 11px;
+  font-weight: 500;
+}
+.profit-table-section tbody th {
+  font-weight: 500;
+}
+.profit-table-gain {
+  color: #207c72;
+  font-weight: 600;
+}
+.profit-table-section tfoot {
+  background: #edf5f7;
+  color: #234f69;
+  font-weight: 700;
+}
+.profit-cost-item {
+  margin-top: 24px;
+}
+.profit-cost-item > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12px;
+}
+.profit-cost-item strong {
+  color: #345573;
+  font-weight: 600;
+}
+.profit-cost-track {
+  height: 7px;
+  background: #edf2f6;
+  border-radius: 5px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+.profit-cost-track span {
+  display: block;
+  height: 100%;
+  border-radius: 5px;
+}
+.profit-cost-item small {
+  color: #8095a7;
+  font-size: 10px;
+}
+.profit-cost-note {
+  font-size: 11px;
+  color: #7d91a3;
+  margin-top: 24px;
+}
+.profit-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  flex-wrap: wrap;
+  color: #7c90a3;
+  font-size: 10px;
+  margin-top: 24px;
+}
+@media (max-width: 1000px) {
+  .profit-details-grid {
+    grid-template-columns: 1fr;
+  }
+  .profit-cost-section {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .profit-cost-section .profit-section-heading,
+  .profit-cost-note {
+    grid-column: 1 / -1;
+  }
+  .profit-cost-item {
+    margin-top: 0;
+  }
+}
+@media (max-width: 760px) {
+  .app-header {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .view-tabs {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+  }
+  .view-tabs button {
+    flex: 1;
+    padding: 8px 12px;
+  }
+  .profit-page {
+    padding: 24px 16px;
+  }
+  .profit-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .profit-heading h1 {
+    font-size: 24px;
+  }
+  .profit-period-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 9px;
+  }
+  .profit-periods {
+    gap: 0;
+    justify-content: space-between;
+  }
+  .profit-periods button {
+    flex: 1;
+    padding: 10px 5px;
+    white-space: nowrap;
+  }
+  .profit-period-bar > p {
+    text-align: right;
+  }
+  .profit-overview {
+    grid-template-columns: 1fr;
+  }
+  .profit-ring-section {
+    padding: 22px 20px;
+  }
+  .profit-ring-wrap {
+    width: 275px;
+  }
+  .profit-numbers {
+    border-left: 0;
+    border-top: 1px solid #e1e9f0;
+    padding: 15px 22px;
+  }
+  .profit-sale-line strong,
+  .profit-cost-line strong {
+    font-size: 24px;
+  }
+  .profit-balance-line strong {
+    font-size: 27px;
+  }
+  .profit-details-grid {
+    gap: 18px;
+    margin-top: 18px;
+  }
+  .profit-table-section,
+  .profit-cost-section {
+    padding: 20px 16px;
+  }
+  .profit-table-scroll {
+    margin-left: -4px;
+    margin-right: -4px;
+  }
+  .profit-cost-section {
+    display: block;
+  }
+  .profit-cost-item {
+    margin-top: 22px;
+  }
+  .profit-footer {
+    font-size: 10px;
+  }
+}
+.profit-sale-line strong,
+.profit-cost-line strong,
+.profit-balance-line strong {
+  white-space: nowrap;
+}
+@media (max-width: 760px) {
+  .app-header {
+    height: auto;
+    min-height: 72px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+  .profit-sale-line strong,
+  .profit-cost-line strong {
+    font-size: 22px;
+  }
+}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import "./style.css";
+import ProfitDashboard from "./ProfitDashboard";
 
 type Vehicle = {
   id: string;
@@ -283,6 +284,7 @@ function WinterSummary({ conditions }: { conditions: string[] }) {
   );
 }
 function App() {
+  const [view, setView] = useState<"estimate" | "profit">("estimate");
   const [step, setStep] = useState(0);
   const [mode, setMode] = useState<"simulator" | "live">("simulator");
   const [geminiReady, setGeminiReady] = useState(false);
@@ -571,7 +573,7 @@ function App() {
   }
   return (
     <>
-      <header className="app-header">
+      <header className="app-header" data-view={view}>
         <a className="brand" href="/" aria-label="整備見積ワークベンチ ホーム">
           <span className="brand-mark">
             <Icon name="wrench" size={23} />
@@ -580,7 +582,21 @@ function App() {
             整備見積<span className="brand-sub">ワークベンチ</span>
           </span>
         </a>
-        <div className="header-right">
+        <nav className="view-tabs" aria-label="画面切り替え">
+          <button
+            aria-pressed={view === "estimate"}
+            onClick={() => setView("estimate")}
+          >
+            見積もり
+          </button>
+          <button
+            aria-pressed={view === "profit"}
+            onClick={() => setView("profit")}
+          >
+            売上・利益
+          </button>
+        </nav>
+        <div className="header-right" hidden={view !== "estimate"}>
           <span className="mode-tag">
             <span />
             {mode === "live" ? "Gemini 工賃調査" : "Simulator"}
@@ -1661,6 +1677,9 @@ function App() {
           </dialog>
         </div>
       )}
+      <div hidden={view !== "profit"}>
+        <ProfitDashboard />
+      </div>
     </>
   );
 }
