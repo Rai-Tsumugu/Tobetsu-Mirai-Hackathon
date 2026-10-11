@@ -512,43 +512,35 @@
     "fix_summary": "Fixed 2 of the 4 findings in s12_provisional_to_actual_update.py and re-ran it from the repo root. It now reports 8 intermediates, and results/S12.json is regenerated. Labor hours are unchanged: 2.10 / 2.76 / 9.85. Elapsed hours are 0.75 / 0.75 / 0.75.\n\nFixed:\n- **Intermediates over the limit (minor):** the SPEC allows 3 to 8 items and there were 9. I removed the \"追加人時 v2\" item. The v2 total is still in other_outputs, and the \"v2 - v1\" item now says it is the v2 total minus the v1 total.\n- **FX-ROTOR basis (minor):** the assumptions now name U2 as the reason the two rotor sides (and the right boot) go in high only, because they are unconfirmed items in scope. U3's table covers fasteners only.\n\nNot changed, because the instruction you gave takes precedence:\n- **PRE-WASH, labor hours (major):** you told me to keep PRE-WASH out and give the reason as \"実績タグがなく案の範囲外\". The note, assumptions and other_outputs already say that, so I left the numbers alone. That is why the +0.15 / +0.20 / +0.30 figures were not added.\n- **FX-HUBCLEAN and its drying wait (major):** the instruction doesn't mention it. It has no outcome tag, the same reason as PRE-WASH, so I kept it out of labor hours and elapsed hours, as the script already did. The note says the drying wait is not added.\n- **FX-THREAD:** I kept it in high with the v1 provisional value, which is exactly what your U3 instruction asked for.\n- **U5 wait (elapsed hours):** the thaw wait of 0.5 plus the soak wait of 0.25 already goes into elapsed hours, so elapsed_hours is not null.\n- **U4 subframe:** it is still out of scope and listed under unknowns.",
     "checks": [
       {
-        "lens": "input",
-        "pass": true,
-        "major": [],
-        "minor": [
-          "intermediates has 9 items, above the 3 to 8 range the check asks for. Format only; the values are correct.",
-          "Rounded display is not self-consistent. The v2 low for FX-SEIZE is shown as 0.12, but the calculation uses 0.1167. From the displayed table, add_v2 low comes to 0.59 rather than 0.58, and the v2 minus v1 low difference to 0.19 rather than 0.18. This is rounding only, and the typical and high values are unaffected.",
-          "Some scenario-derived literals are hardcoded rather than read from scenario.json, and their basis is not spelled out in assumptions. These are PRE-SNOW count 1 (per 入庫1回), boot_left=1 and boot_right_unknown=1 (from the slide_pin_boots string), and the 'FX-BROKEN/FX-THREAD = n_heavy' mapping. The rotor count of 2 is covered by an assumption, and the other numbers are 0, 1, 100 or rounding.",
-          "R11 is a same-vehicle prior visit (previous_visit_same_vehicle) and is included in the reference statistics for FX-SEIZE, PRE-SNOW and others. Assumptions say it is not treated specially, which is documented, but the effect on n and the medians is not quantified.",
-          "Running the script rewrites results/S12.json (by design). The stdout and the file now match byte for byte, but the pre-run file was overwritten, so this check compares the post-run file with the run's own output and does not confirm the earlier stored content."
-        ],
-        "recomputed": "labor_hours: low 2.1, typical 2.76, high 9.85 (elapsed_hours 0.75 each). Stdout of `python3 src/30-algorithm/s12_provisional_to_actual_update.py` (exit 0, no stderr) is identical to results/S12.json. Inputs match scenario.json; the historical medians (FX-SEIZE 0.15, FX-ROTOR 0.25, PRE-SNOW 0.15) and the fastener counts (中2, 重2, 未確認4) and ice locations (2) were recomputed by hand. The U3 quantity table and U5 waits follow SPEC.md. Standard library only; low ≤ typical ≤ high holds."
-      },
-      {
         "lens": "arith",
         "pass": false,
         "major": [
-          "elapsed_hours が待機（融解待ち0.5＋浸透待ち0.25）のみで、作業時間の基礎が入っていない。SPEC U5 は待機を「該当する経過時間に足す」と定めており、同じシナリオの S11 は elapsed = 人時 + 待機（2.93 / 3.36 / 9.55）になっている。S12 だけ 0.75 / 0.75 / 0.75 となり、人時より短い経過時間が出るため案間で比較できない。S11 と同じ基礎（人時）を使うなら elapsed は 2.85 / 3.51 / 10.60 になる。",
-          "追加工程の範囲が S12 の独自制限（実績タグのある工程のみ）で絞られ、下回り洗浄 PRE-WASH と FX-HUBCLEAN が人時から外れている。一方で同じく実績タグのない FX-THREAD は high に入っており、扱いが一貫しない。U1 は範囲を docs の仕組み（「追加工程の人時」）から取ると定め、U7 は範囲内の請求しない作業（下回り洗浄）を labor_hours に入れ、請求分を other_outputs に分けるよう定めている。PRE-WASH を入れると typical は 2.76 から約 2.96（+0.20、入庫1回あたり 0.15 / 0.20 / 0.30）になる。FX-HUBCLEAN を範囲内とすれば、さらに防錆乾燥の待機 0.3 が high の経過時間に加わる。"
+          "範囲の定義（実績タグのある工程のみ）と、タグのない FX-THREAD を high に入れる実装が食い違う。FX-HUBCLEAN と PRE-WASH を外す根拠がない"
         ],
         "minor": [],
-        "recomputed": "labor_hours: low 2.10, typical 2.76, high 9.85（v1 追加人時 0.40 / 1.06 / 8.15 + 基準 1.7。S12 の値と一致）。elapsed_hours（S12 の定義＝待機のみ）: 0.75 / 0.75 / 0.75（一致）。elapsed を S11 と同じく人時＋待機とした場合: 2.85 / 3.51 / 10.60。参考: v2 候補の人時は 2.28（0.5833 の追加分）/ 2.76 / 9.20（S12 の 2.28 / 2.76 / 9.2 と一致）。各 formula の数量（FX-SEIZE 2/4/8、FX-BROKEN 高 2、FX-THREAD 高 2、FX-ROTOR 高 2、PRE-SNOW 1、PRE-ICE 2、AG-BOOT 低・典型 1・高 2）と単価の割り当ては U2・U3 に従っており、二重計上はなし。実績の中央値・最小・最大も S12 の記載と一致（FX-SEIZE は最小 0.1167 を 0.12 と丸めた記載で、差は閾値内）。"
+        "recomputed": "人時 2.10/2.76/9.85、経過 2.85/3.51/10.60 は算術として一致"
       },
       {
         "lens": "spec",
         "pass": false,
         "major": [
-          "案の範囲の決め方が SPEC と食い違う。S12 の script は「実績タグがない工程は案の範囲外」として下回り洗浄（PRE-WASH）と FX-HUBCLEAN を人時から外している。しかし SPEC U7 は、請求しない下回り洗浄も案の範囲なら人時に入れると定めており、U1 の範囲は §3 の『全般』と §4 の仕組みで決まる。一方で script は実績タグのない FX-THREAD を high に入れている。同じ基準で『タグがない』を外す理由にはならず、基準が一貫しない。PRE-WASH（typical 0.20）を入れると typical は 2.76 から 2.96 程度に変わり、high の『この案の範囲での上限』という note も成り立たなくなる。"
+          "FX-HUBCLEAN を範囲外とする根拠が U1 にも裁定にもない"
         ],
         "minor": [
-          "仕組みの説明が不足している。docs の『実績が入るたびに中央値と範囲を更新』に対して、script は 12 件の記録を一括で見る一回きりの計算で、採用値は常に v1（未承認）のため、実績の更新は labor_hours に影響しない。これは docs の『整備士が承認した版から使う』と整合するが、result.note か assumptions に、承認前は実績が人時に反映されないことを明記するとよい。",
-          "確認した数値は script の値と一致する。締結部の数量は U3 のとおり（low: 重2 / typical: 中2+重2 / high: 8 本で FX-BROKEN と FX-THREAD は重2本分）。未確認（スライドボルト4本、ローター2側、右ブーツ）は U2 に従い high のみに入る。サブフレームは U4 のとおり作業範囲外。待機（融解 0.5、浸透 0.25）は elapsed_hours に入り labor_hours には入っていない。地域・年式・走行距離、金額、U6 のタイヤ重量、U8 の付随部品（閾値未満）は人時に入っていない。labor_hours は 1.7 + v1 追加人時（0.40 / 1.06 / 8.15）で、low 2.10、typical 2.76、high 9.85。"
+          "経過時間の intermediates の式が「待機のみ」と書かれ、結果（人時＋待機）と食い違う"
         ],
-        "recomputed": "labor_hours: low 2.10 / typical 2.76 / high 9.85（基準 1.70 + v1 追加人時 0.40 / 1.06 / 8.15）。elapsed_hours: 0.75 / 0.75 / 0.75。scenario と results/S12.json の値を手計算で照合した。範囲外として除外した PRE-WASH（0.15/0.20/0.30）と FX-HUBCLEAN を入れた場合の補正は指摘 1 を参照。"
+        "recomputed": ""
+      },
+      {
+        "lens": "input",
+        "pass": true,
+        "major": [],
+        "minor": [],
+        "recomputed": "再実行で結果ファイルと一致"
       }
     ],
-    "adjudication": "裁定済み・修正済み",
-    "adjudication_reason": "経過時間が待機だけになっていた不具合はオーケストレーターが修正した（人時＋待機）。下回り洗浄を除くのは「実績タグがなく案の範囲外」とする個別指示による。"
+    "adjudication": "再検証後に修正",
+    "adjudication_reason": "再検証（Haiku 3体）で範囲の不整合を指摘された。範囲を「補正表にある追加工程のうち今回の観察で必要になるもの」にそろえ、ハブ錆落としと下回り洗浄（請求しないが実作業）を入れ、防錆乾燥の待機を足した。人時は 2.35/3.16/10.45、経過時間は 3.40/4.21/11.50 になり、再検証の算術担当の概算と一致する。修正後の再検証はしていない。"
   },
   {
     "id": "S13",
@@ -1254,7 +1246,7 @@
   },
   {
     "id": "S28",
-    "final_pass": true,
+    "final_pass": false,
     "fixed": true,
     "first_round_failed": [
       "arith",
@@ -1268,36 +1260,33 @@
         "lens": "arith",
         "pass": true,
         "major": [],
-        "minor": [
-          "S22 の『キャリパーブラケットボルト交換』（出現率 0.20）は表示しきい値 0.15 以上なのに、材料費・other_outputs のどちらにも数値では入らず、unknowns に参考として記載されているだけ。U8 は『しきい値未満は other_outputs に参考』と定めるのみで、しきい値以上の候補の扱い（含めるか、金額を別記するか）は明文化されていない。結果は左右しないので minor。"
-        ],
-        "recomputed": "labor_hours: low 1.7 / typical 1.7 / high 1.7（U9 据え置き）。elapsed_hours: low 0.55 / typical 0.55 / high 0.55（浸透待ち 0.25 + 防錆乾燥 0.3 冬季仮説値、U5）。材料費: low 668.5 円 / typical 924.5 円 / high 6736.5 円。内訳は固着本数 low 2 / typical 4 / high 8（重2・中2・未確認4）、浸透剤＋加熱ガス 128円/本、ハブ防錆 2側 x 206.25円 = 412.5円、交換ボルト high のみ 2本 x 450 = 900円、ねじ山部材 high のみ 2か所 x 2200 = 4400円。scenario.json と S28.json の intermediates・other_outputs と一致（差 0）。計算用スクリプトは scratchpad の v3_S28_arith.py。"
+        "minor": [],
+        "recomputed": "人時 1.7、材料費 668.5/924.5/6736.5 円で一致"
       },
       {
         "lens": "spec",
-        "pass": true,
-        "major": [],
-        "minor": [
-          "基盤の表記が食い違う。docs/man-hours/system-ideas-30.md §3 の S28 は「共」、src/30-algorithm/results/S28.json の base_method は \"A\"。どちらかに揃えるか、S28 は方式を問わない金額案だと注記するとよい。",
-          "経過時間と人時の対応が説明不足。U5 に従い浸透待ち0.25h・防錆乾燥0.3hを elapsed に入れているが、その元になる FX-SEIZE・FX-HUBCLEAN の作業人時は U9 により labor_hours に入っていない。note で人時は入れないと書いているものの、待機だけが残る理由（工数算出なし案の扱い）をもう一文補うとよい。",
-          "ハブ防錆の『両側』（2側）は推定だと assumptions に書かれているが、low・typical・high のすべてに固定で入っている。ハブ錆グレード2は観察済みでも片側ごとの実測はないため、low に未観察の数量を入れていることになる。low を片側（1側）にするか、両側の根拠を note に明記するとよい。",
-          "docs §4 S28 の仕組みは『ボルト・ナット・クリップ』の材料別建てを挙げるが、ナット・クリップは数量・単価とも未確定で金額に入っていない。other_outputs には記載があるため、docs 側にも『ナット・クリップは未計上』と一言補うと対応が追える。"
+        "pass": false,
+        "major": [
+          "待機を扱う案なのに elapsed_hours が null（SPEC は null を待機を扱わない案に限る）",
+          "表示しきい値以上の付随部品（ブラケットボルト）を材料費から外す根拠が SPEC にない"
         ],
-        "recomputed": "labor_hours: low 1.7, typical 1.7, high 1.7（SPEC U9 により工数は据え置き、S28 は工数を算出しない案）。elapsed_hours: low 0.55, typical 0.55, high 0.55（浸透待ち0.25＋防錆乾燥0.3、U5）。材料費合計: low 668.5円、typical 924.5円、high 6736.5円（other_outputs のみ、人時には不加算）。"
+        "minor": [
+          "待機時間がスクリプトに直書き"
+        ],
+        "recomputed": ""
       },
       {
         "lens": "input",
         "pass": true,
         "major": [],
         "minor": [
-          "s28_rust_materials_separate.py hardcodes WAIT_SEIZE=0.25 and WAIT_HUB=0.3 (also repeated in the formula label strings). Both values exist in scenario.json elapsed_waits (penetrant_soak_wait_hours=0.25, rustproof_dry_wait_hours.winter_hypothesis=0.3), so SPEC common rule 1 (read inputs only from scenario.json) is not followed. The values match, so the result is unchanged.",
-          "Running the script rewrites results/S28.json, so the stdout-vs-file comparison was done against the file the run had just written. It confirms the script is deterministic and self-consistent, but it does not independently verify the previously committed S28.json. The stdout JSON and the file are byte-identical (cmp SAME) and parse equal.",
-          "Rotor/hub seizure (rotor_hub_seizure: 未確認) is excluded from the high bound and recorded only in unknowns, on the reading that it is outside S28's scope. SPEC U2 says unconfirmed items inside the scope go to high. S28's scope in system-ideas-30.md (materials for 浸透剤・防錆剤・ボルト・ナット・クリップ・ねじ山部材) does not clearly include rotor seizure, so the exclusion looks defensible, but the note should state that judgment explicitly.",
-          "Nut and clip are listed in the S28 scope of system-ideas-30.md and are left unpriced (other_outputs says 単価未確定). This is recorded, so it is not an error, but the material total is incomplete by design."
+          "待機時間がスクリプトに直書き"
         ],
-        "recomputed": "labor_hours = {\"low\": 1.7, \"typical\": 1.7, \"high\": 1.7} (script run from repo root with python3 exit 0; elapsed_hours = {\"low\": 0.55, \"typical\": 0.55, \"high\": 0.55}; other_outputs material totals low 668.5 / typical 924.5 / high 6736.5 JSON). Stdout equals results/S28.json byte for byte. Inputs match scenario.json (fasteners J2: 重2/中2/未確認4, wheel_hub grade 2, base 1.7). Intermediates: 7 items, each with formula. Required keys present. Standard library only."
+        "recomputed": "再実行で結果ファイルと一致"
       }
-    ]
+    ],
+    "adjudication": "再検証後に修正",
+    "adjudication_reason": "経過時間を S12 と同じく人時＋待機（2.25 時間）で出し、作業人時を入れないので過小になりうると note に書いた。付随部品のボルトは S22 の扱いに合わせて材料費の本体に入れず、単価を候補として別に示した。待機時間は scenario.json から読むようにした。修正後の再検証はしていない。"
   },
   {
     "id": "S29",

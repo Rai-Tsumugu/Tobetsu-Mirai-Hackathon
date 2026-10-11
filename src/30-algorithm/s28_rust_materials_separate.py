@@ -81,7 +81,8 @@ costs = {r: cost(r) for r in RANGES}
 total = {r: sum(costs[r].values()) for r in RANGES}
 labor = {r: base for r in RANGES}  # 工数は据え置き
 # U5: 材料を計上する範囲は FX-SEIZE / FX-HUBCLEAN を含むので待機を経過時間に足す（人時には入れない）
-WAIT_SEIZE, WAIT_HUB = 0.25, 0.3
+WAIT_SEIZE = SC["elapsed_waits"]["penetrant_soak_wait_hours"]
+WAIT_HUB = SC["elapsed_waits"]["rustproof_dry_wait_hours"]["winter_hypothesis"]  # 入庫は冬季
 elapsed = {r: (WAIT_SEIZE if seize[r] > 0 else 0) + (WAIT_HUB if hub[r] > 0 else 0) for r in RANGES}
 
 def triple(d, f=lambda x: x):
@@ -90,7 +91,7 @@ def triple(d, f=lambda x: x):
 out = {
     "id": "S28",
     "name": "錆対応の材料・消耗品の別建て",
-    "base_method": "A",
+    "base_method": "共",
     "factors": ["HK01", "AG01"],
     "algorithm": [
         "手順1: 工数は重複控除後の基準1.7人時のまま据え置く（SPEC U9: low=typical=high=1.7）。",
@@ -126,13 +127,14 @@ out = {
     ],
     "result": {
         "labor_hours": triple(labor, r2),
-        "elapsed_hours": None,  # 工数を算出しない案（U9）なので経過時間も出さない。待機の参考値は intermediates
+        "elapsed_hours": {r: r2(labor[r] + elapsed[r]) for r in RANGES},  # 経過時間 = 人時 + 待機（U5）
         "other_outputs": (
             [{"label": "材料費合計（%s）" % r, "value": r2(total[r]), "unit": "円"} for r in RANGES]
             + [{"label": "ボルト・ナット・クリップの別記", "value": "ブラケットボルトは本数×単価で計上。ナット・クリップは数量・単価とも未確定のため金額なし（工場の単価確認後に追加）", "unit": None}]
             + [{"label": "材料費内訳（%s）" % r, "value": {k: r2(v) for k, v in costs[r].items()}, "unit": "円"} for r in RANGES]
+            + [{"label": "付随部品の候補（材料費の本体に入れない）: キャリパーブラケットボルト交換", "value": {"freq": SC["shop_policy"]["companion_parts_catalog_S22"]["キャリパーブラケットボルト交換"]["freq"], "price_yen_each": SC["materials_S28"]["bracket_bolt"]["price_yen"]}, "unit": "円/本"}]
         ),
-        "note": "工数は変えない（SPEC U9: low=typical=high=1.7人時。固着の人時を0としたのは U9 が S28 を工数を算出しない案と定めるため）。経過時間は工数を算出しないため出さない（固着対応・ハブ処置を行う場合の待機 0.55h は intermediates に参考として示す）。S28は錆対応で増える材料・消耗品を金額として工賃と別に記載する案で、人時は他案（固着対応の人時を持つ案）が扱うため、S28では人時を加えず基準1.7人時を据え置く。材料費は人時に足さない。材料の数量は SPEC U3 の締結部の割り当てに合わせた（中は typical から固着対応、重の high で折れ込み→交換ボルト・ねじ山修正部材、未確認は high で固着対応）。ローター・ハブ固着、サブフレーム（J1・J2 では外さない作業範囲外）、ブーツ（AG03/S22）はこの案の範囲外で材料に含めず unknowns に記録した。high は材料費のこの案の範囲での上限。S28は人時を足さないため、固着で増える人時は他案の領域で、比較時に人時の差がないことを錆対応の少なさと読まないこと。",
+        "note": "工数は変えない（SPEC U9: low=typical=high=1.7人時に据え置く）。経過時間は SPEC U5 に従い、人時 1.7 に浸透待ち0.25hと防錆乾燥0.3h（冬季仮説値）を足した値。S28 は固着対応・ハブ処置の作業人時を入れないので、この経過時間は過小になりうる（作業人時は S03 等が扱う）。付随部品の候補（キャリパーブラケットボルト交換、出現率0.20）は S22 の扱いに合わせて材料費の本体に入れず、単価を候補として別に示す。S28は錆対応で増える材料・消耗品を金額として工賃と別に記載する案で、人時は他案（固着対応の人時を持つ案）が扱うため、S28では人時を加えず基準1.7人時を据え置く。材料費は人時に足さない。材料の数量は SPEC U3 の締結部の割り当てに合わせた（中は typical から固着対応、重の high で折れ込み→交換ボルト・ねじ山修正部材、未確認は high で固着対応）。ローター・ハブ固着、サブフレーム（J1・J2 では外さない作業範囲外）、ブーツ（AG03/S22）はこの案の範囲外で材料に含めず unknowns に記録した。high は材料費のこの案の範囲での上限。S28は人時を足さないため、固着で増える人時は他案の領域で、比較時に人時の差がないことを錆対応の少なさと読まないこと。",
     },
     "assumptions": [
         "仮定: 折れ込みは固着対応を試みたあとに起きる別工程（SPEC U3）で、重の high のみ。交換ボルトとねじ山修正部材は重の本数分を見込む。",
@@ -142,7 +144,7 @@ out = {
         "仮定: ハブ防錆の両側は low にも適用する。片側のみなら low は約%.0f円（%d/%d）減る。" % (hub_unit, mat["rustproof_hub"]["price_yen"], mat["rustproof_hub"]["uses"]),
         "仮定: 経過時間は SPEC U5 に従い浸透待ち0.25h（冬季仮説なし）と防錆乾燥0.3h（冬季仮説値）を足す。待機は人時に入れない。",
         "判断: AG-CLIP（樹脂クリップ1個単位）の数量はこの scenario では交換数を決める入力がなく、数量を置くと根拠のない加算になるため、金額は見込まず other_outputs に未確定と記録した。",
-        "判断: 企業部品表 companion_parts_catalog_S22 のキャリパーブラケットボルト交換（出現率0.20）は部品のみで人時0。S28 の交換ボルト（折れ込み用）とは別の発生条件のため、材料費には足さず参考として unknowns に記録した。",
+        "判断: companion_parts_catalog_S22 のキャリパーブラケットボルト交換（出現率0.20）は付随部品の候補で、S22 と同じく見積もり本体に入れず、単価を other_outputs に候補として示す（必要が分かった時点で追加）。S28 の交換ボルト（折れ込み用、high のみ）とは発生条件が違う。",
     ],
     "unknowns": [
         "スライドボルト4本の錆（ブーツに隠れて未確認）。high で固着対応の材料に含めた。",

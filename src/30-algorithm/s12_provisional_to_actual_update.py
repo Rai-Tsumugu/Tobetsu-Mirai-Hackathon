@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """S12 整備士の暫定値を実績で更新する補正表
 
-反映する要因: 全般（原因タグ付きの追加工程。HK01/HK02/HK03/AG01/AG03 に対応する工程を、実績が取れる範囲で扱う）
+反映する要因: 全般（docs §3）。範囲は補正表（mechanic_provisional_add_ops）にある追加工程のうち、今回の観察で必要になるもの。
+実績タグがある工程だけが v2 候補の対象で、タグのない工程（FX-THREAD、FX-HUBCLEAN、PRE-WASH）は v1 の暫定値のまま使う
 
 アルゴリズムの手順:
  1. scenario.json を自分のファイル位置から相対で読む。出発点は重複控除後の基準 1.7 人時。
@@ -24,12 +25,13 @@
         high: 中+重+未確認の計8本に FX-SEIZE high、重2本に FX-BROKEN high と FX-THREAD high
         （折れ込みは固着対応を試みたあとの別工程。FX-THREAD は実績タグがないので v1 の暫定値）。
       ローター固着2側・右ブーツは未確認のため high のみ。左ブーツ硬化は観察済みなので全範囲で1個。
+      ハブ錆グレード2以上なら FX-HUBCLEAN を左右2側（全範囲）、作業部位の錆グレード2以上なら下回り洗浄 PRE-WASH を1回（全範囲）。
       サブフレームは J1・J2 で外さない作業範囲外（U4）。high に入れず、unknowns に作業範囲の拡大（AG04）として書く。
  7. 同じ数量に v1 と v2 を当てはめ、追加人時を 数量 x 単価 で積み上げる（倍率は使わない）。
  8. 暫定値（v1）を採用値とし、人時 = 1.7 + v1 の追加人時。v2 は比較用に並べる。
  9. 経過時間（U5）: 氷塊除去を含めば融解待ち、FX-SEIZE を含めば浸透待ちを、その範囲の経過時間に足す
-    （elapsed_waits から読む。人時には入れない）。FX-HUBCLEAN は S12 の範囲外なので防錆乾燥は足さない。
-    下回り洗浄（PRE-WASH）は実績タグがなく案の範囲外のため、人時にも入れない。
+    （elapsed_waits から読む。人時には入れない）。FX-HUBCLEAN を含めば防錆乾燥（冬季の仮説値）も足す。
+    下回り洗浄（PRE-WASH）は請求しないが実作業なので人時に入れる（U7）。経過時間 = 人時 + 待機（1人で直列に作業する前提）。
 10. SPEC.md の形で JSON を標準出力と results/S12.json に出す。丸めは出力時のみ。
 """
 import json
@@ -97,12 +99,16 @@ n_unk = sum(f.get("count", 1) for f in fs if risk(f).startswith("不明"))
 ice = SC["condition"]["ice_in_wheel_house"]["locations"]
 unk_rotor_sides = 2  # 仮定: ローター固着は未確認のため左右とも high に含める
 boot_left, boot_right_unknown = 1, 1
+grades = SC["condition"]["underbody_rust_grade"]
+hub_sides = 2 if grades["wheel_hub"] is not None and grades["wheel_hub"] >= 2 else 0  # 仮定: ハブ錆グレード2以上で左右とも錆落とし
+work_area_grade = max(g for k, g in grades.items() if k in ("brake_area", "wheel_hub", "front_suspension") and g is not None)
+wash = 1 if work_area_grade >= 2 else 0  # 仮定: 作業部位の錆グレード2以上で下回り洗浄を1回（S05・統合版と同じ規則）
 
 # SPEC U3: 重は low も FX-SEIZE、中は typical から、未確認は high のみ。折れ込みと FX-THREAD は重の high のみ
 qty = {
-    "low":     {"PRE-SNOW": 1, "PRE-ICE": ice, "FX-SEIZE": n_heavy, "AG-BOOT": boot_left},
-    "typical": {"PRE-SNOW": 1, "PRE-ICE": ice, "FX-SEIZE": n_mid + n_heavy, "AG-BOOT": boot_left},
-    "high":    {"PRE-SNOW": 1, "PRE-ICE": ice, "FX-SEIZE": n_mid + n_heavy + n_unk,
+    "low":     {"PRE-SNOW": 1, "PRE-ICE": ice, "PRE-WASH": wash, "FX-HUBCLEAN": hub_sides, "FX-SEIZE": n_heavy, "AG-BOOT": boot_left},
+    "typical": {"PRE-SNOW": 1, "PRE-ICE": ice, "PRE-WASH": wash, "FX-HUBCLEAN": hub_sides, "FX-SEIZE": n_mid + n_heavy, "AG-BOOT": boot_left},
+    "high":    {"PRE-SNOW": 1, "PRE-ICE": ice, "PRE-WASH": wash, "FX-HUBCLEAN": hub_sides, "FX-SEIZE": n_mid + n_heavy + n_unk,
                 "FX-BROKEN": n_heavy, "FX-THREAD": n_heavy,
                 "FX-ROTOR": unk_rotor_sides,
                 "AG-BOOT": boot_left + boot_right_unknown},
@@ -117,6 +123,8 @@ for r in RANGES:
         e += waits["thaw_wait_hours"]
     if qty[r].get("FX-SEIZE"):
         e += waits["penetrant_soak_wait_hours"]
+    if qty[r].get("FX-HUBCLEAN"):
+        e += waits["rustproof_dry_wait_hours"]["winter_hypothesis"]  # 入庫は冬季
     elapsed[r] = e
 
 # --- 手順7: v1 と v2 を同じ数量に当てはめる ---
@@ -144,20 +152,20 @@ inter = [
     {"label": "FX-SEIZE の本数（low/typical/high）", "value": [qty[r].get("FX-SEIZE", 0) for r in RANGES], "unit": "本",
      "formula": f"U3: low=重{n_heavy} / typical=中{n_mid}+重{n_heavy} / high=中+重+未確認{n_unk}。重{n_heavy}本の high には FX-BROKEN・FX-THREAD も {n_heavy} 本分"},
     {"label": "追加人時 v1 暫定（low/typical/high）", "value": [r2(add_v1[r]) for r in RANGES], "unit": "人時",
-     "formula": "Σ 数量 x v1単価（雪下ろし・氷塊・固着・折れ込み抜き取り・ねじ山修正・ローター・ブーツ）"},
+     "formula": "Σ 数量 x v1単価（雪下ろし・氷塊・下回り洗浄・ハブ錆落とし・固着・折れ込み抜き取り・ねじ山修正・ローター・ブーツ）"},
     {"label": "v2 - v1 の差（low/typical/high）", "value": [r2(diff[r]) for r in RANGES], "unit": "人時",
      "formula": "同じ数量 x v2単価の追加人時 - 追加人時v1（v2 は未承認のため採用値には入れない）"},
     {"label": "採用値の人時（v1・暫定値）", "value": [r2(labor[r]) for r in RANGES], "unit": "人時",
      "formula": f"{base} + 追加人時v1（暫定値）"},
     {"label": "経過時間の待機（low/typical/high）", "value": [r2(elapsed[r]) for r in RANGES], "unit": "時間",
-     "formula": f"氷塊除去を含めば融解待ち {waits['thaw_wait_hours']} + FX-SEIZE を含めば浸透待ち {waits['penetrant_soak_wait_hours']}（人時に入れない。経過時間 = 待機のみ）"},
+     "formula": f"氷塊除去を含めば融解待ち {waits['thaw_wait_hours']} + FX-SEIZE を含めば浸透待ち {waits['penetrant_soak_wait_hours']} + FX-HUBCLEAN を含めば防錆乾燥 {waits['rustproof_dry_wait_hours']['winter_hypothesis']}（人時に入れない。経過時間 = 人時 + この待機）"},
 ]
 
 out = {
     "id": "S12",
     "name": "整備士の暫定値を実績で更新する補正表",
     "base_method": "A/B",
-    "factors": ["全般（HK01, HK02, HK03, AG01, AG03 の追加工程のうち実績タグがあるもの）"],
+    "factors": ["全般（docs §3）。補正表にある追加工程のうち今回の観察で必要になるもの（HK01, HK02, HK03, AG01, AG03 に当たる工程。この列挙はスクリプトの推定）"],
     "algorithm": [
         "手順1: 基準 1.7 人時を出発点にする",
         "手順2: 補正表 v1 = 整備士の暫定値（仮定。承認の記録なし）",
@@ -167,11 +175,12 @@ out = {
         "手順6: 今回の観察を追加工程の数量に変換（締結部は U3: 重は low も固着対応、high に折れ込み+ねじ山修正、未確認は high のみ。サブフレームは作業範囲外）",
         "手順7: 同じ数量に v1 と v2 を当てはめ、追加人時を比べる",
         "手順8: 暫定値 v1 を採用値とし、人時 = 1.7 + v1の追加人時",
-        "手順9: 経過時間 = 融解待ち（氷塊除去を含む範囲）+ 浸透待ち（FX-SEIZE を含む範囲）。下回り洗浄は実績タグがなく案の範囲外",
+        "手順9: 経過時間 = 人時 + 融解待ち（氷塊除去を含む範囲）+ 浸透待ち（FX-SEIZE を含む範囲）+ 防錆乾燥（FX-HUBCLEAN を含む範囲）。下回り洗浄は請求しないが実作業なので人時に入れる",
     ],
     "inputs": [
         {"key": "base_totals.deduplicated_base", "value": base, "status": "確認済み"},
-        {"key": "mechanic_provisional_add_ops（実績タグのある6工程）", "value": {op: {r: v1[op][r] for r in RANGES} for op in TAG_TO_OP.values()}, "status": "仮定"},
+        {"key": "mechanic_provisional_add_ops（今回使う工程）", "value": {op: {r: v1[op][r] for r in RANGES} for op in sorted({o for r in RANGES for o in qty[r]})}, "status": "仮定"},
+        {"key": "condition.underbody_rust_grade（wheel_hub / 作業部位の最大）", "value": [grades["wheel_hub"], work_area_grade], "status": "確認済み"},
         {"key": "historical_records（タグ付き工程の件数）", "value": {op: len(samples[op]) for op in samples}, "status": "確認済み"},
         {"key": "condition.fasteners（中/重/未確認の本数）", "value": {"中": n_mid, "重": n_heavy, "未確認": n_unk}, "status": "申告"},
         {"key": "condition.ice_in_wheel_house.locations", "value": ice, "status": "確認済み"},
@@ -187,9 +196,11 @@ out = {
             {"label": "補正表 v1/v2 の比較（実績件数つき）", "value": table, "unit": "人時/単位"},
             {"label": "v2 候補を当てた場合の人時（採用しない）", "value": {r: r2(labor_v2[r]) for r in RANGES}, "unit": "人時"},
             {"label": "採用した補正表の版", "value": {"rule_version": RULE_VERSION, "kind": "整備士の暫定値（未承認）", "approved_by": None, "approved_on": None}, "unit": ""},
-            {"label": "この案の範囲外としたもの", "value": ["サブフレーム（J1・J2 で外さない作業範囲外。腐食があれば AG04 として見積もり変更）", "下回り洗浄 PRE-WASH（実績タグがなく案の範囲外）", "FX-THREAD は実績タグがないので v1 の暫定値を使い、補正表の更新対象外"], "unit": ""},
+            {"label": "この案の範囲外としたもの", "value": ["サブフレーム（J1・J2 で外さない作業範囲外。腐食があれば AG04 として見積もり変更）"], "unit": ""},
+            {"label": "実績タグがなく v1 の暫定値のまま使う工程", "value": ["FX-THREAD", "FX-HUBCLEAN", "PRE-WASH"], "unit": ""},
+            {"label": "請求しない工程の人時（下回り洗浄）", "value": {r: r2(qty[r]["PRE-WASH"] * v1["PRE-WASH"][r]) for r in RANGES}, "unit": "人時"},
         ],
-        "note": "v2 は実績の中央値・範囲で更新した候補で、整備士の承認までは使わない。採用値は暫定値 v1 に今回の観察を当てた値。high はこの案の範囲（実績タグのある追加工程と FX-THREAD）での上限で、重の折れ込み（抜き取り+ねじ山修正）、未確認の締結部・ローター・右ブーツを含む。サブフレームと下回り洗浄は範囲外。経過時間は融解待ちと浸透待ち。実績の件数が少ない工程は「参考」で、統計的な精度保証ではない。",
+        "note": "v2 は実績の中央値・範囲で更新した候補で、整備士の承認までは使わない。採用値は暫定値 v1 に今回の観察を当てた値。範囲は補正表にある追加工程のうち今回の観察で必要になるもので、実績タグのない工程（ねじ山修正、ハブ錆落とし、下回り洗浄）は v1 の暫定値のまま使う。high はこの案の範囲での上限で、重の折れ込み（抜き取り+ねじ山修正）、未確認の締結部・ローター・右ブーツを含む。サブフレームは範囲外。下回り洗浄は請求しないが実作業なので人時に入れる。経過時間は人時に融解待ち・浸透待ち・防錆乾燥を足した値（1人で直列に作業する前提）。実績の件数が少ない工程は「参考」で、統計的な精度保証ではない。",
     },
     "assumptions": [
         "仮定: n は実績の記録数（1記録=1件。FX-SEIZE は固着対応タグのある記録数で、ボルト本数ではない）。1単位あたり人時は記録ごとに hours / count で作る。",
@@ -197,10 +208,11 @@ out = {
         "仮定: v2 の low は実績の最小、typical は中央値、high は実績の最大を使う。",
         "仮定: 締結部は SPEC U3 に従う。重（頭部腐食）は low も固着対応で、high は固着対応に加え折れ込みの抜き取り（FX-BROKEN）とねじ山修正（FX-THREAD）。中は typical から、未確認は high のみ。FX-THREAD は実績タグがないので v1 の暫定値を使う。",
         "仮定: 折れ込みとねじ山修正は重の締結部1本につき1回。",
-        "仮定: 待機は elapsed_waits を使い、氷塊除去を含む範囲に融解待ち、FX-SEIZE を含む範囲に浸透待ちを足す。S12 は FX-HUBCLEAN を扱わないので防錆乾燥は足さない。",
-        "仮定: 下回り洗浄（PRE-WASH）は実績タグがなく案の範囲外のため、人時に入れない。",
+        "仮定: 待機は elapsed_waits を使い、氷塊除去を含む範囲に融解待ち、FX-SEIZE を含む範囲に浸透待ち、FX-HUBCLEAN を含む範囲に防錆乾燥（冬季の仮説値）を足す。経過時間は1人で直列に作業する前提で、人時に待機を足す（workers_available は2だが、並行作業は S18 の領分）。",
+        "仮定: ハブ錆グレード2以上で FX-HUBCLEAN を左右2側、作業部位の錆グレード2以上で下回り洗浄を1回（S05・統合版と同じ規則）。下回り洗浄は請求しないが実作業なので人時に入れる（U7）。",
+        "仮定: 実績タグのない工程（FX-THREAD、FX-HUBCLEAN、PRE-WASH）は v1 の暫定値を v2 でもそのまま使う。",
         "仮定: ローター固着は U3 の表（締結部）ではなく U2（範囲内の未確認項目は high の上限に含める）を根拠に、high に左右2側を含める。右ブーツも同じく U2 により high のみ。",
-        "仮定: 原因の記録がない「その他」、他案の要因（融解待ち、タイヤ重量等）は使わない。同一車両の前回実績は補正表に特別扱いしない。",
+        "仮定: 原因の記録がない「その他」、他案の要因（タイヤ重量等）は使わない。同一車両の前回実績（R11）も補正表の集計に含める。1本・1か所あたりの作業時間は工程の単価で、車全体の状態を代表する類似実績とは使い方が違うため。",
         "仮定: 地域・年式・走行距離からは加算も区分分けもしない（実績が溜まった段階で整備士が判断）。",
     ],
     "unknowns": [
