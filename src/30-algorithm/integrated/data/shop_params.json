@@ -591,5 +591,18 @@
     "assumed": "仮定",
     "unconfirmed": "未確認",
     "not_observed": "問題を観察していない"
+  },
+  "underbody": {
+    "_note": "下回りの部位名と錆グレードの範囲（case の underbody_rust_grade を検査する）",
+    "areas": [
+      "front_suspension",
+      "brake_area",
+      "wheel_hub",
+      "muffler",
+      "subframe",
+      "rear_suspension"
+    ],
+    "grade_min": 0,
+    "grade_max": 3
   }
 }

@@ -221,6 +221,26 @@ class ValidationStopsTypos(unittest.TestCase):
     def test_missing_side_state(self):
         self.assert_rejected(lambda c: c["condition"]["slide_pin_boots"].pop("right"), target="case")
 
+    def test_unknown_underbody_area(self):
+        def typo(c):
+            grades = c["condition"]["underbody_rust_grade"]
+            grades["brake_are"] = grades.pop("brake_area")
+        self.assert_rejected(typo, target="case")
+
+    def test_grade_out_of_range(self):
+        self.assert_rejected(lambda c: c["condition"]["underbody_rust_grade"].update(muffler=7), target="case")
+
+    def test_record_count_must_be_integer(self):
+        def text(records):
+            next(r for r in records["historical_records"] if "固着対応" in r["tags"])["tags"]["固着対応"]["count"] = "2"
+        self.assert_rejected(text, target="records")
+
+    def test_tire_weight_must_be_number(self):
+        self.assert_rejected(lambda c: c["vehicle"]["tire_with_wheel_weight_kg"].update(value="23"), target="case")
+
+    def test_empty_jobs(self):
+        self.assert_rejected(lambda c: c.update(jobs=[]), target="case")
+
     def test_billable_hours_mismatch(self):
         self.assert_rejected(lambda p: p["labor_rate"]["billable_hours"].update(winter=1))
 
@@ -323,7 +343,17 @@ class Guardrails(unittest.TestCase):
         case["jobs"] = ["J2"]
         case["condition"]["fasteners"][C.NO_COUNT]["job"] = "J1"
         result = run(case=case)
-        self.assertEqual(len(result["excluded_from_this_job"]), 2)  # ホイールナット（J1）と書き換えた1本
+        excluded = result["excluded_from_this_job"]
+        # ホイールナット（J1）と書き換えた1本。J1 の規則はないので規則の除外はない
+        self.assertEqual(len([e for e in excluded if not e.startswith("規則")]), 2)
+
+    def test_rules_of_other_job_are_reported(self):
+        case, params, catalog, records = load_all()
+        case = copy.deepcopy(case)
+        case["jobs"] = ["J1"]
+        excluded = run(case=case)["excluded_from_this_job"]
+        # J2 の規則（ハブ錆落とし、ローター、ブーツ）が記録される
+        self.assertEqual(len([e for e in excluded if e.startswith("規則")]), 3)
 
     def test_customer_sheet_matches_conditional_quote(self):
         result = run()

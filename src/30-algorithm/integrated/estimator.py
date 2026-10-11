@@ -105,6 +105,14 @@ def public(mapping):
     return {k: v for k, v in mapping.items() if not k.startswith("_")}
 
 
+def is_integer(value):
+    return isinstance(value, int) and not isinstance(value, bool)
+
+
+def is_number(value):
+    return isinstance(value, (int, float)) and not isinstance(value, bool)
+
+
 def require(condition, message):
     if not condition:
         raise ValueError(message)
@@ -114,14 +122,20 @@ def validate(params, records, catalog, case):
     """変数ファイルと入力の整合を確かめる。書き間違いを黙って別の扱いにしないため。"""
     jobs = set(catalog["jobs"])
     areas = {area for job in catalog["jobs"].values() for area in job.get("work_areas", [])}
+    require(case["jobs"], "今回の作業（jobs）が空")
     require(set(case["jobs"]) <= jobs, f"今回の作業が基準工数にない: {case['jobs']}")
     for fastener in case["condition"]["fasteners"]:
         require(fastener["job"] in jobs, f"締結部の作業が基準工数にない: {fastener['id']} {fastener['job']}")
-        require(isinstance(fastener.get("count"), int) and fastener["count"] > C.NO_COUNT,
+        require(is_integer(fastener.get("count")) and fastener["count"] > C.NO_COUNT,
                 f"締結部の本数（count）が正の整数でない: {fastener['id']}")
+    underbody = params["underbody"]
     for area, grade in public(case["condition"]["underbody_rust_grade"]).items():
-        require(grade is None or (isinstance(grade, int) and not isinstance(grade, bool)),
-                f"錆グレードは整数か null（未確認）にする: {area} {grade!r}")
+        require(area in underbody["areas"], f"下回りの部位名が未知: {area}")
+        require(grade is None or (is_integer(grade) and underbody["grade_min"] <= grade <= underbody["grade_max"]),
+                f"錆グレードは {underbody['grade_min']}〜{underbody['grade_max']} の整数か null（未確認）にする: {area} {grade!r}")
+    require(areas <= set(underbody["areas"]), "基準工数の作業部位が下回りの部位名にない")
+    weight = case["vehicle"]["tire_with_wheel_weight_kg"]["value"]
+    require(is_number(weight), f"タイヤ重量は数値にする: {weight!r}")
     ids = set(C.STATE_IDS)
     require(set(public(params["state_labels"])) == ids, "state_labels の ID が constants.STATE_IDS と一致しない")
     require(set(public(params["state_treatment"])) == ids, "state_treatment の ID が constants.STATE_IDS と一致しない")
@@ -143,7 +157,8 @@ def validate(params, records, catalog, case):
         require(mapping["op"] in ops, f"tag_to_op の op が暫定値にない: {tag} {mapping['op']}")
         entries = [r["tags"][tag] for r in records["historical_records"] if tag in r["tags"]]
         counted = [e for e in entries if "count" in e]
-        require(all(e["count"] > C.NO_COUNT for e in counted), f"実績の count は正の数にする: {tag}")
+        require(all(is_integer(e["count"]) and e["count"] > C.NO_COUNT for e in counted),
+                f"実績の count は正の整数にする: {tag}")
         if mapping["unit"] == C.TAG_UNIT_COUNT:
             require(len(counted) == len(entries), f"tag_to_op の unit は count だが、count のない実績がある: {tag}")
         else:
@@ -323,12 +338,14 @@ def grade_state(grade, min_grade):
     return C.STATE_PROBLEM if grade >= min_grade else C.STATE_NOT_OBSERVED
 
 
-def condition_items(case, params, catalog, rates):
+def condition_items(case, params, catalog, rates, excluded=None):
     condition, job_ids = case["condition"], case["jobs"]
     treatment = params["state_treatment"]
     items = []
     for rule in params["condition_rules"]:
         if rule.get("job") and rule["job"] not in job_ids:
+            if excluded is not None:
+                excluded.append(f"規則 {rule['id']}（{rates[rule['op']]['name']}）: 作業 {rule['job']} が今回の作業に含まれないため計算から除外")
             continue
         op_id, name = rule["op"], rates[rule["op"]]["name"]
         if rule["kind"] == C.RULE_SIDE_STATE:
@@ -736,7 +753,7 @@ def estimate(case, params, catalog, records):
     base = base_estimate(case["jobs"], catalog, params, rates)
 
     unknowns, excluded = [], []
-    items = condition_items(case, params, catalog, rates) + fastener_items(case, params, rates, excluded)
+    items = condition_items(case, params, catalog, rates, excluded) + fastener_items(case, params, rates, excluded)
     tire = tire_item(case, params, catalog, unknowns)
     if tire:
         items.append(tire)
