@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getDatabase } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
@@ -35,11 +36,11 @@ export default async function DatabaseCheckPage() {
   return (
     <main className="page-shell db-check-page">
       <header className="topbar">
-        <a className="brand" href="/">
+        <Link className="brand" href="/">
           <span className="brand-mark">T</span>
           <span>TOBETSU <span className="brand-light">/ DATABASE CHECK</span></span>
-        </a>
-        <a className="db-back-link" href="/">トップへ戻る</a>
+        </Link>
+        <Link className="db-back-link" href="/">トップへ戻る</Link>
       </header>
 
       <section className="db-check-content">
