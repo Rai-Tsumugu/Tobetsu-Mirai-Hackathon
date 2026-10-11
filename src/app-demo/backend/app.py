@@ -5,7 +5,7 @@ import time
 import os
 import sqlite3
 from contextlib import asynccontextmanager, contextmanager
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from decimal import Decimal, ROUND_FLOOR
 from typing import Literal
 from pathlib import Path
@@ -63,6 +63,7 @@ def initialize():
         db.executescript('''
             CREATE TABLE IF NOT EXISTS vehicles(id TEXT PRIMARY KEY, data TEXT NOT NULL);
             CREATE TABLE IF NOT EXISTS repair_jobs(id TEXT PRIMARY KEY, data TEXT NOT NULL);
+            CREATE TABLE IF NOT EXISTS cases(id TEXT PRIMARY KEY, created_at TEXT NOT NULL, data TEXT NOT NULL);
             CREATE TABLE IF NOT EXISTS estimates(id TEXT PRIMARY KEY, created_at TEXT NOT NULL, search_text TEXT NOT NULL, data TEXT NOT NULL);
             CREATE TABLE IF NOT EXISTS estimate_items(id TEXT PRIMARY KEY, estimate_id TEXT NOT NULL REFERENCES estimates(id), repair_job_id TEXT NOT NULL REFERENCES repair_jobs(id), data TEXT NOT NULL);
             CREATE TABLE IF NOT EXISTS price_sources(id TEXT PRIMARY KEY, item_id TEXT NOT NULL REFERENCES estimate_items(id), data TEXT NOT NULL);
@@ -70,6 +71,27 @@ def initialize():
             CREATE INDEX IF NOT EXISTS research_cache_key ON research_cache(cache_key, created_at);
             CREATE TABLE IF NOT EXISTS selected_sources(item_id TEXT NOT NULL REFERENCES estimate_items(id), source_id TEXT NOT NULL REFERENCES price_sources(id), PRIMARY KEY(item_id, source_id));
         ''')
+        # Give existing saved estimates a case without changing their amounts or IDs.
+        for row in db.execute("SELECT id, data FROM estimates ORDER BY created_at").fetchall():
+            estimate = json.loads(row['data'])
+            if not estimate.get('case_id'):
+                case = new_case(dict(title=estimate_title(estimate), vehicle_id=estimate['vehicle']['id'], vehicle_label=vehicle_label(estimate),
+                                     status='completed', amount=estimate['total_amount'], due_date=None,
+                                     notes='', latest_estimate_id=estimate['id']), estimate['created_at'])
+                estimate['case_id'] = case['id']
+                db.execute("INSERT INTO cases VALUES (?, ?, ?)", (case['id'], case['created_at'], json.dumps(case, ensure_ascii=False)))
+                db.execute("UPDATE estimates SET data=? WHERE id=?", (json.dumps(estimate, ensure_ascii=False), row['id']))
+        for row in db.execute("SELECT id, data FROM cases").fetchall():
+            case = json.loads(row['data'])
+            if 'recipient_name' not in case or 'phone_memo' not in case or 'vehicle_id' not in case:
+                case.setdefault('recipient_name', '')
+                case.setdefault('phone_memo', '')
+                case.setdefault('vehicle_id', None)
+                if case['vehicle_id'] is None and case.get('latest_estimate_id'):
+                    estimate_row = db.execute('SELECT data FROM estimates WHERE id=?', (case['latest_estimate_id'],)).fetchone()
+                    if estimate_row:
+                        case['vehicle_id'] = json.loads(estimate_row['data'])['vehicle']['id']
+                db.execute("UPDATE cases SET data=? WHERE id=?", (json.dumps(case, ensure_ascii=False), row['id']))
         for maker, model, code, grade in MODELS:
             data = dict(id=code, maker=maker, model=model, model_code=code,
                         years=list(range(2015, 2027)), grades=[grade, "その他（要確認）"],
@@ -92,6 +114,84 @@ app = FastAPI(title="整備見積 Simulator", lifespan=lifespan)
 
 class StrictModel(BaseModel):
     model_config = ConfigDict(extra="forbid")
+
+
+CaseStatus = Literal['unestimated', 'estimating', 'completed']
+
+
+class CaseInput(StrictModel):
+    vehicle_id: str | None = Field(default=None, min_length=1, max_length=80)
+    recipient_name: str = Field(default='', max_length=120)
+    phone_memo: str = Field(default='', max_length=6000)
+    title: str = Field(min_length=1, max_length=120)
+    vehicle_label: str = Field(default='', max_length=160)
+    status: CaseStatus = 'unestimated'
+    amount: int | None = Field(default=None, ge=0, le=110000000, strict=True)
+    due_date: date | None = None
+    notes: str = Field(default='', max_length=2000)
+
+
+def new_case(fields, created_at=None):
+    now = datetime.now(timezone.utc).isoformat()
+    return dict(id='CASE-' + uuid4().hex, created_at=created_at or now, updated_at=now,
+                **{'latest_estimate_id': None, 'recipient_name': '', 'phone_memo': '', 'vehicle_id': None, **fields})
+
+
+def vehicle_label(estimate):
+    vehicle = estimate['vehicle']
+    return f"{vehicle['maker']} {vehicle['model']} / {vehicle['model_code']}"
+
+
+def estimate_title(estimate):
+    return '・'.join(item['name'] for item in estimate['items'])[:120]
+
+
+def case_by_id(db, case_id):
+    row = db.execute("SELECT data FROM cases WHERE id=?", (case_id,)).fetchone()
+    if not row:
+        raise HTTPException(404, '案件が見つかりません')
+    return json.loads(row['data'])
+
+
+def case_fields(body):
+    fields = body.model_dump(mode='json')
+    fields['title'] = fields['title'].strip()
+    if not fields['title']:
+        raise HTTPException(422, '案件名を入力してください')
+    fields['recipient_name'] = fields['recipient_name'].strip()
+    fields['vehicle_label'] = fields['vehicle_label'].strip()
+    if body.vehicle_id is not None:
+        selected = vehicle_by_id(body.vehicle_id)
+        fields['vehicle_label'] = f"{selected['maker']} {selected['model']} / {selected['model_code']}"
+    return fields
+
+
+@app.get('/api/cases')
+def cases():
+    with connect() as db:
+        rows = db.execute("SELECT data FROM cases ORDER BY created_at DESC, id DESC").fetchall()
+    return [json.loads(row['data']) for row in rows]
+
+
+@app.post('/api/cases', status_code=201)
+def create_case(body: CaseInput):
+    case = new_case(case_fields(body))
+    with connect() as db:
+        db.execute("INSERT INTO cases VALUES (?, ?, ?)", (case['id'], case['created_at'], json.dumps(case, ensure_ascii=False)))
+    return case
+
+
+@app.put('/api/cases/{case_id}')
+def update_case(case_id: str, body: CaseInput):
+    with connect() as db:
+        case = case_by_id(db, case_id)
+        fields = case_fields(body)
+        for name in ['recipient_name', 'phone_memo', 'vehicle_id']:
+            if name not in body.model_fields_set:
+                fields.pop(name)
+        case.update(**fields, updated_at=datetime.now(timezone.utc).isoformat())
+        db.execute("UPDATE cases SET data=? WHERE id=?", (json.dumps(case, ensure_ascii=False), case_id))
+    return case
 
 
 class ManualVehicle(StrictModel):
@@ -216,6 +316,7 @@ class Item(StrictModel):
 
 
 class Estimate(StrictModel):
+    case_id: str | None = Field(default=None, max_length=80)
     winter_conditions: list[WinterCondition] = Field(default_factory=list, max_length=3)
     mode: str = Field(default="simulator", pattern="^(simulator|live)$")
     research_id: str | None = None
@@ -264,6 +365,17 @@ def save_estimate(body: Estimate):
                   parts_total=sum(i['parts_price'] for i in records), tax_rate=float(TAX_RATE),
                   subtotal=subtotal, tax_amount=tax, total_amount=subtotal + tax)
     with connect() as db:
+        if body.case_id:
+            case = case_by_id(db, body.case_id)
+        else:
+            # Compatibility for older clients: every estimate still gets a case.
+            case = new_case(dict(title=estimate_title(result), vehicle_label=vehicle_label(result),
+                                 status='unestimated', amount=None, due_date=None, notes=''))
+            db.execute("INSERT INTO cases VALUES (?, ?, ?)", (case['id'], case['created_at'], json.dumps(case, ensure_ascii=False)))
+        result['case_id'] = case['id']
+        case.update(status='completed', amount=result['total_amount'], vehicle_id=body.vehicle_id, vehicle_label=vehicle_label(result),
+                    latest_estimate_id=result['id'], updated_at=result['created_at'])
+        db.execute("UPDATE cases SET data=? WHERE id=?", (json.dumps(case, ensure_ascii=False), case['id']))
         search_text = ' '.join([vehicle['maker'], vehicle['model'], vehicle['model_code'], str(body.year), body.grade] + [i['name'] for i in records])
         db.execute("INSERT INTO estimates VALUES (?, ?, ?, ?)", (result['id'], result['created_at'], search_text, json.dumps(result, ensure_ascii=False)))
         for record in records:

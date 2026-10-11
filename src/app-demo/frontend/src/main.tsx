@@ -2,6 +2,12 @@ import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import "./style.css";
 import ProfitDashboard from "./ProfitDashboard";
+import CasesDashboard, {
+  EstimateCase,
+  caseRequest,
+  caseFields,
+  caseStatuses,
+} from "./CasesDashboard";
 
 type Vehicle = {
   id: string;
@@ -51,6 +57,7 @@ type SavedItem = Draft & {
   sources: Source[];
 };
 type Saved = {
+  case_id: string;
   mode?: "simulator" | "live";
   research_id?: string | null;
   winter_conditions?: string[];
@@ -285,6 +292,11 @@ function WinterSummary({ conditions }: { conditions: string[] }) {
 }
 function App() {
   const [view, setView] = useState<"estimate" | "profit">("estimate");
+  const [estimateScreen, setEstimateScreen] = useState<"cases" | "editor">(
+    "cases",
+  );
+  const [currentCase, setCurrentCase] = useState<EstimateCase | null>(null);
+  const [caseRevision, setCaseRevision] = useState(0);
   const [step, setStep] = useState(0);
   const [mode, setMode] = useState<"simulator" | "live">("simulator");
   const [geminiReady, setGeminiReady] = useState(false);
@@ -479,12 +491,13 @@ function App() {
     );
   });
   async function save() {
-    if (!vehicle) return;
+    if (!vehicle || !currentCase) return;
     setBusy(true);
     setError("");
     try {
       setSaved(
         await api<Saved>("/estimates", {
+          case_id: currentCase.id,
           mode,
           research_id: researchId,
           vehicle_id: vehicle.id,
@@ -534,7 +547,84 @@ function App() {
     setNotes("");
     setError("");
   }
-  function reuse(item: Saved) {
+  function showCases() {
+    setEstimateScreen("cases");
+    setCaseRevision((n) => n + 1);
+  }
+  async function openCase(c: EstimateCase) {
+    if (
+      (currentCase?.id !== c.id || currentCase?.vehicle_id !== c.vehicle_id) &&
+      !saved &&
+      (vehicle || drafts.length) &&
+      !window.confirm(
+        "別の案件を開くと、現在入力中の見積もりは破棄されます。続けますか？",
+      )
+    )
+      return;
+    const estimate = c.latest_estimate_id
+      ? await api<Saved>("/estimates/" + c.latest_estimate_id)
+      : null;
+    const selectedVehicle =
+      !estimate && c.vehicle_id
+        ? await api<Vehicle>("/vehicles/" + encodeURIComponent(c.vehicle_id))
+        : null;
+    const updated =
+      c.status === "unestimated"
+        ? await caseRequest<EstimateCase>("/" + c.id, "PUT", {
+            ...caseFields(c),
+            status: "estimating",
+          })
+        : c;
+    if (
+      currentCase?.id !== c.id ||
+      currentCase?.vehicle_id !== c.vehicle_id ||
+      saved
+    ) {
+      reset();
+      if (estimate) loadEstimate(estimate, false);
+      else if (selectedVehicle) {
+        chooseVehicle(selectedVehicle);
+        setQuery(selectedVehicle.model_code);
+        setYear(
+          String(
+            selectedVehicle.years.includes(2022)
+              ? 2022
+              : (selectedVehicle.years[0] ?? ""),
+          ),
+        );
+        setGrade(selectedVehicle.grades[0] ?? "");
+      }
+    }
+    setCurrentCase(updated);
+    setEstimateScreen("editor");
+  }
+  async function reuse(item: Saved) {
+    if (
+      !saved &&
+      drafts.length &&
+      !window.confirm(
+        "保存済みの条件を開くと、現在入力中の見積もりは破棄されます。続けますか？",
+      )
+    )
+      return;
+    try {
+      const c = await caseRequest<EstimateCase>("", "POST", {
+        title: item.items
+          .map((i) => i.name)
+          .join("・")
+          .slice(0, 120),
+        vehicle_label: `${item.vehicle.maker} ${item.vehicle.model} / ${item.vehicle.model_code}`,
+        status: "estimating",
+      });
+      setCurrentCase(c);
+      loadEstimate(item);
+      setEstimateScreen("editor");
+      setView("estimate");
+    } catch (e) {
+      setError((e as Error).message);
+    }
+  }
+  function loadEstimate(item: Saved, copy = true) {
     setMode(item.mode ?? "simulator");
     setLegacyWinterConditions(item.winter_conditions ?? []);
     setResearchId(item.research_id ?? null);
@@ -557,10 +647,10 @@ function App() {
       })),
     );
     setNotes(
-      `再利用元: ${item.id} / 保存日時: ${date(item.created_at)}\n${item.notes}`.slice(
-        0,
-        2000,
-      ),
+      (copy
+        ? `再利用元: ${item.id} / 保存日時: ${date(item.created_at)}\n${item.notes}`
+        : item.notes
+      ).slice(0, 2000),
     );
     setSaved(null);
     setStep(3);
@@ -573,7 +663,11 @@ function App() {
   }
   return (
     <>
-      <header className="app-header" data-view={view}>
+      <header
+        className="app-header"
+        data-view={view}
+        data-screen={estimateScreen}
+      >
         <a className="brand" href="/" aria-label="整備見積ワークベンチ ホーム">
           <span className="brand-mark">
             <Icon name="wrench" size={23} />
@@ -585,7 +679,10 @@ function App() {
         <nav className="view-tabs" aria-label="画面切り替え">
           <button
             aria-pressed={view === "estimate"}
-            onClick={() => setView("estimate")}
+            onClick={() => {
+              setView("estimate");
+              showCases();
+            }}
           >
             見積もり
           </button>
@@ -613,6 +710,9 @@ function App() {
           </button>
         </div>
       </header>
+      <div hidden={view !== "estimate" || estimateScreen !== "cases"}>
+        <CasesDashboard revision={caseRevision} onOpen={openCase} />
+      </div>
       <div className="demo-banner">
         <Icon name="info" size={16} />
         <span>
@@ -672,6 +772,26 @@ function App() {
           </div>
         </aside>
         <main className="main-content">
+          {currentCase && (
+            <div className="case-editor-bar">
+              <button
+                className="secondary-button"
+                disabled={busy}
+                onClick={showCases}
+              >
+                案件一覧に戻る
+              </button>
+              <div className="case-editor-info">
+                <strong>{currentCase.title}</strong>
+                <span className="case-id">{currentCase.id}</span>
+              </div>
+              <span
+                className={`case-status ${saved ? "completed" : currentCase.status}`}
+              >
+                {saved ? "完了" : caseStatuses[currentCase.status]}
+              </span>
+            </div>
+          )}
           <div className="page-heading">
             <div>
               <p className="step-caption">手順 {step + 1} / 4</p>
@@ -1241,8 +1361,8 @@ function App() {
                       >
                         保存した内容を見る
                       </button>
-                      <button className="primary-button" onClick={reset}>
-                        新しい見積もりを作る
+                      <button className="primary-button" onClick={showCases}>
+                        案件一覧で確認する
                       </button>
                     </div>
                   </div>

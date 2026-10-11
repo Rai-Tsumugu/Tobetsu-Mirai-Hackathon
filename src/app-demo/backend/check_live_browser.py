@@ -36,6 +36,10 @@ def check():
         page.on('pageerror', lambda e: errors.append(str(e)))
         page.goto(f'http://127.0.0.1:{PORT}')
         page.wait_for_load_state('networkidle')
+        page.get_by_role('button', name='＋ 新規案件', exact=True).click()
+        page.get_by_label('案件名', exact=True).fill('ブラウザ検証案件')
+        page.get_by_role('button', name='案件を登録', exact=True).click()
+        page.get_by_role('button', name='見積もりを作成', exact=True).first.click()
         outbound = []
         page.on('request', lambda request: outbound.append(request.url) if '/api/price-research' in request.url or '/api/vehicle-research' in request.url else None)
         form = page.locator('.manual-form')
