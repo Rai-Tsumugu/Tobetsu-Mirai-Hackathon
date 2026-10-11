@@ -1,0 +1,245 @@
+{
+  "parallel_limit": 3,
+  "teams": [
+    {
+      "team_id": "M01",
+      "model": "gpt-6-luna",
+      "implementation": "m01_team",
+      "check1": "m01_check1",
+      "check2": "m01_check2",
+      "state": "planned"
+    },
+    {
+      "team_id": "M02",
+      "model": "gpt-6-luna",
+      "implementation": "m02_team",
+      "check1": "m02_check1",
+      "check2": "m02_check2",
+      "state": "planned"
+    },
+    {
+      "team_id": "M03",
+      "model": "gpt-6-luna",
+      "implementation": "m03_team",
+      "check1": "m03_check1",
+      "check2": "m03_check2",
+      "state": "planned"
+    },
+    {
+      "team_id": "M04",
+      "model": "gpt-6-luna",
+      "implementation": "m04_team",
+      "check1": "m04_check1",
+      "check2": "m04_check2",
+      "state": "planned"
+    },
+    {
+      "team_id": "M05",
+      "model": "gpt-6-luna",
+      "implementation": "m05_team",
+      "check1": "m05_check1",
+      "check2": "m05_check2",
+      "state": "planned"
+    },
+    {
+      "team_id": "M06",
+      "model": "gpt-6-luna",
+      "implementation": "m06_team",
+      "check1": "m06_check1",
+      "check2": "m06_check2",
+      "state": "planned"
+    },
+    {
+      "team_id": "M07",
+      "model": "gpt-6-luna",
+      "implementation": "m07_team",
+      "check1": "m07_check1",
+      "check2": "m07_check2",
+      "state": "planned"
+    },
+    {
+      "team_id": "M08",
+      "model": "gpt-6-luna",
+      "implementation": "m08_team",
+      "check1": "m08_check1",
+      "check2": "m08_check2",
+      "state": "planned"
+    },
+    {
+      "team_id": "M09",
+      "model": "gpt-6-luna",
+      "implementation": "m09_team",
+      "check1": "m09_check1",
+      "check2": "m09_check2",
+      "state": "planned"
+    },
+    {
+      "team_id": "M10",
+      "model": "gpt-6-luna",
+      "implementation": "m10_team",
+      "check1": "m10_check1",
+      "check2": "m10_check2",
+      "state": "planned"
+    },
+    {
+      "team_id": "M11",
+      "model": "gpt-6-luna",
+      "implementation": "m11_team",
+      "check1": "m11_check1",
+      "check2": "m11_check2",
+      "state": "planned"
+    },
+    {
+      "team_id": "M12",
+      "model": "gpt-6-luna",
+      "implementation": "m12_team",
+      "check1": "m12_check1",
+      "check2": "m12_check2",
+      "state": "planned"
+    },
+    {
+      "team_id": "M13",
+      "model": "gpt-6-luna",
+      "implementation": "m13_team",
+      "check1": "m13_check1",
+      "check2": "m13_check2",
+      "state": "planned"
+    },
+    {
+      "team_id": "M14",
+      "model": "gpt-6-luna",
+      "implementation": "m14_team",
+      "check1": "m14_check1",
+      "check2": "m14_check2",
+      "state": "planned"
+    },
+    {
+      "team_id": "M15",
+      "model": "gpt-6-luna",
+      "implementation": "m15_team",
+      "check1": "m15_check1",
+      "check2": "m15_check2",
+      "state": "planned"
+    },
+    {
+      "team_id": "M16",
+      "model": "gpt-6-luna",
+      "implementation": "m16_team",
+      "check1": "m16_check1",
+      "check2": "m16_check2",
+      "state": "planned"
+    },
+    {
+      "team_id": "M17",
+      "model": "gpt-6-luna",
+      "implementation": "m17_team",
+      "check1": "m17_check1",
+      "check2": "m17_check2",
+      "state": "planned"
+    },
+    {
+      "team_id": "M18",
+      "model": "gpt-6-luna",
+      "implementation": "m18_team",
+      "check1": "m18_check1",
+      "check2": "m18_check2",
+      "state": "planned"
+    },
+    {
+      "team_id": "M19",
+      "model": "gpt-6-luna",
+      "implementation": "m19_team",
+      "check1": "m19_check1",
+      "check2": "m19_check2",
+      "state": "planned"
+    },
+    {
+      "team_id": "M20",
+      "model": "gpt-6-luna",
+      "implementation": "m20_team",
+      "check1": "m20_check1",
+      "check2": "m20_check2",
+      "state": "planned"
+    },
+    {
+      "team_id": "M21",
+      "model": "gpt-6-luna",
+      "implementation": "m21_team",
+      "check1": "m21_check1",
+      "check2": "m21_check2",
+      "state": "planned"
+    },
+    {
+      "team_id": "M22",
+      "model": "gpt-6-luna",
+      "implementation": "m22_team",
+      "check1": "m22_check1",
+      "check2": "m22_check2",
+      "state": "planned"
+    },
+    {
+      "team_id": "M23",
+      "model": "gpt-6-luna",
+      "implementation": "m23_team",
+      "check1": "m23_check1",
+      "check2": "m23_check2",
+      "state": "planned"
+    },
+    {
+      "team_id": "M24",
+      "model": "gpt-6-luna",
+      "implementation": "m24_team",
+      "check1": "m24_check1",
+      "check2": "m24_check2",
+      "state": "planned"
+    },
+    {
+      "team_id": "M25",
+      "model": "gpt-6-luna",
+      "implementation": "m25_team",
+      "check1": "m25_check1",
+      "check2": "m25_check2",
+      "state": "planned"
+    },
+    {
+      "team_id": "M26",
+      "model": "gpt-6-luna",
+      "implementation": "m26_team",
+      "check1": "m26_check1",
+      "check2": "m26_check2",
+      "state": "planned"
+    },
+    {
+      "team_id": "M27",
+      "model": "gpt-6-luna",
+      "implementation": "m27_team",
+      "check1": "m27_check1",
+      "check2": "m27_check2",
+      "state": "planned"
+    },
+    {
+      "team_id": "M28",
+      "model": "gpt-6-luna",
+      "implementation": "m28_team",
+      "check1": "m28_check1",
+      "check2": "m28_check2",
+      "state": "planned"
+    },
+    {
+      "team_id": "M29",
+      "model": "gpt-6-luna",
+      "implementation": "m29_team",
+      "check1": "m29_check1",
+      "check2": "m29_check2",
+      "state": "planned"
+    },
+    {
+      "team_id": "M30",
+      "model": "gpt-6-luna",
+      "implementation": "m30_team",
+      "check1": "m30_check1",
+      "check2": "m30_check2",
+      "state": "planned"
+    }
+  ]
+}
