@@ -43,7 +43,7 @@ class SimulatorTest(unittest.TestCase):
         self.assertEqual(first['brake'][1]['normalized_labor'], 6000)
         self.assertIsNone(first['brake'][3]['normalized_labor'])
         self.assertTrue(all(s['source_url'] is None and s['mode'] == 'simulator' for s in first['brake']))
-        body['mode'] = 'live'
+        body['mode'] = 'invalid'
         self.assertEqual(self.client.post('/api/price-research', json=body).status_code, 422)
 
     def test_save_reopen_and_relational_provenance(self):
