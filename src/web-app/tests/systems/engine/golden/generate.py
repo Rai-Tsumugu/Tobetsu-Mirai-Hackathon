@@ -902,6 +902,234 @@ def _e13_extras():
 _e13_extras()
 
 
+def _integrated_extras():
+    from auto_repair_engine import e07, integrated
+    s = APPROVED()
+    approval = {"actor": "owner", "reason": "evidence reviewed", "old_value": None,
+                "new_value": {"hours": 0.5, "unit": "person_hour", "source": "fictional_photo"}, "rule_version": "e21-evidence-additions-v1"}
+    good = {"operation_id": "extra_clean", "unit": "person_hour", "hours": 0.5, "source": "fictional_photo", "old_value": None,
+            "approval": approval, "duration_hours": 0.3, "person_count": 2}
+    base = e07.run(s, None)
+    extra("integrated", "default_approved", None, s)
+    extra("integrated", "approved_pack", {"approved_rule_pack": fictional_e02_pack(s)}, s)
+    extra("integrated", "approved_pack_changed", {"approved_rule_pack": dict(fictional_e02_pack(s), rules=[dict(r, hours={"low": 2.0, "typical": 2.0, "high": 2.0}) if r["operation_key"] == "base_service" else r for r in fictional_e02_pack(s)["rules"]])}, s)
+    extra("integrated", "bad_approved_pack", {"approved_rule_pack": {"x": 1}}, s)
+    extra("integrated", "evidence", {"evidence_additions": [good]}, s)
+    extra("integrated", "evidence_no_duration", {"evidence_additions": [{k: v for k, v in good.items() if k not in ("duration_hours", "person_count")}]}, s)
+    extra("integrated", "evidence_bad", {"evidence_additions": [dict(good, hours=-1)]}, s)
+    extra("integrated", "evidence_two", {"evidence_additions": [good, dict(good, operation_id="extra_2", approval=approval)]}, s)
+    proposal = {"rule_version": "fictional-rule-v1", "labor": {"person_hours": base["labor"]["person_hours"], "elapsed_hours": base["labor"]["elapsed_hours"]}}
+    extra("integrated", "client_ok", {"client_proposal": proposal, "rule_version": "fictional-rule-v1"}, s)
+    extra("integrated", "client_mismatch", {"client_proposal": dict(proposal, labor={"person_hours": {"low": 1, "typical": 2, "high": 3}, "elapsed_hours": proposal["labor"]["elapsed_hours"]}), "rule_version": "fictional-rule-v1"}, s)
+    extra("integrated", "client_not_dict", {"client_proposal": 5}, s)
+    extra("integrated", "pack_version_mismatch", {"rule_version": "zzz"}, s)
+    extra("integrated", "pack_not_dict", ["x"], s)
+    sn = APPROVED()
+    op(sn, "snow_melt")["elapsed_hours"] = None
+    extra("integrated", "snow_unknown", None, sn)
+    extra("integrated", "snow_unknown_evidence", {"evidence_additions": [good]}, sn)
+    extra("integrated", "common_unresolved", None, COMMON())
+    extra("integrated", "form_pack", {"form_rule_pack": {"form_schemas": {"front_brake_service": [{"field": "work_scope", "choices": ["x"], "required": True}]}}}, s)
+    sm = APPROVED()
+    sm["fields"].pop("subframe_relevance")
+    extra("integrated", "subframe_missing", None, sm)
+    sw = APPROVED()
+    sw["operations"] = [o for o in sw["operations"] if o["operation_id"] != "wash"]
+    extra("integrated", "wash_missing", None, sw)
+    sr = APPROVED()
+    sr["fields"]["rotor_relevance"]["value"] = "unrelated"
+    sr["fields"].pop("rotor_seizure_hours")
+    sr["metadata"].pop("approved_condition_widths")
+    extra("integrated", "rotor_unrelated", None, sr)
+
+
+_integrated_extras()
+
+
+def _e24_to_e30_extras():
+    from auto_repair_engine import e07, e26
+    # E25: 版をまたぐ再生
+    scenario = APPROVED()
+    old_pack = fictional_e02_pack(scenario)
+    new_pack = copy.deepcopy(old_pack)
+    new_pack["rule_version"] = "fictional-rule-v2"
+    next(r for r in new_pack["rules"] if r["operation_key"] == "wash")["hours"] = {"low": 0.2, "typical": 0.2, "high": 0.2}
+    ack = {"old_pack": old_pack, "new_pack": new_pack, "actor": "reviewer", "reason": "compare versions", "diff_acknowledged": True}
+    extra("e25", "replay_ok", ack)
+    extra("e25", "replay_common", ack, COMMON())
+    extra("e25", "not_acknowledged", dict(ack, diff_acknowledged=False))
+    extra("e25", "ack_string", dict(ack, diff_acknowledged="yes"))
+    extra("e25", "blank_actor", dict(ack, actor=" "))
+    extra("e25", "same_version", dict(ack, new_pack=old_pack))
+    extra("e25", "packs_not_dict", dict(ack, new_pack=5))
+    extra("e25", "missing_keys", {"old_pack": old_pack})
+    extra("e25", "no_pack", None)
+    extra("e25", "pack_list", ["x"])
+    bad_new = copy.deepcopy(new_pack)
+    bad_new["status"] = "draft"
+    extra("e25", "new_draft", dict(ack, new_pack=bad_new))
+    # E26: 実績リビジョン
+    actuals = [{"event_id": "a1", "operation_id": "wash", "hours": 0.5}, {"event_id": "a2", "operation_id": "base_service", "hours": 1.25, "person_count": 2}]
+    revs = [{"revision_id": "r1", "parent_id": "a1", "delta_hours": -0.1, "reason": "fix", "actor": "x", "rule_version": "v1"},
+            {"revision_id": "r2", "parent_id": "r1", "delta_hours": 0.05, "reason": "fix2", "actor": "x", "rule_version": "v2"}]
+    cases26 = {
+        "actuals_only": {"actuals": actuals},
+        "chain": {"actuals": actuals, "revisions": revs},
+        "fork": {"actuals": actuals, "revisions": [revs[0], dict(revs[1], parent_id="a1")]},
+        "cycle_like": {"actuals": actuals, "revisions": [dict(revs[0], parent_id="r2"), revs[1]]},
+        "missing_parent": {"actuals": actuals, "revisions": [dict(revs[0], parent_id="zzz")]},
+        "unhashable_parent": {"actuals": actuals, "revisions": [dict(revs[0], parent_id=["a1"])]},
+        "dup_event": {"actuals": actuals + [actuals[0]]},
+        "bad_actual": {"actuals": [{"event_id": "a", "operation_id": "w", "hours": -1}]},
+        "bad_count": {"actuals": [{"event_id": "a", "operation_id": "w", "hours": 1, "person_count": 0}]},
+        "bad_delta": {"actuals": actuals, "revisions": [dict(revs[0], delta_hours="x")]},
+        "no_reason": {"actuals": actuals, "revisions": [dict(revs[0], reason=" ")]},
+        "negative_total": {"actuals": actuals, "revisions": [dict(revs[0], delta_hours=-9)]},
+        "dup_rev_id": {"actuals": actuals, "revisions": [revs[0], dict(revs[1], revision_id="r1")]},
+        "total_bucket": {"actuals": [{"event_id": "a", "operation_id": "total", "hours": 2}, {"event_id": "b", "operation_id": "total", "hours": 0.1}]},
+        "no_actuals": {"revisions": []},
+        "actuals_not_list": {"actuals": "x"},
+        "revisions_none": {"actuals": actuals, "revisions": None},
+        "revisions_not_list": {"actuals": actuals, "revisions": "x"},
+        "rule_version": {"actuals": actuals, "rule_version": "custom"},
+    }
+    for name, scen in cases26.items():
+        extra("e26", name, None, scen)
+    unit("e26.active_view", e26.active_view, actuals, revs)
+    unit("e26.active_view", e26.active_view, actuals)
+    unit("e26.active_view", e26.active_view, [], [])
+    unit("e26.active_view", e26.active_view, 5, [])
+    # E27 / E28: ブラウザ・クライアントの提案との照合
+    base = e07.run(APPROVED(), None)
+    ok_proposal = {"rule_version": "fictional-rule-v1", "status": base["status"], "labor": {"person_hours": base["labor"]["person_hours"], "elapsed_hours": base["labor"]["elapsed_hours"]}}
+    for engine in ("e27", "e28"):
+        extra(engine, "proposal_ok", {"rule_version": "fictional-rule-v1", "client_proposal": ok_proposal})
+        extra(engine, "proposal_no_version", {"client_proposal": ok_proposal})
+        extra(engine, "proposal_wrong_hours", {"client_proposal": dict(ok_proposal, labor={"person_hours": {"low": 1, "typical": 2, "high": 3}, "elapsed_hours": base["labor"]["elapsed_hours"]})})
+        extra(engine, "proposal_wrong_version", {"client_proposal": dict(ok_proposal, rule_version="other")})
+        extra(engine, "proposal_wrong_status", {"client_proposal": dict(ok_proposal, status="partial")})
+        extra(engine, "proposal_no_labor", {"client_proposal": {"rule_version": "fictional-rule-v1"}})
+        extra(engine, "proposal_not_dict", {"client_proposal": 5})
+        extra(engine, "pack_version_mismatch", {"rule_version": "zzz"})
+        extra(engine, "pack_not_dict", ["x"])
+        extra(engine, "empty_pack", {})
+        extra(engine, "no_pack", None)
+        extra(engine, "common_unresolved", {"client_proposal": ok_proposal}, COMMON())
+    # E29
+    extra("e29", "plain", None)
+    # E30: 手入力の根拠
+    basis = {"unit": "person_hour", "definition": "架空の基準", "source": "fictional_manual", "permission_status": "fictional_only", "value": 1.6}
+    pack30 = {"engine_id": "e30_manual_basis_bridge", "rule_version": "fictional-rule-v1", "manual_basis": basis}
+    extra("e30", "manual_ok", pack30)
+    extra("e30", "manual_int", dict(pack30, manual_basis=dict(basis, value=2)))
+    extra("e30", "manual_zero", dict(pack30, manual_basis=dict(basis, value=0)))
+    extra("e30", "manual_unit", dict(pack30, manual_basis=dict(basis, unit="hour")))
+    extra("e30", "manual_blank", dict(pack30, manual_basis=dict(basis, definition=" ", source="")))
+    extra("e30", "manual_permission", dict(pack30, manual_basis=dict(basis, permission_status="licensed")))
+    extra("e30", "manual_negative", dict(pack30, manual_basis=dict(basis, value=-1)))
+    extra("e30", "manual_bool", dict(pack30, manual_basis=dict(basis, value=True)))
+    extra("e30", "manual_not_dict", dict(pack30, manual_basis=5))
+    extra("e30", "manual_missing", {"rule_version": "fictional-rule-v1"})
+    extra("e30", "pack_version", dict(pack30, rule_version="other"))
+    extra("e30", "pack_engine", dict(pack30, engine_id="zzz"))
+    extra("e30", "pack_list", ["x"])
+    extra("e30", "empty_pack", {})
+    extra("e30", "no_pack", None)
+    nb = APPROVED()
+    nb["operations"] = [o for o in nb["operations"] if o["operation_id"] != "base_service"]
+    extra("e30", "no_base", pack30, nb)
+    extra("e30", "manual_on_common", pack30, COMMON())
+
+
+_e24_to_e30_extras()
+
+
+@script
+def e24_flows():
+    from auto_repair_engine import e24
+    out = {}
+    pack = fictional_e02_pack(APPROVED())
+    new_hours = {"low": 1.6, "typical": 1.8, "high": 2.0}
+    samples = [{"sample_id": "s1", "hours": 1.8}]
+    proposal = e24.propose(pack, "base_service", new_hours, samples, "  measured  ")
+    out["proposal"] = proposal
+    approved = e24.approve(proposal, "owner", "looks right", "fictional-rule-v2", "2026-10-12")
+    out["approved"] = approved
+    errs = {}
+    tampered = copy.deepcopy(proposal)
+    tampered["reason"] = "changed"
+    drafts = copy.deepcopy(proposal)
+    drafts["status"] = "approved"
+    swapped = copy.deepcopy(proposal)
+    swapped["old_pack"]["rules"][0]["hours"] = {"low": 9, "typical": 9, "high": 9}
+    swapped["proposal_sha256"] = e24._proposal_hash(swapped)
+    cases = {
+        "propose_no_samples": lambda: e24.propose(pack, "base_service", new_hours, [], "r"),
+        "propose_pack_type": lambda: e24.propose([], "base_service", new_hours, samples, "r"),
+        "propose_reason": lambda: e24.propose(pack, "base_service", new_hours, samples, " "),
+        "propose_unknown_op": lambda: e24.propose(pack, "nope", new_hours, samples, "r"),
+        "propose_bad_hours": lambda: e24.propose(pack, "base_service", {"low": 2, "typical": 1, "high": 3}, samples, "r"),
+        "propose_bad_hours_bool": lambda: e24.propose(pack, "base_service", {"low": True, "typical": 1, "high": 3}, samples, "r"),
+        "approve_tampered": lambda: e24.approve(tampered, "o", "r", "v2", "2026-10-12"),
+        "approve_not_draft": lambda: e24.approve(drafts, "o", "r", "v2", "2026-10-12"),
+        "approve_blank": lambda: e24.approve(proposal, " ", "r", "v2", "2026-10-12"),
+        "approve_same_version": lambda: e24.approve(proposal, "o", "r", pack["rule_version"], "2026-10-12"),
+        "approve_bad_date": lambda: e24.approve(proposal, "o", "r", "v2", "tomorrow"),
+        "approve_swapped_pack": lambda: e24.approve(swapped, "o", "r", "v2", "2026-10-12"),
+        "approve_not_dict": lambda: e24.approve([], "o", "r", "v2", "2026-10-12"),
+    }
+    for name, call in cases.items():
+        try:
+            call()
+            errs[name] = None
+        except Exception as exc:  # noqa: BLE001
+            errs[name] = [type(exc).__name__, str(exc)]
+    out["errors"] = errs
+    out["run"] = e24.run(APPROVED())
+    return out
+
+
+@script
+def e29_flows():
+    from auto_repair_engine import e29
+    out = {}
+    scenario = APPROVED()
+    queue = e29.queue_snapshot([], "snap-1", scenario, "fictional-rule-v1")
+    out["queue"] = queue
+    out["again"] = e29.queue_snapshot(queue, "snap-1", scenario, "fictional-rule-v1")
+    out["second"] = e29.queue_snapshot(queue, "snap-2", COMMON(), "fictional-rule-v1")
+    snap = queue[0]
+    out["sync_same"] = e29.sync_snapshot(snap, "fictional-rule-v1")
+    out["sync_conflict"] = e29.sync_snapshot(snap, "fictional-rule-v2")
+    out["keep"] = e29.sync_snapshot(snap, "fictional-rule-v2", resolution="keep_snapshot", actor=" a ", reason=" r ")
+    out["rebase"] = e29.sync_snapshot(snap, "fictional-rule-v2", resolution="rebase_to_server", actor="a", reason="r")
+    tampered = copy.deepcopy(snap)
+    tampered["scenario_input"]["person_count"] = 9
+    out["integrity"] = e29.sync_snapshot(tampered, "fictional-rule-v1")
+    out["no_body"] = e29.sync_snapshot({"input_sha256": "x"}, "v")
+    errs = {}
+    cases = {
+        "queue_type": lambda: e29.queue_snapshot("x", "s", scenario, "v"),
+        "queue_blank_id": lambda: e29.queue_snapshot([], " ", scenario, "v"),
+        "queue_scenario": lambda: e29.queue_snapshot([], "s", 5, "v"),
+        "queue_version": lambda: e29.queue_snapshot([], "s", scenario, " "),
+        "queue_conflict": lambda: e29.queue_snapshot(queue, "snap-1", COMMON(), "fictional-rule-v1"),
+        "queue_version_conflict": lambda: e29.queue_snapshot(queue, "snap-1", scenario, "other"),
+        "sync_type": lambda: e29.sync_snapshot([], "v"),
+        "sync_resolution": lambda: e29.sync_snapshot(snap, "v2", resolution="merge", actor="a", reason="r"),
+        "sync_actor": lambda: e29.sync_snapshot(snap, "v2", resolution="keep_snapshot", actor=" ", reason="r"),
+    }
+    for name, call in cases.items():
+        try:
+            call()
+            errs[name] = None
+        except Exception as exc:  # noqa: BLE001
+            errs[name] = [type(exc).__name__, str(exc)]
+    out["errors"] = errs
+    out["run"] = e29.run(scenario)
+    return out
+
+
 def _e19_to_e23_extras():
     # E19: 左右の観測
     s = APPROVED()
@@ -1502,6 +1730,114 @@ def _date_ok(text):
         return type(exc).__name__
 
 
+def build_api_flow():
+    """FastAPI の TestClient で元の API を叩いた記録（api.json）。見積 ID と時刻は比較時に伏せる。"""
+    import os
+    import tempfile
+    tmp = tempfile.TemporaryDirectory()
+    os.environ["AUTOREPAIR_DB"] = str(Path(tmp.name) / "default.sqlite3")  # import 時に作られる既定のアプリの保存先を一時にする
+    from fastapi.testclient import TestClient
+    from auto_repair_engine.api import create_app
+    client = TestClient(create_app(str(Path(tmp.name) / "api.sqlite3")))
+    approved = APPROVED()
+    common = COMMON()
+    e02_pack = fictional_e02_pack(approved)
+    integrated_ok = run_engine("integrated", copy.deepcopy(approved), None)
+    e28_proposal = {"rule_version": approved["rule_version"], "labor": {"person_hours": integrated_ok["labor"]["person_hours"], "elapsed_hours": integrated_ok["labor"]["elapsed_hours"]}}
+    requests = [
+        ("GET", "/api/health", None, None),
+        ("GET", "/api/engines", None, None),
+        ("GET", "/api/integrated/schema", None, None),
+        ("GET", "/api/integrated/schema?job_id=other_job", None, None),
+        ("GET", "/api/fixture", None, None),
+        ("GET", "/api/fixture?approved_rotor=true", None, None),
+        ("GET", "/api/fixture?approved_rotor=maybe", None, "status"),
+        ("GET", "/api/engines/e02/example", None, None),
+        ("GET", "/api/engines/e02/example?approved_rotor=false", None, None),
+        ("GET", "/api/engines/e01/example", None, None),
+        ("POST", "/api/integrated/evaluate", {"scenario_input": common}, None),
+        ("POST", "/api/integrated/evaluate", {"scenario_input": common, "answers": {"rotor_relevance": {"value": "relevant", "confirmed": True, "actor": "a", "source": "s", "confirmed_at": "2026-10-11"}}}, None),
+        ("POST", "/api/integrated/evaluate", {"scenario_input": common, "answers": 5}, None),
+        ("POST", "/api/integrated/evaluate", {}, None),
+        ("POST", "/api/integrated/evaluate", [], "status"),
+        ("POST", "/api/engines/e02/calculate", {"scenario_input": approved}, None),
+        ("POST", "/api/engines/e02/calculate", {"scenario_input": approved, "rule_pack": e02_pack}, None),
+        ("POST", "/api/engines/e01/calculate", {"scenario_input": approved}, None),
+        ("POST", "/api/engines/e01/calculate", {"scenario_input": common}, None),
+        ("POST", "/api/engines/e01/calculate", approved, None),
+        ("POST", "/api/engines/e01/calculate", {}, None),
+        ("POST", "/api/engines/e01/calculate", {"scenario_input": {}}, None),
+        ("POST", "/api/engines/e99/calculate", {"scenario_input": approved}, None),
+        ("POST", "/api/engines/e12/calculate", {"scenario_input": approved}, None),
+        ("POST", "/api/engines/e27/calculate", {"scenario_input": approved, "rule_pack": {"client_proposal": e28_proposal}}, None),
+        ("POST", "/api/engines/integrated/calculate", {"scenario_input": approved}, None),
+        ("POST", "/api/engines/integrated/calculate", {"scenario_input": approved, "client_proposal": integrated_ok}, None),
+        ("POST", "/api/engines/integrated/calculate", {"scenario_input": approved, "client_proposal": {"rule_version": "x", "labor": {}}}, None),
+        ("POST", "/api/engines/integrated/calculate", approved, None),
+        ("POST", "/api/compare", {"scenario_input": approved}, None),
+        ("POST", "/api/compare", {"scenario_input": common}, None),
+        ("POST", "/api/compare", {"scenario_input": approved, "engine_ids": ["e01", "e02"]}, None),
+        ("POST", "/api/compare", {"scenario_input": approved, "engine_ids": ["e01", "e02"], "rule_packs": {"e02": e02_pack}}, None),
+        ("POST", "/api/compare", {"scenario_input": approved, "engine_ids": []}, None),
+        ("POST", "/api/compare", {"scenario_input": approved, "engine_ids": "e01"}, None),
+        ("POST", "/api/compare", {"scenario_input": approved, "engine_ids": ["e99"]}, None),
+        ("POST", "/api/compare", {"scenario_input": approved, "rule_packs": []}, None),
+        ("POST", "/api/compare", {}, None),
+        ("POST", "/api/estimates", {"engine_id": "e01", "scenario_input": approved}, None),
+        ("GET", "/api/estimates", None, None),
+        ("GET", "/api/estimates/{id:-1}", None, None),
+        ("POST", "/api/estimates", {"engine_id": "e01", "scenario_input": approved, "final_labor_amount": 20000, "actor": "fictional_owner", "adjustment_reason": "fixture adjustment", "idempotency_key": "demo-save-1"}, None),
+        ("POST", "/api/estimates", {"engine_id": "e01", "scenario_input": approved, "final_labor_amount": 20000, "actor": "fictional_owner", "adjustment_reason": "fixture adjustment", "idempotency_key": "demo-save-1"}, "same_id"),
+        ("POST", "/api/estimates", {"engine_id": "e01", "scenario_input": approved, "final_labor_amount": 21000, "actor": "fictional_owner", "adjustment_reason": "fixture adjustment", "idempotency_key": "demo-save-1"}, None),
+        ("GET", "/api/estimates?limit=1", None, "length"),
+        ("GET", "/api/estimates?limit=abc", None, "status"),
+        ("GET", "/api/estimates/{id:-1}", None, None),
+        ("GET", "/api/estimates/does-not-exist", None, None),
+        ("POST", "/api/estimates", {"engine_id": "e02", "scenario_input": approved}, None),
+        ("POST", "/api/estimates", {"engine_id": "e28", "scenario_input": approved, "client_proposal": e28_proposal}, None),
+        ("POST", "/api/estimates", {"engine_id": "e28", "scenario_input": approved, "client_proposal": {"rule_version": approved["rule_version"], "labor": {"person_hours": {"low": 0, "typical": 0, "high": 0}}}}, None),
+        ("POST", "/api/estimates", {"engine_id": "integrated", "scenario_input": approved, "client_proposal": integrated_ok, "idempotency_key": "integrated-save", "final_labor_amount": 20000, "actor": "fictional_owner", "adjustment_reason": "fixture confirmation"}, None),
+        ("GET", "/api/estimates/{id:-1}", None, None),
+        ("POST", "/api/estimates", {"engine_id": "e01", "scenario_input": common}, None),
+        ("POST", "/api/estimates", {"engine_id": "e01", "scenario_input": approved, "final_labor_amount": -1, "actor": "owner", "adjustment_reason": "invalid"}, None),
+        ("POST", "/api/estimates", {"engine_id": "e01", "scenario_input": approved, "final_labor_amount": 1.5, "actor": "owner", "adjustment_reason": "invalid"}, None),
+        ("POST", "/api/estimates", {"engine_id": "e01", "scenario_input": approved, "final_labor_amount": True, "actor": "owner", "adjustment_reason": "invalid"}, None),
+        ("POST", "/api/estimates", {"engine_id": "e01", "scenario_input": approved, "final_labor_amount": 100}, None),
+        ("POST", "/api/estimates", {"engine_id": "e01", "scenario_input": approved, "idempotency_key": " "}, None),
+        ("POST", "/api/estimates", {"engine_id": "e01", "scenario_input": approved, "idempotency_key": 5}, None),
+        ("POST", "/api/estimates", {"engine_id": "e01", "scenario_input": dict(approved, labor_rate=None)}, None),
+        ("POST", "/api/estimates", {"engine_id": "e01", "scenario_input": dict(approved, labor_rate={"value": -5, "status": "confirmed"})}, None),
+        ("POST", "/api/estimates", {"engine_id": "e01", "scenario_input": dict(approved, labor_rate={"value": "abc"})}, None),
+        ("POST", "/api/estimates", {"engine_id": "e01", "scenario_input": dict(approved, labor_rate=True)}, None),
+        ("POST", "/api/estimates", {"engine_id": "e01", "scenario_input": dict(approved, labor_rate="12000")}, None),
+        ("POST", "/api/estimates", {"engine_id": "e99", "scenario_input": approved}, None),
+        ("POST", "/api/estimates", {"scenario_input": approved}, None),
+        ("POST", "/api/estimates", {}, None),
+        ("GET", "/api/estimates", None, "length"),
+        ("POST", "/api/scenarios/fictional-common-scenario-01/events", {"event_type": "note", "operation_id": "wash", "text": "ok"}, "event"),
+        ("POST", "/api/scenarios/fictional-common-scenario-01/events", {"text": "defaults"}, "event"),
+    ]
+    log = []
+    ids = []
+    for method, path, body, mode in requests:
+        real_path = path
+        if "{id:" in path:
+            index = int(path.split("{id:")[1].split("}")[0])
+            real_path = path.replace("{id:%d}" % index, ids[index])
+        response = client.get(real_path) if method == "GET" else client.post(real_path, json=body)
+        try:
+            payload = response.json()
+        except ValueError:
+            payload = None
+        if isinstance(payload, dict) and "estimate_id" in payload:
+            ids.append(payload["estimate_id"])
+        if response.status_code == 422 and isinstance(payload, dict) and isinstance(payload.get("detail"), list):
+            payload = {"detail": "<validation>"}
+        log.append({"method": method, "path": path, "json": body, "mode": mode, "status": response.status_code, "body": payload})
+    tmp.cleanup()
+    return log
+
+
 def build_scripts():
     out = {}
     for name, fn in SCRIPTS.items():
@@ -1516,7 +1852,7 @@ def dump(path, value):
 
 def main(argv):
     everything = not argv
-    ids = [a for a in argv if a not in ("units", "compare", "scripts")] or ([*ENGINE_IDS, "integrated"] if everything else [])
+    ids = [a for a in argv if a not in ("units", "compare", "scripts", "api")] or ([*ENGINE_IDS, "integrated"] if everything else [])
     dump(HERE / "variants.json", {name: make_variant(maker, mutate) for name, maker, mutate in VARIANTS})
     for engine_id in ids:
         dump(HERE / f"cases-{engine_id}.json", build_cases(engine_id))
@@ -1525,6 +1861,8 @@ def main(argv):
         dump(HERE / "units.json", build_units())
     if everything or "scripts" in argv:
         dump(HERE / "scripted.json", build_scripts())
+    if everything or "api" in argv:
+        dump(HERE / "api.json", build_api_flow())
     if everything or "compare" in argv:
         compare_cases = []
         for name, maker, mutate in VARIANTS[:2]:

@@ -42,9 +42,18 @@ export function or<T, U>(a: T, b: U): T | U {
 
 const hasOwn = (d: object, k: string) => Object.prototype.hasOwnProperty.call(d, k) && (d as any)[k] !== undefined;
 
+/** type(v).__name__ */
+export function pyTypeName(v: unknown): string {
+  if (v === null || v === undefined) return "NoneType";
+  if (typeof v === "boolean") return "bool";
+  if (typeof v === "number") return Number.isInteger(v) ? "int" : "float";
+  if (typeof v === "string") return "str";
+  return Array.isArray(v) ? "list" : "dict";
+}
+
 /** dict.get(key, default)。dict 以外は AttributeError。 */
 export function get(d: unknown, key: any, def: any = null): any {
-  if (!isDict(d)) throw new PyAttributeError(`object has no attribute 'get'`);
+  if (!isDict(d)) throw new PyAttributeError(`'${pyTypeName(d)}' object has no attribute 'get'`);
   return typeof key === "string" && hasOwn(d, key) ? d[key] : def;
 }
 

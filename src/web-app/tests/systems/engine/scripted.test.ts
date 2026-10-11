@@ -9,6 +9,8 @@ import * as e11 from "../../../lib/systems/engine/e11";
 import * as e12 from "../../../lib/systems/engine/e12";
 import * as e14 from "../../../lib/systems/engine/e14";
 import * as e18 from "../../../lib/systems/engine/e18";
+import * as e24 from "../../../lib/systems/engine/e24";
+import * as e29 from "../../../lib/systems/engine/e29";
 import { PyIntegrityError, deepcopy, pyErrorName } from "../../../lib/systems/engine/py";
 import { resetEngineState } from "../../../lib/systems/engine/runner";
 import { E05_CSV, e04Pack, e06FixturePackPayload, e12Scenarios, golden } from "./fixtures";
@@ -212,6 +214,111 @@ describe("E11 (independent comparison)", () => {
     same(out, scripted.e11_flows);
     expect(out.chosen_a.selection.method).toBe("A");
     expect(out.tampered.labor.unknowns).toContain("comparison:payload_tampered");
+  });
+});
+
+describe("E24 (approval version update)", () => {
+  it("creates a tamper-evident proposal and an immutable approved pack", () => {
+    const out: any = {};
+    const pack = {
+      engine_id: "e02_versioned_json", rule_version: "fictional-rule-v1", status: "approved", approved_by: "fictional_shop_owner",
+      effective_from: "2026-10-11", source: "fictional_fixture_only", basis_unit: "person_hour",
+      basis_definition: commonScenarioFixture().basis_definition,
+      rules: [
+        { job_id: "front_brake_service", operation_key: "base_service", condition: { field: "work_scope", equals: "front_brake_service" }, hours: { low: 1.7, typical: 1.7, high: 1.7 }, unit: "person_hours", source: "fictional_json:base" },
+        { job_id: "front_brake_service", operation_key: "wash", condition: { field: "work_scope", equals: "front_brake_service" }, hours: { low: 0.1, typical: 0.1, high: 0.1 }, unit: "person_hours", source: "fictional_json:wash" },
+      ],
+    };
+    const newHours = { low: 1.6, typical: 1.8, high: 2.0 };
+    const samples = [{ sample_id: "s1", hours: 1.8 }];
+    const proposal = e24.propose(pack, "base_service", newHours, samples, "  measured  ");
+    expect(proposal.reason).toBe("measured");
+    expect(proposal.proposal_sha256).toMatch(/^[0-9a-f]{64}$/);
+    const approved = e24.approve(proposal, "owner", "looks right", "fictional-rule-v2", "2026-10-12");
+    expect(approved.rule_pack.rules[0].hours).toEqual(newHours);
+    expect(pack.rules[0].hours.typical).toBe(1.7);
+    const tampered = deepcopy(proposal);
+    tampered.reason = "changed";
+    const drafts = deepcopy(proposal);
+    drafts.status = "approved";
+    const swapped = deepcopy(proposal);
+    swapped.old_pack.rules[0].hours = { low: 9, typical: 9, high: 9 };
+    swapped.proposal_sha256 = e24.proposalHash(swapped);
+    const cases: Record<string, () => unknown> = {
+      propose_no_samples: () => e24.propose(pack, "base_service", newHours, [], "r"),
+      propose_pack_type: () => e24.propose([], "base_service", newHours, samples, "r"),
+      propose_reason: () => e24.propose(pack, "base_service", newHours, samples, " "),
+      propose_unknown_op: () => e24.propose(pack, "nope", newHours, samples, "r"),
+      propose_bad_hours: () => e24.propose(pack, "base_service", { low: 2, typical: 1, high: 3 }, samples, "r"),
+      propose_bad_hours_bool: () => e24.propose(pack, "base_service", { low: true, typical: 1, high: 3 }, samples, "r"),
+      approve_tampered: () => e24.approve(tampered, "o", "r", "v2", "2026-10-12"),
+      approve_not_draft: () => e24.approve(drafts, "o", "r", "v2", "2026-10-12"),
+      approve_blank: () => e24.approve(proposal, " ", "r", "v2", "2026-10-12"),
+      approve_same_version: () => e24.approve(proposal, "o", "r", pack.rule_version, "2026-10-12"),
+      approve_bad_date: () => e24.approve(proposal, "o", "r", "v2", "tomorrow"),
+      approve_swapped_pack: () => e24.approve(swapped, "o", "r", "v2", "2026-10-12"),
+      approve_not_dict: () => e24.approve([], "o", "r", "v2", "2026-10-12"),
+    };
+    const errs: any = {};
+    for (const [name, call] of Object.entries(cases)) {
+      try {
+        call();
+        errs[name] = null;
+      } catch (e) {
+        errs[name] = [pyErrorName(e), message(e)];
+      }
+    }
+    out.errors = errs;
+    out.run = e24.run(approvedCommonScenarioFixture());
+    const expected = scripted.e24_flows;
+    same(out.errors, expected.errors);
+    same(out.run, expected.run);
+    same({ reason: proposal.reason, status: proposal.status, operation_key: proposal.operation_key, old_value: proposal.old_value, new_value: proposal.new_value },
+      { reason: expected.proposal.reason, status: expected.proposal.status, operation_key: expected.proposal.operation_key, old_value: expected.proposal.old_value, new_value: expected.proposal.new_value });
+    same(approved.approval, expected.approved.approval);
+  });
+});
+
+describe("E29 (offline snapshot queue)", () => {
+  it("is idempotent and keeps version conflicts pending", () => {
+    const out: any = {};
+    const scenario = approvedCommonScenarioFixture();
+    const queue = e29.queueSnapshot([], "snap-1", scenario, "fictional-rule-v1");
+    out.queue = queue;
+    out.again = e29.queueSnapshot(queue, "snap-1", scenario, "fictional-rule-v1");
+    out.second = e29.queueSnapshot(queue, "snap-2", commonScenarioFixture(), "fictional-rule-v1");
+    const snap = queue[0];
+    out.sync_same = e29.syncSnapshot(snap, "fictional-rule-v1");
+    out.sync_conflict = e29.syncSnapshot(snap, "fictional-rule-v2");
+    out.keep = e29.syncSnapshot(snap, "fictional-rule-v2", { resolution: "keep_snapshot", actor: " a ", reason: " r " });
+    out.rebase = e29.syncSnapshot(snap, "fictional-rule-v2", { resolution: "rebase_to_server", actor: "a", reason: "r" });
+    const tampered = deepcopy(snap);
+    tampered.scenario_input.person_count = 9;
+    out.integrity = e29.syncSnapshot(tampered, "fictional-rule-v1");
+    out.no_body = e29.syncSnapshot({ input_sha256: "x" }, "v");
+    const cases: Record<string, () => unknown> = {
+      queue_type: () => e29.queueSnapshot("x", "s", scenario, "v"),
+      queue_blank_id: () => e29.queueSnapshot([], " ", scenario, "v"),
+      queue_scenario: () => e29.queueSnapshot([], "s", 5, "v"),
+      queue_version: () => e29.queueSnapshot([], "s", scenario, " "),
+      queue_conflict: () => e29.queueSnapshot(queue, "snap-1", commonScenarioFixture(), "fictional-rule-v1"),
+      queue_version_conflict: () => e29.queueSnapshot(queue, "snap-1", scenario, "other"),
+      sync_type: () => e29.syncSnapshot([], "v"),
+      sync_resolution: () => e29.syncSnapshot(snap, "v2", { resolution: "merge", actor: "a", reason: "r" }),
+      sync_actor: () => e29.syncSnapshot(snap, "v2", { resolution: "keep_snapshot", actor: " ", reason: "r" }),
+    };
+    const errs: any = {};
+    for (const [name, call] of Object.entries(cases)) {
+      try {
+        call();
+        errs[name] = null;
+      } catch (e) {
+        errs[name] = [pyErrorName(e), message(e)];
+      }
+    }
+    out.errors = errs;
+    out.run = e29.run(scenario);
+    same(out, scripted.e29_flows);
   });
 });
 

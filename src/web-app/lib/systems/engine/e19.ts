@@ -11,7 +11,7 @@ export function groupBySide(operations: any[]): { left: Dict[]; right: Dict[] } 
   for (const row of operations) {
     const side = get(row, "side");
     if (isList(side) || isDict(side)) throw new PyTypeError(`unhashable type: '${isList(side) ? "list" : "dict"}'`);
-    if (side === "left" || side === "right") panels[side].push(deepcopy(row));
+    if (side === "left" || side === "right") (panels as Record<string, Dict[]>)[side].push(deepcopy(row));
   }
   return panels;
 }

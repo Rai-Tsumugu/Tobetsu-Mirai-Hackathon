@@ -24,12 +24,20 @@ import * as e20 from "./e20";
 import * as e21 from "./e21";
 import * as e22 from "./e22";
 import * as e23 from "./e23";
+import * as e24 from "./e24";
+import * as e25 from "./e25";
+import * as e26 from "./e26";
+import * as e27 from "./e27";
+import * as e28 from "./e28";
+import * as e29 from "./e29";
+import * as e30 from "./e30";
+import * as integrated from "./integrated";
 
 export const ENGINE_IDS: string[] = Array.from({ length: 30 }, (_, i) => `e${String(i + 1).padStart(2, "0")}`);
 
 type EngineModule = { run: (scenario: Dict, rulePack: Dict | null) => Dict };
 const MODULES: Record<string, EngineModule> = {
-  e01, e02, e03, e04, e05, e06, e07, e08, e09, e10, e11, e12, e13, e14, e15, e16, e17, e18, e19, e20, e21, e22, e23,
+  e01, e02, e03, e04, e05, e06, e07, e08, e09, e10, e11, e12, e13, e14, e15, e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, integrated,
 };
 
 /** Python の ModuleNotFoundError（API では 503）。 */

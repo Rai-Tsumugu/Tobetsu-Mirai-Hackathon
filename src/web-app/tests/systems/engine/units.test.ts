@@ -12,11 +12,13 @@ import { copyPreviousVisit, currentConfirm } from "../../../lib/systems/engine/e
 import { appendObservationEvent, reduceObservations } from "../../../lib/systems/engine/e17";
 import { buildTraceTree, evaluateTree, inspectTrace } from "../../../lib/systems/engine/e18";
 import { summarizeBuckets } from "../../../lib/systems/engine/e23";
+import { activeView } from "../../../lib/systems/engine/e26";
 import { normalize } from "./normalize";
 
 const FUNCS: Record<string, (...args: any[]) => any> = {
   "e03.parse_to_ast": parseToAst,
   "e13.render_form": renderForm,
+  "e26.active_view": activeView,
   "e23.summarize_buckets": summarizeBuckets,
   "e18.build_trace_tree": buildTraceTree,
   "e18.inspect_trace": inspectTrace,
