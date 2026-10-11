@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f5f0">
+  <title>整備工賃エンジン Simulator</title>
+  <style>
+    :root { color-scheme: light; font: 16px/1.5 system-ui, -apple-system, sans-serif; color: #17231b; background: #f3f5f0; }
+    * { box-sizing: border-box; }
+    body { max-width: 760px; margin: auto; padding: 16px; }
+    header { padding: 22px 18px; border-radius: 22px; background: #173a2a; color: white; }
+    h1 { margin: 0 0 6px; font-size: 1.3rem; }
+    .notice { margin: 12px 0; border: 1px solid #dbb95a; border-radius: 12px; background: #fff7d9; padding: 12px; font-size: .92rem; }
+    .card { margin: 12px 0; padding: 16px; border: 1px solid #d9dfd7; border-radius: 18px; background: white; }
+    label { display: block; margin: 10px 0 5px; font-weight: 650; }
+    select, input, button { min-height: 48px; width: 100%; padding: 10px 12px; border: 1px solid #9aa99c; border-radius: 12px; background: white; color: inherit; font: inherit; }
+    button { border: 0; background: #19734b; color: white; font-weight: 700; cursor: pointer; }
+    button.secondary { margin-top: 8px; background: #e7eee8; color: #173a2a; }
+    .toggle { display: flex; align-items: start; gap: 10px; margin: 14px 0; }
+    .toggle input { width: 22px; height: 22px; margin: 2px 0; flex: none; }
+    .summary { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .metric { padding: 11px; background: #f2f6f1; border-radius: 12px; }
+    .metric small { display: block; color: #526156; }
+    .metric strong { display: block; font-size: 1.02rem; overflow-wrap: anywhere; }
+    details { border-top: 1px solid #e2e7e1; padding: 10px 0; }
+    summary { font-weight: 700; cursor: pointer; }
+    .status { display: inline-block; margin: 8px 0; padding: 3px 9px; border-radius: 999px; background: #e6eee8; font-size: .82rem; }
+    .error { color: #a32323; }
+    pre { overflow: auto; padding: 10px; background: #f2f4f0; border-radius: 10px; white-space: pre-wrap; overflow-wrap: anywhere; }
+    @media (min-width: 620px) { .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; } button.secondary { margin: 0; } }
+  </style>
+</head>
+<body>
+  <header><h1>整備工賃エンジン比較</h1><div>観察と根拠を残すローカル Simulator</div></header>
+  <p class="notice">これは架空の設計用データです。実価格・実作業時間ではなく、実車の見積もりには使えません。未確認条件は確定計算を止めます。</p>
+  <section class="card">
+    <label for="engine">計算方式</label>
+    <select id="engine"></select>
+    <label class="toggle"><input id="approved" type="checkbox"><span>架空のローター固着条件幅を「人が承認済み」として試す</span></label>
+    <label for="actor">確認者（架空デモ名）</label>
+    <input id="actor" type="text" autocomplete="off" placeholder="例: simulator_owner">
+    <label for="final-amount">確定する工賃（円）</label>
+    <input id="final-amount" type="number" min="0" step="1" inputmode="numeric" placeholder="確認後に入力">
+    <label for="adjustment-reason">修正理由</label>
+    <input id="adjustment-reason" type="text" autocomplete="off" placeholder="手動調整した場合に入力">
+    <details><summary>E30 手入力基準（架空値の試験用）</summary>
+      <label for="manual-basis">基準人時</label><input id="manual-basis" type="number" min="0" step="0.01" placeholder="空欄なら承認済みfixtureを利用">
+      <label for="manual-definition">基準の定義</label><input id="manual-definition" type="text" placeholder="含有運搬を除く人時">
+      <label for="manual-source">出所</label><input id="manual-source" type="text" placeholder="fictional_manual_entry">
+    </details>
+    <div class="actions"><button id="calculate">この方式で計算</button><button id="compare" class="secondary">全方式を比較</button></div>
+    <button id="save-estimate" class="secondary" style="margin-top:8px">確認した工賃で見積もりを保存</button>
+    <button id="queue-offline" class="secondary">端末内にoffline snapshotを保存</button>
+    <button id="reload-estimates" class="secondary">保存済み見積もりを再読込</button>
+  </section>
+  <div id="status" role="status" aria-live="polite"></div>
+  <main id="results"></main>
+  <script type="module">
+    import { calculate as browserCalculate, queueOfflineSnapshot, readOfflineSnapshots } from '/browser.mjs';
+    let lastScenario = null; let lastResult = null; let activeIdempotencyKey = null;
+    const engineSelect = document.querySelector('#engine');
+    const statusNode = document.querySelector('#status');
+    const resultNode = document.querySelector('#results');
+    const safe = (value) => JSON.stringify(value, null, 2);
+    const showStatus = (text, isError = false) => { statusNode.className = isError ? 'error' : ''; statusNode.textContent = text; };
+    const money = (value) => value == null ? '未算出' : `${Number(value).toLocaleString('ja-JP')} 円`;
+    const rangeText = (value, suffix = '人時') => value && value.typical != null ? `${value.low} / ${value.typical} / ${value.high} ${suffix}` : '未算出';
+    async function request(url, options) {
+      const response = await fetch(url, options);
+      const body = await response.json();
+      if (!response.ok) throw new Error(typeof body.detail === 'string' ? body.detail : safe(body.detail || body));
+      return body;
+    }
+    function renderResult(result) {
+      const labor = result.labor || {};
+      const lines = labor.breakdown || [];
+      const panel = document.createElement('section');
+      panel.className = 'card';
+      const title = document.createElement('h2'); title.textContent = `${result.engine_id} · ${result.rule_version}`; panel.append(title);
+      const badge = document.createElement('span'); badge.className = 'status'; badge.textContent = result.status || 'unknown'; panel.append(badge);
+      const metrics = document.createElement('div'); metrics.className = 'summary';
+      for (const [label, text] of [['人時 low / typical / high', rangeText(labor.person_hours)], ['経過時間 low / typical / high', rangeText(labor.elapsed_hours, '時間')]]) {
+        const item = document.createElement('div'); item.className = 'metric'; const small = document.createElement('small'); small.textContent = label;
+        const strong = document.createElement('strong'); strong.textContent = text; item.append(small, strong); metrics.append(item);
+      }
+      panel.append(metrics);
+      if (labor.unknowns?.length) { const ul = document.createElement('ul'); for (const gap of labor.unknowns) { const li = document.createElement('li'); li.textContent = `要確認: ${gap}`; ul.append(li); } panel.append(ul); }
+      for (const line of lines) { const detail = document.createElement('details'); const summary = document.createElement('summary'); summary.textContent = `${line.operation} · ${line.status}`; const body = document.createElement('pre'); body.textContent = safe(line); detail.append(summary, body); panel.append(detail); }
+      if (result.trace?.length) { const detail = document.createElement('details'); const summary = document.createElement('summary'); summary.textContent = '方式固有のtrace'; const body = document.createElement('pre'); body.textContent = safe(result.trace); detail.append(summary, body); panel.append(detail); }
+      if (result.simulator_notice) { const note = document.createElement('p'); note.className = 'notice'; note.textContent = result.simulator_notice; panel.append(note); }
+      return panel;
+    }
+    async function loadEngines() {
+      const data = await request('/api/engines');
+      const integrated = document.createElement('option'); integrated.value='integrated'; integrated.textContent='統合版（推奨）'; engineSelect.append(integrated);
+      for (const id of data.engine_ids) { const option = document.createElement('option'); option.value = id; option.textContent = id.toUpperCase(); engineSelect.append(option); }
+      engineSelect.value='integrated';
+    }
+    async function scenario() {
+      const fixture = await request(`/api/fixture?approved_rotor=${document.querySelector('#approved').checked}`);
+      return fixture.scenario_input;
+    }
+    document.querySelector('#calculate').addEventListener('click', async () => {
+      try { showStatus('同じ架空scenarioで計算しています…'); resultNode.replaceChildren();
+        const input = await scenario(); lastScenario = input;
+        const e30Value=document.querySelector('#manual-basis').value;
+        const rule_pack=engineSelect.value==='e30' && e30Value!=='' ? {engine_id:'e30_manual_basis_bridge',rule_version:input.rule_version,manual_basis:{value:Number(e30Value),unit:'person_hour',definition:document.querySelector('#manual-definition').value,source:document.querySelector('#manual-source').value,permission_status:'fictional_only'}} : undefined;
+        const result = engineSelect.value === 'e27' ? browserCalculate(input) : await request(`/api/engines/${engineSelect.value}/calculate`, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({scenario_input:input,rule_pack})});
+        lastResult = result; resultNode.append(renderResult(result)); showStatus('計算結果を表示しました。採用前に観察と承認を確認してください。');
+      } catch (error) { showStatus(error.message, true); }
+    });
+    document.querySelector('#compare').addEventListener('click', async () => {
+      try { showStatus('30方式を同じ架空scenarioで比較しています…'); resultNode.replaceChildren();
+        const input = await scenario(); lastScenario = input; const data = await request('/api/compare', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({scenario_input:input})});
+        for (const result of data.results) resultNode.append(renderResult(result)); showStatus(`${data.results.length}方式の比較を表示しました。数値差ではなく停止理由・trace・版を比較します。`);
+      } catch (error) { showStatus(error.message, true); }
+    });
+    document.querySelector('#save-estimate').addEventListener('click', async () => {
+      try {
+        const finalAmount = document.querySelector('#final-amount').value;
+        const actor = document.querySelector('#actor').value.trim();
+        const reason = document.querySelector('#adjustment-reason').value.trim();
+        if (finalAmount === '' || !actor || !reason) throw new Error('確定工賃・確認者・修正理由を入力してください。');
+        showStatus('保存条件を検証して見積もりを保存しています…');
+        const input = await scenario(); lastScenario = input; activeIdempotencyKey ||= crypto.randomUUID();
+        const saved = await request('/api/estimates', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({engine_id:engineSelect.value, scenario_input:input, client_proposal:['e28','integrated'].includes(engineSelect.value) ? lastResult : undefined, idempotency_key:activeIdempotencyKey, final_labor_amount:Number(finalAmount), actor, adjustment_reason:reason})});
+        activeIdempotencyKey = null;
+        const panel = document.createElement('section'); panel.className = 'card'; const title = document.createElement('h2'); title.textContent = '保存済み見積もり';
+        const detail = document.createElement('pre'); detail.textContent = safe({estimate_id:saved.estimate_id, engine_id:saved.engine_id, rule_version:saved.rule_version, final_labor_amount:saved.labor_result.final_labor_amount, approval:saved.approvals[saved.approvals.length - 1]});
+        panel.append(title, detail); resultNode.prepend(panel); showStatus('SQLiteに見積もりと確認者・修正理由を保存しました。架空データです。');
+      } catch (error) { showStatus(error.message, true); }
+    });
+    document.querySelector('#queue-offline').addEventListener('click', async () => {
+      try { const input=lastScenario || await scenario(); const snapshot={snapshot_id:crypto.randomUUID(), scenario_id:input.scenario_id, scenario_input:input, rule_version:input.rule_version, created_at:new Date().toISOString()};
+        await queueOfflineSnapshot(snapshot); const all=await readOfflineSnapshots(); showStatus(`端末のIndexedDBに保存しました（未同期 ${all.filter(x=>x.status==='pending').length} 件）。版衝突時は人の選択が必要です。`);
+      } catch(error) { showStatus(error.message, true); }
+    });
+    document.querySelector('#reload-estimates').addEventListener('click', async () => {
+      try { const rows=await request('/api/estimates'); resultNode.replaceChildren(); for(const saved of rows){ const panel=document.createElement('section');panel.className='card';const h=document.createElement('h2');h.textContent=`保存済み · ${saved.estimate_id}`;const p=document.createElement('pre');p.textContent=safe({engine_id:saved.engine_id,rule_version:saved.rule_version,status:saved.status,labor:saved.labor,labor_result:saved.labor_result,approvals:saved.approvals});panel.append(h,p);resultNode.append(panel);} showStatus(`${rows.length}件をSQLiteから再読込しました。`); }
+      catch(error) { showStatus(error.message,true); }
+    });
+    loadEngines().catch((error) => showStatus(error.message, true));
+  </script>
+</body>
+</html>

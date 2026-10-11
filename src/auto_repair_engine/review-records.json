@@ -1,0 +1,1070 @@
+{
+  "review_policy": "Each E item has one Luna implementer and two independent Luna reviewers. Records below are based on actual agent reports and tests; each added team appends its evidence here.",
+  "teams": {
+    "E01": {
+      "implementer": "e01_implementer",
+      "reviewers": [
+        "e01_review_1",
+        "e01_review_2"
+      ],
+      "result": "pass",
+      "summary": "Versioned typed static table gates job, observed scope, inclusion keys, and parts stock confirmation; selected rows control which operations enter shared calculation; trace separates table provenance from observation provenance.",
+      "review_history": [
+        {
+          "reviewer": "e01_review_1",
+          "result": "fixes_requested",
+          "findings": [
+            "required scope/status did not gate calculation",
+            "trace omitted observation source",
+            "table version was not bound",
+            "wait elapsed None raised TypeError"
+          ]
+        },
+        {
+          "reviewer": "e01_review_2",
+          "result": "fixes_requested",
+          "findings": [
+            "table rows initially affected trace only",
+            "scope and parts stock confirmation gates were missing",
+            "dynamic rules were silently ignored"
+          ]
+        },
+        {
+          "reviewer": "e01_review_1",
+          "result": "fixes_requested",
+          "findings": [
+            "parts stock status declared was accepted; changed gate to require confirmed and added regression case"
+          ]
+        },
+        {
+          "reviewer": "e01_review_2",
+          "result": "pass",
+          "findings": [
+            "table-driven filtering, parts gate, provenance, version, wait-null behavior, and common totals passed independent review"
+          ]
+        },
+        {
+          "reviewer": "e01_review_1",
+          "result": "pass",
+          "findings": [
+            "parts stock now requires confirmed true; all ten E01 tests passed"
+          ]
+        },
+        {
+          "reviewer": "e01_review_2",
+          "result": "pass",
+          "findings": [
+            "final exact-confirmed parts stock gate and declared regression test passed review"
+          ]
+        }
+      ],
+      "verification": [
+        {
+          "command": "PYTHONPATH=src python3 -m unittest auto_repair_engine.test_e01 -v",
+          "result": "10 passed"
+        },
+        {
+          "command": "PYTHONPATH=src python3 -m unittest discover -s src -t src -p 'test_*.py' -v",
+          "result": "17 passed at E01 completion"
+        }
+      ]
+    },
+    "E02": {
+      "implementer": "/root/luna_team_coordinator/e02_implementer",
+      "reviewers": [
+        "/root/e02_review_1_final",
+        "/root/e02_review_2_final"
+      ],
+      "result": "pass",
+      "summary": "JSON values control calculation; required operations and unknown wait durations preserved",
+      "review_history": [
+        {
+          "reviewer": "e02_review_1",
+          "result": "fixes_requested",
+          "findings": [
+            "unknown included scope was accepted",
+            "approval actor/reason/old/new was not validated against applied range"
+          ]
+        },
+        {
+          "reviewer": "e02_review_2",
+          "result": "fixes_requested",
+          "findings": [
+            "JSON numeric rules only affected trace/gating and did not drive labor",
+            "duplicate operation_key silently overwrote earlier rule",
+            "revision output lacked actor/reason/old-new"
+          ]
+        },
+        {
+          "reviewer": "e02_implementer",
+          "result": "fixes_implemented",
+          "findings": [
+            "added schema and duplicate-key rejection, rule-driven math, pinned version, audit validation and regression tests; 8 E02 tests and py_compile passed"
+          ]
+        },
+        {
+          "reviewer": "/root/batch01_final_review_1",
+          "result": "pass",
+          "findings": [
+            "Original counterexamples re-executed after fixes"
+          ]
+        },
+        {
+          "reviewer": "/root/batch01_final_review_2",
+          "result": "pass",
+          "findings": [
+            "Scoped tests and original counterexamples passed independently"
+          ]
+        }
+      ],
+      "verification": [
+        {
+          "command": "PYTHONPATH=src python3 -m unittest auto_repair_engine.test_e02",
+          "result": "11 passed"
+        }
+      ]
+    },
+    "E03": {
+      "review_history": [
+        {
+          "reviewer": "/root/e03_review_1",
+          "result": "fixes_requested",
+          "findings": [
+            "Explicit unknown wait duration was filled by DSL; fixed"
+          ]
+        },
+        {
+          "reviewer": "/root/e03_review_2",
+          "result": "fixes_requested",
+          "findings": [
+            "Non-string raw pack version accepted as unbound; fixed"
+          ]
+        },
+        {
+          "reviewer": "/root/batch01_final_review_1",
+          "result": "pass",
+          "findings": [
+            "Original counterexamples re-executed after fixes"
+          ]
+        },
+        {
+          "reviewer": "/root/batch01_final_review_2",
+          "result": "pass",
+          "findings": [
+            "Scoped tests and original counterexamples passed independently"
+          ]
+        }
+      ],
+      "implementer": "/root/e03_implementer",
+      "reviewers": [
+        "/root/e03_review_1",
+        "/root/e03_review_2"
+      ],
+      "result": "pass",
+      "summary": "Allowlisted DSL AST changes calculation; invalid versions and unknown waits stop safely",
+      "verification": [
+        {
+          "command": "PYTHONPATH=src python3 -m unittest auto_repair_engine.test_e03",
+          "result": "8 passed"
+        }
+      ]
+    },
+    "E04": {
+      "review_history": [
+        {
+          "reviewer": "/root/e04_review_1",
+          "result": "fixes_requested",
+          "findings": [
+            "JOINed rotor range differed from human approval; fixed"
+          ]
+        },
+        {
+          "reviewer": "/root/e04_review_2",
+          "result": "fixes_requested",
+          "findings": [
+            "Direct DB mutations changed old version replay; immutable triggers added"
+          ]
+        },
+        {
+          "reviewer": "/root/batch01_final_review_1",
+          "result": "pass",
+          "findings": [
+            "Original counterexamples re-executed after fixes"
+          ]
+        },
+        {
+          "reviewer": "/root/batch01_final_review_2",
+          "result": "pass",
+          "findings": [
+            "Scoped tests and original counterexamples passed independently"
+          ]
+        }
+      ],
+      "implementer": "/root/e04_implementer",
+      "reviewers": [
+        "/root/e04_review_1",
+        "/root/e04_review_2"
+      ],
+      "result": "pass",
+      "summary": "SQLite normalized JOIN controls labor; approval range binding and immutable published versions",
+      "verification": [
+        {
+          "command": "PYTHONPATH=src python3 -m unittest auto_repair_engine.test_e04",
+          "result": "10 passed"
+        }
+      ]
+    },
+    "E05": {
+      "implementer": "/root/e05_implementer",
+      "reviewers": [
+        "/root/e05_review_1",
+        "/root/e05_review_2"
+      ],
+      "result": "pass",
+      "review_history": [
+        {
+          "reviewer": "/root/e05_review_1",
+          "result": "fixes_requested",
+          "findings": [
+            "Condition-only preview/audit changes omitted; fixed",
+            "Explicit mismatched version displayed as applied; fixed"
+          ]
+        },
+        {
+          "reviewer": "/root/e05_review_2",
+          "result": "fixes_requested",
+          "findings": [
+            "Invalid boolean silently converted to false; fixed"
+          ]
+        },
+        {
+          "reviewer": "/root/e05_final_review_1",
+          "result": "original_fixes_pass_additional_requirement_declined",
+          "findings": [
+            "Root permits valid immutable pack to supply pinned version when scenario does not specify one"
+          ]
+        },
+        {
+          "reviewer": "/root/e05_final_review_2",
+          "result": "fixes_requested",
+          "findings": [
+            "Forged public pack with fake hashes and empty audit accepted; integrity gate added"
+          ]
+        },
+        {
+          "reviewer": "/root/e05_final_review_2",
+          "result": "pass",
+          "findings": [
+            "9 tests passed; forged pack stopped; valid snapshot version pinned"
+          ]
+        }
+      ],
+      "verification": [
+        {
+          "command": "PYTHONPATH=src python3 -m unittest auto_repair_engine.test_e05",
+          "result": "9 passed"
+        }
+      ]
+    },
+    "E06": {
+      "implementer": "/root/e06_implementer",
+      "reviewers": [
+        "/root/e06_review_1",
+        "/root/e06_review_2"
+      ],
+      "result": "pass",
+      "review_history": [
+        {
+          "reviewer": "/root/batch02_review_1",
+          "result": "pass_after_fixes",
+          "findings": [
+            "41 scoped tests passed; original missing/invalid/audit counterexamples checked"
+          ]
+        },
+        {
+          "reviewer": "/root/batch02_review_2",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Independent tests and original counterexamples passed"
+          ]
+        }
+      ],
+      "verification": [
+        {
+          "command": "PYTHONPATH=src python3 -m unittest auto_repair_engine.test_e06",
+          "result": "pass (part of 41-test batch; individual count recorded in unittest source)"
+        }
+      ]
+    },
+    "E07": {
+      "implementer": "/root/e07_implementer",
+      "reviewers": [
+        "/root/e07_review_1",
+        "/root/e07_review_2"
+      ],
+      "result": "pass",
+      "review_history": [
+        {
+          "reviewer": "/root/batch02_review_1",
+          "result": "pass_after_fixes",
+          "findings": [
+            "41 scoped tests passed; original missing/invalid/audit counterexamples checked"
+          ]
+        },
+        {
+          "reviewer": "/root/batch02_review_2",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Independent tests and original counterexamples passed"
+          ]
+        }
+      ],
+      "verification": [
+        {
+          "command": "PYTHONPATH=src python3 -m unittest auto_repair_engine.test_e07",
+          "result": "pass (part of 41-test batch; individual count recorded in unittest source)"
+        }
+      ]
+    },
+    "E08": {
+      "implementer": "/root/e08_implementer",
+      "reviewers": [
+        "/root/batch02_review_1",
+        "/root/batch02_review_2"
+      ],
+      "result": "pass",
+      "review_history": [
+        {
+          "reviewer": "/root/batch02_review_1",
+          "result": "pass_after_fixes",
+          "findings": [
+            "41 scoped tests passed; original missing/invalid/audit counterexamples checked"
+          ]
+        },
+        {
+          "reviewer": "/root/batch02_review_2",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Independent tests and original counterexamples passed"
+          ]
+        }
+      ],
+      "verification": [
+        {
+          "command": "PYTHONPATH=src python3 -m unittest auto_repair_engine.test_e08",
+          "result": "pass (part of 41-test batch; individual count recorded in unittest source)"
+        }
+      ]
+    },
+    "E09": {
+      "implementer": "/root/e09_implementer",
+      "reviewers": [
+        "/root/batch02_review_1",
+        "/root/batch02_review_2"
+      ],
+      "result": "pass",
+      "review_history": [
+        {
+          "reviewer": "/root/batch02_review_1",
+          "result": "pass_after_fixes",
+          "findings": [
+            "41 scoped tests passed; original missing/invalid/audit counterexamples checked"
+          ]
+        },
+        {
+          "reviewer": "/root/batch02_review_2",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Independent tests and original counterexamples passed"
+          ]
+        }
+      ],
+      "verification": [
+        {
+          "command": "PYTHONPATH=src python3 -m unittest auto_repair_engine.test_e09",
+          "result": "pass (part of 41-test batch; individual count recorded in unittest source)"
+        }
+      ]
+    },
+    "E10": {
+      "implementer": "/root/e10_implementer",
+      "reviewers": [
+        "/root/batch02_review_1",
+        "/root/batch02_review_2"
+      ],
+      "result": "pass",
+      "review_history": [
+        {
+          "reviewer": "/root/batch02_review_1",
+          "result": "pass_after_fixes",
+          "findings": [
+            "41 scoped tests passed; original missing/invalid/audit counterexamples checked"
+          ]
+        },
+        {
+          "reviewer": "/root/batch02_review_2",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Independent tests and original counterexamples passed"
+          ]
+        }
+      ],
+      "verification": [
+        {
+          "command": "PYTHONPATH=src python3 -m unittest auto_repair_engine.test_e10",
+          "result": "pass (part of 41-test batch; individual count recorded in unittest source)"
+        }
+      ]
+    },
+    "E11": {
+      "implementer": "/root/e11_implementer",
+      "reviewers": [
+        "/root/batch03_review_1",
+        "/root/batch03_review_2"
+      ],
+      "result": "pass",
+      "review_history": [
+        {
+          "reviewer": "/root/batch03_review_1",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Scoped tests and original feature counterexamples checked"
+          ]
+        },
+        {
+          "reviewer": "/root/batch03_review_2",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Independent scoped tests and boundary checks passed"
+          ]
+        }
+      ],
+      "verification": [
+        {
+          "command": "PYTHONPATH=src python3 -m unittest auto_repair_engine.test_e11",
+          "result": "pass as part of full 205-test suite"
+        }
+      ]
+    },
+    "E12": {
+      "implementer": "/root/e12_implementer",
+      "reviewers": [
+        "/root/batch03_review_1",
+        "/root/batch03_review_2"
+      ],
+      "result": "pass",
+      "review_history": [
+        {
+          "reviewer": "/root/batch03_review_1",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Scoped tests and original feature counterexamples checked"
+          ]
+        },
+        {
+          "reviewer": "/root/batch03_review_2",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Independent scoped tests and boundary checks passed"
+          ]
+        }
+      ],
+      "verification": [
+        {
+          "command": "PYTHONPATH=src python3 -m unittest auto_repair_engine.test_e12",
+          "result": "pass as part of full 205-test suite"
+        }
+      ]
+    },
+    "E13": {
+      "implementer": "/root/e13_implementer",
+      "reviewers": [
+        "/root/batch03_review_1",
+        "/root/batch03_review_2"
+      ],
+      "result": "pass",
+      "review_history": [
+        {
+          "reviewer": "/root/batch03_review_1",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Scoped tests and original feature counterexamples checked"
+          ]
+        },
+        {
+          "reviewer": "/root/batch03_review_2",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Independent scoped tests and boundary checks passed"
+          ]
+        }
+      ],
+      "verification": [
+        {
+          "command": "PYTHONPATH=src python3 -m unittest auto_repair_engine.test_e13",
+          "result": "pass as part of full 205-test suite"
+        }
+      ]
+    },
+    "E14": {
+      "implementer": "/root/e14_implementer",
+      "reviewers": [
+        "/root/batch03_review_1",
+        "/root/batch03_review_2"
+      ],
+      "result": "pass",
+      "review_history": [
+        {
+          "reviewer": "/root/batch03_review_1",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Scoped tests and original feature counterexamples checked"
+          ]
+        },
+        {
+          "reviewer": "/root/batch03_review_2",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Independent scoped tests and boundary checks passed"
+          ]
+        }
+      ],
+      "verification": [
+        {
+          "command": "PYTHONPATH=src python3 -m unittest auto_repair_engine.test_e14",
+          "result": "pass as part of full 205-test suite"
+        }
+      ]
+    },
+    "E15": {
+      "implementer": "/root/e15_implementer",
+      "reviewers": [
+        "/root/batch03_review_1",
+        "/root/batch03_review_2"
+      ],
+      "result": "pass",
+      "review_history": [
+        {
+          "reviewer": "/root/batch03_review_1",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Scoped tests and original feature counterexamples checked"
+          ]
+        },
+        {
+          "reviewer": "/root/batch03_review_2",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Independent scoped tests and boundary checks passed"
+          ]
+        }
+      ],
+      "verification": [
+        {
+          "command": "PYTHONPATH=src python3 -m unittest auto_repair_engine.test_e15",
+          "result": "pass as part of full 205-test suite"
+        }
+      ]
+    },
+    "E16": {
+      "implementer": "/root/e16_implementer",
+      "reviewers": [
+        "/root/batch03_review_1",
+        "/root/batch03_review_2"
+      ],
+      "result": "pass",
+      "review_history": [
+        {
+          "reviewer": "/root/batch03_review_1",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Scoped tests and original feature counterexamples checked"
+          ]
+        },
+        {
+          "reviewer": "/root/batch03_review_2",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Independent scoped tests and boundary checks passed"
+          ]
+        }
+      ],
+      "verification": [
+        {
+          "command": "PYTHONPATH=src python3 -m unittest auto_repair_engine.test_e16",
+          "result": "pass as part of full 205-test suite"
+        }
+      ]
+    },
+    "E17": {
+      "implementer": "/root/e06_implementer",
+      "reviewers": [
+        "/root/batch03_review_1",
+        "/root/batch03_review_2"
+      ],
+      "result": "pass",
+      "review_history": [
+        {
+          "reviewer": "/root/batch03_review_1",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Scoped tests and original feature counterexamples checked"
+          ]
+        },
+        {
+          "reviewer": "/root/batch03_review_2",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Independent scoped tests and boundary checks passed"
+          ]
+        }
+      ],
+      "verification": [
+        {
+          "command": "PYTHONPATH=src python3 -m unittest auto_repair_engine.test_e17",
+          "result": "pass as part of full 205-test suite"
+        }
+      ]
+    },
+    "E18": {
+      "implementer": "/root/e07_implementer",
+      "reviewers": [
+        "/root/batch03_review_1",
+        "/root/batch03_review_2"
+      ],
+      "result": "pass",
+      "review_history": [
+        {
+          "reviewer": "/root/batch03_review_1",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Scoped tests and original feature counterexamples checked"
+          ]
+        },
+        {
+          "reviewer": "/root/batch03_review_2",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Independent scoped tests and boundary checks passed"
+          ]
+        }
+      ],
+      "verification": [
+        {
+          "command": "PYTHONPATH=src python3 -m unittest auto_repair_engine.test_e18",
+          "result": "pass as part of full 205-test suite"
+        }
+      ]
+    },
+    "E19": {
+      "implementer": "/root/e08_implementer",
+      "reviewers": [
+        "/root/batch03_review_1",
+        "/root/batch03_review_2"
+      ],
+      "result": "pass",
+      "review_history": [
+        {
+          "reviewer": "/root/batch03_review_1",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Scoped tests and original feature counterexamples checked"
+          ]
+        },
+        {
+          "reviewer": "/root/batch03_review_2",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Independent scoped tests and boundary checks passed"
+          ]
+        }
+      ],
+      "verification": [
+        {
+          "command": "PYTHONPATH=src python3 -m unittest auto_repair_engine.test_e19",
+          "result": "pass as part of full 205-test suite"
+        }
+      ]
+    },
+    "E20": {
+      "implementer": "/root/e08_implementer",
+      "reviewers": [
+        "/root/batch03_review_1",
+        "/root/batch03_review_2"
+      ],
+      "result": "pass",
+      "review_history": [
+        {
+          "reviewer": "/root/batch03_review_1",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Scoped tests and original feature counterexamples checked"
+          ]
+        },
+        {
+          "reviewer": "/root/batch03_review_2",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Independent scoped tests and boundary checks passed"
+          ]
+        }
+      ],
+      "verification": [
+        {
+          "command": "PYTHONPATH=src python3 -m unittest auto_repair_engine.test_e20",
+          "result": "pass as part of full 205-test suite"
+        }
+      ]
+    },
+    "E21": {
+      "implementer": "/root/e08_implementer",
+      "reviewers": [
+        "/root/batch03_review_1",
+        "/root/batch03_review_2"
+      ],
+      "result": "pass",
+      "review_history": [
+        {
+          "reviewer": "/root/batch03_review_1",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Scoped tests and original feature counterexamples checked"
+          ]
+        },
+        {
+          "reviewer": "/root/batch03_review_2",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Independent scoped tests and boundary checks passed"
+          ]
+        }
+      ],
+      "verification": [
+        {
+          "command": "PYTHONPATH=src python3 -m unittest auto_repair_engine.test_e21",
+          "result": "pass as part of full 205-test suite"
+        }
+      ]
+    },
+    "E22": {
+      "implementer": "/root/e08_implementer",
+      "reviewers": [
+        "/root/batch03_review_1",
+        "/root/batch03_review_2"
+      ],
+      "result": "pass",
+      "review_history": [
+        {
+          "reviewer": "/root/batch03_review_1",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Scoped tests and original feature counterexamples checked"
+          ]
+        },
+        {
+          "reviewer": "/root/batch03_review_2",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Independent scoped tests and boundary checks passed"
+          ]
+        }
+      ],
+      "verification": [
+        {
+          "command": "PYTHONPATH=src python3 -m unittest auto_repair_engine.test_e22",
+          "result": "pass as part of full 205-test suite"
+        }
+      ]
+    },
+    "E23": {
+      "implementer": "/root/e08_implementer",
+      "reviewers": [
+        "/root/batch03_review_1",
+        "/root/batch03_review_2"
+      ],
+      "result": "pass",
+      "review_history": [
+        {
+          "reviewer": "/root/batch03_review_1",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Scoped tests and original feature counterexamples checked"
+          ]
+        },
+        {
+          "reviewer": "/root/batch03_review_2",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Independent scoped tests and boundary checks passed"
+          ]
+        }
+      ],
+      "verification": [
+        {
+          "command": "PYTHONPATH=src python3 -m unittest auto_repair_engine.test_e23",
+          "result": "pass as part of full 205-test suite"
+        }
+      ]
+    },
+    "E24": {
+      "implementer": "/root/e09_implementer",
+      "reviewers": [
+        "/root/batch03_review_1",
+        "/root/batch03_review_2"
+      ],
+      "result": "pass",
+      "review_history": [
+        {
+          "reviewer": "/root/batch03_review_1",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Scoped tests and original feature counterexamples checked"
+          ]
+        },
+        {
+          "reviewer": "/root/batch03_review_2",
+          "result": "fixes_requested",
+          "findings": [
+            "Finite proposal range rejection required"
+          ]
+        },
+        {
+          "reviewer": "/root/batch03_review_2",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Infinite proposal values rejected"
+          ]
+        }
+      ],
+      "verification": [
+        {
+          "command": "PYTHONPATH=src python3 -m unittest auto_repair_engine.test_e24",
+          "result": "pass as part of full 205-test suite"
+        }
+      ]
+    },
+    "E25": {
+      "implementer": "/root/e09_implementer",
+      "reviewers": [
+        "/root/batch03_review_1",
+        "/root/batch03_review_2"
+      ],
+      "result": "pass",
+      "review_history": [
+        {
+          "reviewer": "/root/batch03_review_1",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Scoped tests and original feature counterexamples checked"
+          ]
+        },
+        {
+          "reviewer": "/root/batch03_review_2",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Independent scoped tests and boundary checks passed"
+          ]
+        }
+      ],
+      "verification": [
+        {
+          "command": "PYTHONPATH=src python3 -m unittest auto_repair_engine.test_e25",
+          "result": "pass as part of full 205-test suite"
+        }
+      ]
+    },
+    "E26": {
+      "implementer": "/root/e09_implementer",
+      "reviewers": [
+        "/root/batch03_review_1",
+        "/root/batch03_review_2"
+      ],
+      "result": "pass",
+      "review_history": [
+        {
+          "reviewer": "/root/batch03_review_1",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Scoped tests and original feature counterexamples checked"
+          ]
+        },
+        {
+          "reviewer": "/root/batch03_review_2",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Independent scoped tests and boundary checks passed"
+          ]
+        }
+      ],
+      "verification": [
+        {
+          "command": "PYTHONPATH=src python3 -m unittest auto_repair_engine.test_e26",
+          "result": "pass as part of full 205-test suite"
+        }
+      ]
+    },
+    "E27": {
+      "implementer": "/root/e10_implementer",
+      "reviewers": [
+        "/root/batch03_review_1",
+        "/root/batch03_review_2"
+      ],
+      "result": "pass",
+      "review_history": [
+        {
+          "reviewer": "/root/batch03_review_1",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Scoped tests and original feature counterexamples checked"
+          ]
+        },
+        {
+          "reviewer": "/root/batch03_review_2",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Independent scoped tests and boundary checks passed"
+          ]
+        }
+      ],
+      "verification": [
+        {
+          "command": "PYTHONPATH=src python3 -m unittest auto_repair_engine.test_e27",
+          "result": "pass as part of full 205-test suite"
+        }
+      ]
+    },
+    "E28": {
+      "implementer": "/root/e10_implementer",
+      "reviewers": [
+        "/root/batch03_review_1",
+        "/root/batch03_review_2"
+      ],
+      "result": "pass",
+      "review_history": [
+        {
+          "reviewer": "/root/batch03_review_1",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Scoped tests and original feature counterexamples checked"
+          ]
+        },
+        {
+          "reviewer": "/root/batch03_review_2",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Independent scoped tests and boundary checks passed"
+          ]
+        }
+      ],
+      "verification": [
+        {
+          "command": "PYTHONPATH=src python3 -m unittest auto_repair_engine.test_e28",
+          "result": "pass as part of full 205-test suite"
+        }
+      ]
+    },
+    "E29": {
+      "implementer": "/root/e10_implementer",
+      "reviewers": [
+        "/root/batch03_review_1",
+        "/root/batch03_review_2"
+      ],
+      "result": "pass",
+      "review_history": [
+        {
+          "reviewer": "/root/batch03_review_1",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Scoped tests and original feature counterexamples checked"
+          ]
+        },
+        {
+          "reviewer": "/root/batch03_review_2",
+          "result": "fixes_requested",
+          "findings": [
+            "Snapshot input digest validation required"
+          ]
+        },
+        {
+          "reviewer": "/root/batch03_review_2",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Tampered snapshot digest rejected before synchronization"
+          ]
+        }
+      ],
+      "verification": [
+        {
+          "command": "PYTHONPATH=src python3 -m unittest auto_repair_engine.test_e29",
+          "result": "pass as part of full 205-test suite"
+        }
+      ]
+    },
+    "E30": {
+      "implementer": "/root/e10_implementer",
+      "reviewers": [
+        "/root/batch03_review_1",
+        "/root/batch03_review_2"
+      ],
+      "result": "pass",
+      "review_history": [
+        {
+          "reviewer": "/root/batch03_review_1",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Scoped tests and original feature counterexamples checked"
+          ]
+        },
+        {
+          "reviewer": "/root/batch03_review_2",
+          "result": "pass_after_fixes",
+          "findings": [
+            "Independent scoped tests and boundary checks passed"
+          ]
+        }
+      ],
+      "verification": [
+        {
+          "command": "PYTHONPATH=src python3 -m unittest auto_repair_engine.test_e30",
+          "result": "pass as part of full 205-test suite"
+        }
+      ]
+    }
+  },
+  "execution_policy": "Five-item logical batches; at most three Luna children concurrently. Existing Luna agents reused after the thread creation limit; each team has an implementer role and two distinct independent reviewer roles.",
+  "verification": {
+    "python": "214 passed with dependencies (no skips)",
+    "node": "4 browser parity tests passed",
+    "http": "live health/root/browser module/30-engine comparison/save/reload verified on loopback port 8067"
+  },
+  "integrated": {
+    "artifact": "src/auto_repair_engine/integrated.py",
+    "guide": "docs/auto-repair-engine-integrated.md",
+    "implementer": "/root/e10_implementer",
+    "reviewers": [
+      "/root/batch03_review_1",
+      "/root/batch03_review_2"
+    ],
+    "result": "pass",
+    "features": [
+      "E13 schema and observation questions",
+      "E07 validation pipeline",
+      "E06 approved fictional pack and E02 explicit approved pack",
+      "E21 audited evidence additions",
+      "E18 applied contribution trace tree",
+      "E28 server recomputation and idempotent SQLite save",
+      "E29 pinned offline snapshots and digest checks"
+    ],
+    "verification": {
+      "python": "214 passed with all dependencies; no skips",
+      "node": "4 passed",
+      "http": "30-engine comparison, health, HTML/module serving and SQLite create/reload verified; integrated live HTTP checked after restart"
+    },
+    "limitations": [
+      "Fictional simulator data only; no actual repair precision validation",
+      "Schema answers and evidence additions exposed through API; no complete mobile editing form",
+      "Offline queue UI exists; conflict resolution UI is not wired",
+      "No visual browser operation test performed"
+    ]
+  }
+}
