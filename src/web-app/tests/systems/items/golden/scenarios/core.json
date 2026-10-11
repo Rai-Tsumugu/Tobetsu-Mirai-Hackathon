@@ -1,0 +1,60 @@
+{
+  "scenarios": [
+    {
+      "name": "seed と価格取得",
+      "steps": [
+        {"op": "seed_demo"},
+        {"op": "get_price", "item_id": "demo-paint", "price_type": "販売"},
+        {"op": "get_price", "item_id": "demo-paint", "price_type": "仕入", "kwargs": {"unit": "L"}},
+        {"op": "price_versions"},
+        {"op": "get_price", "item_id": "demo-paint", "price_type": "その他"}
+      ]
+    },
+    {
+      "name": "不正な単価は登録しない",
+      "steps": [
+        {"op": "add_price", "item": {"item_id": "x", "name": "n", "category": "塗料", "unit": "ml", "unit_price": "-1", "price_type": "販売", "source": "s", "updated_at": "2026-10-11"}, "confirmed_by": "demo"},
+        {"op": "add_price", "item": {"item_id": "x", "name": "n", "category": "塗料", "unit": "ml", "unit_price": "NaN", "price_type": "販売", "source": "s", "updated_at": "2026-10-11"}, "confirmed_by": "demo"},
+        {"op": "add_price", "item": {"item_id": "x", "name": "n", "category": "塗料", "unit": "ml", "unit_price": true, "price_type": "販売", "source": "s", "updated_at": "2026-10-11"}, "confirmed_by": "demo"},
+        {"op": "add_price", "item": {"item_id": "x", "name": "n", "category": "塗料", "unit": "ml", "unit_price": "", "price_type": "販売", "source": "s", "updated_at": "2026-10-11"}, "confirmed_by": "demo"},
+        {"op": "add_price", "item": {"item_id": "x", "name": "n", "category": "塗料", "unit": "ml", "unit_price": "1e2", "price_type": "販売", "source": " s ", "updated_at": "2026-10-11T09:00:00Z"}, "confirmed_by": " demo "},
+        {"op": "add_price", "item": {"item_id": "x", "name": "n", "category": "塗料", "unit": "ml", "unit_price": 0.10, "price_type": "販売", "source": "s", "updated_at": "20261011"}, "confirmed_by": "demo"},
+        {"op": "add_price", "item": {"item_id": "x", "name": "n", "category": "塗料", "unit": "ml", "unit_price": "1_000", "price_type": "販売", "source": "s", "updated_at": "2026-W41-7"}, "confirmed_by": "demo"},
+        {"op": "add_price", "item": {"item_id": "x", "name": "別名", "category": "塗料", "unit": "ml", "unit_price": "1", "price_type": "販売", "source": "s", "updated_at": "2026-10-11"}, "confirmed_by": "demo"},
+        {"op": "add_price", "item": {"item_id": "x", "name": "n", "category": "塗料", "unit": "ml", "unit_price": "1", "price_type": "販売", "source": "s", "updated_at": "2026-10-11"}, "confirmed_by": "demo", "kwargs": {"valid_until": "2026-10-01"}},
+        {"op": "add_price", "item": {"item_id": "x", "name": "n", "category": "塗料", "unit": "ml", "unit_price": "1", "price_type": "販売", "source": "s", "updated_at": "2026-13-11"}, "confirmed_by": "demo"},
+        {"op": "add_price", "item": {"item_id": "x", "name": "n", "category": "塗料", "unit": "ml", "unit_price": "1", "price_type": "販売", "source": "s", "updated_at": "2026-10-11"}, "confirmed_by": "demo", "kwargs": {"status": "draft"}},
+        {"op": "price_versions", "item_id": "x"}
+      ]
+    },
+    {
+      "name": "期限切れ・未承認・仕入先・通貨",
+      "steps": [
+        {"op": "add_price", "item": {"item_id": "demo-paint", "name": "架空サンプル塗料", "category": "塗料", "unit": "ml", "unit_price": "120", "price_type": "販売", "source": "simulator:架空値", "updated_at": "2026-10-11"}, "confirmed_by": "demo", "kwargs": {"valid_until": "2026-10-12"}},
+        {"op": "add_price", "item": {"item_id": "demo-paint", "name": "架空サンプル塗料", "category": "塗料", "unit": "ml", "unit_price": "140", "price_type": "販売", "source": "simulator:架空値", "updated_at": "2026-10-11"}, "confirmed_by": "demo", "kwargs": {"valid_from": "2026-10-12", "valid_until": "2026-10-13"}},
+        {"op": "get_price", "item_id": "demo-paint", "kwargs": {"as_of": "2026-10-14"}},
+        {"op": "get_price", "item_id": "demo-paint", "kwargs": {"as_of": "2026-10-12"}},
+        {"op": "add_price", "item": {"item_id": "demo-paint", "name": "架空サンプル塗料", "category": "塗料", "unit": "ml", "unit_price": "2", "price_type": "販売", "source": "simulator:架空値", "updated_at": "2026-10-11"}, "confirmed_by": "demo", "kwargs": {"status": "pending"}},
+        {"op": "get_price", "item_id": "demo-paint"},
+        {"op": "add_price", "item": {"item_id": "demo-paint", "name": "架空サンプル塗料", "category": "塗料", "unit": "ml", "unit_price": "120", "price_type": "販売", "source": "simulator:架空値", "updated_at": "2026-10-11"}, "confirmed_by": "demo", "kwargs": {"supplier_id": "A"}},
+        {"op": "get_price", "item_id": "demo-paint"},
+        {"op": "get_price", "item_id": "demo-paint", "kwargs": {"supplier_id": "A", "unit": "L"}},
+        {"op": "get_price", "item_id": "demo-paint", "kwargs": {"supplier_id": "A"}},
+        {"op": "add_price", "item": {"item_id": "usd", "name": "架空", "category": "部品", "unit": "個", "unit_price": "3", "price_type": "販売", "source": "s", "updated_at": "2026-10-11"}, "confirmed_by": "demo", "kwargs": {"currency": "USD", "freight_basis": "included"}},
+        {"op": "get_price", "item_id": "usd"}
+      ]
+    },
+    {
+      "name": "記録の追記と取得",
+      "steps": [
+        {"op": "put", "namespace": "test", "record": {"value": 1.50, "n": 2}, "record_id": " r1 "},
+        {"op": "put", "namespace": "test", "record": {"value": "2"}, "record_id": "r1"},
+        {"op": "records", "namespace": "test"},
+        {"op": "latest", "namespace": "test", "record_id": "r1"},
+        {"op": "latest", "namespace": "test", "record_id": "none"},
+        {"op": "put", "namespace": "", "record": {}},
+        {"op": "put", "namespace": "test", "record": []}
+      ]
+    }
+  ]
+}
