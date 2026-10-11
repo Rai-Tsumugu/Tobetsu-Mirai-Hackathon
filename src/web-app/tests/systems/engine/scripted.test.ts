@@ -6,9 +6,11 @@ import * as e04 from "../../../lib/systems/engine/e04";
 import * as e05 from "../../../lib/systems/engine/e05";
 import * as e06 from "../../../lib/systems/engine/e06";
 import * as e11 from "../../../lib/systems/engine/e11";
+import * as e12 from "../../../lib/systems/engine/e12";
+import * as e14 from "../../../lib/systems/engine/e14";
 import { PyIntegrityError, deepcopy, pyErrorName } from "../../../lib/systems/engine/py";
 import { resetEngineState } from "../../../lib/systems/engine/runner";
-import { E05_CSV, e04Pack, e06FixturePackPayload, golden } from "./fixtures";
+import { E05_CSV, e04Pack, e06FixturePackPayload, e12Scenarios, golden } from "./fixtures";
 import { normalize } from "./normalize";
 
 const scripted = golden("scripted.json");
@@ -209,6 +211,131 @@ describe("E11 (independent comparison)", () => {
     same(out, scripted.e11_flows);
     expect(out.chosen_a.selection.method).toBe("A");
     expect(out.tampered.labor.unknowns).toContain("comparison:payload_tampered");
+  });
+});
+
+describe("E14 (photo candidate queue)", () => {
+  it("promotes only audited human decisions", () => {
+    const STAMP = "2026-10-11T01:02:03+00:00";
+    const cand = (field = "rotor_seizure_hours", value: any = null, id = "cand_1") => ({
+      candidate_id: id, photo_ref: { area: "brake", id: "photo_01" },
+      ai_candidate: { field, value: deepcopy(value ?? { low: 0.0, typical: 0.25, high: 0.5 }) },
+    });
+    const rotorScenario = () => {
+      const s = approvedCommonScenarioFixture();
+      delete s.fields.rotor_seizure_hours;
+      s.fields.rotor_relevance = { value: "relevant", status: "confirmed", source: "fictional_fixture", confirmed_at: STAMP };
+      delete s.metadata.approved_condition_widths;
+      return s;
+    };
+    const out: any = {};
+    out.default = e14.run(approvedCommonScenarioFixture());
+    const queued = e14.proposeCandidates(rotorScenario(), [cand()]);
+    out.queued = queued;
+    out.run_queued = e14.run(queued);
+    const confirmed = e14.confirmCandidate(queued, "cand_1", "shop_owner", "visual check", STAMP);
+    out.confirmed = confirmed;
+    out.run_confirmed = e14.run(confirmed);
+    const modified = e14.modifyCandidate(queued, "cand_1", { low: 0.1, typical: 0.3, high: 0.6 }, "shop_owner", "corrected by inspection", STAMP);
+    out.modified = modified;
+    out.run_modified = e14.run(modified);
+    const rejected = e14.rejectCandidate(queued, "cand_1", "shop_owner", "not visible", STAMP);
+    out.rejected = rejected;
+    out.run_rejected = e14.run(rejected);
+    let two = e14.proposeCandidates(rotorScenario(), [cand(), cand("rotor_relevance", "relevant", "cand_2"), cand("subframe_relevance", "unrelated", "cand_3")]);
+    two = e14.confirmCandidate(two, "cand_1", "a", "r", "2026-10-11T01:02:03Z");
+    two = e14.rejectCandidate(two, "cand_2", "b", "r2", STAMP);
+    two = e14.confirmCandidate(two, "cand_3", "c", "r3", "2026-10-11 09:00:00+09:00");
+    out.multi = two;
+    out.run_multi = e14.run(two);
+    const tampered = deepcopy(confirmed);
+    tampered.photo_candidates[0].human_audit.reason = "changed";
+    out.run_tampered_reason = e14.run(tampered);
+    const t2 = deepcopy(confirmed);
+    t2.fields.rotor_seizure_hours.value.high = 9;
+    out.run_tampered_field = e14.run(t2);
+    const t3 = deepcopy(confirmed);
+    t3.metadata.photo_candidate_audit_log = [];
+    out.run_log_missing = e14.run(t3);
+    const t4 = deepcopy(confirmed);
+    t4.metadata.approved_condition_widths.rotor_seizure_hours.actor = "x";
+    out.run_tampered_approval = e14.run(t4);
+    const t5 = deepcopy(confirmed);
+    t5.photo_candidates[0].extra = 1;
+    t5.photo_candidates.push(5);
+    t5.photo_candidates.push({ candidate_id: "bad id", photo_ref: { area: "A", id: "x" }, ai_candidate: { field: "nope", value: 1 }, status: "weird" });
+    out.run_bad_candidates = e14.run(t5);
+    out.run_candidates_not_list = e14.run({ ...approvedCommonScenarioFixture(), photo_candidates: "x" });
+    out.run_pending_with_audit = e14.run({ ...rotorScenario(), photo_candidates: [{ ...cand(), human_audit: { a: 1 } }] });
+    out.run_custom_pack = e14.run(queued, { allowed_values: { rotor_relevance: ["relevant"], rotor_seizure_hours: "person_hour_range", subframe_relevance: ["x", "x"] } });
+    out.run_pack_ok = e14.run(approvedCommonScenarioFixture(), { allowed_values: { rotor_relevance: ["relevant"], rotor_seizure_hours: "person_hour_range", subframe_relevance: ["x"] } });
+    out.run_pack_bad = [[], { engine_id: "z", rule_version: "q", status: "d", other: 1 }, { allowed_values: 5 }, { allowed_values: { rotor_relevance: [] } }].map((p) => e14.run(approvedCommonScenarioFixture(), p));
+    const cases: Record<string, () => unknown> = {
+      propose_type: () => e14.proposeCandidates([], []),
+      propose_item: () => e14.proposeCandidates({}, [5]),
+      propose_state: () => e14.proposeCandidates({}, [{ ...cand(), status: "approved" }]),
+      propose_list: () => e14.proposeCandidates({ photo_candidates: 5 }, []),
+      confirm_again: () => e14.confirmCandidate(confirmed, "cand_1", "s", "again", STAMP),
+      confirm_missing: () => e14.confirmCandidate(queued, "nope", "s", "r", STAMP),
+      confirm_blank_actor: () => e14.confirmCandidate(queued, "cand_1", " ", "r", STAMP),
+      confirm_naive: () => e14.confirmCandidate(queued, "cand_1", "s", "r", "2026-10-11T01:02:03"),
+      confirm_badstamp: () => e14.confirmCandidate(queued, "cand_1", "s", "r", "yesterday"),
+      confirm_date_only: () => e14.confirmCandidate(queued, "cand_1", "s", "r", "2026-10-11"),
+      confirm_not_dict: () => e14.confirmCandidate([], "cand_1", "s", "r", STAMP),
+      modify_bad: () => e14.modifyCandidate(queued, "cand_1", { low: 0.5, typical: 0.2, high: 0.7 }, "s", "r", STAMP),
+      modify_bool: () => e14.modifyCandidate(queued, "cand_1", { low: true, typical: 1, high: 2 }, "s", "r", STAMP),
+      reject_missing: () => e14.rejectCandidate(queued, "zzz", "s", "r", STAMP),
+      reject_not_dict: () => e14.rejectCandidate(5, "cand_1", "s", "r"),
+      fields_not_dict: () => e14.confirmCandidate({ ...queued, fields: [] }, "cand_1", "s", "r", STAMP),
+      metadata_not_dict: () => e14.confirmCandidate({ ...queued, metadata: 5 }, "cand_1", "s", "r", STAMP),
+    };
+    const errs: any = {};
+    for (const [name, call] of Object.entries(cases)) {
+      try {
+        call();
+        errs[name] = null;
+      } catch (e) {
+        errs[name] = [pyErrorName(e), message(e)];
+      }
+    }
+    out.errors = errs;
+    same(out, scripted.e14_flows);
+    expect(out.run_confirmed.labor.person_hours).toEqual({ low: 1.88, typical: 2.13, high: 2.38 });
+  });
+});
+
+describe("E12 (delta recalculation)", () => {
+  it("reuses verified rows and falls back to a full recalculation otherwise", () => {
+    const scen = e12Scenarios(approvedCommonScenarioFixture, commonScenarioFixture);
+    const out: any = {};
+    const baseline = e12.run(deepcopy(scen.base));
+    out.baseline = baseline;
+    const withPrev = (scenario: any, snapshot: any) => {
+      const s = deepcopy(scenario);
+      s.metadata.previous_snapshot = deepcopy(snapshot);
+      return s;
+    };
+    const snap = baseline.delta_snapshot;
+    for (const [name, scenario] of Object.entries(scen)) out["delta_" + name] = e12.run(withPrev(scenario, snap));
+    out.delta_via_pack = e12.run(deepcopy(scen.wash_changed), { previous_snapshot: deepcopy(snap) });
+    out.pack_changes_hash = e12.run(withPrev(scen.base, snap), { extra: 1 });
+    const forged = deepcopy(snap);
+    forged.result.labor.person_hours.typical = 99;
+    out.forged = e12.run(withPrev(scen.wash_changed, forged));
+    out.garbage_snapshot = [5, "x", [], { a: 1 }].map((g) => e12.run(withPrev(scen.base, g)));
+    const chained = e12.run(withPrev(scen.rotor_unrelated, snap));
+    out.chain_2 = e12.run(withPrev(scen.wash_changed, chained.delta_snapshot));
+    out.index = e12.buildDependencyIndex(scen.extra_field);
+    out.index_bad = [5, {}, { fields: 3, operations: [5, { operation_id: "zz" }] }].map((x) => e12.buildDependencyIndex(x));
+    out.evaluate = Object.fromEntries(
+      ["base_service", "included_carry", "replacement_carry", "rotor_seizure", "snow_melt", "penetrant_wait", "parts_wait", "wash", "nope"].map((id) => [id, e12.evaluateOperation(scen.base, id)]),
+    );
+    out.evaluate_unrelated = e12.evaluateOperation(scen.rotor_unrelated, "rotor_seizure");
+    out.evaluate_mismatch = e12.evaluateOperation(scen.approval_actor, "rotor_seizure");
+    out.changed_fields = ["rotor_unrelated", "extra_field", "approval_actor", "fields_list"].map((k) => e12.changedFields(scen.base, scen[k]));
+    same(out, scripted.e12_flows);
+    expect(out.delta_wash_changed.trace.at(-1).cache_validated).toBe(true);
+    expect(out.forged.trace.at(-1).cache_validated).toBe(false);
   });
 });
 

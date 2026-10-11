@@ -850,6 +850,298 @@ def e11_flows():
     return out
 
 
+def _e13_extras():
+    from auto_repair_engine import e13
+
+    def ans(value, actor="fictional_owner", source="fictional_observation", confirmed_at="2026-10-11T00:00:00+00:00"):
+        return {"value": value, "confirmed": True, "actor": actor, "source": source, "confirmed_at": confirmed_at}
+
+    width = {"low": 0.0, "typical": 0.25, "high": 0.5}
+    s = COMMON()
+    s["fields"].pop("subframe_relevance")
+    extra("e13", "subframe_missing", None, s)
+    s = COMMON()
+    s["fields"]["rotor_relevance"] = {"value": None, "status": "unknown"}
+    extra("e13", "rotor_unknown", None, s)
+    s = COMMON()
+    s["fields"]["rotor_relevance"] = {"value": "relevant", "status": "confirmed"}
+    extra("e13", "relevant_without_width", None, s)
+    s = APPROVED()
+    s["fields"] = []
+    extra("e13", "fields_list", None, s)
+    extra("e13", "custom_schema_pack", {"form_schemas": {"front_brake_service": [{"field": "work_scope", "choices": ["x"], "required": True}]}, "schema_version": "v9"})
+    d = lambda *a: e13.apply_answers(*a)  # noqa: E731
+    base = COMMON()
+    unit("e13.render_form", e13.render_form, base)
+    unit("e13.render_form", e13.render_form, APPROVED())
+    unit("e13.render_form", e13.render_form, 5)
+    unit("e13.build_schema", e13.build_schema, "fictional_job", {"form_schemas": {"fictional_job": [{"field": "f", "choices": ["x"]}]}, "schema_version": "pack-v2"})
+    unit("e13.build_schema", e13.build_schema, None)
+    unit("e13.build_schema", e13.build_schema, "front_brake_service")
+    unit("e13.apply_answers", d, base, {"rotor_relevance": ans("relevant"), "rotor_seizure_hours": ans(width)})
+    unit("e13.apply_answers", d, base, {"rotor_seizure_hours": ans(width), "rotor_relevance": ans("relevant")})
+    unit("e13.apply_answers", d, base, {"rotor_relevance": ans("maybe")})
+    unit("e13.apply_answers", d, base, {"rotor_relevance": {"value": "unknown", "status": "unknown"}})
+    unit("e13.apply_answers", d, base, {"rotor_relevance": {"value": "unknown", "status": "unknown", "confirmed": True, "actor": "reviewer", "source": "inspection", "confirmed_at": "2026-10-11"}})
+    unit("e13.apply_answers", d, base, {"parts_wait_stock_checked": ans(False)})
+    unit("e13.apply_answers", d, base, {"rotor_seizure_hours": ans(width)})
+    unit("e13.apply_answers", d, base, {"rotor_relevance": {"value": "relevant", "confirmed": True}})
+    unit("e13.apply_answers", d, base, {"rotor_relevance": ans("relevant", confirmed_at="bad-date")})
+    unit("e13.apply_answers", d, base, {"rotor_relevance": ans("relevant", confirmed_at="")})
+    unit("e13.apply_answers", d, base, {"nope": ans(1), "work_scope": 5})
+    unit("e13.apply_answers", d, base, {"included_operations": ans(["remove_install", "remove_install"])})
+    unit("e13.apply_answers", d, base, {"included_operations": ans(["remove_install", "snow_removal"])})
+    unit("e13.apply_answers", d, base, {"rotor_relevance": ans("relevant"), "rotor_seizure_hours": ans({"low": 1, "typical": 0, "high": 2})})
+    unit("e13.apply_answers", d, base, {"rotor_relevance": ans("relevant"), "rotor_seizure_hours": dict(ans(width), reason="because")})
+    unit("e13.apply_answers", d, base, [1])
+    unit("e13.apply_answers", d, dict(base, fields=None), {"a": 1})
+    unit("e13.apply_answers", d, {"job_id": "front_brake_service"}, {"work_scope": ans("front_brake_service")})
+    unit("e13.apply_answers", d, 5, {})
+
+
+_e13_extras()
+
+
+def _e15_extras():
+    from auto_repair_engine import e15
+    texts = [
+        "錆はない。ローターは固着している。雪あり", "錆がなくローターは固着", "錆じゃなく塗装の剥がれ", "錆ではなく塗装の剥がれ",
+        "右前は錆なし、左前は錆あり", "左前は錆なし、左前は錆あり", "お客様の山田さん、来週の電話番号は...", "左か右のどちらかのローターが固着",
+        "ローター固着なし", "錆あり", "錆なし", "", "   ", "雪も氷もない", "凍結してない", "左右ともさびあり", "両側のローターが固まっている",
+        "ローター 左 固着 右 固着", "サビが見られない。雪が出ていない", "錆ありません。固着ず", "錆\nあり", "錆あり🙂雪なし", "🙂🙂🙂🙂🙂🙂🙂🙂🙂🙂🙂🙂🙂🙂🙂🙂錆ない",
+        "右の錆と左の雪", "左か右の雪、右の錆", "ローター固着していない。ローター固着あり", "x" * 2001, "錆" * 2000, 5, None, ["錆"],
+    ]
+    for text in texts:
+        unit("e15.extract_candidates", e15.extract_candidates, text)
+    for i, text in enumerate(texts[:12]):
+        if isinstance(text, str):
+            extra("e15", f"transcription_{i}", {"manual_transcription": text})
+    for name, pack in {
+        "pack_unknown_key": {"audio": "x", "manual_transcription": "錆あり"},
+        "pack_engine": {"engine_id": "e02", "manual_transcription": "錆あり"},
+        "pack_version_blank": {"rule_version": " ", "manual_transcription": "錆あり"},
+        "pack_version_pin": {"rule_version": "other", "manual_transcription": "錆あり"},
+        "pack_version_ok": {"rule_version": "fictional-rule-v1"},
+        "pack_not_dict": ["x"],
+        "pack_transcription_not_str": {"manual_transcription": 5},
+        "pack_long": {"manual_transcription": "x" * 3000},
+        "pack_no_tags": {"manual_transcription": "こんにちは"},
+    }.items():
+        extra("e15", name, pack)
+    scenario = COMMON()
+    scenario["fields"]["rust_observation"] = {"value": "unknown", "status": "unknown"}
+    cands = e15.extract_candidates("右前は錆なし、左前は錆あり")["candidates"]
+    conf = lambda *a, **k: e15.confirm_candidate(*a, **k)  # noqa: E731
+    unit("e15.confirm_candidate", conf, scenario, cands[0], "owner", "right inspected")
+    right = conf(scenario, cands[0], "owner", "right inspected")["scenario_input"]
+    unit("e15.confirm_candidate", conf, right, cands[1], "owner", "left inspected")
+    unit("e15.confirm_candidate", conf, scenario, cands[1], "", "x")
+    unit("e15.confirm_candidate", conf, scenario, cands[1], "a", " ")
+    unit("e15.confirm_candidate", conf, scenario, cands[1], "a", "b", "yes")
+    unit("e15.confirm_candidate", conf, scenario, cands[1], "a", "b", False)
+    unit("e15.confirm_candidate", conf, scenario, cands[1], "a", "b", True, "left")
+    unit("e15.confirm_candidate", conf, 5, cands[1], "a", "b")
+    unit("e15.confirm_candidate", conf, scenario, 5, "a", "b")
+    unit("e15.confirm_candidate", conf, scenario, {"tag": "nope"}, "a", "b")
+    unit("e15.confirm_candidate", conf, scenario, dict(cands[0], status="confirmed"), "a", "b")
+    unit("e15.confirm_candidate", conf, scenario, dict(cands[0], side="up"), "a", "b")
+    unit("e15.confirm_candidate", conf, scenario, dict(cands[0], candidate_id="bad"), "a", "b")
+    unit("e15.confirm_candidate", conf, dict(scenario, fields=[]), cands[0], "a", "b")
+    unit("e15.confirm_candidate", conf, dict(scenario, observations=5), cands[0], "a", "b")
+    unit("e15.confirm_candidate", conf, dict(scenario, side_observations=5), cands[0], "a", "b")
+    unit("e15.confirm_candidate", conf, dict(scenario, side_observations={"rust_observation": 5}), cands[0], "a", "b")
+    conflict = e15.extract_candidates("左前は錆なし、左前は錆あり")["candidates"][0]
+    unit("e15.confirm_candidate", conf, scenario, conflict, "owner", "inspect")
+    unit("e15.confirm_candidate", conf, scenario, conflict, "owner", "inspect", True, None, "rust_present")
+    unit("e15.confirm_candidate", conf, scenario, conflict, "owner", "inspect", True, None, "rotor_seized")
+    unit("e15.confirm_candidate", conf, scenario, dict(conflict, alternatives=["rust_present", "rust_present"]), "o", "r", True, None, "rust_present")
+    unit("e15.confirm_candidate", conf, scenario, dict(conflict, side="up"), "o", "r", True, None, "rust_present")
+    side_amb = e15.extract_candidates("左か右のどちらかのローターが固着")["candidates"][0]
+    unit("e15.confirm_candidate", conf, COMMON(), side_amb, "staff", "確認した")
+    unit("e15.confirm_candidate", conf, COMMON(), side_amb, "staff", "右側を実車で確認", True, "right")
+    unit("e15.confirm_candidate", conf, COMMON(), side_amb, "staff", "x", True, "up")
+    unit("e15.confirm_candidate", conf, COMMON(), side_amb, "staff", "x", False, "left")
+    rust = e15.extract_candidates("錆あり")["candidates"][0]
+    first = conf(COMMON(), rust, "owner", "錆を見た")["scenario_input"]
+    unit("e15.confirm_candidate", conf, first, e15.extract_candidates("錆なし")["candidates"][0], "owner", "再確認")
+    sc2 = APPROVED()
+    sc2["observations"] = [{"source": "e15_manual_voice", "candidate_id": "voice-1", "field": "f", "value": "v", "actor": "a", "reason": "r", "extra": 1}, 5]
+    extra("e15", "observations_approvals", {"manual_transcription": "錆あり"}, sc2)
+
+
+_e15_extras()
+
+
+E14_STAMP = "2026-10-11T01:02:03+00:00"
+
+
+def _e14_candidate(field="rotor_seizure_hours", value=None, candidate_id="cand_1"):
+    if value is None:
+        value = {"low": 0.0, "typical": 0.25, "high": 0.5}
+    return {"candidate_id": candidate_id, "photo_ref": {"area": "brake", "id": "photo_01"},
+            "ai_candidate": {"field": field, "value": copy.deepcopy(value)}}
+
+
+def _e14_rotor_scenario():
+    scenario = APPROVED()
+    scenario["fields"].pop("rotor_seizure_hours")
+    scenario["fields"]["rotor_relevance"] = {"value": "relevant", "status": "confirmed", "source": "fictional_fixture", "confirmed_at": E14_STAMP}
+    scenario["metadata"].pop("approved_condition_widths", None)
+    return scenario
+
+
+@script
+def e14_flows():
+    from auto_repair_engine import e14
+    out = {}
+    out["default"] = e14.run(APPROVED())
+    queued = e14.propose_candidates(_e14_rotor_scenario(), [_e14_candidate()])
+    out["queued"] = queued
+    out["run_queued"] = e14.run(queued)
+    confirmed = e14.confirm_candidate(queued, "cand_1", "shop_owner", "visual check", E14_STAMP)
+    out["confirmed"] = confirmed
+    out["run_confirmed"] = e14.run(confirmed)
+    modified = e14.modify_candidate(queued, "cand_1", {"low": 0.1, "typical": 0.3, "high": 0.6}, "shop_owner", "corrected by inspection", E14_STAMP)
+    out["modified"] = modified
+    out["run_modified"] = e14.run(modified)
+    rejected = e14.reject_candidate(queued, "cand_1", "shop_owner", "not visible", E14_STAMP)
+    out["rejected"] = rejected
+    out["run_rejected"] = e14.run(rejected)
+    two = e14.propose_candidates(_e14_rotor_scenario(), [_e14_candidate(), _e14_candidate("rotor_relevance", "relevant", "cand_2"), _e14_candidate("subframe_relevance", "unrelated", "cand_3")])
+    two = e14.confirm_candidate(two, "cand_1", "a", "r", "2026-10-11T01:02:03Z")
+    two = e14.reject_candidate(two, "cand_2", "b", "r2", E14_STAMP)
+    two = e14.confirm_candidate(two, "cand_3", "c", "r3", "2026-10-11 09:00:00+09:00")
+    out["multi"] = two
+    out["run_multi"] = e14.run(two)
+    tampered = copy.deepcopy(confirmed)
+    tampered["photo_candidates"][0]["human_audit"]["reason"] = "changed"
+    out["run_tampered_reason"] = e14.run(tampered)
+    t2 = copy.deepcopy(confirmed)
+    t2["fields"]["rotor_seizure_hours"]["value"]["high"] = 9
+    out["run_tampered_field"] = e14.run(t2)
+    t3 = copy.deepcopy(confirmed)
+    t3["metadata"]["photo_candidate_audit_log"] = []
+    out["run_log_missing"] = e14.run(t3)
+    t4 = copy.deepcopy(confirmed)
+    t4["metadata"]["approved_condition_widths"]["rotor_seizure_hours"]["actor"] = "x"
+    out["run_tampered_approval"] = e14.run(t4)
+    t5 = copy.deepcopy(confirmed)
+    t5["photo_candidates"][0]["extra"] = 1
+    t5["photo_candidates"].append(5)
+    t5["photo_candidates"].append({"candidate_id": "bad id", "photo_ref": {"area": "A", "id": "x"}, "ai_candidate": {"field": "nope", "value": 1}, "status": "weird"})
+    out["run_bad_candidates"] = e14.run(t5)
+    out["run_candidates_not_list"] = e14.run(dict(APPROVED(), photo_candidates="x"))
+    out["run_pending_with_audit"] = e14.run(dict(_e14_rotor_scenario(), photo_candidates=[dict(_e14_candidate(), human_audit={"a": 1})]))
+    out["run_custom_pack"] = e14.run(queued, {"allowed_values": {"rotor_relevance": ["relevant"], "rotor_seizure_hours": "person_hour_range", "subframe_relevance": ["x", "x"]}})
+    out["run_pack_ok"] = e14.run(APPROVED(), {"allowed_values": {"rotor_relevance": ["relevant"], "rotor_seizure_hours": "person_hour_range", "subframe_relevance": ["x"]}})
+    out["run_pack_bad"] = [e14.run(APPROVED(), p) for p in ([], {"engine_id": "z", "rule_version": "q", "status": "d", "other": 1}, {"allowed_values": 5}, {"allowed_values": {"rotor_relevance": []}})]
+    errs = {}
+    cases = {
+        "propose_type": lambda: e14.propose_candidates([], []),
+        "propose_item": lambda: e14.propose_candidates({}, [5]),
+        "propose_state": lambda: e14.propose_candidates({}, [dict(_e14_candidate(), status="approved")]),
+        "propose_list": lambda: e14.propose_candidates({"photo_candidates": 5}, []),
+        "confirm_again": lambda: e14.confirm_candidate(confirmed, "cand_1", "s", "again", E14_STAMP),
+        "confirm_missing": lambda: e14.confirm_candidate(queued, "nope", "s", "r", E14_STAMP),
+        "confirm_blank_actor": lambda: e14.confirm_candidate(queued, "cand_1", " ", "r", E14_STAMP),
+        "confirm_naive": lambda: e14.confirm_candidate(queued, "cand_1", "s", "r", "2026-10-11T01:02:03"),
+        "confirm_badstamp": lambda: e14.confirm_candidate(queued, "cand_1", "s", "r", "yesterday"),
+        "confirm_date_only": lambda: e14.confirm_candidate(queued, "cand_1", "s", "r", "2026-10-11"),
+        "confirm_not_dict": lambda: e14.confirm_candidate([], "cand_1", "s", "r", E14_STAMP),
+        "modify_bad": lambda: e14.modify_candidate(queued, "cand_1", {"low": 0.5, "typical": 0.2, "high": 0.7}, "s", "r", E14_STAMP),
+        "modify_bool": lambda: e14.modify_candidate(queued, "cand_1", {"low": True, "typical": 1, "high": 2}, "s", "r", E14_STAMP),
+        "reject_missing": lambda: e14.reject_candidate(queued, "zzz", "s", "r", E14_STAMP),
+        "reject_not_dict": lambda: e14.reject_candidate(5, "cand_1", "s", "r"),
+        "fields_not_dict": lambda: e14.confirm_candidate(dict(queued, fields=[]), "cand_1", "s", "r", E14_STAMP),
+        "metadata_not_dict": lambda: e14.confirm_candidate(dict(queued, metadata=5), "cand_1", "s", "r", E14_STAMP),
+    }
+    for name, call in cases.items():
+        try:
+            call()
+            errs[name] = None
+        except Exception as exc:  # noqa: BLE001
+            errs[name] = [type(exc).__name__, str(exc)]
+    out["errors"] = errs
+    return out
+
+
+def _e12_scenarios():
+    """E12 の差分再計算で使う入力の変種（TS 側 tests/systems/engine/fixtures.ts の e12Scenarios と同じ内容）。"""
+    base = APPROVED()
+    out = {"base": base}
+    s = APPROVED()
+    s["fields"]["rotor_relevance"]["value"] = "unrelated"
+    s["fields"].pop("rotor_seizure_hours")
+    s["metadata"].pop("approved_condition_widths")
+    out["rotor_unrelated"] = s
+    s = APPROVED()
+    op(s, "wash")["hours"] = 0.2
+    out["wash_changed"] = s
+    s = APPROVED()
+    s["rule_version"] = "fictional-rule-v2"
+    out["version_changed"] = s
+    s = APPROVED()
+    s["person_count"] = 3
+    out["person_count"] = s
+    s = APPROVED()
+    s["fields"]["extra_field"] = {"value": 1, "status": "confirmed", "source": "x", "confirmed_at": None}
+    out["extra_field"] = s
+    s = APPROVED()
+    s["fields"]["parts_wait_stock_checked"]["value"] = False
+    out["stock_false"] = s
+    s = APPROVED()
+    op(s, "snow_melt")["elapsed_hours"] = None
+    out["snow_unknown"] = s
+    s = APPROVED()
+    s["fields"]["work_scope"]["value"] = "other"
+    out["scope_changed"] = s
+    s = APPROVED()
+    s["metadata"]["approved_condition_widths"]["rotor_seizure_hours"]["actor"] = "someone_else"
+    out["approval_actor"] = s
+    s = APPROVED()
+    s["operations"] = [o for o in s["operations"] if o["operation_id"] != "wash"]
+    out["wash_removed"] = s
+    s = APPROVED()
+    s["fields"] = []
+    out["fields_list"] = s
+    out["common"] = COMMON()
+    return out
+
+
+@script
+def e12_flows():
+    from auto_repair_engine import e12
+    out = {}
+    scen = _e12_scenarios()
+    baseline = e12.run(copy.deepcopy(scen["base"]))
+    out["baseline"] = baseline
+
+    def with_prev(scenario, snapshot):
+        scenario = copy.deepcopy(scenario)
+        scenario["metadata"]["previous_snapshot"] = copy.deepcopy(snapshot)
+        return scenario
+
+    snap = baseline["delta_snapshot"]
+    for name, scenario in scen.items():
+        out["delta_" + name] = e12.run(with_prev(scenario, snap))
+    out["delta_via_pack"] = e12.run(copy.deepcopy(scen["wash_changed"]), {"previous_snapshot": copy.deepcopy(snap)})
+    out["pack_changes_hash"] = e12.run(with_prev(scen["base"], snap), {"extra": 1})
+    forged = copy.deepcopy(snap)
+    forged["result"]["labor"]["person_hours"]["typical"] = 99
+    out["forged"] = e12.run(with_prev(scen["wash_changed"], forged))
+    out["garbage_snapshot"] = [e12.run(with_prev(scen["base"], g)) for g in (5, "x", [], {"a": 1})]
+    chained = e12.run(with_prev(scen["rotor_unrelated"], snap))
+    out["chain_2"] = e12.run(with_prev(scen["wash_changed"], chained["delta_snapshot"]))
+    out["index"] = e12.build_dependency_index(scen["extra_field"])
+    out["index_bad"] = [e12.build_dependency_index(x) for x in (5, {}, {"fields": 3, "operations": [5, {"operation_id": "zz"}]})]
+    out["evaluate"] = {oid: e12._evaluate_operation(scen["base"], oid) for oid in
+                       ("base_service", "included_carry", "replacement_carry", "rotor_seizure", "snow_melt", "penetrant_wait", "parts_wait", "wash", "nope")}
+    out["evaluate_unrelated"] = e12._evaluate_operation(scen["rotor_unrelated"], "rotor_seizure")
+    out["evaluate_mismatch"] = e12._evaluate_operation(scen["approval_actor"], "rotor_seizure")
+    out["changed_fields"] = [e12._changed_fields(scen["base"], scen[k]) for k in ("rotor_unrelated", "extra_field", "approval_actor", "fields_list")]
+    return out
+
+
 def _date_ok(text):
     from datetime import date
     try:

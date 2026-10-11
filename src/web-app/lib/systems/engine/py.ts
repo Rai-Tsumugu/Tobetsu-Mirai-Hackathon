@@ -11,6 +11,8 @@ export class PyValueError extends Error {}
 export class PyKeyError extends Error {}
 /** Python の AttributeError（元実装では捕捉されず 500 になる）。 */
 export class PyAttributeError extends Error {}
+/** Python の ZeroDivisionError（元実装では捕捉されず 500 になる）。 */
+export class PyZeroDivisionError extends Error {}
 /** sqlite3.IntegrityError / sqlite3.ProgrammingError 相当（E04 のメモリ内 DB 模倣用）。 */
 export class PyIntegrityError extends Error {}
 export class PyProgrammingError extends Error {}
@@ -41,9 +43,9 @@ export function or<T, U>(a: T, b: U): T | U {
 const hasOwn = (d: object, k: string) => Object.prototype.hasOwnProperty.call(d, k) && (d as any)[k] !== undefined;
 
 /** dict.get(key, default)。dict 以外は AttributeError。 */
-export function get(d: unknown, key: string, def: any = null): any {
+export function get(d: unknown, key: any, def: any = null): any {
   if (!isDict(d)) throw new PyAttributeError(`object has no attribute 'get'`);
-  return hasOwn(d, key) ? d[key] : def;
+  return typeof key === "string" && hasOwn(d, key) ? d[key] : def;
 }
 
 export const has = (d: unknown, key: string): boolean => isDict(d) && hasOwn(d, key);
@@ -269,6 +271,23 @@ export function pyJsonDumps(
 
 export const sha256Hex = (text: string): string => createHash("sha256").update(text, "utf8").digest("hex");
 
+/** `for x in v` — list はそのまま、dict はキー、str は文字、それ以外は TypeError。 */
+export function pyIter(v: any): any[] {
+  if (Array.isArray(v)) return v;
+  if (isDict(v)) return keysOf(v);
+  if (typeof v === "string") return Array.from(v);
+  throw new PyTypeError("object is not iterable");
+}
+
+/** a / b（数値以外は TypeError、0 での除算は ZeroDivisionError）。 */
+export function pyDiv(a: any, b: any): number {
+  const x = typeof a === "boolean" ? Number(a) : a;
+  const y = typeof b === "boolean" ? Number(b) : b;
+  if (typeof x !== "number" || typeof y !== "number") throw new PyTypeError("unsupported operand type(s) for /");
+  if (y === 0) throw new PyZeroDivisionError("division by zero");
+  return x / y;
+}
+
 /** dict のキーとして使える値を文字列キーへ正規化する（list / dict は unhashable で TypeError）。 */
 export function hashKey(v: any): string {
   if (v === null || v === undefined) return "n:";
@@ -330,12 +349,55 @@ export function isoDate(s: any): number {
   return year * 10000 + month * 100 + day;
 }
 
+/**
+ * datetime.fromisoformat(s)（Python 3.11 以降）の検証。タイムゾーン付きかどうかと、UTC のミリ秒値を返す。
+ * 不正な文字列は ValueError、str 以外は TypeError。
+ */
+export function isoDatetime(s: any): { aware: boolean; epochMs: number } {
+  if (typeof s !== "string") throw new PyTypeError("fromisoformat: argument must be str");
+  const bad = () => new PyValueError(`Invalid isoformat string: '${s}'`);
+  const m = /^(\d{4}-\d{2}-\d{2}|\d{8}|\d{4}-?W\d{2}(?:-?\d)?)(?:([\s\S])(.*))?$/u.exec(s);
+  if (!m) throw bad();
+  const date = isoDate(m[1]);
+  let hour = 0;
+  let minute = 0;
+  let second = 0;
+  let ms = 0;
+  let aware = false;
+  let offsetMin = 0;
+  if (m[2] !== undefined) {
+    const rest = m[3] ?? "";
+    const t = /^(\d{2})(?::?(\d{2})(?::?(\d{2})(?:[.,](\d+))?)?)?(Z|[+-]\d{2}(?::?\d{2}(?::?\d{2}(?:[.,]\d+)?)?)?)?$/.exec(rest);
+    if (!t) throw bad();
+    hour = Number(t[1]);
+    minute = t[2] !== undefined ? Number(t[2]) : 0;
+    second = t[3] !== undefined ? Number(t[3]) : 0;
+    if (t[4] !== undefined) ms = Math.floor(Number((t[4] + "000").slice(0, 3)));
+    if (hour > 23 || minute > 59 || second > 59) throw bad();
+    if (t[5] !== undefined) {
+      aware = true;
+      if (t[5] !== "Z") {
+        const tz = /^([+-])(\d{2})(?::?(\d{2}))?/.exec(t[5])!;
+        const hh = Number(tz[2]);
+        const mm = tz[3] !== undefined ? Number(tz[3]) : 0;
+        if (hh > 23 || mm > 59) throw bad();
+        offsetMin = (tz[1] === "-" ? -1 : 1) * (hh * 60 + mm);
+      }
+    }
+  }
+  const y = Math.floor(date / 10000);
+  const mo = Math.floor(date / 100) % 100;
+  const d = date % 100;
+  return { aware, epochMs: Date.UTC(y, mo - 1, d, hour, minute, second, ms) - offsetMin * 60000 };
+}
+
 /** 例外を Python の例外クラス名に対応づける（ゴールデン照合用）。 */
 export function pyErrorName(e: unknown): string {
   if (e instanceof PyTypeError) return "TypeError";
   if (e instanceof PyValueError) return "ValueError";
   if (e instanceof PyKeyError) return "KeyError";
   if (e instanceof PyAttributeError) return "AttributeError";
+  if (e instanceof PyZeroDivisionError) return "ZeroDivisionError";
   if (e instanceof PyIntegrityError) return "IntegrityError";
   if (e instanceof PyProgrammingError) return "ProgrammingError";
   return e instanceof Error ? e.constructor.name : "Error";

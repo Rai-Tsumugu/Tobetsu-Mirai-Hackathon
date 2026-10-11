@@ -12,12 +12,16 @@ import * as e08 from "./e08";
 import * as e09 from "./e09";
 import * as e10 from "./e10";
 import * as e11 from "./e11";
+import * as e12 from "./e12";
+import * as e13 from "./e13";
+import * as e14 from "./e14";
+import * as e15 from "./e15";
 
 export const ENGINE_IDS: string[] = Array.from({ length: 30 }, (_, i) => `e${String(i + 1).padStart(2, "0")}`);
 
 type EngineModule = { run: (scenario: Dict, rulePack: Dict | null) => Dict };
 const MODULES: Record<string, EngineModule> = {
-  e01, e02, e03, e04, e05, e06, e07, e08, e09, e10, e11,
+  e01, e02, e03, e04, e05, e06, e07, e08, e09, e10, e11, e12, e13, e14, e15,
 };
 
 /** Python の ModuleNotFoundError（API では 503）。 */

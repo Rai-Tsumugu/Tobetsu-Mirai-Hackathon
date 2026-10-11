@@ -38,6 +38,49 @@ export function e04Pack(version = "fictional-rule-v1", washHours = 0.1): any {
   };
 }
 
+/** E12 の差分再計算で使う入力の変種（golden/generate.py の _e12_scenarios と同じ内容） */
+export function e12Scenarios(approved: () => any, common: () => any): Record<string, any> {
+  const op = (s: any, id: string) => s.operations.find((o: any) => o.operation_id === id);
+  const out: Record<string, any> = { base: approved() };
+  let s = approved();
+  s.fields.rotor_relevance.value = "unrelated";
+  delete s.fields.rotor_seizure_hours;
+  delete s.metadata.approved_condition_widths;
+  out.rotor_unrelated = s;
+  s = approved();
+  op(s, "wash").hours = 0.2;
+  out.wash_changed = s;
+  s = approved();
+  s.rule_version = "fictional-rule-v2";
+  out.version_changed = s;
+  s = approved();
+  s.person_count = 3;
+  out.person_count = s;
+  s = approved();
+  s.fields.extra_field = { value: 1, status: "confirmed", source: "x", confirmed_at: null };
+  out.extra_field = s;
+  s = approved();
+  s.fields.parts_wait_stock_checked.value = false;
+  out.stock_false = s;
+  s = approved();
+  op(s, "snow_melt").elapsed_hours = null;
+  out.snow_unknown = s;
+  s = approved();
+  s.fields.work_scope.value = "other";
+  out.scope_changed = s;
+  s = approved();
+  s.metadata.approved_condition_widths.rotor_seizure_hours.actor = "someone_else";
+  out.approval_actor = s;
+  s = approved();
+  s.operations = s.operations.filter((o: any) => o.operation_id !== "wash");
+  out.wash_removed = s;
+  s = approved();
+  s.fields = [];
+  out.fields_list = s;
+  out.common = common();
+  return out;
+}
+
 export function e06FixturePackPayload(scenario: any): any {
   const r = (key: string, condition: any, h: number, unit: string) => ({
     job_id: "front_brake_service", operation_key: key, condition, hours: { low: h, typical: h, high: h }, unit, source: "fixture:" + key,

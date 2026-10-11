@@ -6,10 +6,17 @@ import { parseToAst } from "../../../lib/systems/engine/e03";
 import { deductOnce, replaceOnce } from "../../../lib/systems/engine/e10";
 import { resetEngineState } from "../../../lib/systems/engine/runner";
 import { golden } from "./fixtures";
+import { applyAnswers, buildSchema, renderForm } from "../../../lib/systems/engine/e13";
+import { confirmCandidate, extractCandidates } from "../../../lib/systems/engine/e15";
 import { normalize } from "./normalize";
 
 const FUNCS: Record<string, (...args: any[]) => any> = {
   "e03.parse_to_ast": parseToAst,
+  "e13.render_form": renderForm,
+  "e15.extract_candidates": extractCandidates,
+  "e15.confirm_candidate": confirmCandidate,
+  "e13.build_schema": buildSchema,
+  "e13.apply_answers": applyAnswers,
   "e10.deduct_once": (ledger, key, amount, owners, reason) => deductOnce(ledger, key, amount, { owners, reason }),
   "e10.replace_once": (ledger, key, rkey, owners, oldHours, replacementHours, reason) =>
     replaceOnce(ledger, key, rkey, { owners, old_hours: oldHours, replacement_hours: replacementHours, reason }),
