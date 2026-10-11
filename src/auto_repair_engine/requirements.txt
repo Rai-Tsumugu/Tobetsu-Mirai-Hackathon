@@ -1,0 +1,4 @@
+# Python 3.9-compatible local demo dependencies.
+fastapi>=0.95,<0.100
+uvicorn>=0.22,<0.28
+httpx>=0.24,<0.28
