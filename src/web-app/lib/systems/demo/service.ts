@@ -1,7 +1,7 @@
 // src/app-demo/backend/app.py の API の処理。保存先は SQLite ではなく Neon（0006_demo.sql の demo_* テーブル）。
 // サーバー側専用。Route Handler（app/api/demo/）から接続を渡して呼ぶ。
 import { createHash } from "node:crypto";
-import { transaction, type Database, type Queryable } from "@/lib/db/queryable";
+import { transaction, type Database, type Queryable } from "../../db/queryable";
 import * as gemini from "./gemini";
 import { HttpError, pyCasefold, pyDumps, pySlice, pyStrip, pyUtcNow, uuidHex } from "./py";
 import { JOBS, ensureRepairJobs, simulatorSources } from "./seed";
@@ -150,6 +150,11 @@ async function validateContext(db: Queryable, vehicleId: string, year: number, g
 
 // ---- 参考価格 ----
 
+/** 調査条件とモデルから作るキャッシュキー（sort_keys=True の json.dumps の SHA-256）。 */
+export function researchCacheKey(kind: string, target: ResearchTarget): string {
+  return createHash("sha256").update(pyDumps({ kind, target, model: gemini.MODEL }, { sortKeys: true })).digest("hex");
+}
+
 /** 同じ条件の Gemini 調査は24時間 DB に保存して再利用する。 */
 async function cachedInvestigation(
   db: Queryable,
@@ -158,9 +163,7 @@ async function cachedInvestigation(
   schema: unknown,
   extract: (result: gemini.Investigation) => Record<string, Source[]>,
 ): Promise<ResearchRecord> {
-  const cacheKey = createHash("sha256")
-    .update(pyDumps({ kind, target, model: gemini.MODEL }, { sortKeys: true }))
-    .digest("hex");
+  const cacheKey = researchCacheKey(kind, target);
   const [cached] = await rows<ResearchRecord>(
     db,
     `SELECT data FROM demo_research_cache WHERE cache_key = $1 AND created_at > now() - interval '86400 seconds'

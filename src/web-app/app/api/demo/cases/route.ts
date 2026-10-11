@@ -1,6 +1,6 @@
 // GET/POST /api/demo/cases（元: GET/POST /api/cases）
-import { readBody, respond } from "@/lib/systems/demo/http";
-import { createCase, listCases } from "@/lib/systems/demo/service";
+import { readBody, respond } from "../../../../lib/systems/demo/http";
+import { createCase, listCases } from "../../../../lib/systems/demo/service";
 
 export const dynamic = "force-dynamic";
 

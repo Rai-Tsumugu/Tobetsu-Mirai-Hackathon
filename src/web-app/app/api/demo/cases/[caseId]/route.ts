@@ -1,6 +1,6 @@
 // PUT /api/demo/cases/{case_id}（元: PUT /api/cases/{case_id}）
-import { readBody, respond } from "@/lib/systems/demo/http";
-import { updateCase } from "@/lib/systems/demo/service";
+import { readBody, respond } from "../../../../../lib/systems/demo/http";
+import { updateCase } from "../../../../../lib/systems/demo/service";
 
 export const dynamic = "force-dynamic";
 

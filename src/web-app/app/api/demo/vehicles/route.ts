@@ -1,6 +1,6 @@
 // GET/POST /api/demo/vehicles（元: GET/POST /api/vehicles）
-import { queryParam, readBody, respond } from "@/lib/systems/demo/http";
-import { createManualVehicle, listVehicles } from "@/lib/systems/demo/service";
+import { queryParam, readBody, respond } from "../../../../lib/systems/demo/http";
+import { createManualVehicle, listVehicles } from "../../../../lib/systems/demo/service";
 
 export const dynamic = "force-dynamic";
 

@@ -1,0 +1,5634 @@
+{
+ "simulator": {
+  "brake": [
+   {
+    "id": "brake-0",
+    "source_title": "サンプル整備記録 A",
+    "source_url": null,
+    "mode": "simulator",
+    "retrieved_at": "2026-10-11",
+    "currency": "JPY",
+    "verified": false,
+    "labor_price": 5000,
+    "parts_price": null,
+    "total_price": null,
+    "tax_included": false,
+    "vehicle_match_level": "型式一致（架空）",
+    "work_conditions": "前輪左右・パッド持込なし",
+    "extraction_notes": "サンプル／実価格ではない",
+    "normalized_labor": 5000
+   },
+   {
+    "id": "brake-1",
+    "source_title": "サンプル整備記録 B",
+    "source_url": null,
+    "mode": "simulator",
+    "retrieved_at": "2026-10-11",
+    "currency": "JPY",
+    "verified": false,
+    "labor_price": 6600,
+    "parts_price": null,
+    "total_price": null,
+    "tax_included": true,
+    "vehicle_match_level": "型式一致（架空）",
+    "work_conditions": "前輪左右・パッド持込なし",
+    "extraction_notes": "サンプル／実価格ではない",
+    "normalized_labor": 6000
+   },
+   {
+    "id": "brake-2",
+    "source_title": "サンプル整備記録 C",
+    "source_url": null,
+    "mode": "simulator",
+    "retrieved_at": "2026-10-11",
+    "currency": "JPY",
+    "verified": false,
+    "labor_price": 8000,
+    "parts_price": null,
+    "total_price": null,
+    "tax_included": false,
+    "vehicle_match_level": "型式一致（架空）",
+    "work_conditions": "前輪左右・パッド持込なし",
+    "extraction_notes": "サンプル／実価格ではない",
+    "normalized_labor": 8000
+   },
+   {
+    "id": "brake-3",
+    "source_title": "サンプル整備記録 D",
+    "source_url": null,
+    "mode": "simulator",
+    "retrieved_at": "2026-10-11",
+    "currency": "JPY",
+    "verified": false,
+    "labor_price": null,
+    "parts_price": 12000,
+    "total_price": 24000,
+    "tax_included": false,
+    "vehicle_match_level": "別仕様（架空）",
+    "work_conditions": "別仕様・追加工程あり・工賃内訳不明",
+    "extraction_notes": "サンプル／実価格ではない",
+    "normalized_labor": null
+   }
+  ],
+  "oil": [
+   {
+    "id": "oil-0",
+    "source_title": "サンプル整備記録 A",
+    "source_url": null,
+    "mode": "simulator",
+    "retrieved_at": "2026-10-11",
+    "currency": "JPY",
+    "verified": false,
+    "labor_price": 1000,
+    "parts_price": null,
+    "total_price": null,
+    "tax_included": false,
+    "vehicle_match_level": "型式一致（架空）",
+    "work_conditions": "オイル交換のみ・フィルター別",
+    "extraction_notes": "サンプル／実価格ではない",
+    "normalized_labor": 1000
+   },
+   {
+    "id": "oil-1",
+    "source_title": "サンプル整備記録 B",
+    "source_url": null,
+    "mode": "simulator",
+    "retrieved_at": "2026-10-11",
+    "currency": "JPY",
+    "verified": false,
+    "labor_price": 2200,
+    "parts_price": null,
+    "total_price": null,
+    "tax_included": true,
+    "vehicle_match_level": "型式一致（架空）",
+    "work_conditions": "オイル交換のみ・フィルター別",
+    "extraction_notes": "サンプル／実価格ではない",
+    "normalized_labor": 2000
+   },
+   {
+    "id": "oil-2",
+    "source_title": "サンプル整備記録 C",
+    "source_url": null,
+    "mode": "simulator",
+    "retrieved_at": "2026-10-11",
+    "currency": "JPY",
+    "verified": false,
+    "labor_price": 4000,
+    "parts_price": null,
+    "total_price": null,
+    "tax_included": false,
+    "vehicle_match_level": "型式一致（架空）",
+    "work_conditions": "オイル交換のみ・フィルター別",
+    "extraction_notes": "サンプル／実価格ではない",
+    "normalized_labor": 4000
+   },
+   {
+    "id": "oil-3",
+    "source_title": "サンプル整備記録 D",
+    "source_url": null,
+    "mode": "simulator",
+    "retrieved_at": "2026-10-11",
+    "currency": "JPY",
+    "verified": false,
+    "labor_price": null,
+    "parts_price": 4000,
+    "total_price": 8000,
+    "tax_included": false,
+    "vehicle_match_level": "別仕様（架空）",
+    "work_conditions": "別仕様・追加工程あり・工賃内訳不明",
+    "extraction_notes": "サンプル／実価格ではない",
+    "normalized_labor": null
+   }
+  ],
+  "battery": [
+   {
+    "id": "battery-0",
+    "source_title": "サンプル整備記録 A",
+    "source_url": null,
+    "mode": "simulator",
+    "retrieved_at": "2026-10-11",
+    "currency": "JPY",
+    "verified": false,
+    "labor_price": 3000,
+    "parts_price": null,
+    "total_price": null,
+    "tax_included": false,
+    "vehicle_match_level": "型式一致（架空）",
+    "work_conditions": "補機用・バッテリー持込なし",
+    "extraction_notes": "サンプル／実価格ではない",
+    "normalized_labor": 3000
+   },
+   {
+    "id": "battery-1",
+    "source_title": "サンプル整備記録 B",
+    "source_url": null,
+    "mode": "simulator",
+    "retrieved_at": "2026-10-11",
+    "currency": "JPY",
+    "verified": false,
+    "labor_price": 4400,
+    "parts_price": null,
+    "total_price": null,
+    "tax_included": true,
+    "vehicle_match_level": "型式一致（架空）",
+    "work_conditions": "補機用・バッテリー持込なし",
+    "extraction_notes": "サンプル／実価格ではない",
+    "normalized_labor": 4000
+   },
+   {
+    "id": "battery-2",
+    "source_title": "サンプル整備記録 C",
+    "source_url": null,
+    "mode": "simulator",
+    "retrieved_at": "2026-10-11",
+    "currency": "JPY",
+    "verified": false,
+    "labor_price": 6000,
+    "parts_price": null,
+    "total_price": null,
+    "tax_included": false,
+    "vehicle_match_level": "型式一致（架空）",
+    "work_conditions": "補機用・バッテリー持込なし",
+    "extraction_notes": "サンプル／実価格ではない",
+    "normalized_labor": 6000
+   },
+   {
+    "id": "battery-3",
+    "source_title": "サンプル整備記録 D",
+    "source_url": null,
+    "mode": "simulator",
+    "retrieved_at": "2026-10-11",
+    "currency": "JPY",
+    "verified": false,
+    "labor_price": null,
+    "parts_price": 8000,
+    "total_price": 16000,
+    "tax_included": false,
+    "vehicle_match_level": "別仕様（架空）",
+    "work_conditions": "別仕様・追加工程あり・工賃内訳不明",
+    "extraction_notes": "サンプル／実価格ではない",
+    "normalized_labor": null
+   }
+  ],
+  "filter": [
+   {
+    "id": "filter-0",
+    "source_title": "サンプル整備記録 A",
+    "source_url": null,
+    "mode": "simulator",
+    "retrieved_at": "2026-10-11",
+    "currency": "JPY",
+    "verified": false,
+    "labor_price": 500,
+    "parts_price": null,
+    "total_price": null,
+    "tax_included": false,
+    "vehicle_match_level": "型式一致（架空）",
+    "work_conditions": "フィルター交換のみ",
+    "extraction_notes": "サンプル／実価格ではない",
+    "normalized_labor": 500
+   },
+   {
+    "id": "filter-1",
+    "source_title": "サンプル整備記録 B",
+    "source_url": null,
+    "mode": "simulator",
+    "retrieved_at": "2026-10-11",
+    "currency": "JPY",
+    "verified": false,
+    "labor_price": 1650,
+    "parts_price": null,
+    "total_price": null,
+    "tax_included": true,
+    "vehicle_match_level": "型式一致（架空）",
+    "work_conditions": "フィルター交換のみ",
+    "extraction_notes": "サンプル／実価格ではない",
+    "normalized_labor": 1500
+   },
+   {
+    "id": "filter-2",
+    "source_title": "サンプル整備記録 C",
+    "source_url": null,
+    "mode": "simulator",
+    "retrieved_at": "2026-10-11",
+    "currency": "JPY",
+    "verified": false,
+    "labor_price": 3500,
+    "parts_price": null,
+    "total_price": null,
+    "tax_included": false,
+    "vehicle_match_level": "型式一致（架空）",
+    "work_conditions": "フィルター交換のみ",
+    "extraction_notes": "サンプル／実価格ではない",
+    "normalized_labor": 3500
+   },
+   {
+    "id": "filter-3",
+    "source_title": "サンプル整備記録 D",
+    "source_url": null,
+    "mode": "simulator",
+    "retrieved_at": "2026-10-11",
+    "currency": "JPY",
+    "verified": false,
+    "labor_price": null,
+    "parts_price": 3000,
+    "total_price": 6000,
+    "tax_included": false,
+    "vehicle_match_level": "別仕様（架空）",
+    "work_conditions": "別仕様・追加工程あり・工賃内訳不明",
+    "extraction_notes": "サンプル／実価格ではない",
+    "normalized_labor": null
+   }
+  ],
+  "bumper": [
+   {
+    "id": "bumper-0",
+    "source_title": "サンプル整備記録 A",
+    "source_url": null,
+    "mode": "simulator",
+    "retrieved_at": "2026-10-11",
+    "currency": "JPY",
+    "verified": false,
+    "labor_price": 15000,
+    "parts_price": null,
+    "total_price": null,
+    "tax_included": false,
+    "vehicle_match_level": "型式一致（架空）",
+    "work_conditions": "脱着交換・塗装と補修は別",
+    "extraction_notes": "サンプル／実価格ではない",
+    "normalized_labor": 15000
+   },
+   {
+    "id": "bumper-1",
+    "source_title": "サンプル整備記録 B",
+    "source_url": null,
+    "mode": "simulator",
+    "retrieved_at": "2026-10-11",
+    "currency": "JPY",
+    "verified": false,
+    "labor_price": 17600,
+    "parts_price": null,
+    "total_price": null,
+    "tax_included": true,
+    "vehicle_match_level": "型式一致（架空）",
+    "work_conditions": "脱着交換・塗装と補修は別",
+    "extraction_notes": "サンプル／実価格ではない",
+    "normalized_labor": 16000
+   },
+   {
+    "id": "bumper-2",
+    "source_title": "サンプル整備記録 C",
+    "source_url": null,
+    "mode": "simulator",
+    "retrieved_at": "2026-10-11",
+    "currency": "JPY",
+    "verified": false,
+    "labor_price": 18000,
+    "parts_price": null,
+    "total_price": null,
+    "tax_included": false,
+    "vehicle_match_level": "型式一致（架空）",
+    "work_conditions": "脱着交換・塗装と補修は別",
+    "extraction_notes": "サンプル／実価格ではない",
+    "normalized_labor": 18000
+   },
+   {
+    "id": "bumper-3",
+    "source_title": "サンプル整備記録 D",
+    "source_url": null,
+    "mode": "simulator",
+    "retrieved_at": "2026-10-11",
+    "currency": "JPY",
+    "verified": false,
+    "labor_price": null,
+    "parts_price": 32000,
+    "total_price": 64000,
+    "tax_included": false,
+    "vehicle_match_level": "別仕様（架空）",
+    "work_conditions": "別仕様・追加工程あり・工賃内訳不明",
+    "extraction_notes": "サンプル／実価格ではない",
+    "normalized_labor": null
+   }
+  ]
+ },
+ "jobs": [
+  {
+   "id": "brake",
+   "category": "ブレーキ",
+   "name": "フロントブレーキパッド交換",
+   "description": "前輪左右・パッド持込なし",
+   "base": 6000
+  },
+  {
+   "id": "oil",
+   "category": "消耗品",
+   "name": "エンジンオイル交換",
+   "description": "オイル交換のみ・フィルター別",
+   "base": 2000
+  },
+  {
+   "id": "battery",
+   "category": "電装",
+   "name": "補機バッテリー交換",
+   "description": "補機用・バッテリー持込なし",
+   "base": 4000
+  },
+  {
+   "id": "filter",
+   "category": "消耗品",
+   "name": "エアコンフィルター交換",
+   "description": "フィルター交換のみ",
+   "base": 1500
+  },
+  {
+   "id": "bumper",
+   "category": "外装",
+   "name": "フロントバンパー交換",
+   "description": "脱着交換・塗装と補修は別",
+   "base": 16000
+  }
+ ],
+ "public_url": [
+  {
+   "url": "https://example.org/a",
+   "result": true
+  },
+  {
+   "url": "http://example.org",
+   "result": false
+  },
+  {
+   "url": "https://127.0.0.1/",
+   "result": false
+  },
+  {
+   "url": "https://localhost/",
+   "result": false
+  },
+  {
+   "url": "https://user:pass@example.org/",
+   "result": false
+  },
+  {
+   "url": "https://user@example.org/",
+   "result": false
+  },
+  {
+   "url": "https://@example.org/",
+   "result": true
+  },
+  {
+   "url": "https://[::1]/",
+   "result": false
+  },
+  {
+   "url": "https://[::ffff:8.8.8.8]/",
+   "result": true
+  },
+  {
+   "url": "https://[::ffff:10.0.0.1]/",
+   "result": false
+  },
+  {
+   "url": "https://8.8.8.8/",
+   "result": true
+  },
+  {
+   "url": "https://10.1.2.3/",
+   "result": false
+  },
+  {
+   "url": "https://172.16.0.1/",
+   "result": false
+  },
+  {
+   "url": "https://172.32.0.1/",
+   "result": true
+  },
+  {
+   "url": "https://192.168.1.1/",
+   "result": false
+  },
+  {
+   "url": "https://100.64.0.1/",
+   "result": false
+  },
+  {
+   "url": "https://100.128.0.1/",
+   "result": true
+  },
+  {
+   "url": "https://169.254.1.1/",
+   "result": false
+  },
+  {
+   "url": "https://192.0.0.9/",
+   "result": true
+  },
+  {
+   "url": "https://192.0.2.1/",
+   "result": false
+  },
+  {
+   "url": "https://224.0.0.1/",
+   "result": true
+  },
+  {
+   "url": "https://255.255.255.255/",
+   "result": false
+  },
+  {
+   "url": "https://0.1.2.3/",
+   "result": false
+  },
+  {
+   "url": "https://01.2.3.4/",
+   "result": true
+  },
+  {
+   "url": "https://1.2.3/",
+   "result": true
+  },
+  {
+   "url": "https://example.org:443/",
+   "result": true
+  },
+  {
+   "url": "https://example.org:0443/",
+   "result": true
+  },
+  {
+   "url": "https://example.org:8443/",
+   "result": false
+  },
+  {
+   "url": "https://example.org:/",
+   "result": true
+  },
+  {
+   "url": "https://example.org:99999/",
+   "result": false
+  },
+  {
+   "url": "https://example.org:abc/",
+   "result": false
+  },
+  {
+   "url": "https://EXAMPLE.ORG/",
+   "result": true
+  },
+  {
+   "url": "HTTPS://example.org/",
+   "result": true
+  },
+  {
+   "url": " https://example.org/ ",
+   "result": true
+  },
+  {
+   "url": "https://example/",
+   "result": false
+  },
+  {
+   "url": "https://foo.local/",
+   "result": false
+  },
+  {
+   "url": "https://foo.internal/",
+   "result": false
+  },
+  {
+   "url": "https://foo.localhost/",
+   "result": false
+  },
+  {
+   "url": "https://[example.org/",
+   "result": false
+  },
+  {
+   "url": "https://example.org]/",
+   "result": false
+  },
+  {
+   "url": "https://[v1.abc]/",
+   "result": true
+  },
+  {
+   "url": "https:example.org",
+   "result": false
+  },
+  {
+   "url": "//example.org/",
+   "result": false
+  },
+  {
+   "url": "https://exa\tmple.org/",
+   "result": true
+  },
+  {
+   "url": "https://例え.jp/",
+   "result": true
+  },
+  {
+   "url": "https://ｅｘａｍｐｌｅ.org/",
+   "result": true
+  },
+  {
+   "url": "https://a.b%2F/",
+   "result": true
+  },
+  {
+   "url": "",
+   "result": false
+  },
+  {
+   "url": "https://",
+   "result": false
+  },
+  {
+   "url": "https://xn--r8jz45g.jp/path?q=1#f",
+   "result": true
+  },
+  {
+   "url": "https://[2001:db8::1]/",
+   "result": false
+  },
+  {
+   "url": "https://[64:ff9b::8.8.8.8]/",
+   "result": true
+  },
+  {
+   "url": null,
+   "result": false
+  }
+ ],
+ "extract": [
+  {
+   "name": "valid",
+   "data": {
+    "sources": [
+     {
+      "job_id": "brake",
+      "source_url": "https://example.org/workshop/brake",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     }
+    ]
+   },
+   "job_ids": [
+    "brake"
+   ],
+   "citations": [
+    {
+     "url": "https://example.org/workshop/brake",
+     "title": "記事"
+    },
+    {
+     "url": "https://s0.example.com/",
+     "title": "S0"
+    },
+    {
+     "url": "https://s1.example.com/",
+     "title": "S1"
+    },
+    {
+     "url": "https://s2.example.com/",
+     "title": "S2"
+    },
+    {
+     "url": "https://s3.example.com/",
+     "title": "S3"
+    },
+    {
+     "url": "https://s4.example.com/",
+     "title": "S4"
+    },
+    {
+     "url": "https://s5.example.com/",
+     "title": "S5"
+    },
+    {
+     "url": "https://s6.example.com/",
+     "title": "S6"
+    },
+    {
+     "url": "https://s7.example.com/",
+     "title": "S7"
+    },
+    {
+     "url": "https://s8.example.com/",
+     "title": "S8"
+    },
+    {
+     "url": "https://s9.example.com/",
+     "title": "S9"
+    },
+    {
+     "url": "https://s10.example.com/",
+     "title": "S10"
+    },
+    {
+     "url": "https://s11.example.com/",
+     "title": "S11"
+    },
+    {
+     "url": "https://s12.example.com/",
+     "title": "S12"
+    },
+    {
+     "url": "https://s13.example.com/",
+     "title": "S13"
+    },
+    {
+     "url": "https://s14.example.com/",
+     "title": "S14"
+    },
+    {
+     "url": "https://s15.example.com/",
+     "title": "S15"
+    },
+    {
+     "url": "https://s16.example.com/",
+     "title": "S16"
+    },
+    {
+     "url": "https://s17.example.com/",
+     "title": "S17"
+    },
+    {
+     "url": "https://s18.example.com/",
+     "title": "S18"
+    },
+    {
+     "url": "https://s19.example.com/",
+     "title": "S19"
+    },
+    {
+     "url": "https://s20.example.com/",
+     "title": "S20"
+    }
+   ],
+   "output": {
+    "groups": {
+     "brake": [
+      {
+       "job_id": "brake",
+       "source_url": "https://example.org/workshop/brake",
+       "labor_price": 6600,
+       "parts_price": 12000,
+       "total_price": null,
+       "tax_included": true,
+       "tax_rate": 0.1,
+       "vehicle_match": "exact",
+       "work_matches": true,
+       "work_conditions": "前輪左右",
+       "published_at": null,
+       "evidence": "工賃6,600円（税込）",
+       "id": "<ID:0>",
+       "mode": "live",
+       "source_title": "記事",
+       "retrieved_at": "<TS>",
+       "currency": "JPY",
+       "verified": false,
+       "normalized_labor": 6000,
+       "vehicle_match_level": "型式・年式・仕様一致（AI抽出・要確認）",
+       "extraction_notes": "AI抽出・人による確認前"
+      }
+     ]
+    },
+    "warnings": []
+   }
+  },
+  {
+   "name": "tax_unknown",
+   "data": {
+    "sources": [
+     {
+      "job_id": "brake",
+      "source_url": "https://example.org/workshop/brake",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": null,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     }
+    ]
+   },
+   "job_ids": [
+    "brake"
+   ],
+   "citations": [
+    {
+     "url": "https://example.org/workshop/brake",
+     "title": "記事"
+    },
+    {
+     "url": "https://s0.example.com/",
+     "title": "S0"
+    },
+    {
+     "url": "https://s1.example.com/",
+     "title": "S1"
+    },
+    {
+     "url": "https://s2.example.com/",
+     "title": "S2"
+    },
+    {
+     "url": "https://s3.example.com/",
+     "title": "S3"
+    },
+    {
+     "url": "https://s4.example.com/",
+     "title": "S4"
+    },
+    {
+     "url": "https://s5.example.com/",
+     "title": "S5"
+    },
+    {
+     "url": "https://s6.example.com/",
+     "title": "S6"
+    },
+    {
+     "url": "https://s7.example.com/",
+     "title": "S7"
+    },
+    {
+     "url": "https://s8.example.com/",
+     "title": "S8"
+    },
+    {
+     "url": "https://s9.example.com/",
+     "title": "S9"
+    },
+    {
+     "url": "https://s10.example.com/",
+     "title": "S10"
+    },
+    {
+     "url": "https://s11.example.com/",
+     "title": "S11"
+    },
+    {
+     "url": "https://s12.example.com/",
+     "title": "S12"
+    },
+    {
+     "url": "https://s13.example.com/",
+     "title": "S13"
+    },
+    {
+     "url": "https://s14.example.com/",
+     "title": "S14"
+    },
+    {
+     "url": "https://s15.example.com/",
+     "title": "S15"
+    },
+    {
+     "url": "https://s16.example.com/",
+     "title": "S16"
+    },
+    {
+     "url": "https://s17.example.com/",
+     "title": "S17"
+    },
+    {
+     "url": "https://s18.example.com/",
+     "title": "S18"
+    },
+    {
+     "url": "https://s19.example.com/",
+     "title": "S19"
+    },
+    {
+     "url": "https://s20.example.com/",
+     "title": "S20"
+    }
+   ],
+   "output": {
+    "groups": {
+     "brake": [
+      {
+       "job_id": "brake",
+       "source_url": "https://example.org/workshop/brake",
+       "labor_price": 6600,
+       "parts_price": 12000,
+       "total_price": null,
+       "tax_included": null,
+       "tax_rate": 0.1,
+       "vehicle_match": "exact",
+       "work_matches": true,
+       "work_conditions": "前輪左右",
+       "published_at": null,
+       "evidence": "工賃6,600円（税込）",
+       "id": "<ID:1>",
+       "mode": "live",
+       "source_title": "記事",
+       "retrieved_at": "<TS>",
+       "currency": "JPY",
+       "verified": false,
+       "normalized_labor": null,
+       "vehicle_match_level": "型式・年式・仕様一致（AI抽出・要確認）",
+       "extraction_notes": "AI抽出・人による確認前"
+      }
+     ]
+    },
+    "warnings": []
+   }
+  },
+  {
+   "name": "rate_unknown",
+   "data": {
+    "sources": [
+     {
+      "job_id": "brake",
+      "source_url": "https://example.org/workshop/brake",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": null,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     }
+    ]
+   },
+   "job_ids": [
+    "brake"
+   ],
+   "citations": [
+    {
+     "url": "https://example.org/workshop/brake",
+     "title": "記事"
+    },
+    {
+     "url": "https://s0.example.com/",
+     "title": "S0"
+    },
+    {
+     "url": "https://s1.example.com/",
+     "title": "S1"
+    },
+    {
+     "url": "https://s2.example.com/",
+     "title": "S2"
+    },
+    {
+     "url": "https://s3.example.com/",
+     "title": "S3"
+    },
+    {
+     "url": "https://s4.example.com/",
+     "title": "S4"
+    },
+    {
+     "url": "https://s5.example.com/",
+     "title": "S5"
+    },
+    {
+     "url": "https://s6.example.com/",
+     "title": "S6"
+    },
+    {
+     "url": "https://s7.example.com/",
+     "title": "S7"
+    },
+    {
+     "url": "https://s8.example.com/",
+     "title": "S8"
+    },
+    {
+     "url": "https://s9.example.com/",
+     "title": "S9"
+    },
+    {
+     "url": "https://s10.example.com/",
+     "title": "S10"
+    },
+    {
+     "url": "https://s11.example.com/",
+     "title": "S11"
+    },
+    {
+     "url": "https://s12.example.com/",
+     "title": "S12"
+    },
+    {
+     "url": "https://s13.example.com/",
+     "title": "S13"
+    },
+    {
+     "url": "https://s14.example.com/",
+     "title": "S14"
+    },
+    {
+     "url": "https://s15.example.com/",
+     "title": "S15"
+    },
+    {
+     "url": "https://s16.example.com/",
+     "title": "S16"
+    },
+    {
+     "url": "https://s17.example.com/",
+     "title": "S17"
+    },
+    {
+     "url": "https://s18.example.com/",
+     "title": "S18"
+    },
+    {
+     "url": "https://s19.example.com/",
+     "title": "S19"
+    },
+    {
+     "url": "https://s20.example.com/",
+     "title": "S20"
+    }
+   ],
+   "output": {
+    "groups": {
+     "brake": [
+      {
+       "job_id": "brake",
+       "source_url": "https://example.org/workshop/brake",
+       "labor_price": 6600,
+       "parts_price": 12000,
+       "total_price": null,
+       "tax_included": true,
+       "tax_rate": null,
+       "vehicle_match": "exact",
+       "work_matches": true,
+       "work_conditions": "前輪左右",
+       "published_at": null,
+       "evidence": "工賃6,600円（税込）",
+       "id": "<ID:2>",
+       "mode": "live",
+       "source_title": "記事",
+       "retrieved_at": "<TS>",
+       "currency": "JPY",
+       "verified": false,
+       "normalized_labor": null,
+       "vehicle_match_level": "型式・年式・仕様一致（AI抽出・要確認）",
+       "extraction_notes": "AI抽出・人による確認前"
+      }
+     ]
+    },
+    "warnings": []
+   }
+  },
+  {
+   "name": "total_only",
+   "data": {
+    "sources": [
+     {
+      "job_id": "brake",
+      "source_url": "https://example.org/workshop/brake",
+      "labor_price": null,
+      "parts_price": 12000,
+      "total_price": 19800,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     }
+    ]
+   },
+   "job_ids": [
+    "brake"
+   ],
+   "citations": [
+    {
+     "url": "https://example.org/workshop/brake",
+     "title": "記事"
+    },
+    {
+     "url": "https://s0.example.com/",
+     "title": "S0"
+    },
+    {
+     "url": "https://s1.example.com/",
+     "title": "S1"
+    },
+    {
+     "url": "https://s2.example.com/",
+     "title": "S2"
+    },
+    {
+     "url": "https://s3.example.com/",
+     "title": "S3"
+    },
+    {
+     "url": "https://s4.example.com/",
+     "title": "S4"
+    },
+    {
+     "url": "https://s5.example.com/",
+     "title": "S5"
+    },
+    {
+     "url": "https://s6.example.com/",
+     "title": "S6"
+    },
+    {
+     "url": "https://s7.example.com/",
+     "title": "S7"
+    },
+    {
+     "url": "https://s8.example.com/",
+     "title": "S8"
+    },
+    {
+     "url": "https://s9.example.com/",
+     "title": "S9"
+    },
+    {
+     "url": "https://s10.example.com/",
+     "title": "S10"
+    },
+    {
+     "url": "https://s11.example.com/",
+     "title": "S11"
+    },
+    {
+     "url": "https://s12.example.com/",
+     "title": "S12"
+    },
+    {
+     "url": "https://s13.example.com/",
+     "title": "S13"
+    },
+    {
+     "url": "https://s14.example.com/",
+     "title": "S14"
+    },
+    {
+     "url": "https://s15.example.com/",
+     "title": "S15"
+    },
+    {
+     "url": "https://s16.example.com/",
+     "title": "S16"
+    },
+    {
+     "url": "https://s17.example.com/",
+     "title": "S17"
+    },
+    {
+     "url": "https://s18.example.com/",
+     "title": "S18"
+    },
+    {
+     "url": "https://s19.example.com/",
+     "title": "S19"
+    },
+    {
+     "url": "https://s20.example.com/",
+     "title": "S20"
+    }
+   ],
+   "output": {
+    "groups": {
+     "brake": [
+      {
+       "job_id": "brake",
+       "source_url": "https://example.org/workshop/brake",
+       "labor_price": null,
+       "parts_price": 12000,
+       "total_price": 19800,
+       "tax_included": true,
+       "tax_rate": 0.1,
+       "vehicle_match": "exact",
+       "work_matches": true,
+       "work_conditions": "前輪左右",
+       "published_at": null,
+       "evidence": "工賃6,600円（税込）",
+       "id": "<ID:3>",
+       "mode": "live",
+       "source_title": "記事",
+       "retrieved_at": "<TS>",
+       "currency": "JPY",
+       "verified": false,
+       "normalized_labor": null,
+       "vehicle_match_level": "型式・年式・仕様一致（AI抽出・要確認）",
+       "extraction_notes": "AI抽出・人による確認前"
+      }
+     ]
+    },
+    "warnings": []
+   }
+  },
+  {
+   "name": "similar",
+   "data": {
+    "sources": [
+     {
+      "job_id": "brake",
+      "source_url": "https://example.org/workshop/brake",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "similar",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     }
+    ]
+   },
+   "job_ids": [
+    "brake"
+   ],
+   "citations": [
+    {
+     "url": "https://example.org/workshop/brake",
+     "title": "記事"
+    },
+    {
+     "url": "https://s0.example.com/",
+     "title": "S0"
+    },
+    {
+     "url": "https://s1.example.com/",
+     "title": "S1"
+    },
+    {
+     "url": "https://s2.example.com/",
+     "title": "S2"
+    },
+    {
+     "url": "https://s3.example.com/",
+     "title": "S3"
+    },
+    {
+     "url": "https://s4.example.com/",
+     "title": "S4"
+    },
+    {
+     "url": "https://s5.example.com/",
+     "title": "S5"
+    },
+    {
+     "url": "https://s6.example.com/",
+     "title": "S6"
+    },
+    {
+     "url": "https://s7.example.com/",
+     "title": "S7"
+    },
+    {
+     "url": "https://s8.example.com/",
+     "title": "S8"
+    },
+    {
+     "url": "https://s9.example.com/",
+     "title": "S9"
+    },
+    {
+     "url": "https://s10.example.com/",
+     "title": "S10"
+    },
+    {
+     "url": "https://s11.example.com/",
+     "title": "S11"
+    },
+    {
+     "url": "https://s12.example.com/",
+     "title": "S12"
+    },
+    {
+     "url": "https://s13.example.com/",
+     "title": "S13"
+    },
+    {
+     "url": "https://s14.example.com/",
+     "title": "S14"
+    },
+    {
+     "url": "https://s15.example.com/",
+     "title": "S15"
+    },
+    {
+     "url": "https://s16.example.com/",
+     "title": "S16"
+    },
+    {
+     "url": "https://s17.example.com/",
+     "title": "S17"
+    },
+    {
+     "url": "https://s18.example.com/",
+     "title": "S18"
+    },
+    {
+     "url": "https://s19.example.com/",
+     "title": "S19"
+    },
+    {
+     "url": "https://s20.example.com/",
+     "title": "S20"
+    }
+   ],
+   "output": {
+    "groups": {
+     "brake": [
+      {
+       "job_id": "brake",
+       "source_url": "https://example.org/workshop/brake",
+       "labor_price": 6600,
+       "parts_price": 12000,
+       "total_price": null,
+       "tax_included": true,
+       "tax_rate": 0.1,
+       "vehicle_match": "similar",
+       "work_matches": true,
+       "work_conditions": "前輪左右",
+       "published_at": null,
+       "evidence": "工賃6,600円（税込）",
+       "id": "<ID:4>",
+       "mode": "live",
+       "source_title": "記事",
+       "retrieved_at": "<TS>",
+       "currency": "JPY",
+       "verified": false,
+       "normalized_labor": null,
+       "vehicle_match_level": "類似条件（要確認）",
+       "extraction_notes": "AI抽出・人による確認前"
+      }
+     ]
+    },
+    "warnings": []
+   }
+  },
+  {
+   "name": "work_unknown",
+   "data": {
+    "sources": [
+     {
+      "job_id": "brake",
+      "source_url": "https://example.org/workshop/brake",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": null,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     }
+    ]
+   },
+   "job_ids": [
+    "brake"
+   ],
+   "citations": [
+    {
+     "url": "https://example.org/workshop/brake",
+     "title": "記事"
+    },
+    {
+     "url": "https://s0.example.com/",
+     "title": "S0"
+    },
+    {
+     "url": "https://s1.example.com/",
+     "title": "S1"
+    },
+    {
+     "url": "https://s2.example.com/",
+     "title": "S2"
+    },
+    {
+     "url": "https://s3.example.com/",
+     "title": "S3"
+    },
+    {
+     "url": "https://s4.example.com/",
+     "title": "S4"
+    },
+    {
+     "url": "https://s5.example.com/",
+     "title": "S5"
+    },
+    {
+     "url": "https://s6.example.com/",
+     "title": "S6"
+    },
+    {
+     "url": "https://s7.example.com/",
+     "title": "S7"
+    },
+    {
+     "url": "https://s8.example.com/",
+     "title": "S8"
+    },
+    {
+     "url": "https://s9.example.com/",
+     "title": "S9"
+    },
+    {
+     "url": "https://s10.example.com/",
+     "title": "S10"
+    },
+    {
+     "url": "https://s11.example.com/",
+     "title": "S11"
+    },
+    {
+     "url": "https://s12.example.com/",
+     "title": "S12"
+    },
+    {
+     "url": "https://s13.example.com/",
+     "title": "S13"
+    },
+    {
+     "url": "https://s14.example.com/",
+     "title": "S14"
+    },
+    {
+     "url": "https://s15.example.com/",
+     "title": "S15"
+    },
+    {
+     "url": "https://s16.example.com/",
+     "title": "S16"
+    },
+    {
+     "url": "https://s17.example.com/",
+     "title": "S17"
+    },
+    {
+     "url": "https://s18.example.com/",
+     "title": "S18"
+    },
+    {
+     "url": "https://s19.example.com/",
+     "title": "S19"
+    },
+    {
+     "url": "https://s20.example.com/",
+     "title": "S20"
+    }
+   ],
+   "output": {
+    "groups": {
+     "brake": [
+      {
+       "job_id": "brake",
+       "source_url": "https://example.org/workshop/brake",
+       "labor_price": 6600,
+       "parts_price": 12000,
+       "total_price": null,
+       "tax_included": true,
+       "tax_rate": 0.1,
+       "vehicle_match": "exact",
+       "work_matches": null,
+       "work_conditions": "前輪左右",
+       "published_at": null,
+       "evidence": "工賃6,600円（税込）",
+       "id": "<ID:5>",
+       "mode": "live",
+       "source_title": "記事",
+       "retrieved_at": "<TS>",
+       "currency": "JPY",
+       "verified": false,
+       "normalized_labor": null,
+       "vehicle_match_level": "型式・年式・仕様一致（AI抽出・要確認）",
+       "extraction_notes": "AI抽出・人による確認前"
+      }
+     ]
+    },
+    "warnings": []
+   }
+  },
+  {
+   "name": "tax_excluded",
+   "data": {
+    "sources": [
+     {
+      "job_id": "brake",
+      "source_url": "https://example.org/workshop/brake",
+      "labor_price": 5999,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": false,
+      "tax_rate": null,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     }
+    ]
+   },
+   "job_ids": [
+    "brake"
+   ],
+   "citations": [
+    {
+     "url": "https://example.org/workshop/brake",
+     "title": "記事"
+    },
+    {
+     "url": "https://s0.example.com/",
+     "title": "S0"
+    },
+    {
+     "url": "https://s1.example.com/",
+     "title": "S1"
+    },
+    {
+     "url": "https://s2.example.com/",
+     "title": "S2"
+    },
+    {
+     "url": "https://s3.example.com/",
+     "title": "S3"
+    },
+    {
+     "url": "https://s4.example.com/",
+     "title": "S4"
+    },
+    {
+     "url": "https://s5.example.com/",
+     "title": "S5"
+    },
+    {
+     "url": "https://s6.example.com/",
+     "title": "S6"
+    },
+    {
+     "url": "https://s7.example.com/",
+     "title": "S7"
+    },
+    {
+     "url": "https://s8.example.com/",
+     "title": "S8"
+    },
+    {
+     "url": "https://s9.example.com/",
+     "title": "S9"
+    },
+    {
+     "url": "https://s10.example.com/",
+     "title": "S10"
+    },
+    {
+     "url": "https://s11.example.com/",
+     "title": "S11"
+    },
+    {
+     "url": "https://s12.example.com/",
+     "title": "S12"
+    },
+    {
+     "url": "https://s13.example.com/",
+     "title": "S13"
+    },
+    {
+     "url": "https://s14.example.com/",
+     "title": "S14"
+    },
+    {
+     "url": "https://s15.example.com/",
+     "title": "S15"
+    },
+    {
+     "url": "https://s16.example.com/",
+     "title": "S16"
+    },
+    {
+     "url": "https://s17.example.com/",
+     "title": "S17"
+    },
+    {
+     "url": "https://s18.example.com/",
+     "title": "S18"
+    },
+    {
+     "url": "https://s19.example.com/",
+     "title": "S19"
+    },
+    {
+     "url": "https://s20.example.com/",
+     "title": "S20"
+    }
+   ],
+   "output": {
+    "groups": {
+     "brake": [
+      {
+       "job_id": "brake",
+       "source_url": "https://example.org/workshop/brake",
+       "labor_price": 5999,
+       "parts_price": 12000,
+       "total_price": null,
+       "tax_included": false,
+       "tax_rate": null,
+       "vehicle_match": "exact",
+       "work_matches": true,
+       "work_conditions": "前輪左右",
+       "published_at": null,
+       "evidence": "工賃6,600円（税込）",
+       "id": "<ID:6>",
+       "mode": "live",
+       "source_title": "記事",
+       "retrieved_at": "<TS>",
+       "currency": "JPY",
+       "verified": false,
+       "normalized_labor": 5999,
+       "vehicle_match_level": "型式・年式・仕様一致（AI抽出・要確認）",
+       "extraction_notes": "AI抽出・人による確認前"
+      }
+     ]
+    },
+    "warnings": []
+   }
+  },
+  {
+   "name": "rate_005",
+   "data": {
+    "sources": [
+     {
+      "job_id": "brake",
+      "source_url": "https://example.org/workshop/brake",
+      "labor_price": 6299,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.05,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     }
+    ]
+   },
+   "job_ids": [
+    "brake"
+   ],
+   "citations": [
+    {
+     "url": "https://example.org/workshop/brake",
+     "title": "記事"
+    },
+    {
+     "url": "https://s0.example.com/",
+     "title": "S0"
+    },
+    {
+     "url": "https://s1.example.com/",
+     "title": "S1"
+    },
+    {
+     "url": "https://s2.example.com/",
+     "title": "S2"
+    },
+    {
+     "url": "https://s3.example.com/",
+     "title": "S3"
+    },
+    {
+     "url": "https://s4.example.com/",
+     "title": "S4"
+    },
+    {
+     "url": "https://s5.example.com/",
+     "title": "S5"
+    },
+    {
+     "url": "https://s6.example.com/",
+     "title": "S6"
+    },
+    {
+     "url": "https://s7.example.com/",
+     "title": "S7"
+    },
+    {
+     "url": "https://s8.example.com/",
+     "title": "S8"
+    },
+    {
+     "url": "https://s9.example.com/",
+     "title": "S9"
+    },
+    {
+     "url": "https://s10.example.com/",
+     "title": "S10"
+    },
+    {
+     "url": "https://s11.example.com/",
+     "title": "S11"
+    },
+    {
+     "url": "https://s12.example.com/",
+     "title": "S12"
+    },
+    {
+     "url": "https://s13.example.com/",
+     "title": "S13"
+    },
+    {
+     "url": "https://s14.example.com/",
+     "title": "S14"
+    },
+    {
+     "url": "https://s15.example.com/",
+     "title": "S15"
+    },
+    {
+     "url": "https://s16.example.com/",
+     "title": "S16"
+    },
+    {
+     "url": "https://s17.example.com/",
+     "title": "S17"
+    },
+    {
+     "url": "https://s18.example.com/",
+     "title": "S18"
+    },
+    {
+     "url": "https://s19.example.com/",
+     "title": "S19"
+    },
+    {
+     "url": "https://s20.example.com/",
+     "title": "S20"
+    }
+   ],
+   "output": {
+    "groups": {
+     "brake": [
+      {
+       "job_id": "brake",
+       "source_url": "https://example.org/workshop/brake",
+       "labor_price": 6299,
+       "parts_price": 12000,
+       "total_price": null,
+       "tax_included": true,
+       "tax_rate": 0.05,
+       "vehicle_match": "exact",
+       "work_matches": true,
+       "work_conditions": "前輪左右",
+       "published_at": null,
+       "evidence": "工賃6,600円（税込）",
+       "id": "<ID:7>",
+       "mode": "live",
+       "source_title": "記事",
+       "retrieved_at": "<TS>",
+       "currency": "JPY",
+       "verified": false,
+       "normalized_labor": 5999,
+       "vehicle_match_level": "型式・年式・仕様一致（AI抽出・要確認）",
+       "extraction_notes": "AI抽出・人による確認前"
+      }
+     ]
+    },
+    "warnings": []
+   }
+  },
+  {
+   "name": "rate_008",
+   "data": {
+    "sources": [
+     {
+      "job_id": "brake",
+      "source_url": "https://example.org/workshop/brake",
+      "labor_price": 6479,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.08,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     }
+    ]
+   },
+   "job_ids": [
+    "brake"
+   ],
+   "citations": [
+    {
+     "url": "https://example.org/workshop/brake",
+     "title": "記事"
+    },
+    {
+     "url": "https://s0.example.com/",
+     "title": "S0"
+    },
+    {
+     "url": "https://s1.example.com/",
+     "title": "S1"
+    },
+    {
+     "url": "https://s2.example.com/",
+     "title": "S2"
+    },
+    {
+     "url": "https://s3.example.com/",
+     "title": "S3"
+    },
+    {
+     "url": "https://s4.example.com/",
+     "title": "S4"
+    },
+    {
+     "url": "https://s5.example.com/",
+     "title": "S5"
+    },
+    {
+     "url": "https://s6.example.com/",
+     "title": "S6"
+    },
+    {
+     "url": "https://s7.example.com/",
+     "title": "S7"
+    },
+    {
+     "url": "https://s8.example.com/",
+     "title": "S8"
+    },
+    {
+     "url": "https://s9.example.com/",
+     "title": "S9"
+    },
+    {
+     "url": "https://s10.example.com/",
+     "title": "S10"
+    },
+    {
+     "url": "https://s11.example.com/",
+     "title": "S11"
+    },
+    {
+     "url": "https://s12.example.com/",
+     "title": "S12"
+    },
+    {
+     "url": "https://s13.example.com/",
+     "title": "S13"
+    },
+    {
+     "url": "https://s14.example.com/",
+     "title": "S14"
+    },
+    {
+     "url": "https://s15.example.com/",
+     "title": "S15"
+    },
+    {
+     "url": "https://s16.example.com/",
+     "title": "S16"
+    },
+    {
+     "url": "https://s17.example.com/",
+     "title": "S17"
+    },
+    {
+     "url": "https://s18.example.com/",
+     "title": "S18"
+    },
+    {
+     "url": "https://s19.example.com/",
+     "title": "S19"
+    },
+    {
+     "url": "https://s20.example.com/",
+     "title": "S20"
+    }
+   ],
+   "output": {
+    "groups": {
+     "brake": [
+      {
+       "job_id": "brake",
+       "source_url": "https://example.org/workshop/brake",
+       "labor_price": 6479,
+       "parts_price": 12000,
+       "total_price": null,
+       "tax_included": true,
+       "tax_rate": 0.08,
+       "vehicle_match": "exact",
+       "work_matches": true,
+       "work_conditions": "前輪左右",
+       "published_at": null,
+       "evidence": "工賃6,600円（税込）",
+       "id": "<ID:8>",
+       "mode": "live",
+       "source_title": "記事",
+       "retrieved_at": "<TS>",
+       "currency": "JPY",
+       "verified": false,
+       "normalized_labor": 5999,
+       "vehicle_match_level": "型式・年式・仕様一致（AI抽出・要確認）",
+       "extraction_notes": "AI抽出・人による確認前"
+      }
+     ]
+    },
+    "warnings": []
+   }
+  },
+  {
+   "name": "fabricated_dup_wrong_job",
+   "data": {
+    "sources": [
+     {
+      "job_id": "brake",
+      "source_url": "https://example.org/workshop/brake",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     },
+     {
+      "job_id": "brake",
+      "source_url": "https://example.org/workshop/brake",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     },
+     {
+      "job_id": "brake",
+      "source_url": "https://invented.example/a",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     },
+     {
+      "job_id": "oil",
+      "source_url": "https://example.org/workshop/brake",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     }
+    ]
+   },
+   "job_ids": [
+    "brake"
+   ],
+   "citations": [
+    {
+     "url": "https://example.org/workshop/brake",
+     "title": "記事"
+    },
+    {
+     "url": "https://s0.example.com/",
+     "title": "S0"
+    },
+    {
+     "url": "https://s1.example.com/",
+     "title": "S1"
+    },
+    {
+     "url": "https://s2.example.com/",
+     "title": "S2"
+    },
+    {
+     "url": "https://s3.example.com/",
+     "title": "S3"
+    },
+    {
+     "url": "https://s4.example.com/",
+     "title": "S4"
+    },
+    {
+     "url": "https://s5.example.com/",
+     "title": "S5"
+    },
+    {
+     "url": "https://s6.example.com/",
+     "title": "S6"
+    },
+    {
+     "url": "https://s7.example.com/",
+     "title": "S7"
+    },
+    {
+     "url": "https://s8.example.com/",
+     "title": "S8"
+    },
+    {
+     "url": "https://s9.example.com/",
+     "title": "S9"
+    },
+    {
+     "url": "https://s10.example.com/",
+     "title": "S10"
+    },
+    {
+     "url": "https://s11.example.com/",
+     "title": "S11"
+    },
+    {
+     "url": "https://s12.example.com/",
+     "title": "S12"
+    },
+    {
+     "url": "https://s13.example.com/",
+     "title": "S13"
+    },
+    {
+     "url": "https://s14.example.com/",
+     "title": "S14"
+    },
+    {
+     "url": "https://s15.example.com/",
+     "title": "S15"
+    },
+    {
+     "url": "https://s16.example.com/",
+     "title": "S16"
+    },
+    {
+     "url": "https://s17.example.com/",
+     "title": "S17"
+    },
+    {
+     "url": "https://s18.example.com/",
+     "title": "S18"
+    },
+    {
+     "url": "https://s19.example.com/",
+     "title": "S19"
+    },
+    {
+     "url": "https://s20.example.com/",
+     "title": "S20"
+    }
+   ],
+   "output": {
+    "groups": {
+     "brake": [
+      {
+       "job_id": "brake",
+       "source_url": "https://example.org/workshop/brake",
+       "labor_price": 6600,
+       "parts_price": 12000,
+       "total_price": null,
+       "tax_included": true,
+       "tax_rate": 0.1,
+       "vehicle_match": "exact",
+       "work_matches": true,
+       "work_conditions": "前輪左右",
+       "published_at": null,
+       "evidence": "工賃6,600円（税込）",
+       "id": "<ID:9>",
+       "mode": "live",
+       "source_title": "記事",
+       "retrieved_at": "<TS>",
+       "currency": "JPY",
+       "verified": false,
+       "normalized_labor": 6000,
+       "vehicle_match_level": "型式・年式・仕様一致（AI抽出・要確認）",
+       "extraction_notes": "AI抽出・人による確認前"
+      }
+     ]
+    },
+    "warnings": [
+     "出典・根拠の不足、作業の不一致、重複を含む候補を除外しました。",
+     "出典・根拠の不足、作業の不一致、重複を含む候補を除外しました。",
+     "出典・根拠の不足、作業の不一致、重複を含む候補を除外しました。"
+    ]
+   }
+  },
+  {
+   "name": "range",
+   "data": {
+    "sources": [
+     {
+      "job_id": "brake",
+      "source_url": "https://example.org/workshop/brake",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "料金4,800〜6,300円"
+     }
+    ]
+   },
+   "job_ids": [
+    "brake"
+   ],
+   "citations": [
+    {
+     "url": "https://example.org/workshop/brake",
+     "title": "記事"
+    },
+    {
+     "url": "https://s0.example.com/",
+     "title": "S0"
+    },
+    {
+     "url": "https://s1.example.com/",
+     "title": "S1"
+    },
+    {
+     "url": "https://s2.example.com/",
+     "title": "S2"
+    },
+    {
+     "url": "https://s3.example.com/",
+     "title": "S3"
+    },
+    {
+     "url": "https://s4.example.com/",
+     "title": "S4"
+    },
+    {
+     "url": "https://s5.example.com/",
+     "title": "S5"
+    },
+    {
+     "url": "https://s6.example.com/",
+     "title": "S6"
+    },
+    {
+     "url": "https://s7.example.com/",
+     "title": "S7"
+    },
+    {
+     "url": "https://s8.example.com/",
+     "title": "S8"
+    },
+    {
+     "url": "https://s9.example.com/",
+     "title": "S9"
+    },
+    {
+     "url": "https://s10.example.com/",
+     "title": "S10"
+    },
+    {
+     "url": "https://s11.example.com/",
+     "title": "S11"
+    },
+    {
+     "url": "https://s12.example.com/",
+     "title": "S12"
+    },
+    {
+     "url": "https://s13.example.com/",
+     "title": "S13"
+    },
+    {
+     "url": "https://s14.example.com/",
+     "title": "S14"
+    },
+    {
+     "url": "https://s15.example.com/",
+     "title": "S15"
+    },
+    {
+     "url": "https://s16.example.com/",
+     "title": "S16"
+    },
+    {
+     "url": "https://s17.example.com/",
+     "title": "S17"
+    },
+    {
+     "url": "https://s18.example.com/",
+     "title": "S18"
+    },
+    {
+     "url": "https://s19.example.com/",
+     "title": "S19"
+    },
+    {
+     "url": "https://s20.example.com/",
+     "title": "S20"
+    }
+   ],
+   "output": {
+    "groups": {
+     "brake": []
+    },
+    "warnings": [
+     "価格帯・推定・仮定による金額を含む候補を除外しました。"
+    ]
+   }
+  },
+  {
+   "name": "assumed",
+   "data": {
+    "sources": [
+     {
+      "job_id": "brake",
+      "source_url": "https://example.org/workshop/brake",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "4.0Lと仮定し算出した部品代6,320円"
+     }
+    ]
+   },
+   "job_ids": [
+    "brake"
+   ],
+   "citations": [
+    {
+     "url": "https://example.org/workshop/brake",
+     "title": "記事"
+    },
+    {
+     "url": "https://s0.example.com/",
+     "title": "S0"
+    },
+    {
+     "url": "https://s1.example.com/",
+     "title": "S1"
+    },
+    {
+     "url": "https://s2.example.com/",
+     "title": "S2"
+    },
+    {
+     "url": "https://s3.example.com/",
+     "title": "S3"
+    },
+    {
+     "url": "https://s4.example.com/",
+     "title": "S4"
+    },
+    {
+     "url": "https://s5.example.com/",
+     "title": "S5"
+    },
+    {
+     "url": "https://s6.example.com/",
+     "title": "S6"
+    },
+    {
+     "url": "https://s7.example.com/",
+     "title": "S7"
+    },
+    {
+     "url": "https://s8.example.com/",
+     "title": "S8"
+    },
+    {
+     "url": "https://s9.example.com/",
+     "title": "S9"
+    },
+    {
+     "url": "https://s10.example.com/",
+     "title": "S10"
+    },
+    {
+     "url": "https://s11.example.com/",
+     "title": "S11"
+    },
+    {
+     "url": "https://s12.example.com/",
+     "title": "S12"
+    },
+    {
+     "url": "https://s13.example.com/",
+     "title": "S13"
+    },
+    {
+     "url": "https://s14.example.com/",
+     "title": "S14"
+    },
+    {
+     "url": "https://s15.example.com/",
+     "title": "S15"
+    },
+    {
+     "url": "https://s16.example.com/",
+     "title": "S16"
+    },
+    {
+     "url": "https://s17.example.com/",
+     "title": "S17"
+    },
+    {
+     "url": "https://s18.example.com/",
+     "title": "S18"
+    },
+    {
+     "url": "https://s19.example.com/",
+     "title": "S19"
+    },
+    {
+     "url": "https://s20.example.com/",
+     "title": "S20"
+    }
+   ],
+   "output": {
+    "groups": {
+     "brake": []
+    },
+    "warnings": [
+     "価格帯・推定・仮定による金額を含む候補を除外しました。"
+    ]
+   }
+  },
+  {
+   "name": "guide",
+   "data": {
+    "sources": [
+     {
+      "job_id": "brake",
+      "source_url": "https://example.org/workshop/brake",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃の目安6,000円"
+     }
+    ]
+   },
+   "job_ids": [
+    "brake"
+   ],
+   "citations": [
+    {
+     "url": "https://example.org/workshop/brake",
+     "title": "記事"
+    },
+    {
+     "url": "https://s0.example.com/",
+     "title": "S0"
+    },
+    {
+     "url": "https://s1.example.com/",
+     "title": "S1"
+    },
+    {
+     "url": "https://s2.example.com/",
+     "title": "S2"
+    },
+    {
+     "url": "https://s3.example.com/",
+     "title": "S3"
+    },
+    {
+     "url": "https://s4.example.com/",
+     "title": "S4"
+    },
+    {
+     "url": "https://s5.example.com/",
+     "title": "S5"
+    },
+    {
+     "url": "https://s6.example.com/",
+     "title": "S6"
+    },
+    {
+     "url": "https://s7.example.com/",
+     "title": "S7"
+    },
+    {
+     "url": "https://s8.example.com/",
+     "title": "S8"
+    },
+    {
+     "url": "https://s9.example.com/",
+     "title": "S9"
+    },
+    {
+     "url": "https://s10.example.com/",
+     "title": "S10"
+    },
+    {
+     "url": "https://s11.example.com/",
+     "title": "S11"
+    },
+    {
+     "url": "https://s12.example.com/",
+     "title": "S12"
+    },
+    {
+     "url": "https://s13.example.com/",
+     "title": "S13"
+    },
+    {
+     "url": "https://s14.example.com/",
+     "title": "S14"
+    },
+    {
+     "url": "https://s15.example.com/",
+     "title": "S15"
+    },
+    {
+     "url": "https://s16.example.com/",
+     "title": "S16"
+    },
+    {
+     "url": "https://s17.example.com/",
+     "title": "S17"
+    },
+    {
+     "url": "https://s18.example.com/",
+     "title": "S18"
+    },
+    {
+     "url": "https://s19.example.com/",
+     "title": "S19"
+    },
+    {
+     "url": "https://s20.example.com/",
+     "title": "S20"
+    }
+   ],
+   "output": {
+    "groups": {
+     "brake": []
+    },
+    "warnings": [
+     "価格帯・推定・仮定による金額を含む候補を除外しました。"
+    ]
+   }
+  },
+  {
+   "name": "dash_range",
+   "data": {
+    "sources": [
+     {
+      "job_id": "brake",
+      "source_url": "https://example.org/workshop/brake",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "¥4,800 - ¥6,300"
+     }
+    ]
+   },
+   "job_ids": [
+    "brake"
+   ],
+   "citations": [
+    {
+     "url": "https://example.org/workshop/brake",
+     "title": "記事"
+    },
+    {
+     "url": "https://s0.example.com/",
+     "title": "S0"
+    },
+    {
+     "url": "https://s1.example.com/",
+     "title": "S1"
+    },
+    {
+     "url": "https://s2.example.com/",
+     "title": "S2"
+    },
+    {
+     "url": "https://s3.example.com/",
+     "title": "S3"
+    },
+    {
+     "url": "https://s4.example.com/",
+     "title": "S4"
+    },
+    {
+     "url": "https://s5.example.com/",
+     "title": "S5"
+    },
+    {
+     "url": "https://s6.example.com/",
+     "title": "S6"
+    },
+    {
+     "url": "https://s7.example.com/",
+     "title": "S7"
+    },
+    {
+     "url": "https://s8.example.com/",
+     "title": "S8"
+    },
+    {
+     "url": "https://s9.example.com/",
+     "title": "S9"
+    },
+    {
+     "url": "https://s10.example.com/",
+     "title": "S10"
+    },
+    {
+     "url": "https://s11.example.com/",
+     "title": "S11"
+    },
+    {
+     "url": "https://s12.example.com/",
+     "title": "S12"
+    },
+    {
+     "url": "https://s13.example.com/",
+     "title": "S13"
+    },
+    {
+     "url": "https://s14.example.com/",
+     "title": "S14"
+    },
+    {
+     "url": "https://s15.example.com/",
+     "title": "S15"
+    },
+    {
+     "url": "https://s16.example.com/",
+     "title": "S16"
+    },
+    {
+     "url": "https://s17.example.com/",
+     "title": "S17"
+    },
+    {
+     "url": "https://s18.example.com/",
+     "title": "S18"
+    },
+    {
+     "url": "https://s19.example.com/",
+     "title": "S19"
+    },
+    {
+     "url": "https://s20.example.com/",
+     "title": "S20"
+    }
+   ],
+   "output": {
+    "groups": {
+     "brake": []
+    },
+    "warnings": [
+     "価格帯・推定・仮定による金額を含む候補を除外しました。"
+    ]
+   }
+  },
+  {
+   "name": "fullwidth_range",
+   "data": {
+    "sources": [
+     {
+      "job_id": "brake",
+      "source_url": "https://example.org/workshop/brake",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "４８００－６３００円"
+     }
+    ]
+   },
+   "job_ids": [
+    "brake"
+   ],
+   "citations": [
+    {
+     "url": "https://example.org/workshop/brake",
+     "title": "記事"
+    },
+    {
+     "url": "https://s0.example.com/",
+     "title": "S0"
+    },
+    {
+     "url": "https://s1.example.com/",
+     "title": "S1"
+    },
+    {
+     "url": "https://s2.example.com/",
+     "title": "S2"
+    },
+    {
+     "url": "https://s3.example.com/",
+     "title": "S3"
+    },
+    {
+     "url": "https://s4.example.com/",
+     "title": "S4"
+    },
+    {
+     "url": "https://s5.example.com/",
+     "title": "S5"
+    },
+    {
+     "url": "https://s6.example.com/",
+     "title": "S6"
+    },
+    {
+     "url": "https://s7.example.com/",
+     "title": "S7"
+    },
+    {
+     "url": "https://s8.example.com/",
+     "title": "S8"
+    },
+    {
+     "url": "https://s9.example.com/",
+     "title": "S9"
+    },
+    {
+     "url": "https://s10.example.com/",
+     "title": "S10"
+    },
+    {
+     "url": "https://s11.example.com/",
+     "title": "S11"
+    },
+    {
+     "url": "https://s12.example.com/",
+     "title": "S12"
+    },
+    {
+     "url": "https://s13.example.com/",
+     "title": "S13"
+    },
+    {
+     "url": "https://s14.example.com/",
+     "title": "S14"
+    },
+    {
+     "url": "https://s15.example.com/",
+     "title": "S15"
+    },
+    {
+     "url": "https://s16.example.com/",
+     "title": "S16"
+    },
+    {
+     "url": "https://s17.example.com/",
+     "title": "S17"
+    },
+    {
+     "url": "https://s18.example.com/",
+     "title": "S18"
+    },
+    {
+     "url": "https://s19.example.com/",
+     "title": "S19"
+    },
+    {
+     "url": "https://s20.example.com/",
+     "title": "S20"
+    }
+   ],
+   "output": {
+    "groups": {
+     "brake": []
+    },
+    "warnings": [
+     "価格帯・推定・仮定による金額を含む候補を除外しました。"
+    ]
+   }
+  },
+  {
+   "name": "ideographic_space_range",
+   "data": {
+    "sources": [
+     {
+      "job_id": "brake",
+      "source_url": "https://example.org/workshop/brake",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "4800　-　6300円"
+     }
+    ]
+   },
+   "job_ids": [
+    "brake"
+   ],
+   "citations": [
+    {
+     "url": "https://example.org/workshop/brake",
+     "title": "記事"
+    },
+    {
+     "url": "https://s0.example.com/",
+     "title": "S0"
+    },
+    {
+     "url": "https://s1.example.com/",
+     "title": "S1"
+    },
+    {
+     "url": "https://s2.example.com/",
+     "title": "S2"
+    },
+    {
+     "url": "https://s3.example.com/",
+     "title": "S3"
+    },
+    {
+     "url": "https://s4.example.com/",
+     "title": "S4"
+    },
+    {
+     "url": "https://s5.example.com/",
+     "title": "S5"
+    },
+    {
+     "url": "https://s6.example.com/",
+     "title": "S6"
+    },
+    {
+     "url": "https://s7.example.com/",
+     "title": "S7"
+    },
+    {
+     "url": "https://s8.example.com/",
+     "title": "S8"
+    },
+    {
+     "url": "https://s9.example.com/",
+     "title": "S9"
+    },
+    {
+     "url": "https://s10.example.com/",
+     "title": "S10"
+    },
+    {
+     "url": "https://s11.example.com/",
+     "title": "S11"
+    },
+    {
+     "url": "https://s12.example.com/",
+     "title": "S12"
+    },
+    {
+     "url": "https://s13.example.com/",
+     "title": "S13"
+    },
+    {
+     "url": "https://s14.example.com/",
+     "title": "S14"
+    },
+    {
+     "url": "https://s15.example.com/",
+     "title": "S15"
+    },
+    {
+     "url": "https://s16.example.com/",
+     "title": "S16"
+    },
+    {
+     "url": "https://s17.example.com/",
+     "title": "S17"
+    },
+    {
+     "url": "https://s18.example.com/",
+     "title": "S18"
+    },
+    {
+     "url": "https://s19.example.com/",
+     "title": "S19"
+    },
+    {
+     "url": "https://s20.example.com/",
+     "title": "S20"
+    }
+   ],
+   "output": {
+    "groups": {
+     "brake": []
+    },
+    "warnings": [
+     "価格帯・推定・仮定による金額を含む候補を除外しました。"
+    ]
+   }
+  },
+  {
+   "name": "condition_range",
+   "data": {
+    "sources": [
+     {
+      "job_id": "brake",
+      "source_url": "https://example.org/workshop/brake",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "1〜2時間",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     }
+    ]
+   },
+   "job_ids": [
+    "brake"
+   ],
+   "citations": [
+    {
+     "url": "https://example.org/workshop/brake",
+     "title": "記事"
+    },
+    {
+     "url": "https://s0.example.com/",
+     "title": "S0"
+    },
+    {
+     "url": "https://s1.example.com/",
+     "title": "S1"
+    },
+    {
+     "url": "https://s2.example.com/",
+     "title": "S2"
+    },
+    {
+     "url": "https://s3.example.com/",
+     "title": "S3"
+    },
+    {
+     "url": "https://s4.example.com/",
+     "title": "S4"
+    },
+    {
+     "url": "https://s5.example.com/",
+     "title": "S5"
+    },
+    {
+     "url": "https://s6.example.com/",
+     "title": "S6"
+    },
+    {
+     "url": "https://s7.example.com/",
+     "title": "S7"
+    },
+    {
+     "url": "https://s8.example.com/",
+     "title": "S8"
+    },
+    {
+     "url": "https://s9.example.com/",
+     "title": "S9"
+    },
+    {
+     "url": "https://s10.example.com/",
+     "title": "S10"
+    },
+    {
+     "url": "https://s11.example.com/",
+     "title": "S11"
+    },
+    {
+     "url": "https://s12.example.com/",
+     "title": "S12"
+    },
+    {
+     "url": "https://s13.example.com/",
+     "title": "S13"
+    },
+    {
+     "url": "https://s14.example.com/",
+     "title": "S14"
+    },
+    {
+     "url": "https://s15.example.com/",
+     "title": "S15"
+    },
+    {
+     "url": "https://s16.example.com/",
+     "title": "S16"
+    },
+    {
+     "url": "https://s17.example.com/",
+     "title": "S17"
+    },
+    {
+     "url": "https://s18.example.com/",
+     "title": "S18"
+    },
+    {
+     "url": "https://s19.example.com/",
+     "title": "S19"
+    },
+    {
+     "url": "https://s20.example.com/",
+     "title": "S20"
+    }
+   ],
+   "output": {
+    "groups": {
+     "brake": []
+    },
+    "warnings": [
+     "価格帯・推定・仮定による金額を含む候補を除外しました。"
+    ]
+   }
+  },
+  {
+   "name": "hyphen_in_text",
+   "data": {
+    "sources": [
+     {
+      "job_id": "brake",
+      "source_url": "https://example.org/workshop/brake",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円 - 税込"
+     }
+    ]
+   },
+   "job_ids": [
+    "brake"
+   ],
+   "citations": [
+    {
+     "url": "https://example.org/workshop/brake",
+     "title": "記事"
+    },
+    {
+     "url": "https://s0.example.com/",
+     "title": "S0"
+    },
+    {
+     "url": "https://s1.example.com/",
+     "title": "S1"
+    },
+    {
+     "url": "https://s2.example.com/",
+     "title": "S2"
+    },
+    {
+     "url": "https://s3.example.com/",
+     "title": "S3"
+    },
+    {
+     "url": "https://s4.example.com/",
+     "title": "S4"
+    },
+    {
+     "url": "https://s5.example.com/",
+     "title": "S5"
+    },
+    {
+     "url": "https://s6.example.com/",
+     "title": "S6"
+    },
+    {
+     "url": "https://s7.example.com/",
+     "title": "S7"
+    },
+    {
+     "url": "https://s8.example.com/",
+     "title": "S8"
+    },
+    {
+     "url": "https://s9.example.com/",
+     "title": "S9"
+    },
+    {
+     "url": "https://s10.example.com/",
+     "title": "S10"
+    },
+    {
+     "url": "https://s11.example.com/",
+     "title": "S11"
+    },
+    {
+     "url": "https://s12.example.com/",
+     "title": "S12"
+    },
+    {
+     "url": "https://s13.example.com/",
+     "title": "S13"
+    },
+    {
+     "url": "https://s14.example.com/",
+     "title": "S14"
+    },
+    {
+     "url": "https://s15.example.com/",
+     "title": "S15"
+    },
+    {
+     "url": "https://s16.example.com/",
+     "title": "S16"
+    },
+    {
+     "url": "https://s17.example.com/",
+     "title": "S17"
+    },
+    {
+     "url": "https://s18.example.com/",
+     "title": "S18"
+    },
+    {
+     "url": "https://s19.example.com/",
+     "title": "S19"
+    },
+    {
+     "url": "https://s20.example.com/",
+     "title": "S20"
+    }
+   ],
+   "output": {
+    "groups": {
+     "brake": [
+      {
+       "job_id": "brake",
+       "source_url": "https://example.org/workshop/brake",
+       "labor_price": 6600,
+       "parts_price": 12000,
+       "total_price": null,
+       "tax_included": true,
+       "tax_rate": 0.1,
+       "vehicle_match": "exact",
+       "work_matches": true,
+       "work_conditions": "前輪左右",
+       "published_at": null,
+       "evidence": "工賃6,600円 - 税込",
+       "id": "<ID:10>",
+       "mode": "live",
+       "source_title": "記事",
+       "retrieved_at": "<TS>",
+       "currency": "JPY",
+       "verified": false,
+       "normalized_labor": 6000,
+       "vehicle_match_level": "型式・年式・仕様一致（AI抽出・要確認）",
+       "extraction_notes": "AI抽出・人による確認前"
+      }
+     ]
+    },
+    "warnings": []
+   }
+  },
+  {
+   "name": "blank_evidence",
+   "data": {
+    "sources": [
+     {
+      "job_id": "brake",
+      "source_url": "https://example.org/workshop/brake",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": " 　"
+     }
+    ]
+   },
+   "job_ids": [
+    "brake"
+   ],
+   "citations": [
+    {
+     "url": "https://example.org/workshop/brake",
+     "title": "記事"
+    },
+    {
+     "url": "https://s0.example.com/",
+     "title": "S0"
+    },
+    {
+     "url": "https://s1.example.com/",
+     "title": "S1"
+    },
+    {
+     "url": "https://s2.example.com/",
+     "title": "S2"
+    },
+    {
+     "url": "https://s3.example.com/",
+     "title": "S3"
+    },
+    {
+     "url": "https://s4.example.com/",
+     "title": "S4"
+    },
+    {
+     "url": "https://s5.example.com/",
+     "title": "S5"
+    },
+    {
+     "url": "https://s6.example.com/",
+     "title": "S6"
+    },
+    {
+     "url": "https://s7.example.com/",
+     "title": "S7"
+    },
+    {
+     "url": "https://s8.example.com/",
+     "title": "S8"
+    },
+    {
+     "url": "https://s9.example.com/",
+     "title": "S9"
+    },
+    {
+     "url": "https://s10.example.com/",
+     "title": "S10"
+    },
+    {
+     "url": "https://s11.example.com/",
+     "title": "S11"
+    },
+    {
+     "url": "https://s12.example.com/",
+     "title": "S12"
+    },
+    {
+     "url": "https://s13.example.com/",
+     "title": "S13"
+    },
+    {
+     "url": "https://s14.example.com/",
+     "title": "S14"
+    },
+    {
+     "url": "https://s15.example.com/",
+     "title": "S15"
+    },
+    {
+     "url": "https://s16.example.com/",
+     "title": "S16"
+    },
+    {
+     "url": "https://s17.example.com/",
+     "title": "S17"
+    },
+    {
+     "url": "https://s18.example.com/",
+     "title": "S18"
+    },
+    {
+     "url": "https://s19.example.com/",
+     "title": "S19"
+    },
+    {
+     "url": "https://s20.example.com/",
+     "title": "S20"
+    }
+   ],
+   "output": {
+    "groups": {
+     "brake": []
+    },
+    "warnings": [
+     "出典・根拠の不足、作業の不一致、重複を含む候補を除外しました。"
+    ]
+   }
+  },
+  {
+   "name": "five_sources",
+   "data": {
+    "sources": [
+     {
+      "job_id": "brake",
+      "source_url": "https://s0.example.com/",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     },
+     {
+      "job_id": "brake",
+      "source_url": "https://s1.example.com/",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     },
+     {
+      "job_id": "brake",
+      "source_url": "https://s2.example.com/",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     },
+     {
+      "job_id": "brake",
+      "source_url": "https://s3.example.com/",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     },
+     {
+      "job_id": "brake",
+      "source_url": "https://s4.example.com/",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     }
+    ]
+   },
+   "job_ids": [
+    "brake"
+   ],
+   "citations": [
+    {
+     "url": "https://example.org/workshop/brake",
+     "title": "記事"
+    },
+    {
+     "url": "https://s0.example.com/",
+     "title": "S0"
+    },
+    {
+     "url": "https://s1.example.com/",
+     "title": "S1"
+    },
+    {
+     "url": "https://s2.example.com/",
+     "title": "S2"
+    },
+    {
+     "url": "https://s3.example.com/",
+     "title": "S3"
+    },
+    {
+     "url": "https://s4.example.com/",
+     "title": "S4"
+    },
+    {
+     "url": "https://s5.example.com/",
+     "title": "S5"
+    },
+    {
+     "url": "https://s6.example.com/",
+     "title": "S6"
+    },
+    {
+     "url": "https://s7.example.com/",
+     "title": "S7"
+    },
+    {
+     "url": "https://s8.example.com/",
+     "title": "S8"
+    },
+    {
+     "url": "https://s9.example.com/",
+     "title": "S9"
+    },
+    {
+     "url": "https://s10.example.com/",
+     "title": "S10"
+    },
+    {
+     "url": "https://s11.example.com/",
+     "title": "S11"
+    },
+    {
+     "url": "https://s12.example.com/",
+     "title": "S12"
+    },
+    {
+     "url": "https://s13.example.com/",
+     "title": "S13"
+    },
+    {
+     "url": "https://s14.example.com/",
+     "title": "S14"
+    },
+    {
+     "url": "https://s15.example.com/",
+     "title": "S15"
+    },
+    {
+     "url": "https://s16.example.com/",
+     "title": "S16"
+    },
+    {
+     "url": "https://s17.example.com/",
+     "title": "S17"
+    },
+    {
+     "url": "https://s18.example.com/",
+     "title": "S18"
+    },
+    {
+     "url": "https://s19.example.com/",
+     "title": "S19"
+    },
+    {
+     "url": "https://s20.example.com/",
+     "title": "S20"
+    }
+   ],
+   "output": {
+    "groups": {
+     "brake": [
+      {
+       "job_id": "brake",
+       "source_url": "https://s0.example.com/",
+       "labor_price": 6600,
+       "parts_price": 12000,
+       "total_price": null,
+       "tax_included": true,
+       "tax_rate": 0.1,
+       "vehicle_match": "exact",
+       "work_matches": true,
+       "work_conditions": "前輪左右",
+       "published_at": null,
+       "evidence": "工賃6,600円（税込）",
+       "id": "<ID:11>",
+       "mode": "live",
+       "source_title": "S0",
+       "retrieved_at": "<TS>",
+       "currency": "JPY",
+       "verified": false,
+       "normalized_labor": 6000,
+       "vehicle_match_level": "型式・年式・仕様一致（AI抽出・要確認）",
+       "extraction_notes": "AI抽出・人による確認前"
+      },
+      {
+       "job_id": "brake",
+       "source_url": "https://s1.example.com/",
+       "labor_price": 6600,
+       "parts_price": 12000,
+       "total_price": null,
+       "tax_included": true,
+       "tax_rate": 0.1,
+       "vehicle_match": "exact",
+       "work_matches": true,
+       "work_conditions": "前輪左右",
+       "published_at": null,
+       "evidence": "工賃6,600円（税込）",
+       "id": "<ID:12>",
+       "mode": "live",
+       "source_title": "S1",
+       "retrieved_at": "<TS>",
+       "currency": "JPY",
+       "verified": false,
+       "normalized_labor": 6000,
+       "vehicle_match_level": "型式・年式・仕様一致（AI抽出・要確認）",
+       "extraction_notes": "AI抽出・人による確認前"
+      },
+      {
+       "job_id": "brake",
+       "source_url": "https://s2.example.com/",
+       "labor_price": 6600,
+       "parts_price": 12000,
+       "total_price": null,
+       "tax_included": true,
+       "tax_rate": 0.1,
+       "vehicle_match": "exact",
+       "work_matches": true,
+       "work_conditions": "前輪左右",
+       "published_at": null,
+       "evidence": "工賃6,600円（税込）",
+       "id": "<ID:13>",
+       "mode": "live",
+       "source_title": "S2",
+       "retrieved_at": "<TS>",
+       "currency": "JPY",
+       "verified": false,
+       "normalized_labor": 6000,
+       "vehicle_match_level": "型式・年式・仕様一致（AI抽出・要確認）",
+       "extraction_notes": "AI抽出・人による確認前"
+      },
+      {
+       "job_id": "brake",
+       "source_url": "https://s3.example.com/",
+       "labor_price": 6600,
+       "parts_price": 12000,
+       "total_price": null,
+       "tax_included": true,
+       "tax_rate": 0.1,
+       "vehicle_match": "exact",
+       "work_matches": true,
+       "work_conditions": "前輪左右",
+       "published_at": null,
+       "evidence": "工賃6,600円（税込）",
+       "id": "<ID:14>",
+       "mode": "live",
+       "source_title": "S3",
+       "retrieved_at": "<TS>",
+       "currency": "JPY",
+       "verified": false,
+       "normalized_labor": 6000,
+       "vehicle_match_level": "型式・年式・仕様一致（AI抽出・要確認）",
+       "extraction_notes": "AI抽出・人による確認前"
+      }
+     ]
+    },
+    "warnings": [
+     "出典・根拠の不足、作業の不一致、重複を含む候補を除外しました。"
+    ]
+   }
+  },
+  {
+   "name": "negative",
+   "data": {
+    "sources": [
+     {
+      "job_id": "brake",
+      "source_url": "https://example.org/workshop/brake",
+      "labor_price": -1,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     }
+    ]
+   },
+   "job_ids": [
+    "brake"
+   ],
+   "citations": [
+    {
+     "url": "https://example.org/workshop/brake",
+     "title": "記事"
+    },
+    {
+     "url": "https://s0.example.com/",
+     "title": "S0"
+    },
+    {
+     "url": "https://s1.example.com/",
+     "title": "S1"
+    },
+    {
+     "url": "https://s2.example.com/",
+     "title": "S2"
+    },
+    {
+     "url": "https://s3.example.com/",
+     "title": "S3"
+    },
+    {
+     "url": "https://s4.example.com/",
+     "title": "S4"
+    },
+    {
+     "url": "https://s5.example.com/",
+     "title": "S5"
+    },
+    {
+     "url": "https://s6.example.com/",
+     "title": "S6"
+    },
+    {
+     "url": "https://s7.example.com/",
+     "title": "S7"
+    },
+    {
+     "url": "https://s8.example.com/",
+     "title": "S8"
+    },
+    {
+     "url": "https://s9.example.com/",
+     "title": "S9"
+    },
+    {
+     "url": "https://s10.example.com/",
+     "title": "S10"
+    },
+    {
+     "url": "https://s11.example.com/",
+     "title": "S11"
+    },
+    {
+     "url": "https://s12.example.com/",
+     "title": "S12"
+    },
+    {
+     "url": "https://s13.example.com/",
+     "title": "S13"
+    },
+    {
+     "url": "https://s14.example.com/",
+     "title": "S14"
+    },
+    {
+     "url": "https://s15.example.com/",
+     "title": "S15"
+    },
+    {
+     "url": "https://s16.example.com/",
+     "title": "S16"
+    },
+    {
+     "url": "https://s17.example.com/",
+     "title": "S17"
+    },
+    {
+     "url": "https://s18.example.com/",
+     "title": "S18"
+    },
+    {
+     "url": "https://s19.example.com/",
+     "title": "S19"
+    },
+    {
+     "url": "https://s20.example.com/",
+     "title": "S20"
+    }
+   ],
+   "output": {
+    "status": 502,
+    "detail": "価格候補の形式・金額が不正なため採用しませんでした。",
+    "warnings": []
+   }
+  },
+  {
+   "name": "too_long_evidence",
+   "data": {
+    "sources": [
+     {
+      "job_id": "brake",
+      "source_url": "https://example.org/workshop/brake",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "あああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ"
+     }
+    ]
+   },
+   "job_ids": [
+    "brake"
+   ],
+   "citations": [
+    {
+     "url": "https://example.org/workshop/brake",
+     "title": "記事"
+    },
+    {
+     "url": "https://s0.example.com/",
+     "title": "S0"
+    },
+    {
+     "url": "https://s1.example.com/",
+     "title": "S1"
+    },
+    {
+     "url": "https://s2.example.com/",
+     "title": "S2"
+    },
+    {
+     "url": "https://s3.example.com/",
+     "title": "S3"
+    },
+    {
+     "url": "https://s4.example.com/",
+     "title": "S4"
+    },
+    {
+     "url": "https://s5.example.com/",
+     "title": "S5"
+    },
+    {
+     "url": "https://s6.example.com/",
+     "title": "S6"
+    },
+    {
+     "url": "https://s7.example.com/",
+     "title": "S7"
+    },
+    {
+     "url": "https://s8.example.com/",
+     "title": "S8"
+    },
+    {
+     "url": "https://s9.example.com/",
+     "title": "S9"
+    },
+    {
+     "url": "https://s10.example.com/",
+     "title": "S10"
+    },
+    {
+     "url": "https://s11.example.com/",
+     "title": "S11"
+    },
+    {
+     "url": "https://s12.example.com/",
+     "title": "S12"
+    },
+    {
+     "url": "https://s13.example.com/",
+     "title": "S13"
+    },
+    {
+     "url": "https://s14.example.com/",
+     "title": "S14"
+    },
+    {
+     "url": "https://s15.example.com/",
+     "title": "S15"
+    },
+    {
+     "url": "https://s16.example.com/",
+     "title": "S16"
+    },
+    {
+     "url": "https://s17.example.com/",
+     "title": "S17"
+    },
+    {
+     "url": "https://s18.example.com/",
+     "title": "S18"
+    },
+    {
+     "url": "https://s19.example.com/",
+     "title": "S19"
+    },
+    {
+     "url": "https://s20.example.com/",
+     "title": "S20"
+    }
+   ],
+   "output": {
+    "status": 502,
+    "detail": "価格候補の形式・金額が不正なため採用しませんでした。",
+    "warnings": []
+   }
+  },
+  {
+   "name": "bad_rate",
+   "data": {
+    "sources": [
+     {
+      "job_id": "brake",
+      "source_url": "https://example.org/workshop/brake",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.07,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     }
+    ]
+   },
+   "job_ids": [
+    "brake"
+   ],
+   "citations": [
+    {
+     "url": "https://example.org/workshop/brake",
+     "title": "記事"
+    },
+    {
+     "url": "https://s0.example.com/",
+     "title": "S0"
+    },
+    {
+     "url": "https://s1.example.com/",
+     "title": "S1"
+    },
+    {
+     "url": "https://s2.example.com/",
+     "title": "S2"
+    },
+    {
+     "url": "https://s3.example.com/",
+     "title": "S3"
+    },
+    {
+     "url": "https://s4.example.com/",
+     "title": "S4"
+    },
+    {
+     "url": "https://s5.example.com/",
+     "title": "S5"
+    },
+    {
+     "url": "https://s6.example.com/",
+     "title": "S6"
+    },
+    {
+     "url": "https://s7.example.com/",
+     "title": "S7"
+    },
+    {
+     "url": "https://s8.example.com/",
+     "title": "S8"
+    },
+    {
+     "url": "https://s9.example.com/",
+     "title": "S9"
+    },
+    {
+     "url": "https://s10.example.com/",
+     "title": "S10"
+    },
+    {
+     "url": "https://s11.example.com/",
+     "title": "S11"
+    },
+    {
+     "url": "https://s12.example.com/",
+     "title": "S12"
+    },
+    {
+     "url": "https://s13.example.com/",
+     "title": "S13"
+    },
+    {
+     "url": "https://s14.example.com/",
+     "title": "S14"
+    },
+    {
+     "url": "https://s15.example.com/",
+     "title": "S15"
+    },
+    {
+     "url": "https://s16.example.com/",
+     "title": "S16"
+    },
+    {
+     "url": "https://s17.example.com/",
+     "title": "S17"
+    },
+    {
+     "url": "https://s18.example.com/",
+     "title": "S18"
+    },
+    {
+     "url": "https://s19.example.com/",
+     "title": "S19"
+    },
+    {
+     "url": "https://s20.example.com/",
+     "title": "S20"
+    }
+   ],
+   "output": {
+    "status": 502,
+    "detail": "価格候補の形式・金額が不正なため採用しませんでした。",
+    "warnings": []
+   }
+  },
+  {
+   "name": "bool_money",
+   "data": {
+    "sources": [
+     {
+      "job_id": "brake",
+      "source_url": "https://example.org/workshop/brake",
+      "labor_price": true,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     }
+    ]
+   },
+   "job_ids": [
+    "brake"
+   ],
+   "citations": [
+    {
+     "url": "https://example.org/workshop/brake",
+     "title": "記事"
+    },
+    {
+     "url": "https://s0.example.com/",
+     "title": "S0"
+    },
+    {
+     "url": "https://s1.example.com/",
+     "title": "S1"
+    },
+    {
+     "url": "https://s2.example.com/",
+     "title": "S2"
+    },
+    {
+     "url": "https://s3.example.com/",
+     "title": "S3"
+    },
+    {
+     "url": "https://s4.example.com/",
+     "title": "S4"
+    },
+    {
+     "url": "https://s5.example.com/",
+     "title": "S5"
+    },
+    {
+     "url": "https://s6.example.com/",
+     "title": "S6"
+    },
+    {
+     "url": "https://s7.example.com/",
+     "title": "S7"
+    },
+    {
+     "url": "https://s8.example.com/",
+     "title": "S8"
+    },
+    {
+     "url": "https://s9.example.com/",
+     "title": "S9"
+    },
+    {
+     "url": "https://s10.example.com/",
+     "title": "S10"
+    },
+    {
+     "url": "https://s11.example.com/",
+     "title": "S11"
+    },
+    {
+     "url": "https://s12.example.com/",
+     "title": "S12"
+    },
+    {
+     "url": "https://s13.example.com/",
+     "title": "S13"
+    },
+    {
+     "url": "https://s14.example.com/",
+     "title": "S14"
+    },
+    {
+     "url": "https://s15.example.com/",
+     "title": "S15"
+    },
+    {
+     "url": "https://s16.example.com/",
+     "title": "S16"
+    },
+    {
+     "url": "https://s17.example.com/",
+     "title": "S17"
+    },
+    {
+     "url": "https://s18.example.com/",
+     "title": "S18"
+    },
+    {
+     "url": "https://s19.example.com/",
+     "title": "S19"
+    },
+    {
+     "url": "https://s20.example.com/",
+     "title": "S20"
+    }
+   ],
+   "output": {
+    "status": 502,
+    "detail": "価格候補の形式・金額が不正なため採用しませんでした。",
+    "warnings": []
+   }
+  },
+  {
+   "name": "string_bool",
+   "data": {
+    "sources": [
+     {
+      "job_id": "brake",
+      "source_url": "https://example.org/workshop/brake",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": "true",
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     }
+    ]
+   },
+   "job_ids": [
+    "brake"
+   ],
+   "citations": [
+    {
+     "url": "https://example.org/workshop/brake",
+     "title": "記事"
+    },
+    {
+     "url": "https://s0.example.com/",
+     "title": "S0"
+    },
+    {
+     "url": "https://s1.example.com/",
+     "title": "S1"
+    },
+    {
+     "url": "https://s2.example.com/",
+     "title": "S2"
+    },
+    {
+     "url": "https://s3.example.com/",
+     "title": "S3"
+    },
+    {
+     "url": "https://s4.example.com/",
+     "title": "S4"
+    },
+    {
+     "url": "https://s5.example.com/",
+     "title": "S5"
+    },
+    {
+     "url": "https://s6.example.com/",
+     "title": "S6"
+    },
+    {
+     "url": "https://s7.example.com/",
+     "title": "S7"
+    },
+    {
+     "url": "https://s8.example.com/",
+     "title": "S8"
+    },
+    {
+     "url": "https://s9.example.com/",
+     "title": "S9"
+    },
+    {
+     "url": "https://s10.example.com/",
+     "title": "S10"
+    },
+    {
+     "url": "https://s11.example.com/",
+     "title": "S11"
+    },
+    {
+     "url": "https://s12.example.com/",
+     "title": "S12"
+    },
+    {
+     "url": "https://s13.example.com/",
+     "title": "S13"
+    },
+    {
+     "url": "https://s14.example.com/",
+     "title": "S14"
+    },
+    {
+     "url": "https://s15.example.com/",
+     "title": "S15"
+    },
+    {
+     "url": "https://s16.example.com/",
+     "title": "S16"
+    },
+    {
+     "url": "https://s17.example.com/",
+     "title": "S17"
+    },
+    {
+     "url": "https://s18.example.com/",
+     "title": "S18"
+    },
+    {
+     "url": "https://s19.example.com/",
+     "title": "S19"
+    },
+    {
+     "url": "https://s20.example.com/",
+     "title": "S20"
+    }
+   ],
+   "output": {
+    "status": 502,
+    "detail": "価格候補の形式・金額が不正なため採用しませんでした。",
+    "warnings": []
+   }
+  },
+  {
+   "name": "missing_field",
+   "data": {
+    "sources": [
+     {
+      "job_id": "brake",
+      "source_url": "https://example.org/workshop/brake",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null
+     }
+    ]
+   },
+   "job_ids": [
+    "brake"
+   ],
+   "citations": [
+    {
+     "url": "https://example.org/workshop/brake",
+     "title": "記事"
+    },
+    {
+     "url": "https://s0.example.com/",
+     "title": "S0"
+    },
+    {
+     "url": "https://s1.example.com/",
+     "title": "S1"
+    },
+    {
+     "url": "https://s2.example.com/",
+     "title": "S2"
+    },
+    {
+     "url": "https://s3.example.com/",
+     "title": "S3"
+    },
+    {
+     "url": "https://s4.example.com/",
+     "title": "S4"
+    },
+    {
+     "url": "https://s5.example.com/",
+     "title": "S5"
+    },
+    {
+     "url": "https://s6.example.com/",
+     "title": "S6"
+    },
+    {
+     "url": "https://s7.example.com/",
+     "title": "S7"
+    },
+    {
+     "url": "https://s8.example.com/",
+     "title": "S8"
+    },
+    {
+     "url": "https://s9.example.com/",
+     "title": "S9"
+    },
+    {
+     "url": "https://s10.example.com/",
+     "title": "S10"
+    },
+    {
+     "url": "https://s11.example.com/",
+     "title": "S11"
+    },
+    {
+     "url": "https://s12.example.com/",
+     "title": "S12"
+    },
+    {
+     "url": "https://s13.example.com/",
+     "title": "S13"
+    },
+    {
+     "url": "https://s14.example.com/",
+     "title": "S14"
+    },
+    {
+     "url": "https://s15.example.com/",
+     "title": "S15"
+    },
+    {
+     "url": "https://s16.example.com/",
+     "title": "S16"
+    },
+    {
+     "url": "https://s17.example.com/",
+     "title": "S17"
+    },
+    {
+     "url": "https://s18.example.com/",
+     "title": "S18"
+    },
+    {
+     "url": "https://s19.example.com/",
+     "title": "S19"
+    },
+    {
+     "url": "https://s20.example.com/",
+     "title": "S20"
+    }
+   ],
+   "output": {
+    "status": 502,
+    "detail": "価格候補の形式・金額が不正なため採用しませんでした。",
+    "warnings": []
+   }
+  },
+  {
+   "name": "no_rate_key",
+   "data": {
+    "sources": [
+     {
+      "job_id": "brake",
+      "source_url": "https://example.org/workshop/brake",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     }
+    ]
+   },
+   "job_ids": [
+    "brake"
+   ],
+   "citations": [
+    {
+     "url": "https://example.org/workshop/brake",
+     "title": "記事"
+    },
+    {
+     "url": "https://s0.example.com/",
+     "title": "S0"
+    },
+    {
+     "url": "https://s1.example.com/",
+     "title": "S1"
+    },
+    {
+     "url": "https://s2.example.com/",
+     "title": "S2"
+    },
+    {
+     "url": "https://s3.example.com/",
+     "title": "S3"
+    },
+    {
+     "url": "https://s4.example.com/",
+     "title": "S4"
+    },
+    {
+     "url": "https://s5.example.com/",
+     "title": "S5"
+    },
+    {
+     "url": "https://s6.example.com/",
+     "title": "S6"
+    },
+    {
+     "url": "https://s7.example.com/",
+     "title": "S7"
+    },
+    {
+     "url": "https://s8.example.com/",
+     "title": "S8"
+    },
+    {
+     "url": "https://s9.example.com/",
+     "title": "S9"
+    },
+    {
+     "url": "https://s10.example.com/",
+     "title": "S10"
+    },
+    {
+     "url": "https://s11.example.com/",
+     "title": "S11"
+    },
+    {
+     "url": "https://s12.example.com/",
+     "title": "S12"
+    },
+    {
+     "url": "https://s13.example.com/",
+     "title": "S13"
+    },
+    {
+     "url": "https://s14.example.com/",
+     "title": "S14"
+    },
+    {
+     "url": "https://s15.example.com/",
+     "title": "S15"
+    },
+    {
+     "url": "https://s16.example.com/",
+     "title": "S16"
+    },
+    {
+     "url": "https://s17.example.com/",
+     "title": "S17"
+    },
+    {
+     "url": "https://s18.example.com/",
+     "title": "S18"
+    },
+    {
+     "url": "https://s19.example.com/",
+     "title": "S19"
+    },
+    {
+     "url": "https://s20.example.com/",
+     "title": "S20"
+    }
+   ],
+   "output": {
+    "groups": {
+     "brake": [
+      {
+       "job_id": "brake",
+       "source_url": "https://example.org/workshop/brake",
+       "labor_price": 6600,
+       "parts_price": 12000,
+       "total_price": null,
+       "tax_included": true,
+       "tax_rate": null,
+       "vehicle_match": "exact",
+       "work_matches": true,
+       "work_conditions": "前輪左右",
+       "published_at": null,
+       "evidence": "工賃6,600円（税込）",
+       "id": "<ID:15>",
+       "mode": "live",
+       "source_title": "記事",
+       "retrieved_at": "<TS>",
+       "currency": "JPY",
+       "verified": false,
+       "normalized_labor": null,
+       "vehicle_match_level": "型式・年式・仕様一致（AI抽出・要確認）",
+       "extraction_notes": "AI抽出・人による確認前"
+      }
+     ]
+    },
+    "warnings": []
+   }
+  },
+  {
+   "name": "none",
+   "data": null,
+   "job_ids": [
+    "brake",
+    "oil"
+   ],
+   "citations": [
+    {
+     "url": "https://example.org/workshop/brake",
+     "title": "記事"
+    },
+    {
+     "url": "https://s0.example.com/",
+     "title": "S0"
+    },
+    {
+     "url": "https://s1.example.com/",
+     "title": "S1"
+    },
+    {
+     "url": "https://s2.example.com/",
+     "title": "S2"
+    },
+    {
+     "url": "https://s3.example.com/",
+     "title": "S3"
+    },
+    {
+     "url": "https://s4.example.com/",
+     "title": "S4"
+    },
+    {
+     "url": "https://s5.example.com/",
+     "title": "S5"
+    },
+    {
+     "url": "https://s6.example.com/",
+     "title": "S6"
+    },
+    {
+     "url": "https://s7.example.com/",
+     "title": "S7"
+    },
+    {
+     "url": "https://s8.example.com/",
+     "title": "S8"
+    },
+    {
+     "url": "https://s9.example.com/",
+     "title": "S9"
+    },
+    {
+     "url": "https://s10.example.com/",
+     "title": "S10"
+    },
+    {
+     "url": "https://s11.example.com/",
+     "title": "S11"
+    },
+    {
+     "url": "https://s12.example.com/",
+     "title": "S12"
+    },
+    {
+     "url": "https://s13.example.com/",
+     "title": "S13"
+    },
+    {
+     "url": "https://s14.example.com/",
+     "title": "S14"
+    },
+    {
+     "url": "https://s15.example.com/",
+     "title": "S15"
+    },
+    {
+     "url": "https://s16.example.com/",
+     "title": "S16"
+    },
+    {
+     "url": "https://s17.example.com/",
+     "title": "S17"
+    },
+    {
+     "url": "https://s18.example.com/",
+     "title": "S18"
+    },
+    {
+     "url": "https://s19.example.com/",
+     "title": "S19"
+    },
+    {
+     "url": "https://s20.example.com/",
+     "title": "S20"
+    }
+   ],
+   "output": {
+    "groups": {
+     "brake": [],
+     "oil": []
+    },
+    "warnings": []
+   }
+  },
+  {
+   "name": "empty_dict",
+   "data": {},
+   "job_ids": [
+    "brake"
+   ],
+   "citations": [
+    {
+     "url": "https://example.org/workshop/brake",
+     "title": "記事"
+    },
+    {
+     "url": "https://s0.example.com/",
+     "title": "S0"
+    },
+    {
+     "url": "https://s1.example.com/",
+     "title": "S1"
+    },
+    {
+     "url": "https://s2.example.com/",
+     "title": "S2"
+    },
+    {
+     "url": "https://s3.example.com/",
+     "title": "S3"
+    },
+    {
+     "url": "https://s4.example.com/",
+     "title": "S4"
+    },
+    {
+     "url": "https://s5.example.com/",
+     "title": "S5"
+    },
+    {
+     "url": "https://s6.example.com/",
+     "title": "S6"
+    },
+    {
+     "url": "https://s7.example.com/",
+     "title": "S7"
+    },
+    {
+     "url": "https://s8.example.com/",
+     "title": "S8"
+    },
+    {
+     "url": "https://s9.example.com/",
+     "title": "S9"
+    },
+    {
+     "url": "https://s10.example.com/",
+     "title": "S10"
+    },
+    {
+     "url": "https://s11.example.com/",
+     "title": "S11"
+    },
+    {
+     "url": "https://s12.example.com/",
+     "title": "S12"
+    },
+    {
+     "url": "https://s13.example.com/",
+     "title": "S13"
+    },
+    {
+     "url": "https://s14.example.com/",
+     "title": "S14"
+    },
+    {
+     "url": "https://s15.example.com/",
+     "title": "S15"
+    },
+    {
+     "url": "https://s16.example.com/",
+     "title": "S16"
+    },
+    {
+     "url": "https://s17.example.com/",
+     "title": "S17"
+    },
+    {
+     "url": "https://s18.example.com/",
+     "title": "S18"
+    },
+    {
+     "url": "https://s19.example.com/",
+     "title": "S19"
+    },
+    {
+     "url": "https://s20.example.com/",
+     "title": "S20"
+    }
+   ],
+   "output": {
+    "groups": {
+     "brake": []
+    },
+    "warnings": []
+   }
+  },
+  {
+   "name": "empty_list",
+   "data": [],
+   "job_ids": [
+    "brake"
+   ],
+   "citations": [
+    {
+     "url": "https://example.org/workshop/brake",
+     "title": "記事"
+    },
+    {
+     "url": "https://s0.example.com/",
+     "title": "S0"
+    },
+    {
+     "url": "https://s1.example.com/",
+     "title": "S1"
+    },
+    {
+     "url": "https://s2.example.com/",
+     "title": "S2"
+    },
+    {
+     "url": "https://s3.example.com/",
+     "title": "S3"
+    },
+    {
+     "url": "https://s4.example.com/",
+     "title": "S4"
+    },
+    {
+     "url": "https://s5.example.com/",
+     "title": "S5"
+    },
+    {
+     "url": "https://s6.example.com/",
+     "title": "S6"
+    },
+    {
+     "url": "https://s7.example.com/",
+     "title": "S7"
+    },
+    {
+     "url": "https://s8.example.com/",
+     "title": "S8"
+    },
+    {
+     "url": "https://s9.example.com/",
+     "title": "S9"
+    },
+    {
+     "url": "https://s10.example.com/",
+     "title": "S10"
+    },
+    {
+     "url": "https://s11.example.com/",
+     "title": "S11"
+    },
+    {
+     "url": "https://s12.example.com/",
+     "title": "S12"
+    },
+    {
+     "url": "https://s13.example.com/",
+     "title": "S13"
+    },
+    {
+     "url": "https://s14.example.com/",
+     "title": "S14"
+    },
+    {
+     "url": "https://s15.example.com/",
+     "title": "S15"
+    },
+    {
+     "url": "https://s16.example.com/",
+     "title": "S16"
+    },
+    {
+     "url": "https://s17.example.com/",
+     "title": "S17"
+    },
+    {
+     "url": "https://s18.example.com/",
+     "title": "S18"
+    },
+    {
+     "url": "https://s19.example.com/",
+     "title": "S19"
+    },
+    {
+     "url": "https://s20.example.com/",
+     "title": "S20"
+    }
+   ],
+   "output": {
+    "groups": {
+     "brake": []
+    },
+    "warnings": []
+   }
+  },
+  {
+   "name": "list",
+   "data": [
+    1
+   ],
+   "job_ids": [
+    "brake"
+   ],
+   "citations": [
+    {
+     "url": "https://example.org/workshop/brake",
+     "title": "記事"
+    },
+    {
+     "url": "https://s0.example.com/",
+     "title": "S0"
+    },
+    {
+     "url": "https://s1.example.com/",
+     "title": "S1"
+    },
+    {
+     "url": "https://s2.example.com/",
+     "title": "S2"
+    },
+    {
+     "url": "https://s3.example.com/",
+     "title": "S3"
+    },
+    {
+     "url": "https://s4.example.com/",
+     "title": "S4"
+    },
+    {
+     "url": "https://s5.example.com/",
+     "title": "S5"
+    },
+    {
+     "url": "https://s6.example.com/",
+     "title": "S6"
+    },
+    {
+     "url": "https://s7.example.com/",
+     "title": "S7"
+    },
+    {
+     "url": "https://s8.example.com/",
+     "title": "S8"
+    },
+    {
+     "url": "https://s9.example.com/",
+     "title": "S9"
+    },
+    {
+     "url": "https://s10.example.com/",
+     "title": "S10"
+    },
+    {
+     "url": "https://s11.example.com/",
+     "title": "S11"
+    },
+    {
+     "url": "https://s12.example.com/",
+     "title": "S12"
+    },
+    {
+     "url": "https://s13.example.com/",
+     "title": "S13"
+    },
+    {
+     "url": "https://s14.example.com/",
+     "title": "S14"
+    },
+    {
+     "url": "https://s15.example.com/",
+     "title": "S15"
+    },
+    {
+     "url": "https://s16.example.com/",
+     "title": "S16"
+    },
+    {
+     "url": "https://s17.example.com/",
+     "title": "S17"
+    },
+    {
+     "url": "https://s18.example.com/",
+     "title": "S18"
+    },
+    {
+     "url": "https://s19.example.com/",
+     "title": "S19"
+    },
+    {
+     "url": "https://s20.example.com/",
+     "title": "S20"
+    }
+   ],
+   "output": {
+    "status": 502,
+    "detail": "価格候補の形式・金額が不正なため採用しませんでした。",
+    "warnings": []
+   }
+  },
+  {
+   "name": "extra_top",
+   "data": {
+    "sources": [],
+    "x": 1
+   },
+   "job_ids": [
+    "brake"
+   ],
+   "citations": [
+    {
+     "url": "https://example.org/workshop/brake",
+     "title": "記事"
+    },
+    {
+     "url": "https://s0.example.com/",
+     "title": "S0"
+    },
+    {
+     "url": "https://s1.example.com/",
+     "title": "S1"
+    },
+    {
+     "url": "https://s2.example.com/",
+     "title": "S2"
+    },
+    {
+     "url": "https://s3.example.com/",
+     "title": "S3"
+    },
+    {
+     "url": "https://s4.example.com/",
+     "title": "S4"
+    },
+    {
+     "url": "https://s5.example.com/",
+     "title": "S5"
+    },
+    {
+     "url": "https://s6.example.com/",
+     "title": "S6"
+    },
+    {
+     "url": "https://s7.example.com/",
+     "title": "S7"
+    },
+    {
+     "url": "https://s8.example.com/",
+     "title": "S8"
+    },
+    {
+     "url": "https://s9.example.com/",
+     "title": "S9"
+    },
+    {
+     "url": "https://s10.example.com/",
+     "title": "S10"
+    },
+    {
+     "url": "https://s11.example.com/",
+     "title": "S11"
+    },
+    {
+     "url": "https://s12.example.com/",
+     "title": "S12"
+    },
+    {
+     "url": "https://s13.example.com/",
+     "title": "S13"
+    },
+    {
+     "url": "https://s14.example.com/",
+     "title": "S14"
+    },
+    {
+     "url": "https://s15.example.com/",
+     "title": "S15"
+    },
+    {
+     "url": "https://s16.example.com/",
+     "title": "S16"
+    },
+    {
+     "url": "https://s17.example.com/",
+     "title": "S17"
+    },
+    {
+     "url": "https://s18.example.com/",
+     "title": "S18"
+    },
+    {
+     "url": "https://s19.example.com/",
+     "title": "S19"
+    },
+    {
+     "url": "https://s20.example.com/",
+     "title": "S20"
+    }
+   ],
+   "output": {
+    "status": 502,
+    "detail": "価格候補の形式・金額が不正なため採用しませんでした。",
+    "warnings": []
+   }
+  },
+  {
+   "name": "too_many",
+   "data": {
+    "sources": [
+     {
+      "job_id": "brake",
+      "source_url": "https://s0.example.com/",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     },
+     {
+      "job_id": "brake",
+      "source_url": "https://s1.example.com/",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     },
+     {
+      "job_id": "brake",
+      "source_url": "https://s2.example.com/",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     },
+     {
+      "job_id": "brake",
+      "source_url": "https://s3.example.com/",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     },
+     {
+      "job_id": "brake",
+      "source_url": "https://s4.example.com/",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     },
+     {
+      "job_id": "brake",
+      "source_url": "https://s5.example.com/",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     },
+     {
+      "job_id": "brake",
+      "source_url": "https://s6.example.com/",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     },
+     {
+      "job_id": "brake",
+      "source_url": "https://s7.example.com/",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     },
+     {
+      "job_id": "brake",
+      "source_url": "https://s8.example.com/",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     },
+     {
+      "job_id": "brake",
+      "source_url": "https://s9.example.com/",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     },
+     {
+      "job_id": "brake",
+      "source_url": "https://s10.example.com/",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     },
+     {
+      "job_id": "brake",
+      "source_url": "https://s11.example.com/",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     },
+     {
+      "job_id": "brake",
+      "source_url": "https://s12.example.com/",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     },
+     {
+      "job_id": "brake",
+      "source_url": "https://s13.example.com/",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     },
+     {
+      "job_id": "brake",
+      "source_url": "https://s14.example.com/",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     },
+     {
+      "job_id": "brake",
+      "source_url": "https://s15.example.com/",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     },
+     {
+      "job_id": "brake",
+      "source_url": "https://s16.example.com/",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     },
+     {
+      "job_id": "brake",
+      "source_url": "https://s17.example.com/",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     },
+     {
+      "job_id": "brake",
+      "source_url": "https://s18.example.com/",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     },
+     {
+      "job_id": "brake",
+      "source_url": "https://s19.example.com/",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     },
+     {
+      "job_id": "brake",
+      "source_url": "https://s20.example.com/",
+      "labor_price": 6600,
+      "parts_price": 12000,
+      "total_price": null,
+      "tax_included": true,
+      "tax_rate": 0.1,
+      "vehicle_match": "exact",
+      "work_matches": true,
+      "work_conditions": "前輪左右",
+      "published_at": null,
+      "evidence": "工賃6,600円（税込）"
+     }
+    ]
+   },
+   "job_ids": [
+    "brake"
+   ],
+   "citations": [
+    {
+     "url": "https://example.org/workshop/brake",
+     "title": "記事"
+    },
+    {
+     "url": "https://s0.example.com/",
+     "title": "S0"
+    },
+    {
+     "url": "https://s1.example.com/",
+     "title": "S1"
+    },
+    {
+     "url": "https://s2.example.com/",
+     "title": "S2"
+    },
+    {
+     "url": "https://s3.example.com/",
+     "title": "S3"
+    },
+    {
+     "url": "https://s4.example.com/",
+     "title": "S4"
+    },
+    {
+     "url": "https://s5.example.com/",
+     "title": "S5"
+    },
+    {
+     "url": "https://s6.example.com/",
+     "title": "S6"
+    },
+    {
+     "url": "https://s7.example.com/",
+     "title": "S7"
+    },
+    {
+     "url": "https://s8.example.com/",
+     "title": "S8"
+    },
+    {
+     "url": "https://s9.example.com/",
+     "title": "S9"
+    },
+    {
+     "url": "https://s10.example.com/",
+     "title": "S10"
+    },
+    {
+     "url": "https://s11.example.com/",
+     "title": "S11"
+    },
+    {
+     "url": "https://s12.example.com/",
+     "title": "S12"
+    },
+    {
+     "url": "https://s13.example.com/",
+     "title": "S13"
+    },
+    {
+     "url": "https://s14.example.com/",
+     "title": "S14"
+    },
+    {
+     "url": "https://s15.example.com/",
+     "title": "S15"
+    },
+    {
+     "url": "https://s16.example.com/",
+     "title": "S16"
+    },
+    {
+     "url": "https://s17.example.com/",
+     "title": "S17"
+    },
+    {
+     "url": "https://s18.example.com/",
+     "title": "S18"
+    },
+    {
+     "url": "https://s19.example.com/",
+     "title": "S19"
+    },
+    {
+     "url": "https://s20.example.com/",
+     "title": "S20"
+    }
+   ],
+   "output": {
+    "status": 502,
+    "detail": "価格候補の形式・金額が不正なため採用しませんでした。",
+    "warnings": []
+   }
+  }
+ ],
+ "schema": {
+  "$defs": {
+   "Price": {
+    "additionalProperties": false,
+    "properties": {
+     "job_id": {
+      "maxLength": 30,
+      "title": "Job Id",
+      "type": "string"
+     },
+     "source_url": {
+      "maxLength": 2000,
+      "title": "Source Url",
+      "type": "string"
+     },
+     "labor_price": {
+      "anyOf": [
+       {
+        "maximum": 10000000,
+        "minimum": 0,
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Labor Price"
+     },
+     "parts_price": {
+      "anyOf": [
+       {
+        "maximum": 10000000,
+        "minimum": 0,
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Parts Price"
+     },
+     "total_price": {
+      "anyOf": [
+       {
+        "maximum": 10000000,
+        "minimum": 0,
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Total Price"
+     },
+     "tax_included": {
+      "anyOf": [
+       {
+        "type": "boolean"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Tax Included"
+     },
+     "tax_rate": {
+      "anyOf": [
+       {
+        "enum": [
+         0.05,
+         0.08,
+         0.1
+        ],
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "default": null,
+      "title": "Tax Rate"
+     },
+     "vehicle_match": {
+      "enum": [
+       "exact",
+       "similar",
+       "unknown"
+      ],
+      "title": "Vehicle Match",
+      "type": "string"
+     },
+     "work_matches": {
+      "anyOf": [
+       {
+        "type": "boolean"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Work Matches"
+     },
+     "work_conditions": {
+      "maxLength": 1000,
+      "title": "Work Conditions",
+      "type": "string"
+     },
+     "published_at": {
+      "anyOf": [
+       {
+        "maxLength": 80,
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Published At"
+     },
+     "evidence": {
+      "maxLength": 120,
+      "title": "Evidence",
+      "type": "string"
+     }
+    },
+    "required": [
+     "job_id",
+     "source_url",
+     "labor_price",
+     "parts_price",
+     "total_price",
+     "tax_included",
+     "vehicle_match",
+     "work_matches",
+     "work_conditions",
+     "published_at",
+     "evidence"
+    ],
+    "title": "Price",
+    "type": "object"
+   }
+  },
+  "additionalProperties": false,
+  "properties": {
+   "sources": {
+    "items": {
+     "$ref": "#/$defs/Price"
+    },
+    "maxItems": 20,
+    "title": "Sources",
+    "type": "array"
+   }
+  },
+  "required": [
+   "sources"
+  ],
+  "title": "Prices",
+  "type": "object"
+ },
+ "generation_schema": {
+  "$defs": {
+   "Price": {
+    "additionalProperties": false,
+    "properties": {
+     "job_id": {
+      "type": "string"
+     },
+     "source_url": {
+      "type": "string"
+     },
+     "labor_price": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "parts_price": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "total_price": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "tax_included": {
+      "anyOf": [
+       {
+        "type": "boolean"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "tax_rate": {
+      "anyOf": [
+       {
+        "enum": [
+         0.05,
+         0.08,
+         0.1
+        ],
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "vehicle_match": {
+      "enum": [
+       "exact",
+       "similar",
+       "unknown"
+      ],
+      "type": "string"
+     },
+     "work_matches": {
+      "anyOf": [
+       {
+        "type": "boolean"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "work_conditions": {
+      "type": "string"
+     },
+     "published_at": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "evidence": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "job_id",
+     "source_url",
+     "labor_price",
+     "parts_price",
+     "total_price",
+     "tax_included",
+     "vehicle_match",
+     "work_matches",
+     "work_conditions",
+     "published_at",
+     "evidence"
+    ],
+    "type": "object"
+   }
+  },
+  "additionalProperties": false,
+  "properties": {
+   "sources": {
+    "items": {
+     "$ref": "#/$defs/Price"
+    },
+    "type": "array"
+   }
+  },
+  "required": [
+   "sources"
+  ],
+  "type": "object"
+ },
+ "cache": {
+  "target": {
+   "vehicle_id": "FL4",
+   "maker": "ホンダ",
+   "model": "シビック",
+   "model_code": "FL4",
+   "year": 2023,
+   "grade": "e:HEV（デモ仕様）",
+   "jobs": [
+    {
+     "id": "brake",
+     "name": "フロントブレーキパッド交換",
+     "description": "前輪左右・パッド持込なし"
+    },
+    {
+     "id": "oil",
+     "name": "エンジンオイル交換",
+     "description": "オイル交換のみ・フィルター別"
+    }
+   ]
+  },
+  "key": "daab97fe83d61a1bfa377a9632d960d61e9b86049fb74710ace0d03f836123b5",
+  "dumps": "{\"vehicle_id\": \"FL4\", \"maker\": \"ホンダ\", \"model\": \"シビック\", \"model_code\": \"FL4\", \"year\": 2023, \"grade\": \"e:HEV（デモ仕様）\", \"jobs\": [{\"id\": \"brake\", \"name\": \"フロントブレーキパッド交換\", \"description\": \"前輪左右・パッド持込なし\"}, {\"id\": \"oil\", \"name\": \"エンジンオイル交換\", \"description\": \"オイル交換のみ・フィルター別\"}]}"
+ },
+ "median": [
+  {
+   "values": [
+    6000
+   ],
+   "result": 6000
+  },
+  {
+   "values": [
+    5000,
+    6000
+   ],
+   "result": 5500
+  },
+  {
+   "values": [
+    5000,
+    6000,
+    8000
+   ],
+   "result": 6000
+  },
+  {
+   "values": [
+    5000,
+    8000,
+    6000,
+    6001
+   ],
+   "result": 6000
+  },
+  {
+   "values": [
+    1,
+    2
+   ],
+   "result": 1
+  },
+  {
+   "values": [
+    0
+   ],
+   "result": 0
+  },
+  {
+   "values": [
+    10000000,
+    9999999
+   ],
+   "result": 9999999
+  },
+  {
+   "values": [
+    3,
+    1,
+    2,
+    4
+   ],
+   "result": 2
+  }
+ ]
+}

@@ -1,6 +1,6 @@
 // GET /api/demo/vehicles/{vehicle_id}（元: GET /api/vehicles/{vehicle_id}）
-import { respond } from "@/lib/systems/demo/http";
-import { vehicleById } from "@/lib/systems/demo/service";
+import { respond } from "../../../../../lib/systems/demo/http";
+import { vehicleById } from "../../../../../lib/systems/demo/service";
 
 export const dynamic = "force-dynamic";
 

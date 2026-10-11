@@ -1,5 +1,6 @@
 // Route Handler の共通処理。FastAPI と同じく、エラーは {"detail": ...} の JSON で返す。
-import { withDatabase, type Database } from "@/lib/db";
+import { withDatabase } from "../../db/client";
+import type { Database } from "../../db/queryable";
 import { HttpError, parsePyJson } from "./py";
 
 /** リクエストボディを Python の json.loads と同じ規則で読む。読めなければ FastAPI と同じ 422。 */

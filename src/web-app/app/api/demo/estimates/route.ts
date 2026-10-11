@@ -1,6 +1,6 @@
 // GET/POST /api/demo/estimates（元: GET/POST /api/estimates）
-import { queryParam, readBody, respond } from "@/lib/systems/demo/http";
-import { listEstimates, saveEstimate } from "@/lib/systems/demo/service";
+import { queryParam, readBody, respond } from "../../../../lib/systems/demo/http";
+import { listEstimates, saveEstimate } from "../../../../lib/systems/demo/service";
 
 export const dynamic = "force-dynamic";
 
