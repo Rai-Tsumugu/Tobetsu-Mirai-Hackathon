@@ -7,12 +7,17 @@ import * as e03 from "./e03";
 import * as e04 from "./e04";
 import * as e05 from "./e05";
 import * as e06 from "./e06";
+import * as e07 from "./e07";
+import * as e08 from "./e08";
+import * as e09 from "./e09";
+import * as e10 from "./e10";
+import * as e11 from "./e11";
 
 export const ENGINE_IDS: string[] = Array.from({ length: 30 }, (_, i) => `e${String(i + 1).padStart(2, "0")}`);
 
 type EngineModule = { run: (scenario: Dict, rulePack: Dict | null) => Dict };
 const MODULES: Record<string, EngineModule> = {
-  e01, e02, e03, e04, e05, e06,
+  e01, e02, e03, e04, e05, e06, e07, e08, e09, e10, e11,
 };
 
 /** Python の ModuleNotFoundError（API では 503）。 */

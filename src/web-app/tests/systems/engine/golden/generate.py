@@ -324,6 +324,234 @@ def _e04_extras():
 _e04_extras()
 
 
+# ---------------------------------------------------------------- E08 / E09
+def _e08_extras():
+    for name, pack in {
+        "s05_v": {"method_id": "S05", "rule_version": "fixture-r7"},
+        "s19": {"method_id": "S19"},
+        "unknown_method": {"method_id": "not_registered"},
+        "blank_version": {"method_id": "S01", "rule_version": " "},
+        "method_not_str": {"method_id": 5},
+        "pack_list": ["x"],
+        "empty_pack": {},
+    }.items():
+        extra("e08", name, pack)
+    s = APPROVED()
+    s.pop("basis_unit")
+    extra("e08", "no_basis_unit", None, s)
+    s = APPROVED()
+    s["basis_definition"] = ""
+    extra("e08", "empty_definition", None, s)
+    s = APPROVED()
+    s["operations"] = "x"
+    extra("e08", "operations_not_list", None, s)
+    s = COMMON()
+    extra("e08", "common", {"method_id": "S01"}, s)
+
+
+_e08_extras()
+
+
+def _dag(nodes, edges=(), limit=2, version="fictional-rule-v1", **kw):
+    pack = {"engine_id": "e09_process_dag", "rule_version": version, "status": "approved",
+            "resource_limit": limit, "nodes": nodes, "edges": [list(e) if isinstance(e, tuple) else e for e in edges]}
+    pack.update(kw)
+    return pack
+
+
+def _e09_extras():
+    n = lambda **k: k  # noqa: E731
+    extra("e09", "parallel", _dag([n(operation_id="a", duration_hours={"low": 1, "typical": 2, "high": 3}, person_count=1),
+                                    n(operation_id="b", duration_hours=1, person_count=1),
+                                    n(operation_id="c", duration_hours=0.5, person_count=2)], [("a", "c"), ("b", "c")]), COMMON())
+    extra("e09", "serial", _dag([n(operation_id="a", duration_hours={"low": 1, "typical": 2, "high": 3}, person_count=1),
+                                  n(operation_id="b", duration_hours=1, person_count=1),
+                                  n(operation_id="c", duration_hours=0.5, person_count=2)], [("a", "b"), ("b", "c")]), COMMON())
+    two = [n(operation_id=k, duration_hours=2, person_count=1) for k in ("first", "second")]
+    extra("e09", "one_worker", _dag(two, limit=1), COMMON())
+    extra("e09", "two_workers", _dag(two, limit=2), COMMON())
+    extra("e09", "unknown_wait", _dag([n(operation_id="work", duration_hours=2, person_count=2),
+                                       n(operation_id="wait", kind="wait", duration_hours=None, person_count=0)], [("work", "wait")]), COMMON())
+    extra("e09", "known_wait", _dag([n(operation_id="work", duration_hours=2, person_count=2),
+                                     n(operation_id="wait", kind="wait", duration_hours=0.75)], [{"before": "work", "after": "wait"}]), COMMON())
+    extra("e09", "missing_ref", _dag([n(operation_id="a", duration_hours=1)], [("a", "missing")]), COMMON())
+    extra("e09", "duplicate", _dag([n(operation_id="a", duration_hours=1), n(operation_id="a", duration_hours=1)]), COMMON())
+    extra("e09", "cycle", _dag([n(operation_id="a", duration_hours=1), n(operation_id="b", duration_hours=1)], [("a", "b"), ("b", "a")]), COMMON())
+    extra("e09", "capacity", _dag([n(operation_id="a", duration_hours=1, person_count=3)], limit=2), COMMON())
+    extra("e09", "unknown_work", _dag([n(operation_id="a", duration_hours=None)]), COMMON())
+    extra("e09", "version_mismatch", _dag([n(operation_id="a", duration_hours=1)], version="different"), COMMON())
+    extra("e09", "empty_pack", {}, APPROVED())
+    extra("e09", "list_pack", [], APPROVED())
+    extra("e09", "version_only", {"rule_version": "fictional-rule-v1"}, APPROVED())
+    extra("e09", "bad_edges", _dag([n(operation_id="a", duration_hours=1)], [("a", "a"), "x", [1, 2, 3], {"before": "a"}]), COMMON())
+    extra("e09", "bad_nodes", _dag([5, n(operation_id=" "), n(operation_id="k", kind="odd"), n(operation_id="w", kind="wait", person_count=2, duration_hours=1),
+                                   n(operation_id="z", duration_hours=-1), n(operation_id="y", person_count=True, duration_hours=1),
+                                   n(operation_id="x", duration_hours={"low": 3, "typical": 2, "high": 1})]), COMMON())
+    extra("e09", "bad_limit", _dag([n(operation_id="a", duration_hours=1)], limit=0), COMMON())
+    extra("e09", "bool_limit", _dag([n(operation_id="a", duration_hours=1)], limit=True), COMMON())
+    extra("e09", "draft_other_engine", _dag([n(operation_id="a", duration_hours=1)], status="draft", engine_id="other"), COMMON())
+    extra("e09", "no_nodes", _dag([]), COMMON())
+    extra("e09", "edges_not_list", {"rule_version": "fictional-rule-v1", "nodes": [n(operation_id="a", duration_hours=1)], "edges": "x", "resource_limit": 1}, COMMON())
+    extra("e09", "diamond", _dag([n(operation_id="s", duration_hours=1, person_count=1), n(operation_id="l", duration_hours=2.5, person_count=2),
+                                  n(operation_id="r", duration_hours=0.7, person_count=1), n(operation_id="t", duration_hours={"low": 0.1, "typical": 0.3, "high": 0.9}, person_count=3),
+                                  n(operation_id="d", kind="wait", duration_hours=1.3)],
+                                 [("s", "l"), ("s", "r"), ("l", "t"), ("r", "t"), ("t", "d")], limit=3), COMMON())
+
+
+_e09_extras()
+
+
+# ---------------------------------------------------------------- E10 / E11
+def _e10_extras():
+    from auto_repair_engine import e10
+    v = "fictional-rule-v1"
+    s = APPROVED()
+    extra("e10", "gross_explicit", None, dict(s, ledger_mode="gross"))
+    c = COMMON()
+    c["ledger_mode"] = "gross"
+    extra("e10", "common_gross_rededuction", None, c)
+    s2 = APPROVED()
+    s2["ledger_mode"] = "deduplicated"
+    extra("e10", "deduplicated_mode", None, s2)
+    s3 = APPROVED()
+    s3["ledger_mode"] = "other"
+    extra("e10", "bad_mode", None, s3)
+    extra("e10", "dup_shared_keys", {"rule_version": v, "shared_deductions": [
+        {"key": ["shared_overlap", "both", "front_brake_service"], "hours": 0.3, "owners": ["left", "right"], "reason": "one shared operation"},
+        {"key": ["shared_overlap", "both", "front_brake_service"], "hours": 0.3, "owners": ["left", "right"], "reason": "repeated request"}]})
+    extra("e10", "exclusive_two", {"rule_version": v, "exclusive_groups": [{"name": "carry-choice", "selected": ["included", "replacement"]}]})
+    extra("e10", "exclusive_one", {"rule_version": v, "exclusive_groups": [{"name": "carry-choice", "selected": ["included"]}]})
+    extra("e10", "exclusive_bad", {"rule_version": v, "exclusive_groups": [5, {"selected": "x"}]})
+    extra("e10", "exclusive_not_list", {"rule_version": v, "exclusive_groups": "x"})
+    extra("e10", "empty_pack", {})
+    extra("e10", "bad_ledger_entry", {"rule_version": v, "ledger": {"entries": [{"operation": "x"}]}})
+    extra("e10", "bad_ledger_shape", {"rule_version": v, "ledger": {"entries": 5}})
+    extra("e10", "ledger_entry_not_obj", {"rule_version": v, "ledger": [5]})
+    extra("e10", "ledger_prefilled", {"rule_version": v, "ledger": [{"operation": "shared_overlap", "side": "both", "scope": "front_brake_service", "owners": ["x"]}],
+                                      "shared_deductions": [{"key": ["shared_overlap", "both", "front_brake_service"], "hours": 0.3, "owners": ["a"], "reason": "r"}]},
+          dict(s, ledger_mode="gross"))
+    extra("e10", "shared_ok_gross", {"rule_version": v, "shared_deductions": [{"key": {"operation": "o", "side": "l", "scope": "s"}, "hours": 0.2, "owners": "alice", "reason": "ok"},
+                                                                          {"key": ("o", "r", "s"), "hours": 0.1, "owners": ["a", "a", " b "], "reason": "ok2"}]},
+          dict(s, ledger_mode="gross", operations=[dict(o, gross_hours=2.0) if o["operation_id"] == "base_service" else o for o in s["operations"]]))
+    extra("e10", "shared_bad_items", {"rule_version": v, "shared_deductions": [5, {"hours": -1}, {"hours": 0.1, "key": 5}, {"hours": 0.1, "key": ["a", "b", " "]},
+                                                                         {"hours": 0.1, "key": ["a", "b", "c"], "owners": []}, {"hours": 0.1, "key": ["a", "b", "c"], "owners": "x", "reason": ""}]},
+          dict(s, ledger_mode="gross"))
+    extra("e10", "shared_not_list", {"rule_version": v, "shared_deductions": "x"}, dict(s, ledger_mode="gross"))
+    extra("e10", "shared_too_much", {"rule_version": v, "shared_deductions": [{"key": ["a", "b", "c"], "hours": 99, "owners": "x", "reason": "r"}]},
+          dict(s, ledger_mode="gross"))
+    extra("e10", "pack_not_dict", ["x"])
+    extra("e10", "pack_mismatch_engine", {"engine_id": "other", "rule_version": "zzz", "status": "draft"})
+    s4 = APPROVED()
+    s4["operations"] = [o for o in s4["operations"] if o["operation_id"] != "wash"] + [dict(next(o for o in s4["operations"] if o["operation_id"] == "base_service"))]
+    extra("e10", "dup_and_missing_ops", None, s4)
+    s5 = APPROVED()
+    s5["operations"].append(5)
+    s5["operations"].append({"operation_id": 5})
+    extra("e10", "bad_ops_items", None, s5)
+    s6 = APPROVED()
+    s6["fields"] = []
+    extra("e10", "fields_not_dict", None, s6)
+    s7 = APPROVED()
+    s7["operations"] = {}
+    extra("e10", "ops_not_dict", None, s7)
+    s8 = APPROVED()
+    op(s8, "included_carry")["included_in_base"] = False
+    extra("e10", "included_not_in_base", None, s8)
+    s9 = APPROVED()
+    op(s9, "replacement_carry")["person_count"] = 0
+    extra("e10", "replacement_zero", None, s9)
+    s10 = APPROVED()
+    op(s10, "parts_wait")["stock_checked"] = False
+    extra("e10", "stock_unchecked", None, s10)
+    s11 = APPROVED()
+    op(s11, "wash")["hours"] = None
+    extra("e10", "wash_none", None, s11)
+    s12 = APPROVED()
+    op(s12, "penetrant_wait")["elapsed_hours"] = "x"
+    extra("e10", "wait_invalid", None, s12)
+    s13 = APPROVED()
+    s13["fields"]["rotor_relevance"]["value"] = "relevant"
+    s13["metadata"].pop("approved_condition_widths")
+    extra("e10", "rotor_no_approval", None, s13)
+    s14 = APPROVED()
+    s14["metadata"]["approved_condition_widths"]["rotor_seizure_hours"]["new_value"] = {"low": 0, "typical": 1, "high": 2}
+    extra("e10", "rotor_mismatch", None, s14)
+    s15 = APPROVED()
+    s15["fields"]["rotor_seizure_hours"]["value"] = {"low": 1, "typical": 0.5, "high": 2}
+    extra("e10", "rotor_bad_range", None, s15)
+    s16 = APPROVED()
+    s16["fields"].pop("rotor_relevance")
+    extra("e10", "rotor_relevance_missing", None, s16)
+    s17 = APPROVED()
+    s17["fields"]["work_scope"] = 5
+    extra("e10", "work_scope_not_dict", None, s17)
+    s18 = APPROVED()
+    s18["metadata"] = None
+    extra("e10", "metadata_none", None, s18)
+
+    ledger0 = {"entries": []}
+    key = ["shared_operation", "both", "front_brake_service"]
+    d = lambda ledger, key, amount, owners, reason: e10.deduct_once(ledger, key, amount, owners=owners, reason=reason)  # noqa: E731
+    r = lambda ledger, key, rkey, owners, old_hours, replacement_hours, reason: e10.replace_once(  # noqa: E731
+        ledger, key, rkey, owners=owners, old_hours=old_hours, replacement_hours=replacement_hours, reason=reason)
+    once = d(ledger0, key, 0.3, ["left", "right"], "shared once")[0]
+    unit("e10.deduct_once", d, ledger0, key, 0.3, ["left", "right"], "shared once")
+    unit("e10.deduct_once", d, once, key, 0.3, ["third"], "attempt again")
+    unit("e10.deduct_once", d, ledger0, ["align", "left", "front"], 0.1, "left-tech", "left")
+    unit("e10.deduct_once", d, None, {"operation": " a ", "side": "b", "scope": "c"}, 0, " x ", " why ")
+    unit("e10.deduct_once", d, [], key, -1, "x", "r")
+    unit("e10.deduct_once", d, [], key, 1, "x", " ")
+    unit("e10.deduct_once", d, [], ["a", "b"], 1, "x", "r")
+    unit("e10.deduct_once", d, [], ["a", "b", 3], 1, "x", "r")
+    unit("e10.deduct_once", d, [], key, 1, [], "r")
+    unit("e10.deduct_once", d, [], key, 1, ["a", ""], "r")
+    unit("e10.deduct_once", d, 5, key, 1, "x", "r")
+    unit("e10.deduct_once", d, {"entries": [5]}, key, 1, "x", "r")
+    unit("e10.deduct_once", d, {"entries": [], "extra": 1}, key, True, "x", "r")
+    source = {"operation": "included_carry", "side": "both", "scope": "front"}
+    target = {"operation": "replacement_carry", "side": "both", "scope": "front"}
+    ledger1 = d(ledger0, source, 0.12, "base_service", "included")[0]
+    replaced = r(ledger1, source, target, "replacement_carry", 0.12, 0.2, "two-person replacement")
+    unit("e10.replace_once", r, ledger1, source, target, "replacement_carry", 0.12, 0.2, "two-person replacement")
+    unit("e10.replace_once", r, replaced[0], source, target, "replacement_carry", 0.12, 0.2, "duplicate")
+    unit("e10.replace_once", r, ledger0, source, target, "replacement_carry", 0.12, 0.2, "missing source")
+    unit("e10.replace_once", r, ledger1, source, target, "x", -1, 0.2, "bad hours")
+    unit("e10.replace_once", r, ledger1, source, target, "x", 1, 0.2, "")
+    unit("e10.replace_once", r, ledger1, source, target, [], 1, 0.2, "no owners")
+
+
+_e10_extras()
+
+
+def _e11_extras():
+    from auto_repair_engine import e11
+    s = APPROVED()
+    v = e11.RULE_VERSION
+    extra("e11", "no_choice", None)
+    extra("e11", "choose_a", {"selected_method": "A", "actor": "human", "reason": "review"})
+    extra("e11", "choose_b", {"selected_method": "B", "actor": "human", "reason": "review"})
+    extra("e11", "choose_b_no_actor", {"selected_method": "B", "actor": " ", "reason": "review"})
+    extra("e11", "choose_c", {"selected_method": "C", "actor": "human", "reason": "review"})
+    extra("e11", "choose_missing", {"selected_method": "Z", "actor": "human", "reason": "review"})
+    extra("e11", "choose_s05", {"selected_method": "S05", "methods": ["A", "B", "S05"], "actor": "h", "reason": "r", "rule_version": v})
+    extra("e11", "methods_with_c", {"selected_method": "A", "methods": ["A", "C"], "actor": "h", "reason": "r"})
+    extra("e11", "methods_dup", {"selected_method": "A", "methods": ["A", "A"], "actor": "h", "reason": "r"})
+    extra("e11", "methods_empty", {"selected_method": "A", "methods": [], "actor": "h", "reason": "r"})
+    extra("e11", "methods_bad", {"selected_method": "A", "methods": "AB", "actor": "h", "reason": "r"})
+    extra("e11", "methods_only_b", {"selected_method": "A", "methods": ["B"], "actor": "h", "reason": "r"})
+    extra("e11", "blank_version", {"selected_method": "A", "rule_version": " ", "actor": "h", "reason": "r"})
+    extra("e11", "common_choose_a", {"selected_method": "A", "actor": "h", "reason": "r"}, COMMON())
+    extra("e11", "common_choose_b", {"selected_method": "B", "actor": "h", "reason": "r"}, COMMON())
+    sn = APPROVED()
+    op(sn, "snow_melt")["elapsed_hours"] = None
+    extra("e11", "snow_unknown_a", {"selected_method": "A", "actor": "h", "reason": "r"}, sn)
+    extra("e11", "snow_unknown_b", {"selected_method": "B", "actor": "h", "reason": "r"}, sn)
+    extra("e11", "pack_not_dict", ["x"], s)
+
+
+_e11_extras()
+
+
 # ---------------------------------------------------------------- スクリプト形式のゴールデン（scripted.json）
 SCRIPTS: dict = {}
 
@@ -583,6 +811,42 @@ def e06_lifecycle():
             errs[name] = [type(exc).__name__, str(exc)]
     out["errors"] = errs
     out["date_formats"] = {d: _date_ok(d) for d in ("2026-10-11", "20261011", "2026-W41-7", "2026W417", "2026-W41", "2026-02-30", "2026-13-01", "0000-01-01", "2026-W54-1", "2020-W53-1", "2021-W53-1", "abc", "")}
+    return out
+
+
+@script
+def e11_flows():
+    from auto_repair_engine import e11
+    out = {}
+    scenario = APPROVED()
+    comparison = e11.compare_methods(scenario)
+    out["comparison"] = comparison
+    out["chosen_a"] = e11.select_method(comparison, "A", "reviewer", "根拠の適用範囲を確認した")
+    out["chosen_b"] = e11.select_method(comparison, "B", "reviewer", "ok")
+    tampered = copy.deepcopy(comparison)
+    tampered["runs"][1]["labor"]["person_hours"] = {"low": 8, "typical": 8, "high": 8}
+    out["tampered"] = e11.select_method(tampered, "B", "human", "independently chose this run")
+    out["no_actor"] = e11.select_method(comparison, "B", "", "why")
+    cleared = copy.deepcopy(comparison)
+    cleared["runs"][1]["labor"]["breakdown"].clear()
+    out["cleared"] = e11.select_method(cleared, "B", "human", "verified")
+    fresh = e11.compare_methods(scenario)
+    out["input_binding"] = e11.select_method(fresh, "A", "human", "verified", {**scenario, "person_count": 999})
+    out["same_input"] = e11.select_method(fresh, "A", "human", "verified", scenario)
+    out["wrong_version"] = e11.select_method(fresh, "A", "human", "verified", scenario, "wrong-version")
+    out["absent"] = e11.select_method(comparison, "missing", "human", "reason")
+    incomplete = copy.deepcopy(comparison)
+    incomplete["runs"][0]["unknowns"] = ["evidence:missing"]
+    incomplete["comparison_hash"] = e11._hash({k: v for k, v in incomplete.items() if k != "comparison_hash"})
+    out["incomplete"] = e11.select_method(incomplete, "A", "human", "reason")
+    out["not_obj"] = e11.select_method([], "A", "h", "r")
+    out["no_runs"] = e11.select_method({"runs": 5}, "A", "h", "r")
+    bad_version = copy.deepcopy(comparison)
+    bad_version["runs"][1]["rule_version"] = "x"
+    bad_version["comparison_hash"] = e11._hash({k: v for k, v in bad_version.items() if k != "comparison_hash"})
+    out["selected_result_tampered"] = e11.select_method(bad_version, "B", "h", "r")
+    out["with_version"] = e11.compare_methods(scenario, ["A", "B", "S05", "ZZ"], "fixture-r7")
+    out["bad_methods"] = [e11.compare_methods(scenario, m) for m in ("AB", [], ["A", "A"], [5], [""])]
     return out
 
 

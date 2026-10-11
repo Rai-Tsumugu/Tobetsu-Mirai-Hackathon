@@ -5,6 +5,7 @@ import { approvedCommonScenarioFixture, commonScenarioFixture } from "../../../l
 import * as e04 from "../../../lib/systems/engine/e04";
 import * as e05 from "../../../lib/systems/engine/e05";
 import * as e06 from "../../../lib/systems/engine/e06";
+import * as e11 from "../../../lib/systems/engine/e11";
 import { PyIntegrityError, deepcopy, pyErrorName } from "../../../lib/systems/engine/py";
 import { resetEngineState } from "../../../lib/systems/engine/runner";
 import { E05_CSV, e04Pack, e06FixturePackPayload, golden } from "./fixtures";
@@ -166,6 +167,48 @@ describe("E05 (CSV import)", () => {
     out.same_again = packJson(publish(E05_CSV, "e05-baseline-test-v1"));
     same(out, scripted.e05_publish_flow);
     expect(out.baseline.labor.person_hours).toEqual({ low: 1.88, typical: 2.13, high: 2.38 });
+  });
+});
+
+describe("E11 (independent comparison)", () => {
+  it("compares methods and gates the audited selection", () => {
+    const out: any = {};
+    const scenario = approvedCommonScenarioFixture();
+    const comparison = e11.compareMethods(scenario);
+    out.comparison = comparison;
+    out.chosen_a = e11.selectMethod(comparison, "A", "reviewer", "根拠の適用範囲を確認した");
+    out.chosen_b = e11.selectMethod(comparison, "B", "reviewer", "ok");
+    const tampered = deepcopy(comparison);
+    tampered.runs[1].labor.person_hours = { low: 8, typical: 8, high: 8 };
+    out.tampered = e11.selectMethod(tampered, "B", "human", "independently chose this run");
+    out.no_actor = e11.selectMethod(comparison, "B", "", "why");
+    const cleared = deepcopy(comparison);
+    cleared.runs[1].labor.breakdown.length = 0;
+    out.cleared = e11.selectMethod(cleared, "B", "human", "verified");
+    const fresh = e11.compareMethods(scenario);
+    out.input_binding = e11.selectMethod(fresh, "A", "human", "verified", { ...scenario, person_count: 999 });
+    out.same_input = e11.selectMethod(fresh, "A", "human", "verified", scenario);
+    out.wrong_version = e11.selectMethod(fresh, "A", "human", "verified", scenario, "wrong-version");
+    out.absent = e11.selectMethod(comparison, "missing", "human", "reason");
+    const incomplete = deepcopy(comparison);
+    incomplete.runs[0].unknowns = ["evidence:missing"];
+    const { comparison_hash: _h, ...rest } = incomplete;
+    void _h;
+    incomplete.comparison_hash = e11.hashOf(rest);
+    out.incomplete = e11.selectMethod(incomplete, "A", "human", "reason");
+    out.not_obj = e11.selectMethod([], "A", "h", "r");
+    out.no_runs = e11.selectMethod({ runs: 5 }, "A", "h", "r");
+    const badVersion = deepcopy(comparison);
+    badVersion.runs[1].rule_version = "x";
+    const { comparison_hash: _h2, ...rest2 } = badVersion;
+    void _h2;
+    badVersion.comparison_hash = e11.hashOf(rest2);
+    out.selected_result_tampered = e11.selectMethod(badVersion, "B", "h", "r");
+    out.with_version = e11.compareMethods(scenario, ["A", "B", "S05", "ZZ"], "fixture-r7");
+    out.bad_methods = ["AB", [], ["A", "A"], [5], [""]].map((m) => e11.compareMethods(scenario, m));
+    same(out, scripted.e11_flows);
+    expect(out.chosen_a.selection.method).toBe("A");
+    expect(out.tampered.labor.unknowns).toContain("comparison:payload_tampered");
   });
 });
 
