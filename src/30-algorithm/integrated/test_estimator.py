@@ -170,6 +170,61 @@ class VariablesDriveTheResult(unittest.TestCase):
         self.assertEqual(run(catalog=catalog)["base"]["base_hours"], 1.8)
 
 
+class ValidationStopsTypos(unittest.TestCase):
+    """変数ファイルの書き間違いは、黙って別の扱いにせずエラーにする。"""
+
+    def assert_rejected(self, mutate, target="params"):
+        case, params, catalog, records = (copy.deepcopy(x) for x in load_all())
+        mutate({"params": params, "records": records, "case": case}[target])
+        with self.assertRaises(ValueError):
+            estimator.estimate(case, params, catalog, records)
+
+    def test_unknown_rule_kind(self):
+        self.assert_rejected(lambda p: p["condition_rules"][C.NO_COUNT].update(kind="stat"))
+
+    def test_unknown_tag_unit(self):
+        self.assert_rejected(lambda p: p["tag_to_op"]["固着対応"].update(unit="per_bolt"))
+
+    def test_heating_key_outside_cost_keys(self):
+        self.assert_rejected(lambda p: p["labor_rate"]["cost_keys"].remove(p["labor_rate"]["heating_key"]))
+
+    def test_unknown_rate_table(self):
+        self.assert_rejected(lambda p: p.update(adopted_rate_table="V2"))
+
+    def test_unknown_state_label_in_case(self):
+        self.assert_rejected(lambda c: c["condition"]["snow_on_body"].update(state="多い"), target="case")
+
+    def test_unknown_tire_weight_status(self):
+        self.assert_rejected(lambda c: c["vehicle"]["tire_with_wheel_weight_kg"].update(status="目視"), target="case")
+
+    def test_unknown_job_in_rule(self):
+        self.assert_rejected(lambda p: next(r for r in p["condition_rules"] if r.get("job")).update(job="J3"))
+
+    def test_unknown_job_in_fastener(self):
+        self.assert_rejected(lambda c: c["condition"]["fasteners"][C.NO_COUNT].update(job="J3"), target="case")
+
+    def test_unknown_area_in_rule(self):
+        self.assert_rejected(lambda p: next(r for r in p["condition_rules"] if r.get("area")).update(area="wheel_hubb"))
+
+    def test_tag_unit_contradicts_records(self):
+        # 固着対応の実績は本数（count）付きなので、入庫単位（visit）と書くと矛盾する
+        self.assert_rejected(lambda p: p["tag_to_op"]["固着対応"].update(unit=C.TAG_UNIT_VISIT))
+
+    def test_grade_must_be_integer_or_null(self):
+        self.assert_rejected(lambda c: c["condition"]["underbody_rust_grade"].update(brake_area="3"), target="case")
+
+    def test_record_count_must_be_positive(self):
+        def zero(records):
+            next(r for r in records["historical_records"] if "固着対応" in r["tags"])["tags"]["固着対応"]["count"] = C.NO_COUNT
+        self.assert_rejected(zero, target="records")
+
+    def test_missing_side_state(self):
+        self.assert_rejected(lambda c: c["condition"]["slide_pin_boots"].pop("right"), target="case")
+
+    def test_billable_hours_mismatch(self):
+        self.assert_rejected(lambda p: p["labor_rate"]["billable_hours"].update(winter=1))
+
+
 class Guardrails(unittest.TestCase):
     def test_age_alone_does_not_add_hours(self):
         case, params, catalog, records = load_all()
@@ -210,7 +265,8 @@ class Guardrails(unittest.TestCase):
         grades = case["condition"]["underbody_rust_grade"]
         grades.update(brake_area=None, wheel_hub=0, front_suspension=0)
         items = {item["id"]: item for item in run(case=case)["items"]}
-        self.assertEqual(items["wash"]["state"], C.STATE_UNCONFIRMED)
+        self.assertEqual(items["wash"]["state_id"], C.STATE_UNCONFIRMED)
+        self.assertEqual(items["wash"]["state"], "未確認")
         self.assertEqual(items["wash"]["hours"]["typical"], 0.0)
         self.assertGreater(items["wash"]["hours"]["high"], 0.0)
 
@@ -232,6 +288,49 @@ class Guardrails(unittest.TestCase):
 
     def test_result_is_marked_as_proposal(self):
         self.assertTrue(run()["status"].startswith("提案"))
+
+    def test_unbilled_work_has_no_extra_yen(self):
+        case, params, catalog, records = load_all()
+        case = copy.deepcopy(case)
+        case["condition"]["underbody_rust_grade"].update(brake_area=None, wheel_hub=0, front_suspension=0)
+        rows = {row["condition"]: row for row in run(case=case)["conditional_quote"]["conditions"]}
+        # 下回り洗浄は請求しないので、発生した場合の追加人時はあっても追加金額は 0
+        self.assertGreater(rows["下回り洗浄"]["extra_hours"], 0.0)
+        self.assertEqual(rows["下回り洗浄"]["extra_yen"], 0)
+
+    def test_same_vehicle_is_found_by_history_without_flag(self):
+        case, params, catalog, records = load_all()
+        records = copy.deepcopy(records)
+        for record in records["historical_records"]:
+            record.pop("same_vehicle", None)
+        b = run(records=records)["method_comparison"]["b"]
+        self.assertEqual([row["id"] for row in b["same_vehicle_cases"]], ["R11"])
+
+    def test_vehicle_key_comes_from_shakensho(self):
+        case, params, catalog, records = load_all()
+        self.assertEqual(run()["vehicle"]["vehicle_key"], "ABC-XYZ10/2014-01")
+        other = copy.deepcopy(case)
+        other["e_shakensho"]["型式"] = "DEF-UVW20"
+        records = copy.deepcopy(records)
+        for record in records["historical_records"]:
+            record.pop("same_vehicle", None)
+        # 型式が違えば別の車なので、R11 は類似実績の集計に入る
+        self.assertEqual(run(case=other, records=records)["method_comparison"]["b"]["n"], 4)
+
+    def test_fastener_of_other_job_is_reported(self):
+        case, params, catalog, records = load_all()
+        case = copy.deepcopy(case)
+        case["jobs"] = ["J2"]
+        case["condition"]["fasteners"][C.NO_COUNT]["job"] = "J1"
+        result = run(case=case)
+        self.assertEqual(len(result["excluded_from_this_job"]), 2)  # ホイールナット（J1）と書き換えた1本
+
+    def test_customer_sheet_matches_conditional_quote(self):
+        result = run()
+        sheet_conditional = sum(line["high"] for line in result["customer_sheet"]
+                                if line["line"].startswith("発生した場合だけの追加"))
+        self.assertAlmostEqual(sheet_conditional, result["conditional_quote"]["all_conditions_extra_hours"],
+                               places=load_all()[1]["rounding"]["hours_decimals"])
 
     def test_out_of_scope_area_is_reported_not_added(self):
         result = run()

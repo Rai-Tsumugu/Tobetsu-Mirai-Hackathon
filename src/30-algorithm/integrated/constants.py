@@ -13,6 +13,8 @@ BANDS = (LOW, TYPICAL, HIGH)
 
 # 数量の単位。「入庫1回につき1回」「片側1つ」「締結部1本」は、どれも1単位として数える
 ONE_UNIT = 1
+# 丸めの刻みの基準。刻み = ROUNDING_BASE × 10^(-桁数)
+ROUNDING_BASE = 1
 # 同じ共通工程が複数の作業に含まれていても、見積もり全体では1回だけ計上する
 COUNTED_ONCE = 1
 # 足し合わせの起点（何も加えていない状態）
@@ -24,6 +26,7 @@ NO_YEN = 0.0
 # 暦
 MONTHS_PER_YEAR = 12
 DATE_SEPARATOR = "-"
+VEHICLE_KEY_SEPARATOR = "/"  # 同一車両の照合キー「型式/初度登録年月」の区切り
 MONTH_DIGITS = 2  # 月を2桁で表示する（2014-01）
 
 # 和暦の元年が西暦の何年か（定義で決まる）。西暦 = 元年の西暦 + 和暦年 - ERA_YEAR_OFFSET
@@ -36,12 +39,36 @@ ERA_YEAR_OFFSET = 1
 PERCENT = 100
 JSON_INDENT = 2  # 出力 JSON の字下げ幅
 
-# 現車状態の選択肢（README §3 の暫定選択肢と「仮定」）
-STATE_PROBLEM = "問題あり"
-STATE_ASSUMED = "仮定"
-STATE_UNCONFIRMED = "未確認"
-STATE_NOT_OBSERVED = "問題を観察していない"
-STATE_PREFIX_ORDER = (STATE_NOT_OBSERVED, STATE_PROBLEM, STATE_ASSUMED, STATE_UNCONFIRMED)
+# 現車状態の内部 ID。画面や入力に出る名前（「問題あり」など）は docs/man-hours/README.md §3 の暫定選択肢なので、
+# shop_params.state_labels（変数）に置き、コードはこの ID で分岐する
+STATE_PROBLEM = "problem"
+STATE_ASSUMED = "assumed"
+STATE_UNCONFIRMED = "unconfirmed"
+STATE_NOT_OBSERVED = "not_observed"
+STATE_IDS = (STATE_PROBLEM, STATE_ASSUMED, STATE_UNCONFIRMED, STATE_NOT_OBSERVED)
+
+# 状態に応じた工程の展開規則（condition_rules）の種類と数量の決め方
+RULE_STATE = "state"
+RULE_SIDE_STATE = "side_state"
+RULE_AREA_GRADE = "area_grade"
+RULE_WORK_AREA_GRADE = "work_area_grade"
+RULE_KINDS = (RULE_STATE, RULE_SIDE_STATE, RULE_AREA_GRADE, RULE_WORK_AREA_GRADE)
+QUANTITY_PER_VISIT = "per_visit"
+QUANTITY_SIDES = "sides"
+
+# 実績タグの数え方。count=実績の count で割って1単位あたりにする、visit=入庫1回あたり
+TAG_UNIT_COUNT = "count"
+TAG_UNIT_VISIT = "visit"
+TAG_UNITS = (TAG_UNIT_COUNT, TAG_UNIT_VISIT)
+
+# 方式Bの比較条件と、その判定結果の内部コード
+CONDITION_BRAKE_RUST = "brake_rust"
+CONDITION_AGE_BAND = "age_band"
+CONDITION_SEASON = "season"
+SIMILAR_CONDITIONS = (CONDITION_BRAKE_RUST, CONDITION_AGE_BAND, CONDITION_SEASON)
+DIFF_MATCH = "match"
+DIFF_DIFFERENT = "different"
+DIFF_UNKNOWN = "unknown"
 
 # 季節
 SEASON_WINTER = "冬季"
@@ -60,6 +87,7 @@ RATE_MODE_SEASONAL = "seasonal"
 # 補正表の版
 RATE_TABLE_V1 = "v1"
 RATE_TABLE_V2 = "v2"
+RATE_TABLES = (RATE_TABLE_V1, RATE_TABLE_V2)
 
 # 文の区切り（音声メモの振り分け）
 SENTENCE_DELIMITER = "。"

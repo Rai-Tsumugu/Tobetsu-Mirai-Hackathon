@@ -213,23 +213,23 @@
     }
   },
   "state_treatment": {
-    "_note": "状態ごとに、low/typical/high で工程のどの値を使うか。null は入れない",
-    "問題あり": {
+    "_note": "状態ごとに、low/typical/high で工程のどの値を使うか。null は入れない。キーは state_labels の ID",
+    "problem": {
       "low": "low",
       "typical": "typical",
       "high": "high"
     },
-    "仮定": {
+    "assumed": {
       "low": null,
       "typical": "typical",
       "high": "high"
     },
-    "未確認": {
+    "unconfirmed": {
       "low": null,
       "typical": null,
       "high": "high"
     },
-    "問題を観察していない": {
+    "not_observed": {
       "low": null,
       "typical": null,
       "high": null
@@ -333,14 +333,15 @@
       "hours_each": 0.1
     },
     "weight_status_to_state": {
-      "仮定": "仮定",
-      "未確認": "未確認",
-      "申告": "仮定",
-      "確認済み": "問題あり",
-      "現車で確認済み": "問題あり"
+      "仮定": "assumed",
+      "未確認": "unconfirmed",
+      "申告": "assumed",
+      "確認済み": "problem",
+      "現車で確認済み": "problem"
     },
     "factor": "HK05",
-    "from": "S07"
+    "from": "S07",
+    "billable": true
   },
   "check_intensity": {
     "age_years": 10,
@@ -360,7 +361,7 @@
     "yen_gt": 5000
   },
   "priority_score": {
-    "_note": "工場が承認した加点表（架空）。各項目は満たす段のうち最大の点を使う",
+    "_note": "工場が承認した加点表（架空）。各項目は満たす段のうち最大の点を使う。作業部位の錆グレードは、作業部位のうち最も進んだグレードで判定する",
     "age_years": [
       {
         "min": 10,
@@ -436,7 +437,8 @@
         "freq": 0.05,
         "unit": "左右一式"
       }
-    }
+    },
+    "_note": "freq は整備士の見込みの発生頻度。labor_hours_each は参考表示（見積もり本体には入れない）"
   },
   "photo_required_shots": {
     "J2": [
@@ -481,7 +483,8 @@
     ],
     "exclude_if_differs": [],
     "exclude_same_vehicle": true,
-    "rust_area": "brake_area"
+    "rust_area": "brake_area",
+    "min_records": 3
   },
   "out_of_scope_areas": {
     "subframe": "J1・J2 では外さない。腐食があれば作業範囲の拡大（AG04）として見積もりを変更し、顧客の了承を得る"
@@ -566,11 +569,13 @@
     }
   },
   "rounding": {
-    "_note": "表示・請求の丸め（工場に確認する事項、README §4）。mode は decimal モジュールの丸めモード名",
+    "_note": "表示・請求の丸め（工場に確認する事項、docs/man-hours/README.md §4）。mode は decimal モジュールの丸めモード名",
     "hours_decimals": 2,
     "hours_mode": "ROUND_HALF_UP",
     "yen_decimals": 0,
-    "yen_mode": "ROUND_HALF_UP"
+    "yen_mode": "ROUND_HALF_UP",
+    "percent_decimals": 0,
+    "percent_mode": "ROUND_HALF_UP"
   },
   "vehicle_history_compare": {
     "_note": "同一車両の前回と比べる部位（S09）",
@@ -579,5 +584,12 @@
   "e_shakensho_excluded": [
     "使用者",
     "所有者"
-  ]
+  ],
+  "state_labels": {
+    "_note": "現車状態の選択肢の名前。docs/man-hours/README.md §3 の暫定選択肢（問題あり、問題を観察していない、未確認）に、資料値の確認がない重量などを扱う「仮定」を加えたもの。入力の先頭がこの名前と一致すれば、その状態とみなす",
+    "problem": "問題あり",
+    "assumed": "仮定",
+    "unconfirmed": "未確認",
+    "not_observed": "問題を観察していない"
+  }
 }
