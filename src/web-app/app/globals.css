@@ -44,7 +44,7 @@ h1 span { color: var(--green); }
 .section-heading .eyebrow { margin: 0; }
 h2 { margin: 0; font-size: 19px; font-weight: 650; letter-spacing: -.03em; }
 .step-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 13px; }
-.step-card { position: relative; min-height: 166px; padding: 21px 22px; border: 1px solid var(--line); border-radius: 10px; background: #fff; transition: border-color .2s, transform .2s; }
+.step-card { display: block; position: relative; min-height: 166px; padding: 21px 22px; border: 1px solid var(--line); border-radius: 10px; background: #fff; transition: border-color .2s, transform .2s; }
 .step-card:hover { transform: translateY(-2px); border-color: #98b9a7; }
 .step-number { color: var(--green); font-size: 10px; font-weight: 800; letter-spacing: .12em; }
 h3 { margin: 17px 0 7px; font-size: 16px; font-weight: 700; }
