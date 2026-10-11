@@ -30,8 +30,8 @@ NeonのPostgreSQLへ `@neondatabase/serverless` で接続します。サーバ�
 ### 数値表示の検証
 
 1. Neon SQL Editorで `db/display-check.sql` を実行します。検証用テーブルに `1234` のサンプル値が1件入ります。
-2. `npm run dev` を起動し、[http://localhost:3000/db-check](http://localhost:3000/db-check) を開きます。
-3. Neonから読み込んだ `1,234 件` と `DATABASE CONNECTED` が表示されれば確認完了です。
+2. `npm run dev` を起動し、[http://localhost:3000/db-check](http://localhost:3000/db-check) を開きます。未接続なら画面確認用の `1,234 件` がサンプル表示されます。
+3. `.env.local` を設定してSQLを実行後、Neonから読み込んだ `1,234 件` と `DATABASE CONNECTED` が表示されればDB読出し確認も完了です。
 
 検証用データはアプリの業務データではありません。不要になったら `db_display_check` テーブルを削除できます。
 

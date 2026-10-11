@@ -9,10 +9,15 @@ type DisplaySample = {
 };
 
 export default async function DatabaseCheckPage() {
-  let sample: DisplaySample | undefined;
-  let state: "not-configured" | "unavailable" | "empty" | "connected" = "not-configured";
+  let sample: DisplaySample | undefined = {
+    label: "画面確認用サンプル",
+    value: 1234,
+    unit: "件",
+  };
+  let state: "sample" | "unavailable" | "empty" | "connected" = "sample";
 
   if (process.env.DATABASE_URL) {
+    sample = undefined;
     try {
       const sql = getDatabase();
       const rows = await sql`
@@ -41,25 +46,22 @@ export default async function DatabaseCheckPage() {
         <p className="eyebrow">NEON POSTGRESQL · READ CHECK</p>
         <h1>数値表示の確認</h1>
         <p className="db-check-intro">
-          Neonのテーブルから読み込んだ数値を表示します。
+          Neon接続前はサンプル値を、接続後はテーブルから読み込んだ数値を表示します。
         </p>
 
-        {state === "connected" && sample && (
-          <article className="db-metric-card">
+        {(state === "connected" || state === "sample") && sample && (
+          <article className={`db-metric-card ${state === "sample" ? "is-sample" : ""}`}>
             <span className="db-metric-label">{sample.label}</span>
             <p className="db-metric-value">
               {new Intl.NumberFormat("ja-JP").format(sample.value)}
               <span>{sample.unit}</span>
             </p>
-            <span className="db-connection-state">DATABASE CONNECTED</span>
+            <span className="db-connection-state">
+              {state === "sample" ? "SAMPLE · DATABASE NOT CONNECTED" : "DATABASE CONNECTED"}
+            </span>
           </article>
         )}
 
-        {state === "not-configured" && (
-          <p className="db-message" role="status">
-            DATABASE_URLが未設定です。Neonの接続文字列を `.env.local` に設定してください。
-          </p>
-        )}
         {state === "unavailable" && (
           <p className="db-message" role="status">
             DBに接続できないか、確認用テーブルがありません。`db/display-check.sql` をNeon SQL Editorで実行してください。
