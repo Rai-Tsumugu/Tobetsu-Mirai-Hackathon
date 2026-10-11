@@ -15,7 +15,7 @@
 ```text
 src/web-app/
 ├── public/                 # 静的アセット
-├── src/app/
+├── app/
 │   ├── globals.css         # グローバルスタイル
 │   ├── layout.tsx          # 共通レイアウトとページメタデータ
 │   └── page.tsx            # 初期画面
