@@ -1,0 +1,250 @@
+{
+  "model": "gpt-6-luna",
+  "variable_style": "snake_case",
+  "teams": [
+    {
+      "idea_id": "P01",
+      "implementation_agent": "p01_implement",
+      "review_agent": "p01_review",
+      "status": "review_passed",
+      "implementation_file": "p01.py"
+    },
+    {
+      "idea_id": "P02",
+      "implementation_agent": "p02_implement",
+      "review_agent": "p02_review",
+      "status": "implemented",
+      "implementation_file": "p02.py"
+    },
+    {
+      "idea_id": "P03",
+      "implementation_agent": "p03_implement",
+      "review_agent": "p03_review",
+      "status": "review_passed",
+      "implementation_file": "p03.py"
+    },
+    {
+      "idea_id": "P04",
+      "implementation_agent": "p04_implement",
+      "review_agent": "p04_review",
+      "status": "review_passed",
+      "implementation_file": "p04.py"
+    },
+    {
+      "idea_id": "P05",
+      "implementation_agent": "p05_implement",
+      "review_agent": "p05_review",
+      "status": "review_passed",
+      "implementation_file": "p05.py"
+    },
+    {
+      "idea_id": "P06",
+      "implementation_agent": "p06_implement",
+      "review_agent": "p06_review",
+      "status": "review_passed",
+      "implementation_file": "p06.py"
+    },
+    {
+      "idea_id": "P07",
+      "implementation_agent": "p07_implement",
+      "review_agent": "p07_review",
+      "status": "review_passed",
+      "implementation_file": "p07.py"
+    },
+    {
+      "idea_id": "P08",
+      "implementation_agent": "p08_implement",
+      "review_agent": "p08_review",
+      "status": "implemented",
+      "implementation_file": "p08.py"
+    },
+    {
+      "idea_id": "P09",
+      "implementation_agent": "p09_implement",
+      "review_agent": "p09_review",
+      "status": "implemented",
+      "implementation_file": "p09.py"
+    },
+    {
+      "idea_id": "P10",
+      "implementation_agent": "p10_implement",
+      "review_agent": "p10_review",
+      "status": "implemented",
+      "implementation_file": "p10.py"
+    },
+    {
+      "idea_id": "P11",
+      "implementation_agent": "p11_implement",
+      "review_agent": "p11_review",
+      "status": "review_passed",
+      "implementation_file": "p11.py"
+    },
+    {
+      "idea_id": "P12",
+      "implementation_agent": "p12_implement",
+      "review_agent": "p12_review",
+      "status": "implemented",
+      "implementation_file": "p12.py"
+    },
+    {
+      "idea_id": "P13",
+      "implementation_agent": "p13_implement",
+      "review_agent": "p13_review",
+      "status": "implemented",
+      "implementation_file": "p13.py"
+    },
+    {
+      "idea_id": "P14",
+      "implementation_agent": "p14_implement",
+      "review_agent": "p14_review",
+      "status": "review_passed",
+      "implementation_file": "p14.py"
+    },
+    {
+      "idea_id": "P15",
+      "implementation_agent": "p15_implement",
+      "review_agent": "p15_review",
+      "status": "review_passed",
+      "implementation_file": "p15.py"
+    },
+    {
+      "idea_id": "P16",
+      "implementation_agent": "p16_implement",
+      "review_agent": "p16_review",
+      "status": "implemented",
+      "implementation_file": "p16.py"
+    },
+    {
+      "idea_id": "P17",
+      "implementation_agent": "p17_implement",
+      "review_agent": "p17_review",
+      "status": "implemented",
+      "implementation_file": "p17.py"
+    },
+    {
+      "idea_id": "P18",
+      "implementation_agent": "p18_implement",
+      "review_agent": "p18_review",
+      "status": "review_passed",
+      "implementation_file": "p18.py"
+    },
+    {
+      "idea_id": "P19",
+      "implementation_agent": "p19_implement",
+      "review_agent": "p19_review",
+      "status": "implemented",
+      "implementation_file": "p19.py"
+    },
+    {
+      "idea_id": "P20",
+      "implementation_agent": "p20_implement",
+      "review_agent": "p20_review",
+      "status": "implemented",
+      "implementation_file": "p20.py"
+    },
+    {
+      "idea_id": "P21",
+      "implementation_agent": "p21_implement",
+      "review_agent": "p21_review",
+      "status": "implemented",
+      "implementation_file": "p21.py"
+    },
+    {
+      "idea_id": "P22",
+      "implementation_agent": "p22_implement",
+      "review_agent": "p22_review",
+      "status": "implemented",
+      "implementation_file": "p22.py"
+    },
+    {
+      "idea_id": "P23",
+      "implementation_agent": "p23_implement",
+      "review_agent": "p23_review",
+      "status": "implemented",
+      "implementation_file": "p23.py"
+    },
+    {
+      "idea_id": "P24",
+      "implementation_agent": "p24_implement",
+      "review_agent": "p24_review",
+      "status": "implemented",
+      "implementation_file": "p24.py"
+    },
+    {
+      "idea_id": "P25",
+      "implementation_agent": "p25_implement",
+      "review_agent": "p25_review",
+      "status": "pending",
+      "implementation_file": "p25.py"
+    },
+    {
+      "idea_id": "P26",
+      "implementation_agent": "p26_implement",
+      "review_agent": "p26_review",
+      "status": "pending",
+      "implementation_file": "p26.py"
+    },
+    {
+      "idea_id": "P27",
+      "implementation_agent": "p27_implement",
+      "review_agent": "p27_review",
+      "status": "pending",
+      "implementation_file": "p27.py"
+    },
+    {
+      "idea_id": "P28",
+      "implementation_agent": "p28_implement",
+      "review_agent": "p28_review",
+      "status": "pending",
+      "implementation_file": "p28.py"
+    },
+    {
+      "idea_id": "P29",
+      "implementation_agent": "p29_implement",
+      "review_agent": "p29_review",
+      "status": "pending",
+      "implementation_file": "p29.py"
+    },
+    {
+      "idea_id": "P30",
+      "implementation_agent": "p30_implement",
+      "review_agent": "p30_review",
+      "status": "review_passed",
+      "implementation_file": "p30.py"
+    }
+  ],
+  "integration": {
+    "entry_point": "workflow.py",
+    "ui": "main.tsx",
+    "core_ideas": [
+      "P01",
+      "P07",
+      "P14"
+    ],
+    "api_variable_style": "snake_case",
+    "backend_review_agent": "p30_review",
+    "frontend_review_agent": "p02_review",
+    "backend_review_status": "passed",
+    "frontend_review_status": "passed",
+    "checks": {
+      "python_tests_passed": 179,
+      "frontend_build": "passed",
+      "browser": "passed",
+      "browser_scenarios": [
+        "selection",
+        "manual_amount",
+        "communication",
+        "json_export",
+        "print",
+        "revision",
+        "change_approval",
+        "old_snapshot",
+        "quick_quote",
+        "quick_registration_gate",
+        "missing_input",
+        "mobile",
+        "request_recovery"
+      ]
+    }
+  }
+}
