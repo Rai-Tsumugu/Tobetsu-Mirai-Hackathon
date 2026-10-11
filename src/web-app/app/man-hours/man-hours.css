@@ -1,0 +1,197 @@
+/* 工数見積もり画面。すべてのセレクタを .sys-man-hours の下にスコープし、ほかの画面へ漏らさない。 */
+.sys-man-hours {
+  width: min(1040px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 24px 0 64px;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+
+  .mh-top {
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .mh-back {
+    display: inline-block;
+    padding: 6px 0;
+    color: var(--green);
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  /* globals.css のスコープなしの h1 / h2 / h3 を、この画面の大きさに上書きする */
+  h1 {
+    margin: 8px 0 6px;
+    font-size: 26px;
+    letter-spacing: 0;
+    line-height: 1.4;
+  }
+
+  h2 {
+    margin: 0 0 8px;
+    font-size: 18px;
+    letter-spacing: 0;
+  }
+
+  h3 {
+    margin: 16px 0 6px;
+    font-size: 14px;
+  }
+
+  p {
+    margin: 6px 0;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .mh-lead {
+    color: var(--muted);
+  }
+
+  .mh-section {
+    margin-top: 20px;
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #fff;
+    min-width: 0;
+  }
+
+  .mh-note {
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .mh-input {
+    display: block;
+    width: 100%;
+    min-height: 280px;
+    padding: 10px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    resize: vertical;
+  }
+
+  .mh-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0;
+  }
+
+  button {
+    padding: 9px 14px;
+    border: 1px solid var(--green);
+    border-radius: 8px;
+    background: var(--green);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+
+    &.secondary {
+      background: #fff;
+      color: var(--green);
+    }
+
+    &:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+  }
+
+  .mh-field {
+    display: grid;
+    gap: 4px;
+    max-width: 320px;
+    margin-top: 12px;
+    font-size: 12px;
+    color: var(--muted);
+
+    input {
+      padding: 8px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      font-size: 14px;
+      color: var(--ink);
+    }
+  }
+
+  .mh-error,
+  .mh-ok {
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .mh-error {
+    background: #fdecec;
+    color: #9b1c1c;
+  }
+
+  .mh-ok {
+    background: #e7f4ec;
+    color: #146b51;
+  }
+
+  .mh-list {
+    margin: 6px 0;
+    padding-left: 20px;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  /* 表は横にスクロールできる枠に入れ、画面幅を超えて広がらないようにする */
+  .mh-scroll {
+    max-width: 100%;
+    margin: 8px 0;
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  th,
+  td {
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  thead th {
+    background: #f1f5ef;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  tbody th {
+    font-weight: 600;
+    min-width: 140px;
+  }
+
+  .num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 480px) {
+    padding-top: 12px;
+
+    .mh-section {
+      padding: 12px;
+    }
+
+    h1 {
+      font-size: 21px;
+    }
+  }
+}
