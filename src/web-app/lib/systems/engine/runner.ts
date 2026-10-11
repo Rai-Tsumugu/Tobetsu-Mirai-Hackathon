@@ -16,12 +16,20 @@ import * as e12 from "./e12";
 import * as e13 from "./e13";
 import * as e14 from "./e14";
 import * as e15 from "./e15";
+import * as e16 from "./e16";
+import * as e17 from "./e17";
+import * as e18 from "./e18";
+import * as e19 from "./e19";
+import * as e20 from "./e20";
+import * as e21 from "./e21";
+import * as e22 from "./e22";
+import * as e23 from "./e23";
 
 export const ENGINE_IDS: string[] = Array.from({ length: 30 }, (_, i) => `e${String(i + 1).padStart(2, "0")}`);
 
 type EngineModule = { run: (scenario: Dict, rulePack: Dict | null) => Dict };
 const MODULES: Record<string, EngineModule> = {
-  e01, e02, e03, e04, e05, e06, e07, e08, e09, e10, e11, e12, e13, e14, e15,
+  e01, e02, e03, e04, e05, e06, e07, e08, e09, e10, e11, e12, e13, e14, e15, e16, e17, e18, e19, e20, e21, e22, e23,
 };
 
 /** Python の ModuleNotFoundError（API では 503）。 */

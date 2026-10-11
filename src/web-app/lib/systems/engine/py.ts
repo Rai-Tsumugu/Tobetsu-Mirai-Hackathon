@@ -279,6 +279,25 @@ export function pyIter(v: any): any[] {
   throw new PyTypeError("object is not iterable");
 }
 
+/** isinstance(v, (int, float))（Python では bool も真）。 */
+export const isPyNum = (v: unknown): v is number | boolean => typeof v === "number" || typeof v === "boolean";
+
+/** a + b（数値以外が混ざれば TypeError。bool は 0/1 として扱う）。 */
+export function pyAdd(a: any, b: any): number {
+  const x = typeof a === "boolean" ? Number(a) : a;
+  const y = typeof b === "boolean" ? Number(b) : b;
+  if (typeof x !== "number" || typeof y !== "number") throw new PyTypeError("unsupported operand type(s) for +");
+  return x + y;
+}
+
+/** a - b（数値以外が混ざれば TypeError。bool は 0/1 として扱う）。 */
+export function pySub(a: any, b: any): number {
+  const x = typeof a === "boolean" ? Number(a) : a;
+  const y = typeof b === "boolean" ? Number(b) : b;
+  if (typeof x !== "number" || typeof y !== "number") throw new PyTypeError("unsupported operand type(s) for -");
+  return x - y;
+}
+
 /** a / b（数値以外は TypeError、0 での除算は ZeroDivisionError）。 */
 export function pyDiv(a: any, b: any): number {
   const x = typeof a === "boolean" ? Number(a) : a;
@@ -294,7 +313,14 @@ export function hashKey(v: any): string {
   if (typeof v === "boolean") return "d:" + (v ? 1 : 0);
   if (typeof v === "number") return "d:" + v;
   if (typeof v === "string") return "s:" + v;
-  throw new PyTypeError("unhashable type");
+  { const t = Array.isArray(v) ? "list" : "dict"; throw new PyTypeError(`cannot use '${t}' as a dict key (unhashable type: '${t}')`); }
+}
+
+/** `x in {...}`（set への所属判定。list / dict は Python 3.14 のメッセージの TypeError）。 */
+export function setHas(x: any, values: any[]): boolean {
+  if (Array.isArray(x)) throw new PyTypeError("cannot use 'list' as a set element (unhashable type: 'list')");
+  if (isDict(x)) throw new PyTypeError("cannot use 'dict' as a set element (unhashable type: 'dict')");
+  return values.some((v) => pyEq(v, x));
 }
 
 /** sorted(iterable)。文字列同士・数値同士のみ比較可能（混在は TypeError）。 */

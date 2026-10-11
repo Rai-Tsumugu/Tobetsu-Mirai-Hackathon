@@ -902,6 +902,357 @@ def _e13_extras():
 _e13_extras()
 
 
+def _e19_to_e23_extras():
+    # E19: 左右の観測
+    s = APPROVED()
+    s["operations"].append({"operation_id": "align", "operation": "align", "hours": 0.5, "side": "left", "person_count": 1})
+    s["operations"].append({"operation_id": "align", "operation": "align", "hours": 0.75, "side": "right", "person_count": 1})
+    s["operations"].append({"operation_id": "toe", "operation": "toe", "hours": 0.2, "side": "left"})
+    s["operations"].append({"operation_id": "bolt", "operation": "bolt", "hours": None, "side": "left"})
+    s["operations"].append({"operation_id": "bolt", "operation": "bolt", "hours": 0.3, "side": "right"})
+    s["operations"].append({"operation_id": "flag", "hours": True, "side": "left"})
+    s["operations"].append({"operation_id": "flag", "hours": 0.1, "side": "right"})
+    s["operations"].append({"operation_id": 5, "hours": 0.1, "side": "right"})
+    s["operations"].append({"operation_id": "center", "hours": 0.1, "side": "center"})
+    extra("e19", "sides", None, s)
+    s2 = APPROVED()
+    s2["operations"].append({"operation_id": "x", "side": ["left"]})
+    extra("e19", "side_unhashable", None, s2)
+    s3 = APPROVED()
+    s3["operations"] = "x"
+    extra("e19", "ops_not_list", None, s3)
+    extra("e19", "with_pack", {"anything": 1}, APPROVED())
+    # E20: what-if
+    extra("e20", "empty_hypothesis", {"hypothesis": {}})
+    extra("e20", "wash_longer", {"hypothesis": {"actor": "owner", "reason": "what if", "operations": [{"operation_id": "wash", "hours": 0.4}]}})
+    extra("e20", "two_changes", {"hypothesis": {"actor": "owner", "reason": "r", "operations": [{"operation_id": "wash", "hours": 0.4}, {"operation_id": "snow_melt", "elapsed_hours": 1.0, "extra": [1]}]}})
+    extra("e20", "no_actor", {"hypothesis": {"reason": "r", "operations": [{"operation_id": "wash", "hours": 0.4}]}})
+    extra("e20", "unknown_op", {"hypothesis": {"actor": "a", "reason": "r", "operations": [{"operation_id": "nope"}]}})
+    extra("e20", "bad_change", {"hypothesis": {"actor": "a", "reason": "r", "operations": [5]}})
+    extra("e20", "ops_not_list", {"hypothesis": {"operations": "x"}})
+    extra("e20", "pack_not_dict", ["x"])
+    extra("e20", "pack_no_hypothesis", {"other": 1})
+    # E21: 証拠付きの追加
+    approval = {"actor": "owner", "reason": "evidence reviewed", "old_value": None,
+                "new_value": {"hours": 0.5, "unit": "person_hour", "source": "fictional_photo"}, "rule_version": "e21-evidence-additions-v1"}
+    good = {"operation_id": "extra_clean", "unit": "person_hour", "hours": 0.5, "source": "fictional_photo", "old_value": None, "approval": approval}
+    extra("e21", "one_good", {"additions": [good]})
+    extra("e21", "two_good", {"additions": [good, dict(good, operation_id="extra_2", hours=0.25, approval=dict(approval, new_value={"hours": 0.25, "unit": "person_hour", "source": "fictional_photo"}))]})
+    extra("e21", "no_approval", {"additions": [dict(good, approval=None)]})
+    extra("e21", "wrong_version", {"additions": [dict(good, approval=dict(approval, rule_version="x"))]})
+    extra("e21", "bad_hours", {"additions": [dict(good, hours=-1), dict(good, hours=True), dict(good, hours="1")]})
+    extra("e21", "bad_unit_source", {"additions": [dict(good, unit="hour", source=" ", operation_id="")]})
+    extra("e21", "not_dict_item", {"additions": [5]})
+    extra("e21", "additions_not_list", {"additions": "x"})
+    extra("e21", "pack_not_dict", ["x"])
+    extra("e21", "existing_op_old_value", {"additions": [dict(good, operation_id="wash", old_value=0.1, approval=dict(approval, old_value=0.1))]})
+    extra("e21", "existing_op_wrong_old", {"additions": [dict(good, operation_id="wash", old_value=0.2)]})
+    extra("e21", "new_with_old", {"additions": [dict(good, old_value=1.0)]})
+    extra("e21", "on_unresolved", {"additions": [good]}, COMMON())
+    extra("e21", "empty", {})
+    # E22: 実績の結合
+    steps = [{"operation_id": "base_service", "unit": "person_hour", "person_count": 1, "duration_hours": 1.58},
+             {"operation_id": "replacement_carry", "unit": "person_hour", "person_count": 2, "duration_hours": 0.1},
+             {"operation_id": "wash", "unit": "person_hour", "person_count": 1, "duration_hours": 0.1},
+             {"operation_id": "rotor_seizure", "unit": "person_hour", "person_count": 1, "duration_hours": 0.25},
+             {"operation_id": "snow_melt", "unit": "elapsed_hours", "duration_hours": 0.5},
+             {"is_wait": True}]
+    base = {"scope_id": "front_brake_service", "rule_version": "fictional-rule-v1", "actual_steps": steps}
+    extra("e22", "complete", base)
+    extra("e22", "missing_step", dict(base, actual_steps=steps[:2]))
+    extra("e22", "unknown_op", dict(base, actual_steps=steps + [{"operation_id": "zzz", "unit": "person_hour", "person_count": 1, "duration_hours": 1}]))
+    extra("e22", "bad_steps", dict(base, actual_steps=[5, {"unit": "person_hour"}, {"operation_id": "wash", "unit": "person_hour", "person_count": 0, "duration_hours": 1},
+                                                      {"operation_id": "wash", "unit": "person_hour", "person_count": 1, "duration_hours": -1},
+                                                      {"operation_id": "wash", "unit": "person_hour", "person_count": True, "duration_hours": 1}]))
+    extra("e22", "scope_mismatch", dict(base, scope_id="other"))
+    extra("e22", "version_mismatch", dict(base, rule_version="other"))
+    extra("e22", "steps_not_list", dict(base, actual_steps="x"))
+    extra("e22", "no_pack", None)
+    extra("e22", "pack_list", ["x"])
+    extra("e22", "common_incomplete", base, COMMON())
+    # E23: 参照バケット
+    def sample(i, op="wash", cond="dry", hours=0.1):
+        return {"sample_id": f"s{i}", "operation_id": op, "unit": "person_hour", "condition": cond, "hours": hours}
+    extra("e23", "five_samples", {"samples": [sample(i, hours=0.1 * i) for i in range(1, 6)]})
+    extra("e23", "few_samples", {"samples": [sample(1), sample(2, hours=0.3), sample(3, "base_service", "wet", 1.5), sample(4, "base_service", "wet", 2)]})
+    extra("e23", "min_samples_2", {"minimum_samples": 2, "samples": [sample(1), sample(2, hours=0.3)]})
+    extra("e23", "bad_min", {"minimum_samples": 0, "samples": [sample(1)]})
+    extra("e23", "bool_min", {"minimum_samples": True})
+    extra("e23", "bad_samples", {"samples": [5, dict(sample(1), unit="elapsed"), dict(sample(2), hours=True), dict(sample(3), hours=-1), {"sample_id": "x"}, sample(4), sample(4)]})
+    extra("e23", "samples_not_list", {"samples": "x"})
+    extra("e23", "pack_not_dict", ["x"])
+    extra("e23", "no_pack", None)
+    extra("e23", "ints", {"samples": [sample(1, hours=2), sample(2, hours=4), sample(3, hours=7)]})
+    from auto_repair_engine import e23
+    unit("e23.summarize_buckets", e23.summarize_buckets, [sample(i, hours=h) for i, h in enumerate([1, 2, 3, 4], 1)], 3)
+    unit("e23.summarize_buckets", e23.summarize_buckets, [sample(1, "b", "x", 1.5), sample(2, "a", "y", 2.5), sample(3, "a", "x", 0.1)])
+    unit("e23.summarize_buckets", e23.summarize_buckets, [])
+    unit("e23.summarize_buckets", e23.summarize_buckets, [{"operation_id": "a"}])
+
+
+_e19_to_e23_extras()
+
+
+def _e18_extras():
+    from auto_repair_engine import e18
+    extra("e18", "with_pack", {"x": 1})
+    extra("e18", "with_empty_pack", {})
+    s = APPROVED()
+    s.pop("rule_version")
+    extra("e18", "no_version", None, s)
+    s = APPROVED()
+    for o in s["operations"]:
+        o.pop("source", None)
+    extra("e18", "no_sources", None, s)
+    s = APPROVED()
+    s["fields"]["subframe_relevance"]["status"] = "unknown"
+    extra("e18", "subframe_unknown", None, s)
+    s = APPROVED()
+    op(s, "snow_melt")["elapsed_hours"] = None
+    extra("e18", "snow_unknown", None, s)
+    s = APPROVED()
+    s["fields"] = []
+    extra("e18", "fields_list", None, s)
+    scenario = APPROVED()
+    tree = e18.build_trace_tree(scenario)
+    unit("e18.build_trace_tree", e18.build_trace_tree, scenario)
+    unit("e18.build_trace_tree", e18.build_trace_tree, scenario, "pinned-v9")
+    unit("e18.build_trace_tree", e18.build_trace_tree, COMMON())
+    unit("e18.build_trace_tree", e18.build_trace_tree, 5)
+    unit("e18.evaluate_tree", e18.evaluate_tree, tree)
+    unit("e18.evaluate_tree", e18.evaluate_tree, {"rule": "sum_children", "children": []})
+    unit("e18.evaluate_tree", e18.evaluate_tree, {"rule": "sum_children"})
+    unit("e18.evaluate_tree", e18.evaluate_tree, [])
+    unit("e18.evaluate_tree", e18.evaluate_tree, {"rule": "operation_contribution", "children": [], "result": {"person_hours": {"low": 1, "typical": 1, "high": 1}, "elapsed_hours": {"low": None, "typical": None, "high": None}}})
+    unit("e18.evaluate_tree", e18.evaluate_tree, {"rule": "operation_contribution", "children": [], "result": {"person_hours": {"low": 2, "typical": 1, "high": 1}, "elapsed_hours": {"low": None, "typical": None, "high": None}}})
+    unit("e18.evaluate_tree", e18.evaluate_tree, {"rule": "sum_children", "children": [{"rule": "operation_contribution", "children": [], "result": {"person_hours": {"low": 0.1, "typical": 0.2, "high": 0.3}, "elapsed_hours": {"low": 0.1, "typical": 0.2, "high": 0.3}}}] * 3})
+
+
+_e18_extras()
+
+
+@script
+def e18_inspect():
+    """トレースの入力ハッシュは言語ごとに値が違うため、木はそれぞれの言語で作ってから改ざんして検査する。"""
+    from auto_repair_engine import e18
+    scenario = APPROVED()
+    tree = e18.build_trace_tree(scenario)
+    out = {"tree": tree, "ok": e18.inspect_trace(tree, scenario), "no_scenario": e18.inspect_trace(tree),
+           "other_scenario": e18.inspect_trace(tree, dict(scenario, person_count=9)),
+           "not_dict": e18.inspect_trace(5), "wrong_root": e18.inspect_trace({"rule": "sum_children"})}
+    t = copy.deepcopy(tree)
+    t["children"][0]["result"]["person_hours"]["typical"] = 99
+    out["leaf_changed"] = e18.inspect_trace(t, scenario)
+    t = copy.deepcopy(tree)
+    t["children"][1]["node_id"] = t["children"][0]["node_id"]
+    t["children"][2]["rule_version"] = "x"
+    t["children"][3]["input_hash"] = "x"
+    t["children"][4]["input_refs"] = 5
+    t["children"][5]["input_refs"] = [{"path": "/nope", "value": 1}, {"path": "x"}, {"path": "/operations/99"}, 5]
+    out["many_issues"] = e18.inspect_trace(t, scenario)
+    t = copy.deepcopy(tree)
+    t["children"][0]["children"] = [1]
+    out["leaf_with_children"] = e18.inspect_trace(t, scenario)
+    t = copy.deepcopy(tree)
+    t["children"][0]["rule"] = "weird"
+    t["children"][1]["result"] = 5
+    t["audit_expected"] = None
+    out["weird_rule"] = e18.inspect_trace(t)
+    t = copy.deepcopy(tree)
+    t["children"].append(5)
+    t["input_hash"] = "short"
+    out["short_hash"] = e18.inspect_trace(t, scenario)
+    return out
+
+
+def _e17_extras():
+    from auto_repair_engine import e17
+    fixture = e17._fixture_events()
+    app = e17.append_observation_event
+    extended = app(fixture, "rotor_relevance", "relevant", "tech", "confirmed on current visit", "2026-10-11T12:00:00+09:00", "rotor-revision", "fixture-01")
+    extended = app(extended, "rotor_seizure_hours", {"low": 0, "typical": .25, "high": .5}, "owner", "approved condition width", "2026-10-11T12:01:00+09:00", "rotor-range")
+    version = "fictional-rule-v1"
+    extra("e17", "fixture_events", {"engine_id": e17.ENGINE_ID, "rule_version": version, "events": fixture})
+    extra("e17", "extended_events", {"engine_id": e17.ENGINE_ID, "rule_version": version, "events": extended})
+    extra("e17", "extended_unversioned", {"events": extended}, COMMON())
+    pending = app([], "rotor_relevance", "unrelated", "", "", "", "pending-1", status="pending")
+    extra("e17", "pending_only", {"events": pending}, COMMON())
+    extra("e17", "no_events_key", {}, COMMON())
+    extra("e17", "events_none", {"events": None}, COMMON())
+    extra("e17", "events_not_list", {"events": "x"}, COMMON())
+    extra("e17", "events_nondict", {"events": [5]}, COMMON())
+    extra("e17", "empty_events", {"events": []}, COMMON())
+    extra("e17", "pack_not_dict", ["x"], COMMON())
+    extra("e17", "pack_unknown", {"events": fixture, "x": 1, "engine_id": "z", "rule_version": "v9"}, COMMON())
+    audit = {"actor": "fixture", "reason": "cycle probe", "observed_at": "2026-10-11T00:00:00Z", "source": "fictional"}
+    a = {"id": "a", "target": "rotor_relevance", "value": "unrelated", "supersedes": "b", "status": "confirmed", **audit}
+    b = {"id": "b", "target": "rotor_relevance", "value": "relevant", "supersedes": "a", "status": "confirmed", **audit}
+    extra("e17", "cycle", {"events": [a, b]}, COMMON())
+    event = {"id": "a", "target": "rotor_relevance", "value": "unrelated", "supersedes": None, "actor": "tech", "reason": "checked", "observed_at": "2026-10-11T00:00:00Z", "source": "fixture", "status": "confirmed"}
+    extra("e17", "fork", {"events": [event, dict(event, id="b", value="relevant"), dict(event, id="c", value="relevant")]}, COMMON())
+    extra("e17", "target_mismatch", {"events": [event, dict(event, id="b", target="parts_wait_stock_checked", value=True, supersedes="a")]}, COMMON())
+    extra("e17", "unknown_supersedes", {"events": [dict(event, supersedes="zzz")]}, COMMON())
+    extra("e17", "supersedes_list", {"events": [dict(event, supersedes=["a"])]}, COMMON())
+    extra("e17", "target_list", {"events": [dict(event, target=["a"])]}, COMMON())
+    extra("e17", "status_list", {"events": [dict(event, status=["a"])]}, COMMON())
+    extra("e17", "value_list", {"events": [dict(event, value=["a"])]}, COMMON())
+    extra("e17", "raw_unaudited", {"events": [dict(event, actor="", reason="", observed_at="", source="")]}, COMMON())
+    extra("e17", "bad_value", {"events": [dict(event, value="maybe")]}, COMMON())
+    extra("e17", "bad_date", {"events": [dict(event, observed_at="yesterday")]}, COMMON())
+    extra("e17", "dup_id", {"events": [event, event]}, COMMON())
+    extra("e17", "chain_ok", {"events": [event, dict(event, id="b", value="relevant", supersedes="a"), dict(event, id="s1", target="rotor_seizure_hours", value={"low": 0, "typical": 0.1, "high": 0.2})]}, APPROVED())
+    extra("e17", "snow_absent", {"events": fixture[:3] + [dict(fixture[3], value="absent")]}, APPROVED())
+    extra("e17", "stock_false", {"events": fixture[:2] + [dict(fixture[2], value=False)] + fixture[3:]}, APPROVED())
+    s = APPROVED()
+    s["fields"] = []
+    extra("e17", "fields_list", {"events": fixture}, s)
+    s = COMMON()
+    s["operations"] = [o for o in s["operations"] if o["operation_id"] != "parts_wait"] + [
+        {"operation_id": "parts_wait", "operation": "parts_wait", "hours": None, "elapsed_hours": None, "person_count": 0, "status": "wait", "stock_checked": False}]
+    extra("e17", "parts_wait_null", {"events": fixture}, s)
+    unit("e17.reduce_observations", e17.reduce_observations, fixture)
+    unit("e17.reduce_observations", e17.reduce_observations, extended)
+    unit("e17.reduce_observations", e17.reduce_observations, [])
+    unit("e17.reduce_observations", e17.reduce_observations, "x")
+    unit("e17.reduce_observations", e17.reduce_observations, [{"id": "r"}])
+    unit("e17.reduce_observations", e17.reduce_observations, [dict(event, target=["a"])])
+    unit("e17.append_observation_event", app, [], "rotor_relevance", "relevant", "tech", "r", "2026-10-11T00:00:00Z", "e1")
+    unit("e17.append_observation_event", app, [], "rotor_relevance", "relevant", " tech ", " r ", "2026-10-11", " e1 ")
+    unit("e17.append_observation_event", app, [event], "rotor_relevance", "relevant", "tech", "r", "2026-10-11T00:00:00Z", "a")
+    unit("e17.append_observation_event", app, [], "rotor_relevance", "relevant", "tech", "r", "2026-10-11T00:00:00Z", "b", "missing")
+    unit("e17.append_observation_event", app, [event], "parts_wait_stock_checked", True, "tech", "r", "2026-10-11T00:00:00Z", "b", "a")
+    unit("e17.append_observation_event", app, [], "nope", "relevant", "tech", "r", "2026-10-11T00:00:00Z", "b")
+    unit("e17.append_observation_event", app, [], ["x"], "relevant", "tech", "r", "2026-10-11T00:00:00Z", "b")
+    unit("e17.append_observation_event", app, [], "rotor_relevance", "relevant", "tech", "r", "2026-10-11T00:00:00Z", " ")
+    unit("e17.append_observation_event", app, [], "rotor_relevance", "relevant", "tech", "r", "2026-10-11T00:00:00Z", "b", None, "weird")
+    unit("e17.append_observation_event", app, [], "rotor_relevance", "relevant", "", "r", "2026-10-11T00:00:00Z", "b")
+    unit("e17.append_observation_event", app, [], "rotor_relevance", "relevant", "tech", "r", "never", "b")
+    unit("e17.append_observation_event", app, [], "rotor_relevance", "relevant", "tech", "r", "2026-10-11T00:00:00Z", "b", None, "confirmed", " ")
+    unit("e17.append_observation_event", app, [], "rotor_relevance", "maybe", "tech", "r", "2026-10-11T00:00:00Z", "b")
+    unit("e17.append_observation_event", app, [], "rotor_seizure_hours", {"low": 0, "typical": 1, "high": 2}, "tech", "r", "2026-10-11T00:00:00Z", "b")
+    unit("e17.append_observation_event", app, [], "rotor_seizure_hours", {"low": 3, "typical": 1, "high": 2}, "tech", "r", "2026-10-11T00:00:00Z", "b")
+    unit("e17.append_observation_event", app, [], "parts_wait_stock_checked", 1, "tech", "r", "2026-10-11T00:00:00Z", "b")
+    unit("e17.append_observation_event", app, [], "snow_observation", "present", None, None, None, "b", None, "pending")
+    unit("e17.append_observation_event", app, 5, "snow_observation", "present", "a", "b", "2026-10-11T00:00:00Z", "b")
+
+
+_e17_extras()
+
+
+def _e16_previous_visit():
+    return {
+        "visit_id": "visit-old", "vehicle_token": "veh_fictional_001", "job_id": "front_brake_service",
+        "observed_at": "2026-10-01T10:00:00+09:00",
+        "conditions": {
+            "work_scope": {"value": "front_brake_service", "status": "confirmed"},
+            "included_operations": {"value": ["remove_install", "rust_observation", "snow_removal"], "status": "confirmed"},
+            "rotor_relevance": {"value": "relevant", "status": "confirmed"},
+            "rotor_seizure_hours": {"value": {"low": 0.0, "typical": 0.25, "high": 0.5}, "status": "confirmed"},
+            "parts_wait_stock_checked": {"value": True, "status": "confirmed"},
+            "snow_observation": {"value": "present", "status": "confirmed"},
+        },
+    }
+
+
+def _e16_scenario():
+    scenario = COMMON()
+    scenario["visit_id"] = "visit-current"
+    scenario["observed_at"] = "2026-10-11T10:00:00+09:00"
+    return scenario
+
+
+def _e16_extras():
+    from auto_repair_engine import e16
+    pv = _e16_previous_visit
+    confirms = [
+        {"field": "rotor_relevance", "value": "relevant", "actor": "fictional_tech", "reason": "今訪問でローター固着を確認"},
+        {"field": "rotor_seizure_hours", "value": {"low": 0.0, "typical": 0.25, "high": 0.5}, "actor": "fictional_owner", "reason": "今訪問の条件幅を承認"},
+        {"field": "subframe_relevance", "value": "unrelated", "actor": "fictional_tech", "reason": "今訪問で確認"},
+        {"field": "parts_wait_stock_checked", "value": True, "actor": "fictional_tech", "reason": "今訪問で在庫確認"},
+        {"field": "snow_observation", "value": "present", "actor": "fictional_tech", "reason": "今訪問で雪を確認"},
+    ]
+    sc = _e16_scenario
+    extra("e16", "no_confirms", {"previous_visit": pv()}, sc())
+    extra("e16", "all_confirms", {"previous_visit": pv(), "current_confirm": confirms}, sc())
+    extra("e16", "snow_absent", {"previous_visit": pv(), "current_confirm": confirms[:4] + [dict(confirms[4], value="absent")]}, sc())
+    extra("e16", "rotor_unrelated", {"previous_visit": pv(), "current_confirm": [dict(confirms[0], value="unrelated"), confirms[2], confirms[3], confirms[4]]}, sc())
+    extra("e16", "stock_false", {"previous_visit": pv(), "current_confirm": confirms[:3] + [dict(confirms[3], value=False), confirms[4]]}, sc())
+    extra("e16", "bad_confirms", {"previous_visit": pv(), "current_confirm": [5, {"field": "nope"}, dict(confirms[0], value="maybe"), dict(confirms[1], value={"low": 2, "typical": 1, "high": 3}),
+                                                                           dict(confirms[3], value="yes"), dict(confirms[4], value="x"), dict(confirms[0], actor=" "), dict(confirms[0], observed_at=" "),
+                                                                           dict(confirms[0], value=["x"])]}, sc())
+    extra("e16", "confirms_not_list", {"previous_visit": pv(), "current_confirm": "x"}, sc())
+    extra("e16", "confirm_without_previous", {"current_confirm": confirms})
+    extra("e16", "empty_pack", {})
+    extra("e16", "pack_not_dict", ["x"])
+    extra("e16", "pack_version", {"rule_version": "other", "previous_visit": pv()}, sc())
+    extra("e16", "pack_unknown_key", {"x": 1})
+    extra("e16", "pack_engine", {"engine_id": "z"})
+    extra("e16", "pack_version_blank", {"rule_version": " "})
+    bad_token = pv()
+    bad_token["vehicle_token"] = "plate 1234"
+    extra("e16", "bad_token", {"previous_visit": bad_token}, sc())
+    no_time = pv()
+    no_time.pop("observed_at")
+    extra("e16", "no_time", {"previous_visit": no_time}, sc())
+    extra("e16", "previous_not_dict", {"previous_visit": 5}, sc())
+    s = sc()
+    s.pop("visit_id")
+    extra("e16", "no_visit_id", {"previous_visit": pv()}, s)
+    s = sc()
+    s["observed_at"] = " "
+    extra("e16", "blank_observed", {"previous_visit": pv()}, s)
+    s = sc()
+    s["job_id"] = "other"
+    extra("e16", "job_mismatch", {"previous_visit": pv()}, s)
+    s = sc()
+    s["job_id"] = None
+    extra("e16", "job_none", {"previous_visit": pv(), "current_confirm": confirms}, s)
+    s = sc()
+    s["fields"] = []
+    extra("e16", "fields_list", {"previous_visit": pv()}, s)
+    s = sc()
+    s["operations"] = {}
+    extra("e16", "ops_dict", None, s)
+    s = sc()
+    s["operations"] = [5]
+    extra("e16", "ops_nondict", None, s)
+    s = sc()
+    s["fields"] = []
+    extra("e16", "fields_list_nopack", None, s)
+    prev2 = pv()
+    prev2["conditions"].pop("snow_observation")
+    s = sc()
+    s["fields"]["snow_observation"] = {"value": "present", "status": "confirmed"}
+    extra("e16", "snow_in_scenario_only", {"previous_visit": prev2, "current_confirm": confirms[:4]}, s)
+    s = sc()
+    s["fields"]["rotor_relevance"] = {"value": None, "status": "unknown"}
+    extra("e16", "unknown_in_scenario", {"previous_visit": pv(), "current_confirm": confirms}, s)
+
+    visit = e16.copy_previous_visit(pv(), "visit-current", "2026-10-11T10:00:00+09:00")
+    unit("e16.copy_previous_visit", e16.copy_previous_visit, pv(), "visit-current", "2026-10-11T10:00:00+09:00")
+    unit("e16.copy_previous_visit", e16.copy_previous_visit, pv(), " cur ", " now ")
+    unit("e16.copy_previous_visit", e16.copy_previous_visit, 5, "a", "b")
+    unit("e16.copy_previous_visit", e16.copy_previous_visit, pv(), "", "b")
+    unit("e16.copy_previous_visit", e16.copy_previous_visit, pv(), "a", None)
+    unit("e16.copy_previous_visit", e16.copy_previous_visit, dict(pv(), vehicle_token="vehicle_abcd"), "a", "b")
+    unit("e16.copy_previous_visit", e16.copy_previous_visit, dict(pv(), vehicle_token="veh_abc"), "a", "b")
+    unit("e16.copy_previous_visit", e16.copy_previous_visit, dict(pv(), conditions=[]), "a", "b")
+    cc = e16.current_confirm
+    unit("e16.current_confirm", cc, visit, "rotor_relevance", "unrelated", "", "確認")
+    unit("e16.current_confirm", cc, visit, "rotor_relevance", "unrelated", "tech", "確認")
+    unit("e16.current_confirm", cc, visit, "rotor_relevance", "unrelated", "tech", "確認", "2026-10-12")
+    unit("e16.current_confirm", cc, visit, "work_scope", "x", "tech", "確認")
+    unit("e16.current_confirm", cc, visit, "rust_observation", "present", "tech", "確認")
+    unit("e16.current_confirm", cc, None, "rust_observation", "present", "tech", "確認")
+    unit("e16.current_confirm", cc, visit, "parts_wait_stock_checked", 1, "tech", "確認")
+    unit("e16.current_confirm", cc, visit, "rotor_seizure_hours", {"low": 0, "typical": 0.1, "high": 0.2, "x": 1}, "tech", "確認")
+    unit("e16.current_confirm", cc, visit, "rotor_seizure_hours", {"low": 0, "typical": 0.1, "high": 0.2}, "tech", "確認")
+    unit("e16.current_confirm", cc, visit, "rotor_relevance", {"a": 1}, "tech", "確認")
+
+
+_e16_extras()
+
+
 def _e15_extras():
     from auto_repair_engine import e15
     texts = [

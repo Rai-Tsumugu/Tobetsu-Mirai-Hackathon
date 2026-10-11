@@ -8,6 +8,7 @@ import * as e06 from "../../../lib/systems/engine/e06";
 import * as e11 from "../../../lib/systems/engine/e11";
 import * as e12 from "../../../lib/systems/engine/e12";
 import * as e14 from "../../../lib/systems/engine/e14";
+import * as e18 from "../../../lib/systems/engine/e18";
 import { PyIntegrityError, deepcopy, pyErrorName } from "../../../lib/systems/engine/py";
 import { resetEngineState } from "../../../lib/systems/engine/runner";
 import { E05_CSV, e04Pack, e06FixturePackPayload, e12Scenarios, golden } from "./fixtures";
@@ -211,6 +212,42 @@ describe("E11 (independent comparison)", () => {
     same(out, scripted.e11_flows);
     expect(out.chosen_a.selection.method).toBe("A");
     expect(out.tampered.labor.unknowns).toContain("comparison:payload_tampered");
+  });
+});
+
+describe("E18 (trace tree inspection)", () => {
+  it("detects tampering of a tree built in this language", () => {
+    const scenario = approvedCommonScenarioFixture();
+    const tree = e18.buildTraceTree(scenario);
+    const out: any = {
+      tree, ok: e18.inspectTrace(tree, scenario), no_scenario: e18.inspectTrace(tree),
+      other_scenario: e18.inspectTrace(tree, { ...scenario, person_count: 9 }),
+      not_dict: e18.inspectTrace(5), wrong_root: e18.inspectTrace({ rule: "sum_children" }),
+    };
+    let t = deepcopy(tree);
+    t.children[0].result.person_hours.typical = 99;
+    out.leaf_changed = e18.inspectTrace(t, scenario);
+    t = deepcopy(tree);
+    t.children[1].node_id = t.children[0].node_id;
+    t.children[2].rule_version = "x";
+    t.children[3].input_hash = "x";
+    t.children[4].input_refs = 5;
+    t.children[5].input_refs = [{ path: "/nope", value: 1 }, { path: "x" }, { path: "/operations/99" }, 5];
+    out.many_issues = e18.inspectTrace(t, scenario);
+    t = deepcopy(tree);
+    t.children[0].children = [1];
+    out.leaf_with_children = e18.inspectTrace(t, scenario);
+    t = deepcopy(tree);
+    t.children[0].rule = "weird";
+    t.children[1].result = 5;
+    t.audit_expected = null;
+    out.weird_rule = e18.inspectTrace(t);
+    t = deepcopy(tree);
+    t.children.push(5);
+    t.input_hash = "short";
+    out.short_hash = e18.inspectTrace(t, scenario);
+    same(out, scripted.e18_inspect);
+    expect(out.ok.valid).toBe(true);
   });
 });
 

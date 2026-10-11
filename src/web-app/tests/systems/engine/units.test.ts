@@ -8,11 +8,23 @@ import { resetEngineState } from "../../../lib/systems/engine/runner";
 import { golden } from "./fixtures";
 import { applyAnswers, buildSchema, renderForm } from "../../../lib/systems/engine/e13";
 import { confirmCandidate, extractCandidates } from "../../../lib/systems/engine/e15";
+import { copyPreviousVisit, currentConfirm } from "../../../lib/systems/engine/e16";
+import { appendObservationEvent, reduceObservations } from "../../../lib/systems/engine/e17";
+import { buildTraceTree, evaluateTree, inspectTrace } from "../../../lib/systems/engine/e18";
+import { summarizeBuckets } from "../../../lib/systems/engine/e23";
 import { normalize } from "./normalize";
 
 const FUNCS: Record<string, (...args: any[]) => any> = {
   "e03.parse_to_ast": parseToAst,
   "e13.render_form": renderForm,
+  "e23.summarize_buckets": summarizeBuckets,
+  "e18.build_trace_tree": buildTraceTree,
+  "e18.inspect_trace": inspectTrace,
+  "e18.evaluate_tree": evaluateTree,
+  "e17.reduce_observations": reduceObservations,
+  "e17.append_observation_event": appendObservationEvent,
+  "e16.copy_previous_visit": copyPreviousVisit,
+  "e16.current_confirm": currentConfirm,
   "e15.extract_candidates": extractCandidates,
   "e15.confirm_candidate": confirmCandidate,
   "e13.build_schema": buildSchema,
