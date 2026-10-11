@@ -346,7 +346,11 @@ export class NonFiniteNumberError extends Error {
 export function parseJson(text: string): unknown {
   let index = 0;
   const fail = (message = "JSON形式を確認してください"): never => {
-    throw new SyntaxError(`${message}: char ${index}`);
+    // json.JSONDecodeError と同じ「行・桁・文字位置」の表記。
+    const before = text.slice(0, index);
+    const line = before.split("\n").length;
+    const column = index - (before.lastIndexOf("\n") + 1) + 1;
+    throw new SyntaxError(`${message}: line ${line} column ${column} (char ${index})`);
   };
   const ws = () => {
     while (index < text.length && " \t\n\r".includes(text[index])) index += 1;

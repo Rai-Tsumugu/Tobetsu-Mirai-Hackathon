@@ -1,0 +1,533 @@
+{
+ "source": "scenarios/specs.json",
+ "scenarios": [
+  {
+   "name": "30案の名称・説明・既定入力",
+   "expected": [
+    {
+     "ok": [
+      {
+       "idea_id": "M01",
+       "title": "塗料コード正規化",
+       "description": "原表記と正規化コード、仕上げを分けて保持し、確認済みの品目単価だけを返します。",
+       "defaults": {
+        "action": "register",
+        "item_id": "demo-paint",
+        "maker": "架空メーカー",
+        "raw_code": "DEMO-001",
+        "finish": "メタリック",
+        "price_type": "販売",
+        "as_of": "2026-10-11",
+        "confirmed_by": "架空デモ担当"
+       }
+      },
+      {
+       "idea_id": "M02",
+       "title": "容量・入数単位変換",
+       "description": "根拠を確認した包装単位の価格と数量を基準単位へ換算します。",
+       "defaults": {
+        "item_id": "demo-paint",
+        "source_unit": "ml",
+        "base_unit": "ml",
+        "factor": "1",
+        "evidence": "simulator:架空値、同一単位のデモ換算",
+        "quantity": "1",
+        "price_type": "仕入",
+        "confirmed_by": "架空デモ担当",
+        "as_of": "2026-10-11"
+       }
+      },
+      {
+       "idea_id": "M03",
+       "title": "仕入・販売の二列価格",
+       "description": "同一品目の仕入価格と販売価格を独立して保存・参照します。販売価格が未登録なら見積利用を停止し、仕入価格から販売価格を自動計算しません。",
+       "defaults": {
+        "action": "get_price",
+        "item_id": "demo-paint",
+        "price_type": "販売",
+        "as_of": "2026-10-11"
+       }
+      },
+      {
+       "idea_id": "M04",
+       "title": "仕入先別価格レコード",
+       "description": "同一品目の仕入先別価格を送料・税・納期条件が一致する場合だけ比較し、選択を記録します。",
+       "defaults": {
+        "action": "save_offer",
+        "item": {
+         "item_id": "demo-paint",
+         "name": "架空サンプル塗料",
+         "category": "塗料",
+         "unit": "ml",
+         "unit_price": "80",
+         "price_type": "仕入",
+         "source": "simulator:架空値",
+         "updated_at": "2026-10-11"
+        },
+        "supplier_id": "demo-supplier-a",
+        "freight_basis": "送料込み",
+        "freight_amount": "0",
+        "tax_basis": "税別",
+        "delivery_days": 2,
+        "checked_at": "2026-10-11",
+        "confirmed_by": "架空デモ担当"
+       }
+      },
+      {
+       "idea_id": "M05",
+       "title": "塗料配合構成マスタ",
+       "description": "配合を版管理し、承認済み構成品の単位と仕入単価から基準量の金額候補を計算します。",
+       "defaults": {
+        "action": "save_formula",
+        "formula_id": "demo-metallic-blue",
+        "code": "SIM-BLUE-01",
+        "version": 1,
+        "status": "approved",
+        "confirmed_by": "架空デモ担当",
+        "formula_lines": [
+         {
+          "item_id": "demo-paint",
+          "ratio": "1",
+          "unit": "ml"
+         }
+        ],
+        "base_qty": "100",
+        "unit": "ml",
+        "as_of": "2026-10-11"
+       }
+      },
+      {
+       "idea_id": "M06",
+       "title": "価格イベント台帳",
+       "description": "価格版を上書きせず、変更理由・出所・担当者とともに追記して履歴化します。",
+       "defaults": {
+        "action": "record_event",
+        "item": {
+         "item_id": "demo-paint",
+         "name": "架空サンプル塗料",
+         "category": "塗料",
+         "unit": "ml",
+         "unit_price": "125",
+         "price_type": "販売",
+         "source": "simulator:架空値",
+         "updated_at": "2026-10-11"
+        },
+        "event_type": "increase",
+        "reason": "架空デモの価格改定",
+        "source": "simulator:架空値",
+        "confirmed_by": "架空デモ担当",
+        "occurred_at": "2026-10-11"
+       }
+      },
+      {
+       "idea_id": "M07",
+       "title": "単品価格入力フォーム",
+       "description": "品目と価格を一件ずつ確認者付きで登録し、承認済みの有効な品目価格を検索・一覧表示します。",
+       "defaults": {
+        "action": "register",
+        "item_id": "demo-m07-brake-pad",
+        "name": "架空サンプルブレーキパッド",
+        "category": "部品",
+        "unit": "個",
+        "unit_price": "2400",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11",
+        "confirmed_by": "架空デモ担当",
+        "reason": "単品価格の初回確認",
+        "as_of": "2026-10-11",
+        "query": "",
+        "category_filter": "",
+        "price_type_filter": ""
+       }
+      },
+      {
+       "idea_id": "M08",
+       "title": "クイック価格変更",
+       "description": "品目と価格区分を検索し、差分を確認してから新しい価格版を追記します。",
+       "defaults": {
+        "action": "preview_change",
+        "item_id": "demo-paint",
+        "price_type": "販売",
+        "new_price": "130",
+        "reason": "架空デモ価格の見直し",
+        "source": "simulator:架空値、架空価格票で確認",
+        "checked_at": "2026-10-11",
+        "confirmed_by": "架空デモ担当"
+       }
+      },
+      {
+       "idea_id": "M09",
+       "title": "CSV列対応ウィザード",
+       "description": "CSV列を共通品目項目へ対応づけ、行ごとの検品後に選択候補だけを人が承認します。",
+       "defaults": {
+        "action": "stage",
+        "csv_text": "商品コード,品名,分類,単位,単価,価格区分,出所,確認日\ndemo-m09-paint,架空デモ塗料,塗料,ml,95,仕入,simulator:架空値,2026-10-11\ndemo-m09-thinner,架空デモ溶剤,溶剤,L,480,仕入,simulator:架空値,2026-10-11",
+        "source": "simulator:架空値",
+        "source_key": "demo-m09-csv",
+        "field_map": {
+         "item_id": "商品コード",
+         "name": "品名",
+         "category": "分類",
+         "unit": "単位",
+         "unit_price": "単価",
+         "price_type": "価格区分",
+         "source": "出所",
+         "updated_at": "確認日"
+        }
+       }
+      },
+      {
+       "idea_id": "M10",
+       "title": "Excel単一シート取込",
+       "description": "固定8列の1シートXLSXを候補として隔離し、人が確認した行だけ価格マスタへ登録します。",
+       "defaults": {
+        "action": "sample",
+        "confirmed_by": "架空デモ担当"
+       }
+      },
+      {
+       "idea_id": "M11",
+       "title": "PDF伝票領域指定取込",
+       "description": "人が指定したページ領域からSimulatorの架空明細候補を作り、選択承認した行だけ価格マスタへ登録します。",
+       "defaults": {
+        "action": "sample",
+        "confirmed_by": "架空デモ担当"
+       }
+      },
+      {
+       "idea_id": "M12",
+       "title": "OCR候補・人確認キュー",
+       "description": "mock OCRの品目候補を項目ごとに確認し、全項目を人が確定した場合だけ価格登録します。",
+       "defaults": {
+        "action": "stage",
+        "source_key": "demo-m12-ocr",
+        "ocr_fields": {
+         "item_id": {
+          "value": "demo-m12-thinner",
+          "confidence": "0.99"
+         },
+         "name": {
+          "value": "架空デモ溶剤",
+          "confidence": "0.96"
+         },
+         "category": {
+          "value": "溶剤",
+          "confidence": "0.99"
+         },
+         "unit": {
+          "value": "L",
+          "confidence": "0.98"
+         },
+         "unit_price": {
+          "value": "480",
+          "confidence": "0.94"
+         },
+         "price_type": {
+          "value": "仕入",
+          "confidence": "0.97"
+         },
+         "source": {
+          "value": "simulator:架空OCR価格票",
+          "confidence": "0.92"
+         },
+         "updated_at": {
+          "value": "2026-10-11",
+          "confidence": "0.95"
+         }
+        },
+        "source": "simulator:架空OCR"
+       }
+      },
+      {
+       "idea_id": "M13",
+       "title": "卸提供JSONコネクタ",
+       "description": "利用許諾と品番対応を確認したローカルJSON fixtureから仕入候補を作り、人の承認後だけ保存します。実API未接続のSimulatorです。",
+       "defaults": {
+        "action": "sample",
+        "confirmed_by": "架空デモ担当"
+       }
+      },
+      {
+       "idea_id": "M14",
+       "title": "最終確認からの経過表示",
+       "description": "価格を最後に人が確認した日と経過日数を、出所の更新日と分けて表示します。",
+       "defaults": {
+        "item_id": "demo-m14-paint",
+        "price_type": "仕入",
+        "as_of": "2026-10-11"
+       }
+      },
+      {
+       "idea_id": "M15",
+       "title": "品目別有効期限",
+       "description": "価格版ごとの有効期間を追記し、期限なし・未確認・期限切れを区別します。",
+       "defaults": {
+        "action": "list",
+        "item_id": "demo-m15-paint",
+        "price_type": "仕入",
+        "as_of": "2026-10-11"
+       }
+      },
+      {
+       "idea_id": "M16",
+       "title": "更新待ち隊列",
+       "description": "期限切れ・未確認・価格差分を明示した優先順位で並べ、人の確認状態を記録します。",
+       "defaults": {
+        "action": "list",
+        "as_of": "2026-10-11"
+       }
+      },
+      {
+       "idea_id": "M17",
+       "title": "更新差分確認画面",
+       "description": "品目・単位・価格区分・仕入先・取引条件が一致する候補だけ価格差を比較し、人の採否を追記します。",
+       "defaults": {
+        "action": "review",
+        "item_id": "demo-m17-paint",
+        "candidate": {
+         "item": {
+          "item_id": "demo-m17-paint",
+          "name": "架空サンプル塗料",
+          "category": "塗料",
+          "unit": "ml",
+          "unit_price": "88",
+          "price_type": "仕入",
+          "source": "simulator:架空値",
+          "updated_at": "2026-10-11"
+         },
+         "supplier_id": "demo-supplier",
+         "transaction_conditions": "月末締め翌月末払い",
+         "valid_from": "2026-10-11",
+         "simulator": true
+        }
+       }
+      },
+      {
+       "idea_id": "M18",
+       "title": "期限条件付き価格",
+       "description": "数量・期間・単位が一致した場合だけ条件付き価格を見積候補として返します。",
+       "defaults": {
+        "action": "apply",
+        "item_id": "demo-m18-paint",
+        "quantity": "5",
+        "unit": "缶",
+        "price_type": "仕入",
+        "as_of": "2026-10-11"
+       }
+      },
+      {
+       "idea_id": "M19",
+       "title": "パネル・部位材料辞書",
+       "description": "部位と仕上げから材料候補を表示し、人が適合を確認して選択します。",
+       "defaults": {
+        "action": "list",
+        "panel_id": "front_door",
+        "finish_type": "metallic"
+       }
+      },
+      {
+       "idea_id": "M20",
+       "title": "面積帯の使用量目安",
+       "description": "工場承認済みの面積帯ごとの使用量幅と、同単位の承認済み価格から候補幅を表示します。",
+       "defaults": {
+        "action": "record",
+        "item_id": "demo-m20-paint",
+        "area_band": "架空の小面積",
+        "low_qty": "10",
+        "typical_qty": "15",
+        "high_qty": "20",
+        "unit": "ml",
+        "evidence": "simulator:架空デモ用の仮定値",
+        "approved_by": "架空デモ担当",
+        "reason": "架空デモデータ"
+       }
+      },
+      {
+       "idea_id": "M21",
+       "title": "配合量の比例計算",
+       "description": "M05の承認済み配合版と確認済み価格を使い、必要量を計算してスナップショット保存します。",
+       "defaults": {
+        "action": "register_formula",
+        "formula_id": "demo-m21-blue",
+        "code": "SIM-M21-BLUE",
+        "version": 1,
+        "status": "approved",
+        "confirmed_by": "架空デモ担当",
+        "formula_lines": [
+         {
+          "item_id": "demo-paint",
+          "ratio": "1",
+          "unit": "ml"
+         }
+        ]
+       }
+      },
+      {
+       "idea_id": "M22",
+       "title": "工程別材料候補",
+       "description": "①の工程に対応する材料候補を提示し、人が品目・数量・単位を確定した後だけ④向けsnapshotを作ります。",
+       "defaults": {
+        "action": "register_rule",
+        "operation_id": "rust-treatment",
+        "item_id": "demo-m22-paint",
+        "required_when": "架空: 塗装工程を選択した場合",
+        "quantity_rule": "架空: 人が数量を入力",
+        "evidence": "simulator:架空デモ用の仮定",
+        "confirmed_by": "架空デモ担当"
+       }
+      },
+      {
+       "idea_id": "M23",
+       "title": "見積量と実使用量の比較",
+       "description": "見積スナップショットの数量と実使用量を比較し、理由付きで別記録します。",
+       "defaults": {
+        "action": "record_demo",
+        "quote_id": "demo-m23-quote",
+        "quote_line_id": "demo-m23-line",
+        "actual_qty": "12.5",
+        "reason": "simulator:架空デモ作業で一部を使い切らなかった",
+        "confirmed_by": "架空デモ担当"
+       }
+      },
+      {
+       "idea_id": "M24",
+       "title": "価格履歴タイムライン",
+       "description": "同一品目・単位・価格区分・仕入先・取引条件の価格版を時系列で確認します。",
+       "defaults": {
+        "action": "timeline",
+        "item_id": "demo-paint",
+        "unit": "ml",
+        "price_type": "販売",
+        "supplier_id": "",
+        "transaction_conditions": {}
+       }
+      },
+      {
+       "idea_id": "M25",
+       "title": "原料指数参考カード",
+       "description": "手入力した原料指数を出所と利用条件の状態付きで参考表示します。",
+       "defaults": {
+        "action": "seed_demo",
+        "source": "simulator:架空データ出典",
+        "series": "架空ナフサ指数",
+        "value": "123.4",
+        "unit": "指数ポイント",
+        "published_at": "2026-10-01",
+        "fetched_at": "2026-10-11T09:00:00+09:00",
+        "terms_status": "未確認"
+       }
+      },
+      {
+       "idea_id": "M26",
+       "title": "材料粗利影響試算",
+       "description": "同一条件の旧・新仕入/販売価格版から、数量に応じた粗利差を試算します。",
+       "defaults": {
+        "action": "seed_demo",
+        "item_id": "demo-paint",
+        "unit": "ml",
+        "quantity": "10",
+        "transaction_conditions": {},
+        "confirmed_by": "架空デモ担当"
+       }
+      },
+      {
+       "idea_id": "M27",
+       "title": "見積バスケット差分通知",
+       "description": "見積バスケットの現行価格と前回見積の同一条件価格を比較します。",
+       "defaults": {
+        "action": "compare_demo",
+        "quote_id": "demo-m27-quote",
+        "basket": [
+         {
+          "item_id": "demo-m27-paint",
+          "unit": "ml",
+          "price_type": "販売",
+          "supplier_id": "supplier-demo",
+          "conditions": {
+           "freight_basis": "included",
+           "currency": "JPY"
+          }
+         }
+        ],
+        "as_of": "2026-10-11",
+        "confirmed_by": "架空デモ担当"
+       }
+      },
+      {
+       "idea_id": "M28",
+       "title": "掛率ルールの版管理",
+       "description": "カテゴリ・仕入先・適用日ごとの掛率を版管理し、販売価格候補を人の承認後にだけ登録します。",
+       "defaults": {
+        "action": "record_rule",
+        "rule_id": "demo-markup",
+        "category": "塗料",
+        "supplier_id": "demo-supplier",
+        "effective_from": "2026-10-11",
+        "multiplier": "1.5",
+        "confirmed_by": "架空デモ担当",
+        "reason": "架空デモ用のルール登録"
+       }
+      },
+      {
+       "idea_id": "M29",
+       "title": "端数処理規約",
+       "description": "承認済みの丸め規則を版保存し、見積行と税区分ごとの合計に適用します。",
+       "defaults": {
+        "action": "quote_demo",
+        "quote_id": "demo-m29-quote",
+        "line_rule_id": "demo-m29-line-rule",
+        "tax_rule_id": "demo-m29-tax-rule",
+        "confirmed_by": "架空デモ担当",
+        "tax_rates": {
+         "demo-tax": "0.1"
+        },
+        "lines": [
+         {
+          "quote_line_id": "demo-m29-line-1",
+          "name": "架空デモ材料A",
+          "quantity": "1",
+          "unit_price": "1.005",
+          "tax_category": "demo-tax"
+         },
+         {
+          "quote_line_id": "demo-m29-line-2",
+          "name": "架空デモ材料B",
+          "quantity": "1",
+          "unit_price": "1.005",
+          "tax_category": "demo-tax"
+         }
+        ]
+       }
+      },
+      {
+       "idea_id": "M30",
+       "title": "見積時価格スナップショット",
+       "description": "人が選択した承認済み単価と数量を見積時点で固定し、後から再表示します。",
+       "defaults": {
+        "action": "save_demo",
+        "quote_id": "demo-m30-quote",
+        "as_of": "2026-10-11",
+        "confirmed_by": "架空デモ担当",
+        "lines": [
+         {
+          "item_id": "demo-m30-paint",
+          "quantity": "2.5",
+          "unit": "ml",
+          "price_type": "販売",
+          "supplier_id": "",
+          "conditions": {
+           "freight_basis": "included",
+           "currency": "JPY",
+           "transaction_conditions": "simulator:架空条件"
+          }
+         }
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

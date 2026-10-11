@@ -17,6 +17,7 @@ Scenario format (shared with golden.test.ts):
 Each scenario uses a fresh in-memory Store. STEP is one of
 
     {"op": "seed_demo"}
+    {"op": "specs"}                      # registry.specifications()
     {"op": "run", "module": "M05" | "INTEGRATED", "payload": {...}}
     {"op": "add_price", "item": {...}, "confirmed_by": "...", "kwargs": {...}}
     {"op": "put", "namespace": "...", "record": {...}, "record_id": "..."}
@@ -64,6 +65,8 @@ def resolve(value, results):
 
 def execute(step, store):
     op = step['op']
+    if op == 'specs':
+        return importlib.import_module('auto_repair_items.registry').specifications()
     if op == 'seed_demo':
         seed_demo(store)
         return None

@@ -1,0 +1,112 @@
+/* 部品・材料単価（auto_repair_items）の画面。workspace.html / index.html のスタイルを .sys-items の下へ移した。 */
+
+/* ---- 共通（globals.css の見出し・リンク・ボタンの上書き） ---- */
+.sys-items {
+  min-height: 100vh;
+  overflow-x: hidden;
+  & h1, & h2, & h3 { letter-spacing: normal; line-height: 1.3; }
+  & a { text-decoration: underline; }
+  & button, & input, & textarea, & select { font: inherit; }
+  & button { cursor: pointer; }
+  & .items-home-link { display: inline-block; font-size: 12px; text-decoration: none; color: inherit; opacity: .75; }
+  & .items-home-link:hover { opacity: 1; }
+}
+
+/* ---- 統合ワークスペース（workspace.html） ---- */
+.sys-items.items-ws {
+  background: #f4f5ef;
+  color: #243b35;
+  font: 16px system-ui, -apple-system, sans-serif;
+  & header, & main { max-width: 1100px; margin: auto; padding: 24px; }
+  & header { border-bottom: 1px solid #ccd7cb; }
+  & h1 { margin: 8px 0; font-size: 2em; font-weight: 700; }
+  & h2 { font-size: 1.5em; font-weight: 700; margin: .83em 0; }
+  & h3 { font-size: 1.17em; font-weight: 700; margin: 1em 0; }
+  & small { font-size: 80%; }
+  & p { margin: 1em 0; }
+  & nav { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  & button { background: #225d48; color: white; border: 0; border-radius: 8px; padding: 12px; }
+  & section { background: white; border: 1px solid #dce3d9; border-radius: 12px; padding: 24px; margin: 18px 0; }
+  & section[hidden] { display: none; }
+  & label { display: grid; gap: 6px; margin: 12px 0; }
+  & input, & select, & textarea { font: inherit; padding: 10px; border: 1px solid #b9c8bc; border-radius: 6px; box-sizing: border-box; width: 100%; background: white; color: inherit; }
+  & input[type="checkbox"] { width: auto; }
+  & .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+  & fieldset { border: 2px groove #e4e4e4; margin: 0 2px; padding: .35em .75em .625em; min-width: 0; }
+  & pre { white-space: pre-wrap; overflow-wrap: anywhere; background: #f4f5ef; padding: 15px; font-family: ui-monospace, monospace; font-size: 13px; }
+  & table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  & td, & th { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
+  & th { font-weight: 700; }
+  & .scroll { overflow: auto; }
+  & .note { color: #63766d; }
+  & .status { position: sticky; top: 0; background: #e8eee2; padding: 12px; margin: 1em 0; z-index: 1; display: block; color: inherit; font-size: inherit; }
+  & a { color: #225d48; }
+  & hr { margin: 1em 0; border: 0; border-top: 1px solid #ccc; }
+  & .candidate-label { display: flex; gap: 8px; align-items: flex-start; overflow-wrap: anywhere; }
+  & .quote-buttons { display: flex; flex-wrap: wrap; gap: 6px; }
+}
+
+/* ---- 30案の個別画面（index.html） ---- */
+.sys-items.items-ideas {
+  --green: #255c45;
+  --line: #dadfd6;
+  font-family: system-ui, -apple-system, sans-serif;
+  color: #23362d;
+  background: #f6f5ee;
+  & header { padding: 24px max(24px, calc((100vw - 1280px) / 2)); border-bottom: 1px solid var(--line); background: #fff; }
+  & .items-brand { font-size: 24px; font-weight: 750; margin: 0; letter-spacing: normal; display: block; }
+  & .tag { display: inline-block; color: #765514; background: #fff2cd; padding: 5px 10px; border-radius: 4px; font-size: 12px; font-weight: 400; }
+  & header p { color: #607067; font-size: 14px; margin: 8px 0; }
+  & .layout { max-width: 1280px; margin: 32px auto; display: grid; grid-template-columns: 260px 1fr; gap: 28px; padding: 0 24px; }
+  & aside { height: calc(100vh - 190px); overflow: auto; }
+  & .idea { display: block; width: 100%; text-align: left; border: 0; border-bottom: 1px solid var(--line); background: transparent; padding: 12px 8px; line-height: 1.5; font-size: 13px; color: inherit; }
+  & .idea span { display: inline-block; width: 38px; color: #6e7e74; font-size: 11px; }
+  & .idea.active { background: #e5eee4; color: var(--green); font-weight: 700; border-radius: 6px; }
+  & .count { font-size: 12px; color: #68766c; margin-bottom: 12px; }
+  & main { min-width: 0; }
+  & h1 { font-size: 28px; margin: 8px 0 12px; letter-spacing: -.02em; font-weight: 700; }
+  & .description { color: #5a6b60; line-height: 1.8; margin: 1em 0; }
+  & section { margin-top: 24px; background: white; border: 1px solid var(--line); padding: 24px; border-radius: 10px; }
+  & h2 { font-size: 16px; margin: 0 0 20px; font-weight: 700; }
+  & .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  & label { display: block; font-size: 13px; font-weight: 600; }
+  & input, & textarea, & select { display: block; width: 100%; margin-top: 7px; border: 1px solid #b8c5b8; border-radius: 5px; padding: 10px; background: #fdfdfb; color: #23362d; font-weight: 400; }
+  & textarea { min-height: 110px; font-family: monospace; font-weight: 400; font-size: 12px; }
+  & label.wide { grid-column: 1 / -1; }
+  & .help { font-size: 12px; color: #6a796f; line-height: 1.7; margin: 1em 0; }
+  & .submit { margin-top: 24px; border: 0; background: var(--green); color: white; border-radius: 5px; padding: 12px 26px; font-weight: 700; }
+  & .submit:disabled { opacity: .6; }
+  & .secondary { margin-left: 12px; background: transparent; border: 1px solid var(--line); padding: 10px 16px; border-radius: 5px; font-size: 13px; color: inherit; }
+  & .status-line { margin-top: 16px; font-size: 14px; white-space: pre-wrap; }
+  & .status-line.error { color: #9e382f; }
+  & .result { overflow: auto; }
+  & table { border-collapse: collapse; width: 100%; font-size: 13px; margin-bottom: 16px; }
+  & th, & td { text-align: left; vertical-align: top; border-bottom: 1px solid #e2e6df; padding: 10px; white-space: pre-wrap; overflow-wrap: anywhere; }
+  & th { color: #637268; font-weight: 500; background: #f7f9f4; }
+  & td { max-width: 420px; }
+  & .blank { color: #748175; font-size: 14px; }
+  & .pill { font-size: 12px; border: 1px solid var(--line); border-radius: 14px; padding: 5px 10px; }
+  & .nested { margin-left: 6px; }
+  & .nested > p { margin: 1em 0; }
+  & footer { font-size: 12px; color: #6a786c; padding: 0 24px 32px; max-width: 1280px; margin: auto; }
+}
+
+@media (max-width: 760px) {
+  .sys-items.items-ideas {
+    & .layout { display: block; margin: 20px auto; padding: 0 16px; }
+    & aside { height: auto; max-height: 180px; border-bottom: 1px solid var(--line); margin-bottom: 24px; }
+    & .fields { grid-template-columns: 1fr; }
+    & section { padding: 18px; }
+    & header { padding: 20px 16px; }
+    & h1 { font-size: 24px; }
+    & .secondary { margin: 12px 0 0 10px; }
+  }
+}
+
+@media (max-width: 480px) {
+  .sys-items.items-ws {
+    & header, & main { padding: 16px; }
+    & section { padding: 16px; }
+    & .grid { grid-template-columns: 1fr; }
+  }
+}

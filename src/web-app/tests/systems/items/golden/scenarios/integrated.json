@@ -1,0 +1,131 @@
+{
+  "scenarios": [
+    {
+      "name": "初期データの確認状況",
+      "steps": [
+        {"op": "seed_demo"},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "dashboard"}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "dashboard", "as_of": "2026-10-01"}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "dashboard", "as_of": "10/11"}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "unknown"}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": ""}},
+        {"op": "run", "module": "INTEGRATED", "payload": []}
+      ]
+    },
+    {
+      "name": "登録・見積・価格更新・実使用量",
+      "steps": [
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "register", "item": {"item_id": "paint-1", "name": "塗料A", "category": "塗料", "unit": "ml", "unit_price": "120.125", "price_type": "販売", "source": "supplier:sample", "updated_at": "2026-10-11"}, "confirmed_by": "担当A", "reason": "初回確認", "conditions": {"currency": "JPY", "freight_basis": "included"}}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "register", "item": {"item_id": "paint-1", "name": "塗料A", "category": "塗料", "unit": "ml", "unit_price": "80", "price_type": "仕入", "source": "supplier:sample", "updated_at": "2026-10-11"}, "confirmed_by": "担当A", "reason": "初回確認", "conditions": {"currency": "JPY", "freight_basis": "included"}}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "save_quote", "quote_id": "q-1", "confirmed_by": "担当A", "lines": [{"item_id": "paint-1", "quantity": "2.5", "unit": "ml", "price_type": "販売"}]}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "update_price", "item": {"item_id": "paint-1", "name": "塗料A", "category": "塗料", "unit": "ml", "unit_price": "130.50", "price_type": "販売", "source": "supplier:sample", "updated_at": "2026-10-11"}, "confirmed_by": "担当B", "reason": "仕入先価格改定", "checked_at": "2026-10-11"}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "get_quote", "quote_id": "q-1"}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "dashboard"}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "record_usage", "quote_id": "q-1", "quote_line_id": "$ref:2.quote.lines.0.quote_line_id", "actual_qty": "2.25", "confirmed_by": "担当A", "reason": "作業実績"}},
+        {"op": "latest", "namespace": "quote_snapshot", "record_id": "q-1"},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "save_quote", "quote_id": "q-1", "confirmed_by": "担当A", "lines": [{"item_id": "paint-1", "quantity": "1", "unit": "ml", "price_type": "販売"}]}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "get_quote", "quote_id": "none"}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "record_usage", "quote_id": "q-1", "quote_line_id": "missing", "actual_qty": "1", "confirmed_by": "担当A", "reason": "作業実績"}}
+      ]
+    },
+    {
+      "name": "確認日が未来なら要確認",
+      "steps": [
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "register", "item": {"item_id": "paint-1", "name": "塗料A", "category": "塗料", "unit": "ml", "unit_price": "120", "price_type": "販売", "source": "supplier:sample", "updated_at": "2026-10-11"}, "confirmed_by": "担当", "reason": "確認", "checked_at": "2026-10-12"}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "dashboard", "as_of": "2026-10-11"}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "dashboard", "as_of": "2026-10-20"}}
+      ]
+    },
+    {
+      "name": "取込の承認はバッチ単位で一括",
+      "steps": [
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "stage_csv", "csv_text": "item_id,name,category,unit,unit_price,price_type,source,updated_at\npart-1,部品A,部品,個,10,仕入,supplier:csv,2026-10-11\npart-2,部品B,部品,個,20,仕入,supplier:csv,2026-10-11", "source": "supplier:csv", "source_key": "supplier-csv", "import_batch_id": "batch-a"}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "stage_csv", "csv_text": "item_id,name,category,unit,unit_price,price_type,source,updated_at\npart-1,部品A,部品,個,10,仕入,supplier:csv,2026-10-11\npart-2,部品B,部品,個,20,仕入,supplier:csv,2026-10-11", "source": "supplier:csv", "source_key": "supplier-csv-2", "import_batch_id": "batch-b"}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "stage_csv", "csv_text": "item_id,name,category,unit,unit_price,price_type,source,updated_at\npart-1,部品A,部品,個,10,仕入,supplier:csv,2026-10-11\npart-2,部品B,部品,個,20,仕入,supplier:csv,2026-10-11", "source": "supplier:csv", "source_key": "supplier-csv", "import_batch_id": "batch-c"}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "stage_csv", "csv_text": "item_id,name\nx,y", "source": "supplier:csv", "import_batch_id": "batch-a"}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "approve_import", "import_batch_id": "batch-a", "candidate_ids": ["$ref:0.staged_rows.0.record_id", "$ref:1.staged_rows.0.record_id"], "confirmed_by": "担当"}},
+        {"op": "price_versions"},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "approve_import", "import_batch_id": "batch-a", "candidate_ids": ["$ref:0.staged_rows.0.record_id", "$ref:0.staged_rows.1.record_id"], "confirmed_by": "担当"}},
+        {"op": "records", "namespace": "integrated_import_batch", "record_id": "batch-a"},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "approve_import", "batch_id": "batch-a", "candidate_ids": ["$ref:0.staged_rows.0.record_id"], "confirmed_by": "担当"}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "approve_import", "import_batch_id": "batch-a", "candidate_ids": [], "confirmed_by": "担当"}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "approve_import", "import_batch_id": "nothing", "candidate_ids": ["x"], "confirmed_by": "担当"}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "approve_import", "import_batch_id": "batch-b", "candidate_ids": ["$ref:1.staged_rows.1.record_id"]}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "dashboard"}}
+      ]
+    },
+    {
+      "name": "不備のある行は承認できない・バッチID自動",
+      "steps": [
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "stage_csv", "csv_text": "item_id,name,category,unit,unit_price,price_type,source,updated_at\nbad-1,部品A,部品,個,-1,仕入,,2026-10-11\nok-1,部品B,部品,個,20,販売,,2026-10-11"}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "approve_import", "import_batch_id": "$ref:0.import_batch_id", "candidate_ids": ["$ref:0.staged_rows.0.record_id"], "confirmed_by": "担当"}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "approve_import", "import_batch_id": "$ref:0.batch_id", "candidate_ids": ["$ref:0.staged_rows.1.record_id"], "confirmed_by": "担当"}},
+        {"op": "records", "namespace": "integrated_import_batch"}
+      ]
+    },
+    {
+      "name": "確認状況は読み取りだけで期限切れを示す",
+      "steps": [
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "register", "item": {"item_id": "paint-1", "name": "塗料A", "category": "塗料", "unit": "ml", "unit_price": "100", "price_type": "販売", "source": "supplier:sample", "updated_at": "2026-10-11"}, "confirmed_by": "担当", "reason": "旧価格", "valid_from": "2026-10-01", "checked_at": "2026-10-01"}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "update_price", "item": {"item_id": "paint-1", "name": "塗料A", "category": "塗料", "unit": "ml", "unit_price": "120", "price_type": "販売", "source": "supplier:sample", "updated_at": "2026-10-11"}, "confirmed_by": "担当", "reason": "期限切れ", "valid_from": "2026-10-02", "valid_until": "2026-10-10"}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "dashboard"}},
+        {"op": "price_versions"},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "update_price", "item": {"item_id": "paint-1", "name": "塗料A", "category": "塗料", "unit": "ml", "unit_price": "121", "price_type": "販売", "source": "supplier:sample", "updated_at": "2026-10-11"}, "confirmed_by": "担当", "reason": "期限引継ぎ"}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "update_price", "item": {"item_id": "paint-1", "name": "塗料A", "category": "塗料", "unit": "ml", "unit_price": "122", "price_type": "販売", "source": "supplier:sample", "updated_at": "2026-10-11"}, "confirmed_by": "担当", "reason": "期限解除", "valid_until": null}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "dashboard"}}
+      ]
+    },
+    {
+      "name": "桁あふれの見積は保存しない",
+      "steps": [
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "register", "item": {"item_id": "paint-1", "name": "塗料A", "category": "塗料", "unit": "ml", "unit_price": "9999999999999999999999999999", "price_type": "販売", "source": "supplier:sample", "updated_at": "2026-10-11"}, "confirmed_by": "担当", "reason": "確認"}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "save_quote", "quote_id": "too-large", "confirmed_by": "担当", "lines": [{"item_id": "paint-1", "quantity": "9999999999999999999999999999", "unit": "ml", "price_type": "販売"}]}},
+        {"op": "records", "namespace": "quote_snapshot", "record_id": "too-large"},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "save_quote", "quote_id": "atomic-quote", "confirmed_by": "担当", "lines": [{"item_id": "paint-1", "quantity": "1", "unit": "ml", "price_type": "販売", "quote_line_id": "line-ok"}, {"item_id": "paint-1", "quantity": "9999999999999999999999999999", "unit": "ml", "price_type": "販売", "quote_line_id": "line-overflow"}]}},
+        {"op": "records", "namespace": "quote_snapshot", "record_id": "atomic-quote"}
+      ]
+    },
+    {
+      "name": "仕入先の省略は一意なときだけ",
+      "steps": [
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "register", "item": {"item_id": "paint-1", "name": "塗料A", "category": "塗料", "unit": "ml", "unit_price": "120", "price_type": "販売", "source": "supplier:sample", "updated_at": "2026-10-11"}, "confirmed_by": "担当", "reason": "確認", "supplier_id": "supplier-a"}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "update_price", "item": {"item_id": "paint-1", "name": "塗料A", "category": "塗料", "unit": "ml", "unit_price": "125", "price_type": "販売", "source": "supplier:sample", "updated_at": "2026-10-11"}, "confirmed_by": "担当", "reason": "一意な仕入先を引継ぎ"}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "register", "item": {"item_id": "paint-1", "name": "塗料A", "category": "塗料", "unit": "ml", "unit_price": "121", "price_type": "販売", "source": "supplier:sample", "updated_at": "2026-10-11"}, "confirmed_by": "担当", "reason": "確認", "supplier_id": "supplier-b"}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "update_price", "item": {"item_id": "paint-1", "name": "塗料A", "category": "塗料", "unit": "ml", "unit_price": "122", "price_type": "販売", "source": "supplier:sample", "updated_at": "2026-10-11"}, "confirmed_by": "担当", "reason": "更新"}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "update_price", "item": {"item_id": "paint-1", "name": "塗料A", "category": "塗料", "unit": "ml", "unit_price": "122", "price_type": "販売", "source": "supplier:sample", "updated_at": "2026-10-11"}, "confirmed_by": "担当", "reason": "更新", "supplier_id": ""}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "save_quote", "quote_id": "q-s", "confirmed_by": "担当", "lines": [{"item_id": "paint-1", "quantity": "1", "unit": "ml", "price_type": "販売"}]}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "save_quote", "quote_id": "q-s", "confirmed_by": "担当", "lines": [{"item_id": "paint-1", "quantity": "1", "unit": "ml", "price_type": "販売", "supplier_id": "supplier-b"}]}},
+        {"op": "price_versions", "item_id": "paint-1"}
+      ]
+    },
+    {
+      "name": "取引条件の引継ぎと二重定義",
+      "steps": [
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "register", "item": {"item_id": "p", "name": "部品P", "category": "部品", "unit": "個", "unit_price": "10", "price_type": "販売", "source": "simulator:架空値", "updated_at": "2026-10-11"}, "confirmed_by": "担当", "reason": "確認", "conditions": {"conditions": {"freight_basis": "included", "tax_basis": "税別"}, "delivery_days": 2}}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "update_price", "item": {"item_id": "p", "name": "部品P", "category": "部品", "unit": "個", "unit_price": "11", "price_type": "販売", "source": "simulator:架空値", "updated_at": "2026-10-12"}, "confirmed_by": "担当", "reason": "送料変更", "conditions": {"freight_basis": "excluded"}}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "update_price", "item": {"item_id": "p", "name": "部品P", "category": "部品", "unit": "個", "unit_price": "12", "price_type": "販売", "source": "simulator:架空値", "updated_at": "2026-10-12"}, "confirmed_by": "担当", "reason": "通貨", "conditions": {"currency": "USD"}}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "dashboard", "as_of": "2026-10-12"}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "update_price", "item": {"item_id": "p", "name": "部品P", "category": "部品", "unit": "個", "unit_price": "12", "price_type": "販売", "source": "simulator:架空値", "updated_at": "2026-10-12"}, "confirmed_by": "担当", "reason": "不正", "conditions": "JPY"}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "update_price", "item": {"item_id": "p", "name": "部品P", "category": "部品", "unit": "個", "unit_price": "12", "price_type": "販売", "source": "simulator:架空値", "updated_at": "2026-10-12"}, "confirmed_by": "担当", "reason": "名前の重複", "conditions": {"status": "pending"}}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "update_price", "item": {"item_id": "p", "name": "部品P", "category": "部品", "unit": "個", "unit_price": "12", "price_type": "販売", "source": "simulator:架空値", "updated_at": "2026-10-12"}, "confirmed_by": "担当", "reason": "形式", "conditions": {"conditions": "x"}}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "register", "item": {"item_id": "p", "name": "別名", "category": "部品", "unit": "個", "unit_price": "12", "price_type": "販売", "source": "simulator:架空値", "updated_at": "2026-10-12"}, "confirmed_by": "担当", "reason": "名称変更"}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "register", "item": {"item_id": "p", "name": "部品P", "category": "部品", "unit": "個", "unit_price": "12", "price_type": "販売", "source": "simulator:架空値", "updated_at": "2026-10-12"}, "confirmed_by": "", "reason": "x"}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "register", "item": {"item_id": "p", "name": "部品P", "category": "部品", "unit": "個", "unit_price": "12", "price_type": "販売", "source": "simulator:架空値", "updated_at": "2026-10-12"}, "confirmed_by": "担当"}}
+      ]
+    },
+    {
+      "name": "個別機能への委譲",
+      "steps": [
+        {"op": "seed_demo"},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "tool", "idea_id": "M02", "payload": {"action": "convert", "item_id": "demo-paint", "source_unit": "ml", "base_unit": "ml", "factor": "1", "evidence": "simulator:同一単位", "quantity": "3", "price_type": "仕入", "confirmed_by": "担当"}}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "tool", "idea_id": "M29", "payload": {"action": "save_rule", "id": "r1", "stage": "line", "mode": "half_up", "decimal_places": 0, "confirmed_by": "担当"}}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "tool", "idea_id": "M29", "payload": {"action": "quote_demo"}}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "tool", "idea_id": "M30", "payload": {"action": "list"}}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "tool", "idea_id": "M02", "payload": {}}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "tool", "idea_id": "M02", "payload": {"action": "x_demo"}}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "tool", "idea_id": "M02", "payload": "x"}},
+        {"op": "run", "module": "INTEGRATED", "payload": {"action": "tool", "payload": {"action": "x"}}}
+      ]
+    }
+  ]
+}

@@ -36,6 +36,8 @@ function resolve(value: unknown, results: unknown[]): unknown {
 async function execute(step: Step, store: Store): Promise<unknown> {
   const s = step as Json;
   switch (step.op) {
+    case "specs":
+      return (await import("../../../lib/systems/items/registry")).specifications();
     case "seed_demo":
       await seedDemo(store);
       return null;
@@ -62,8 +64,7 @@ async function execute(step: Step, store: Store): Promise<unknown> {
 
 export type StepOutcome = { step: Step; expected: Expected; actual: Expected };
 
-export async function runScenario(steps: Step[], expected: Expected[]): Promise<StepOutcome[]> {
-  const store = new MemoryStore();
+export async function runScenario(steps: Step[], expected: Expected[], store: Store = new MemoryStore()): Promise<StepOutcome[]> {
   const results: unknown[] = [];
   const outcomes: StepOutcome[] = [];
   for (const [index, step] of steps.entries()) {
@@ -84,6 +85,7 @@ export async function runScenario(steps: Step[], expected: Expected[]): Promise<
 }
 
 const ID_PATTERN = /[0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12}/g;
+const SET_KEYS = new Set(["approved_candidate_ids"]);
 const NOW_PATTERN = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?\+00:00/g;
 
 /**
@@ -100,17 +102,19 @@ export function normalize(values: unknown[]): unknown[] {
         return ids.get(key)!;
       })
       .replace(NOW_PATTERN, "<now>");
-  const walk = (value: unknown): unknown => {
+  const walk = (value: unknown, key = ""): unknown => {
     if (typeof value === "string") return replace(value);
-    if (Array.isArray(value)) return value.map(walk);
+    // sorted(set(乱数のID)) は実行ごとに順序が変わるので、集合として比べる。
+    if (Array.isArray(value) && SET_KEYS.has(key)) return value.map((entry) => walk(entry)).sort();
+    if (Array.isArray(value)) return value.map((entry) => walk(entry));
     if (value && typeof value === "object") {
       const out: Json = {};
-      for (const key of Object.keys(value).sort()) out[replace(key)] = walk((value as Json)[key]);
+      for (const key of Object.keys(value).sort()) out[replace(key)] = walk((value as Json)[key], key);
       return out;
     }
     return value;
   };
-  return values.map(walk);
+  return values.map((value) => walk(value));
 }
 
 export type GoldenFile = { name: string; scenarios: { name: string; steps: Step[]; expected: Expected[] }[] };
