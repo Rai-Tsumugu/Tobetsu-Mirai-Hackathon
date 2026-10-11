@@ -27,6 +27,14 @@ NeonのProject dashboardからPostgreSQL接続文字列を取得し、`.env.loca
 
 NeonのPostgreSQLへ `@neondatabase/serverless` で接続します。サーバー側コードから `lib/db.ts` の `getDatabase()` を使ってください。接続文字列は `.env.local` とVercelの環境変数 `DATABASE_URL` に設定し、ソースコードへ書かないでください。テーブル構成はアプリの機能要件が決まってから追加します。
 
+### 数値表示の検証
+
+1. Neon SQL Editorで `db/display-check.sql` を実行します。検証用テーブルに `1234` のサンプル値が1件入ります。
+2. `npm run dev` を起動し、[http://localhost:3000/db-check](http://localhost:3000/db-check) を開きます。
+3. Neonから読み込んだ `1,234 件` と `DATABASE CONNECTED` が表示されれば確認完了です。
+
+検証用データはアプリの業務データではありません。不要になったら `db_display_check` テーブルを削除できます。
+
 ## Vercel
 
 GitリポジトリをImportするときはRoot Directoryを `src/web-app` に設定します。`.vercel/` の作成とデプロイは、アカウント・チーム選択後に行います。VercelのProject Settingsで `DATABASE_URL` をDevelopment、Preview、Productionの必要な環境へ登録してください。

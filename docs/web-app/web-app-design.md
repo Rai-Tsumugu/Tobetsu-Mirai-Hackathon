@@ -16,9 +16,11 @@
 src/web-app/
 ├── app/
 │   ├── api/health/db/route.ts # Neon接続確認API
+│   ├── db-check/page.tsx      # 数値表示の検証ページ
 │   ├── globals.css            # グローバルスタイル
 │   ├── layout.tsx             # 共通レイアウトとページメタデータ
 │   └── page.tsx               # 初期画面
+├── db/display-check.sql       # 表示検証用のテーブルとサンプル値
 ├── lib/db.ts                  # サーバー側Neon接続
 ├── public/                 # 静的アセット
 ├── .env.example            # DATABASE_URLの共有用ひな形（値は空）
@@ -39,6 +41,8 @@ npm run dev
 ブラウザーで `http://localhost:3000` を開く。確認用ビルドと本番モードの起動は次の通り。
 
 Neon Project dashboardから取得した接続文字列を `src/web-app/.env.local` の `DATABASE_URL` に設定する。DB接続は `http://localhost:3000/api/health/db` で確認できる。未設定または接続失敗の場合はHTTP 503を返す。
+
+数値の読み出し表示は `src/web-app/db/display-check.sql` をNeon SQL Editorで実行し、`http://localhost:3000/db-check` を開いて確認する。これは接続検証用のサンプル値で、アプリの実データではない。
 
 ```powershell
 npm run build

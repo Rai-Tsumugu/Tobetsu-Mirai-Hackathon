@@ -51,6 +51,17 @@ h3 { margin: 17px 0 7px; font-size: 16px; font-weight: 700; }
 .step-card p { max-width: 245px; margin: 0; color: var(--muted); font-size: 12px; line-height: 1.75; }
 .step-arrow { position: absolute; top: 18px; right: 20px; color: #94a79c; font-size: 15px; }
 .footer { min-height: 66px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--line); color: #77857f; font-size: 10px; letter-spacing: .08em; }
+.db-check-page { min-height: 100vh; }
+.db-back-link { color: var(--muted); font-size: 12px; }
+.db-check-content { max-width: 720px; margin: 0 auto; padding: 88px 0; }
+.db-check-content h1 { font-size: clamp(38px, 6vw, 58px); }
+.db-check-intro { margin: 14px 0 30px; color: var(--muted); line-height: 1.8; }
+.db-metric-card { max-width: 420px; padding: 26px; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
+.db-metric-label { color: var(--muted); font-size: 13px; }
+.db-metric-value { display: flex; align-items: baseline; gap: 8px; margin: 14px 0 20px; color: var(--green); font-size: 54px; font-weight: 700; letter-spacing: -.05em; }
+.db-metric-value span { color: var(--muted); font-size: 16px; font-weight: 500; letter-spacing: 0; }
+.db-connection-state { color: #31734f; font-size: 10px; font-weight: 700; letter-spacing: .12em; }
+.db-message { max-width: 560px; padding: 18px; border: 1px solid var(--line); border-radius: 9px; background: white; color: var(--muted); font-size: 13px; line-height: 1.8; }
 
 @media (max-width: 700px) {
   .page-shell { width: min(100% - 36px, 540px); }
