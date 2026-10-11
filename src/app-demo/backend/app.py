@@ -1,4 +1,4 @@
-"""Offline simulator. All vehicle variants and prices are illustrative, unverified data."""
+"""Repair estimate demo with an offline simulator and attributed Gemini research."""
 import json
 import hashlib
 import time

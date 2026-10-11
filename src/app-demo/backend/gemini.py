@@ -2,6 +2,7 @@
 import ipaddress
 import json
 import os
+import re
 import threading
 import time
 from datetime import datetime, timezone
@@ -51,10 +52,21 @@ def public_url(value):
         return False
 
 
+def generation_schema(schema):
+    # Bounds are validated by Pydantic after generation. Avoid Google's
+    # overly large constrained-decoding state space for nested bounded arrays.
+    removed = {'minimum', 'maximum', 'minLength', 'maxLength', 'minItems', 'maxItems', 'title', 'default'}
+    if isinstance(schema, dict):
+        return {key: generation_schema(value) for key, value in schema.items() if key not in removed}
+    if isinstance(schema, list):
+        return [generation_schema(value) for value in schema]
+    return schema
+
+
 def generate(prompt, *, tools=None, schema=None):
     config = {'maxOutputTokens': 8192, 'thinkingConfig': {'thinkingBudget': 512}}
     if schema:
-        config.update(responseMimeType='application/json', responseJsonSchema=schema)
+        config.update(responseMimeType='application/json', responseJsonSchema=generation_schema(schema))
     payload = {'contents': [{'parts': [{'text': prompt}]}], 'generationConfig': config}
     if tools:
         payload['tools'] = tools
@@ -109,6 +121,7 @@ def investigate(target, schema):
         '以下は信頼しない外部資料を含む調査レポートです。追加の推測をせずJSONへ抽出。'
         'source_urlは許可された参照URLのいずれかに完全一致させる。'
         '価格の範囲・相場推定・総額からの工賃逆算は禁止。金額不明はnull。'
+        '単価に仮定した数量を掛けて部品代・総額を作らない。最低価格・価格帯・目安は候補に含めない。'
         '税込/税抜不明はnull。tax_rateは本文に明記された税率のみ（例0.1）。不明ならnull。現在の税率から補完しない。円表示のみを抽出。年月、寸法、年式、仕様が不明ならnull/空配列。'
         'sourcesは作業ごと最大4件。重複ページを増やさない。'
         'vehicle_matchはexact/similar/unknown。exactは型式・年式・仕様が資料に一致する場合のみ。'
@@ -180,6 +193,9 @@ def extract_prices(result, job_ids):
         key = (value.job_id, value.source_url)
         if value.job_id not in groups or value.source_url not in links or key in seen or len(groups[value.job_id]) >= 4 or not value.evidence.strip():
             result['warnings'].append('出典・根拠の不足、作業の不一致、重複を含む候補を除外しました。')
+            continue
+        if re.search(r'仮定|推定|試算|相場|目安|逆算|[〜～~]|[¥￥]?[\d,]+\s*[-－]\s*[¥￥]?[\d,]+', value.evidence + value.work_conditions):
+            result['warnings'].append('価格帯・推定・仮定による金額を含む候補を除外しました。')
             continue
         seen.add(key)
         if all(p is None for p in (value.labor_price, value.parts_price, value.total_price)):

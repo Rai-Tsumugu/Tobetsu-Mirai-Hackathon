@@ -74,6 +74,7 @@ class GeminiTest(unittest.TestCase):
         first = request.call_args_list[0]
         self.assertIn('gemini-2.5-flash:generateContent', first.args[0])
         self.assertEqual(first.kwargs['json']['tools'], [{'google_search': {}}, {'url_context': {}}])
+        self.assertNotIn('maximum', json.dumps(request.call_args_list[1].kwargs['json']['generationConfig']['responseJsonSchema']))
         self.assertEqual(result['sources']['brake'][0]['normalized_labor'], 6000)
         self.assertFalse(result['sources']['brake'][0]['verified'])
         with mock_google([]) as request:
@@ -109,6 +110,13 @@ class GeminiTest(unittest.TestCase):
         self.assertEqual(raised.exception.status_code, 502)
         for url in ['http://example.org', 'https://127.0.0.1/', 'https://localhost/', 'https://user:pass@example.org/', 'https://[::1]/']:
             self.assertFalse(gemini.public_url(url))
+
+    def test_price_ranges_and_assumed_quantities_are_rejected(self):
+        for evidence in ['料金4,800〜6,300円', '4.0Lと仮定し算出した部品代6,320円', '工賃の目安6,000円']:
+            with self.subTest(evidence=evidence):
+                result = {'data': {'sources': [price(evidence=evidence)]}, 'citations': [{'url': URL, 'title': '記事'}], 'warnings': []}
+                self.assertEqual(gemini.extract_prices(result, ['brake'])['brake'], [])
+                self.assertTrue(result['warnings'])
 
     def test_missing_key_quota_and_malformed_response(self):
         with patch.dict(os.environ, {'GEMINI_API_KEY': ''}):
