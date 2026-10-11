@@ -1,5 +1,7 @@
 """Offline simulator. All vehicle variants and prices are illustrative, unverified data."""
 import json
+import hashlib
+import time
 import os
 import sqlite3
 from contextlib import asynccontextmanager, contextmanager
@@ -12,8 +14,14 @@ from uuid import uuid4
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field, ConfigDict
+from dotenv import load_dotenv
+try:
+    from . import gemini
+except ImportError:
+    import gemini
 
 ROOT = Path(__file__).resolve().parents[1]
+load_dotenv(ROOT / ".env", override=False)
 DB_PATH = Path(os.environ.get("REPAIR_DB_PATH", str(ROOT / "demo.sqlite3")))
 TAX_RATE = Decimal("0.10")
 MODELS = [
@@ -57,6 +65,8 @@ def initialize():
             CREATE TABLE IF NOT EXISTS estimates(id TEXT PRIMARY KEY, created_at TEXT NOT NULL, search_text TEXT NOT NULL, data TEXT NOT NULL);
             CREATE TABLE IF NOT EXISTS estimate_items(id TEXT PRIMARY KEY, estimate_id TEXT NOT NULL REFERENCES estimates(id), repair_job_id TEXT NOT NULL REFERENCES repair_jobs(id), data TEXT NOT NULL);
             CREATE TABLE IF NOT EXISTS price_sources(id TEXT PRIMARY KEY, item_id TEXT NOT NULL REFERENCES estimate_items(id), data TEXT NOT NULL);
+            CREATE TABLE IF NOT EXISTS research_cache(id TEXT PRIMARY KEY, cache_key TEXT NOT NULL, created_at REAL NOT NULL, data TEXT NOT NULL);
+            CREATE INDEX IF NOT EXISTS research_cache_key ON research_cache(cache_key, created_at);
             CREATE TABLE IF NOT EXISTS selected_sources(item_id TEXT NOT NULL REFERENCES estimate_items(id), source_id TEXT NOT NULL REFERENCES price_sources(id), PRIMARY KEY(item_id, source_id));
         ''')
         for maker, model, code, grade in MODELS:
@@ -100,10 +110,45 @@ def vehicle_by_id(vehicle_id):
 
 
 @app.get("/api/vehicles")
-def vehicles(query: str = ""):
+def vehicles(query: str = "", origin: str = "all"):
     with connect() as db:
         rows = db.execute("SELECT data FROM vehicles").fetchall()
-    return [v for row in rows if (v := json.loads(row['data'])) and query.casefold().strip() in (v['maker'] + v['model'] + v['model_code']).casefold()]
+    return [v for row in rows if (v := json.loads(row['data'])) and query.casefold().strip() in (v['maker'] + v['model'] + v['model_code']).casefold() and (origin != 'live' or v['source_name'] != 'simulator')]
+
+
+@app.get("/api/config")
+def config():
+    return {"gemini_configured": gemini.configured(), "gemini_model": gemini.MODEL}
+
+
+def cached_investigation(kind, target, schema, extract):
+    cache_key = hashlib.sha256(json.dumps({"kind": kind, "target": target, "model": gemini.MODEL}, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
+    with connect() as db:
+        row = db.execute("SELECT data FROM research_cache WHERE cache_key=? AND created_at>? ORDER BY created_at DESC LIMIT 1", (cache_key, time.time() - 86400)).fetchone()
+    if row:
+        return {**json.loads(row['data']), 'cached': True}
+    result = gemini.investigate(target, schema)
+    values = extract(result)
+    result.pop('data', None)
+    result.update(values=values, context=target, kind=kind, research_id=uuid4().hex, cached=False)
+    result['warnings'] = list(dict.fromkeys(result['warnings']))
+    with connect() as db:
+        if kind == 'vehicles':
+            for vehicle in values:
+                db.execute("INSERT INTO vehicles VALUES (?, ?)", (vehicle['id'], json.dumps(vehicle, ensure_ascii=False)))
+        db.execute("INSERT INTO research_cache VALUES (?, ?, ?, ?)", (result['research_id'], cache_key, time.time(), json.dumps(result, ensure_ascii=False)))
+    return result
+
+
+class VehicleSearch(StrictModel):
+    query: str = Field(min_length=2, max_length=160)
+
+
+@app.post("/api/vehicle-research")
+def vehicle_research(body: VehicleSearch):
+    if not body.query.strip():
+        raise HTTPException(422, "メーカー・車種または型式を入力してください")
+    return cached_investigation('vehicles', {"query": body.query.strip()}, gemini.VehicleRecords.model_json_schema(), gemini.extract_vehicles)
 
 
 @app.get("/api/vehicles/{vehicle_id}")
@@ -134,7 +179,7 @@ class Research(StrictModel):
     year: int
     grade: str
     job_ids: list[str] = Field(min_length=1, max_length=5)
-    mode: str = "simulator"
+    mode: str = Field(default="simulator", pattern="^(simulator|live)$")
 
 
 def validate_context(vehicle_id, year, grade, job_ids):
@@ -161,10 +206,14 @@ def sources_for(job):
 
 @app.post("/api/price-research")
 def research(body: Research):
-    if body.mode != "simulator":
-        raise HTTPException(422, "Liveモードは未接続です。Simulatorをご利用ください")
-    validate_context(body.vehicle_id, body.year, body.grade, body.job_ids)
-    return {job['id']: sources_for(job) for job in JOBS if job['id'] in body.job_ids}
+    vehicle = validate_context(body.vehicle_id, body.year, body.grade, body.job_ids)
+    if body.mode == 'simulator':
+        return {job['id']: sources_for(job) for job in JOBS if job['id'] in body.job_ids}
+    target = dict(vehicle_id=vehicle['id'], maker=vehicle['maker'], model=vehicle['model'], model_code=vehicle['model_code'], year=body.year, grade=body.grade,
+                  jobs=[{k: job[k] for k in ('id', 'name', 'description')} for job in JOBS if job['id'] in body.job_ids])
+    result = cached_investigation('prices', target, gemini.Prices.model_json_schema(), lambda r: gemini.extract_prices(r, body.job_ids))
+    return {**result, 'sources': result['values']}
+
 
 
 class Item(StrictModel):
@@ -177,6 +226,8 @@ class Item(StrictModel):
 
 
 class Estimate(StrictModel):
+    mode: str = Field(default="simulator", pattern="^(simulator|live)$")
+    research_id: str | None = None
     vehicle_id: str
     year: int
     grade: str
@@ -187,10 +238,24 @@ class Estimate(StrictModel):
 @app.post("/api/estimates", status_code=201)
 def save_estimate(body: Estimate):
     vehicle = validate_context(body.vehicle_id, body.year, body.grade, [i.job_id for i in body.items])
+    research = {}
+    live_sources = None
+    if body.mode == 'live':
+        with connect() as db:
+            row = db.execute("SELECT data FROM research_cache WHERE id=?", (body.research_id,)).fetchone()
+        if not row:
+            raise HTTPException(422, '参照したWeb調査が見つかりません。再検索してください。')
+        research = json.loads(row['data'])
+        context = research['context']
+        if research['kind'] != 'prices' or context['vehicle_id'] != body.vehicle_id or context['year'] != body.year or context['grade'] != body.grade or {j['id'] for j in context['jobs']} != {i.job_id for i in body.items}:
+            raise HTTPException(422, 'Web調査時と車両・年式・仕様・作業が異なります。再検索してください。')
+        live_sources = research['values']
+    elif body.research_id is not None:
+        raise HTTPException(422, 'SimulatorにWeb調査を混ぜることはできません。')
     records = []
     for item in body.items:
         job = next(j for j in JOBS if j['id'] == item.job_id)
-        sources = sources_for(job)
+        sources = live_sources[item.job_id] if live_sources is not None else sources_for(job)
         ids = item.selected_source_ids
         if len(ids) != len(set(ids)) or any(s not in [p['id'] for p in sources] for s in ids):
             raise HTTPException(422, "参照候補を確認してください")
@@ -203,7 +268,7 @@ def save_estimate(body: Estimate):
     subtotal = sum(i['labor_price'] + i['parts_price'] for i in records)
     tax = int((Decimal(subtotal) * TAX_RATE).quantize(Decimal('1'), rounding=ROUND_FLOOR))
     result = dict(id=uuid4().hex[:12], created_at=datetime.now(timezone.utc).isoformat(), status="confirmed",
-                  mode="simulator", vehicle=vehicle, year=body.year, grade=body.grade, items=records,
+                  mode=body.mode, research_id=body.research_id, search_suggestions=research.get('search_suggestions', ''), vehicle=vehicle, year=body.year, grade=body.grade, items=records,
                   notes=body.notes, labor_total=sum(i['labor_price'] for i in records),
                   parts_total=sum(i['parts_price'] for i in records), tax_rate=float(TAX_RATE),
                   subtotal=subtotal, tax_amount=tax, total_amount=subtotal + tax)

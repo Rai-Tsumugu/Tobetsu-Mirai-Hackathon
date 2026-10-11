@@ -1415,3 +1415,61 @@ small {
 .vehicle-placeholder .car-drawing {
   margin-inline: auto;
 }
+
+.mode-selector {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.mode-selector button {
+  border: 1px solid #b7c6d5;
+  background: white;
+  color: #416581;
+  padding: 10px 16px;
+  border-radius: 5px;
+  font-size: 12px;
+}
+.mode-selector button.active {
+  background: #2165ab;
+  color: white;
+  border-color: #2165ab;
+}
+.web-search-button {
+  margin-top: 15px;
+}
+.web-notes {
+  background: #edf4fa;
+  padding: 13px;
+  margin: 14px 0;
+  font-size: 11px;
+  color: #426782;
+}
+.web-notes p + p {
+  margin-top: 6px;
+}
+.web-notes iframe {
+  width: 100%;
+  border: 0;
+  min-height: 140px;
+  background: white;
+  margin-top: 12px;
+}
+.source-link {
+  display: inline-block;
+  color: #2165ab;
+  text-decoration: underline;
+  font-size: 11px;
+  margin-top: 12px;
+  overflow-wrap: anywhere;
+}
+.source-evidence {
+  border-left: 2px solid #a9bfd4;
+  padding-left: 8px;
+  overflow-wrap: anywhere;
+}
+.history-suggestions {
+  width: 100%;
+  min-height: 140px;
+  border: 0;
+}

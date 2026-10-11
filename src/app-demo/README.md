@@ -1,6 +1,6 @@
 # 整備見積ワークベンチ
 
-要件書 `docs/app-demo/auto_repair_estimate_requirements.md` のPhase 1を実演する、外部API不要のSimulatorです。React / TypeScript / Tailwind CSS、FastAPI、SQLiteで構成しています。
+要件書 `docs/app-demo/auto_repair_estimate_requirements.md` のPhase 1を実演する、外部API不要のSimulatorと、Geminiを使うWeb検索モードのデモです。React / TypeScript / Tailwind CSS、FastAPI、SQLiteで構成しています。
 
 ## 起動
 
@@ -78,6 +78,51 @@ npm run build
 
 ## 対象外
 
-Live API、Gemini、VIN読み取り、メーカー諸元の照合、認証、PDF、工程重複の自動控除は未実装です。公開・本番運用用の構成ではありません。
+VIN読み取り、網羅的な車両マスター、メーカー資料の人による検証、認証、PDF、工程重複の自動控除は未実装です。公開・本番運用用の構成ではありません。
 
 実施した確認の詳細は [VERIFICATION.md](VERIFICATION.md) を参照してください。
+
+## GeminiのWeb検索（実通信未完了の試作）
+
+**2026-10-11の実キー確認:** `gemini-2.5-flash` と `gemini-2.5-flash-lite` は新規ユーザー向け利用不可（404）でした。現状のモデル設定ではWeb調査を実行できません。新モデルのGoogle検索は無料Tier対象外のため、無料枠の要件を満たす運用方法は未確定です。以下は実装した操作・仕様の説明です。Google検索が動作したという検証結果ではありません。
+
+1. Google AI Studioで**無料枠のプロジェクト**のAPIキーを発行します。アプリは請求先やプランを変更しません。既に有料プランのプロジェクトのキーでは、そのプロジェクトの料金条件が適用されます。
+2. このディレクトリに `.env` を作成して次の1行を記載します。既存のファイルは上書きせず編集してください。
+
+```dotenv
+GEMINI_API_KEY=手元のAPIキー
+```
+
+`.env` はGit管理から除外します。フロントエンドへキーを渡しません。
+
+3. `.venv/bin/python -m pip install -r backend/requirements.txt` で依存関係を入れ、バックエンドを再起動します。`.env` の変更は再起動後に反映されます。
+4. 画面を再読み込みし、車両選択画面の「Web検索（無料枠）」を選びます。
+5. メーカー・車種・型式を入力して「Webで車両情報を調べる」を押します。年式・仕様と出典が取得できた候補を選びます。見つからない車両は手入力で補えます。
+6. 作業を選び、参考料金を検索します。出典を開いて金額・条件を確認した候補だけを採用し、工賃・部品代を調整して保存します。
+
+### 呼び出しと根拠の扱い
+
+- モデルは `gemini-2.5-flash` 固定。Google SearchとURL Contextで調査し、別の呼び出しでJSONへ構造化します。通常は1操作で最大2回の生成呼び出し（検索は最初の1回）。自動再試行・有料モデルへの切替はありません。
+- 同一条件の調査はSQLiteに24時間キャッシュ。検索ボタンを押した場合だけ外部通信します。新しい検索は10秒以上の間隔を必要とします。
+- APIが返した参照URLと一致する候補だけを保持し、根拠の短い抜粋を表示。AI抽出は人による検証前なので `verified=false`、車両の `verified_at=null` のまま保存します。検索連携が返す関連検索候補も隔離したiframeで表示します。
+- 国内全車種・年式の一覧を網羅するものではありません。資料に明記のない年式や仕様は補完しません。年式・仕様を抽出できない候補は登録せず、手入力を案内します。
+- 工賃・税区分・税込の場合の税率・車両と作業の一致条件が確認できる候補だけを中央値計算に使います。税率を現在の10%と推定して過去の税込料金を逆算しません。候補は初期状態ですべて除外し、利用者が出典を確認して採用します。
+- 検索結果が0件でも架空データを補いません。工賃の手入力・調整理由を入力して続行できます。部品代は引き続き手入力です。
+- Web調査IDと条件をサーバーで照合して保存し、履歴の根拠や採用状況を復元します。既存のSimulator履歴も読み出せます。テーブル追加だけで既存データを保持します。
+- キー未設定は503、呼び出し制限は429、通信・回答形式の不具合は502として画面で案内します。無料枠のプロジェクトの呼び出し制限はGoogle AI Studioで確認してください。
+
+公式資料：[料金](https://ai.google.dev/gemini-api/docs/pricing#gemini-2.5-flash)、[検索連携](https://ai.google.dev/gemini-api/docs/generate-content/google-search)、[URL Context](https://ai.google.dev/gemini-api/docs/generate-content/url-context)。
+
+### Geminiを呼ばないブラウザ検証
+
+`backend/check_live_browser.py --mock-server` は検証専用の模擬Google応答を返します。本番アプリには模擬応答を組み込みません。Playwright、Chromium、ビルドが必要です。
+
+このリポジトリのルートから：
+
+```bash
+cd src/app-demo
+npm run build
+.venv/bin/python ../../.agents/skills/webapp-testing/scripts/with_server.py --server 'REPAIR_DB_PATH=/tmp/repair-live-check.sqlite3 .venv/bin/python backend/check_live_browser.py --mock-server' --port 8019 -- .venv/bin/python backend/check_live_browser.py
+```
+
+8019番と専用の一時DBを使います。車両検索、諸元・出典表示、不明な税区分と別仕様の除外、候補の採用、保存・再表示・再利用、スマートフォン幅を確認します。

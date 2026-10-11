@@ -11,6 +11,12 @@ type Vehicle = {
   grades: string[];
   source_name: string;
   note: string;
+  source_url?: string | null;
+  retrieved_at?: string;
+  length_mm?: number | null;
+  width_mm?: number | null;
+  height_mm?: number | null;
+  powertrain?: string | null;
 };
 type Job = { id: string; category: string; name: string; description: string };
 type Source = {
@@ -19,7 +25,12 @@ type Source = {
   labor_price: number | null;
   parts_price: number | null;
   total_price: number | null;
-  tax_included: boolean;
+  tax_included: boolean | null;
+  tax_rate?: number | null;
+  mode?: "simulator" | "live";
+  source_url?: string | null;
+  evidence?: string;
+  published_at?: string | null;
   normalized_labor: number | null;
   vehicle_match_level: string;
   work_conditions: string;
@@ -39,6 +50,9 @@ type SavedItem = Draft & {
   sources: Source[];
 };
 type Saved = {
+  mode?: "simulator" | "live";
+  research_id?: string | null;
+  search_suggestions?: string;
   id: string;
   created_at: string;
   vehicle: Vehicle;
@@ -51,6 +65,39 @@ type Saved = {
   tax_amount: number;
   total_amount: number;
 };
+type WebResult = {
+  research_id: string;
+  sources: Record<string, Source[]>;
+  values: Vehicle[];
+  warnings: string[];
+  cached: boolean;
+  search_suggestions: string;
+};
+function ResearchNotes({ result }: { result: WebResult | null }) {
+  if (!result) return null;
+  return (
+    <div className="web-notes" role="status">
+      <p>
+        {result.cached
+          ? "24時間以内の調査結果を再利用しました。"
+          : "Web検索の結果です。"}
+      </p>
+      {result.warnings.map((warning) => (
+        <p key={warning}>{warning}</p>
+      ))}
+      {result.search_suggestions && (
+        <iframe
+          title="Google検索の関連候補"
+          sandbox="allow-popups allow-popups-to-escape-sandbox"
+          srcDoc={result.search_suggestions}
+          referrerPolicy="no-referrer"
+        />
+      )}
+    </div>
+  );
+}
+const taxLabel = (included: boolean | null) =>
+  included === null ? "税区分不明" : included ? "税込" : "税抜";
 const yen = (n: number) =>
   new Intl.NumberFormat("ja-JP", { style: "currency", currency: "JPY" }).format(
     n,
@@ -205,6 +252,16 @@ const steps = [
 ];
 function App() {
   const [step, setStep] = useState(0);
+  const [mode, setMode] = useState<"simulator" | "live">("simulator");
+  const [geminiReady, setGeminiReady] = useState(false);
+  const [webVehicles, setWebVehicles] = useState<WebResult | null>(null);
+  const [webPrices, setWebPrices] = useState<WebResult | null>(null);
+  const [researchId, setResearchId] = useState<string | null>(null);
+  useEffect(() => {
+    api<{ gemini_configured: boolean }>("/config")
+      .then((c) => setGeminiReady(c.gemini_configured))
+      .catch(() => {});
+  }, []);
   const [query, setQuery] = useState("FL4");
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [jobs, setJobs] = useState<Job[]>([]);
@@ -239,7 +296,12 @@ function App() {
   useEffect(() => {
     let active = true;
     const timer = window.setTimeout(() => {
-      api<Vehicle[]>("/vehicles?query=" + encodeURIComponent(query))
+      api<Vehicle[]>(
+        "/vehicles?origin=" +
+          (mode === "live" ? "live" : "all") +
+          "&query=" +
+          encodeURIComponent(query),
+      )
         .then((v) => {
           if (active) setVehicles(v);
         })
@@ -251,7 +313,7 @@ function App() {
       active = false;
       clearTimeout(timer);
     };
-  }, [query]);
+  }, [query, mode]);
   useEffect(() => {
     if (!historyOpen) return;
     let active = true;
@@ -294,28 +356,61 @@ function App() {
     setGrade("");
     setSources({});
     setDrafts([]);
+    setResearchId(null);
+    setWebPrices(null);
     setSaved(null);
     setError("");
+  }
+  function switchMode(next: "simulator" | "live") {
+    reset();
+    setMode(next);
+    setWebVehicles(null);
+    setWebPrices(null);
+    setResearchId(null);
+    setVehicles([]);
+  }
+  async function searchWebVehicles() {
+    setBusy(true);
+    setError("");
+    try {
+      const result = await api<WebResult>("/vehicle-research", { query });
+      setWebVehicles(result);
+      setVehicles(result.values);
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setBusy(false);
+    }
   }
   async function research() {
     if (!vehicle) return;
     setBusy(true);
     setError("");
     try {
-      const result = await api<Record<string, Source[]>>("/price-research", {
-        vehicle_id: vehicle.id,
-        year: Number(year),
-        grade,
-        job_ids: jobIds,
-        mode: "simulator",
-      });
+      const response = await api<Record<string, Source[]> | WebResult>(
+        "/price-research",
+        {
+          vehicle_id: vehicle.id,
+          year: Number(year),
+          grade,
+          job_ids: jobIds,
+          mode,
+        },
+      );
+      const web = mode === "live" ? (response as WebResult) : null;
+      const result = web ? web.sources : (response as Record<string, Source[]>);
+      setWebPrices(web);
+      setResearchId(web?.research_id ?? null);
       setSources(result);
       setDrafts(
         jobIds.map((id) => {
           const selected = result[id]
-            .filter((s) => s.normalized_labor !== null)
+            .filter((s) => mode === "simulator" && s.normalized_labor !== null)
             .map((s) => s.id);
-          const old = drafts.find((d) => d.job_id === id);
+          const old =
+            mode === "simulator"
+              ? drafts.find((d) => d.job_id === id)
+              : undefined;
           return old
             ? { ...old, selected_source_ids: selected }
             : {
@@ -369,6 +464,8 @@ function App() {
     try {
       setSaved(
         await api<Saved>("/estimates", {
+          mode,
+          research_id: researchId,
           vehicle_id: vehicle.id,
           year: Number(year),
           grade,
@@ -403,6 +500,9 @@ function App() {
   function reset() {
     setStep(0);
     setVehicle(null);
+    setWebVehicles(null);
+    setWebPrices(null);
+    setResearchId(null);
     setYear("");
     setGrade("");
     setJobIds([]);
@@ -413,6 +513,10 @@ function App() {
     setError("");
   }
   function reuse(item: Saved) {
+    setMode(item.mode ?? "simulator");
+    setResearchId(item.research_id ?? null);
+    setWebVehicles(null);
+    setWebPrices(null);
     setVehicle(item.vehicle);
     setYear(String(item.year));
     setGrade(item.grade);
@@ -459,7 +563,7 @@ function App() {
         <div className="header-right">
           <span className="mode-tag">
             <span />
-            Simulator
+            {mode === "live" ? "Gemini Web検索" : "Simulator"}
           </span>
           <button
             className="history-button"
@@ -476,9 +580,15 @@ function App() {
       <div className="demo-banner">
         <Icon name="info" size={16} />
         <span>
-          デモモード：車両情報・参考価格はサンプルです。実価格・実車への適合を保証しません。
+          {mode === "live"
+            ? "Web調査モード：AI抽出は未確認です。出典・適合・作業条件を確認してください。"
+            : "デモモード：車両情報・参考価格はサンプルです。実価格・実車への適合を保証しません。"}
         </span>
-        <span className="offline-badge">外部API接続なし</span>
+        <span className="offline-badge">
+          {mode === "live"
+            ? "gemini-2.5-flash / 無料枠プロジェクトで使用"
+            : "外部API接続なし"}
+        </span>
       </div>
       <div className="workspace">
         <aside className="workflow">
@@ -554,6 +664,37 @@ function App() {
               </button>
             </div>
           )}
+          {step === 0 && (
+            <div className="mode-selector" role="group" aria-label="調査モード">
+              <button
+                className={mode === "simulator" ? "active" : ""}
+                disabled={busy}
+                aria-pressed={mode === "simulator"}
+                onClick={() => switchMode("simulator")}
+              >
+                Simulator（架空データ）
+              </button>
+              <button
+                className={mode === "live" ? "active" : ""}
+                disabled={busy}
+                aria-pressed={mode === "live"}
+                onClick={() => switchMode("live")}
+              >
+                Web検索（無料枠）
+              </button>
+            </div>
+          )}
+          {mode === "live" && !geminiReady && (
+            <div className="info-strip">
+              APIキーが未設定です。src/app-demo/.env の GEMINI_API_KEY
+              に設定してバックエンドを再起動してください。Simulatorはそのまま使えます。
+            </div>
+          )}
+          {busy && mode === "live" && (
+            <div className="info-strip" role="status">
+              公開資料を検索・整理しています。完了まで少し時間がかかります。
+            </div>
+          )}
           <div className="content-grid">
             <section className="editor">
               {step === 0 && (
@@ -576,6 +717,23 @@ function App() {
                         autoComplete="off"
                       />
                     </div>
+                    {mode === "live" && (
+                      <>
+                        <button
+                          className="primary-button web-search-button"
+                          disabled={
+                            busy || !geminiReady || query.trim().length < 2
+                          }
+                          onClick={() => void searchWebVehicles()}
+                        >
+                          Webで車両情報を調べる
+                        </button>
+                        <p className="help-text">
+                          メーカー名・車種・型式で検索できます。型式と年式・仕様が確認できた候補を表示します。網羅的な車両一覧ではありません。
+                        </p>
+                        <ResearchNotes result={webVehicles} />
+                      </>
+                    )}
                     <div className="search-meta">
                       <span>{vehicles.length}件の候補</span>
                       <span>型式とVIN・車台番号は別の識別子です</span>
@@ -700,22 +858,48 @@ function App() {
                       </div>
                       <div className="specs">
                         <span>
-                          全長<strong>未確認</strong>
+                          全長
+                          <strong>
+                            {vehicle.length_mm
+                              ? `${vehicle.length_mm} mm`
+                              : "未確認"}
+                          </strong>
                         </span>
                         <span>
-                          全幅<strong>未確認</strong>
+                          全幅
+                          <strong>
+                            {vehicle.width_mm
+                              ? `${vehicle.width_mm} mm`
+                              : "未確認"}
+                          </strong>
                         </span>
                         <span>
-                          全高<strong>未確認</strong>
+                          全高
+                          <strong>
+                            {vehicle.height_mm
+                              ? `${vehicle.height_mm} mm`
+                              : "未確認"}
+                          </strong>
                         </span>
                         <span>
-                          駆動方式<strong>未確認</strong>
+                          駆動方式
+                          <strong>{vehicle.powertrain || "未確認"}</strong>
                         </span>
                       </div>
                       <p className="note">
                         <Icon name="info" size={16} />
                         {vehicle.note}
                       </p>
+                      {vehicle.source_url && (
+                        <a
+                          className="source-link"
+                          href={vehicle.source_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          車両情報の出典を確認
+                        </a>
+                      )}
                     </div>
                   ) : (
                     <div className="vehicle-placeholder">
@@ -807,7 +991,11 @@ function App() {
                     </button>
                     <button
                       className="primary-button"
-                      disabled={!jobIds.length || busy}
+                      disabled={
+                        !jobIds.length ||
+                        busy ||
+                        (mode === "live" && !geminiReady)
+                      }
                       onClick={() => void research()}
                     >
                       {busy ? "候補を準備中…" : "参考価格を比較する"}
@@ -821,9 +1009,12 @@ function App() {
                   <div className="info-strip">
                     <Icon name="info" />
                     <span>
-                      すべて架空の価格です。税込の工賃は税抜に換算し、採用した工賃の中央値を算出します。
+                      {mode === "live"
+                        ? "Web料金はAI抽出・未確認です。出典を確認してから採用してください。工賃内訳・税区分・一致条件が不明な候補は比較対象外です。"
+                        : "すべて架空の価格です。税込の工賃は税抜に換算し、採用した工賃の中央値を算出します。"}
                     </span>
                   </div>
+                  <ResearchNotes result={webPrices} />
                   {chosenJobs.map((j) => {
                     const draft = drafts.find((i) => i.job_id === j.id)!;
                     const calculated = median(
@@ -834,8 +1025,13 @@ function App() {
                       <div className="comparison-group" key={j.id}>
                         <div className="comparison-heading">
                           <h2>{j.name}</h2>
-                          <span>参考候補 4件</span>
+                          <span>参考候補 {sources[j.id].length}件</span>
                         </div>
+                        {sources[j.id].length === 0 && (
+                          <div className="info-strip">
+                            料金の根拠が見つかりませんでした。金額確定画面で工賃と理由を手入力できます。
+                          </div>
+                        )}
                         <div className="source-grid">
                           {sources[j.id].map((s) => {
                             const selected = draft.selected_source_ids.includes(
@@ -847,7 +1043,11 @@ function App() {
                                 key={s.id}
                               >
                                 <div className="source-top">
-                                  <span className="small-tag">架空データ</span>
+                                  <span className="small-tag">
+                                    {s.mode === "live"
+                                      ? "AI抽出・要確認"
+                                      : "架空データ"}
+                                  </span>
                                   <label className="adopt-toggle">
                                     <input
                                       type="checkbox"
@@ -868,17 +1068,28 @@ function App() {
                                     ? "工賃・部品の総額"
                                     : "工賃"}
                                   <span>
-                                    {s.tax_included ? "税込" : "税抜"}
+                                    {taxLabel(s.tax_included)}
+                                    {s.mode === "live" &&
+                                    s.tax_included &&
+                                    s.tax_rate == null
+                                      ? "（税率不明）"
+                                      : ""}
                                   </span>
                                 </p>
                                 <p className="source-price">
-                                  {yen(s.labor_price ?? s.total_price ?? 0)}
+                                  {s.labor_price === null &&
+                                  s.total_price === null
+                                    ? "金額不明"
+                                    : yen(s.labor_price ?? s.total_price!)}
                                 </p>
                                 <p className="source-parts">
                                   部品代{" "}
                                   {s.parts_price === null
                                     ? "別途・金額不明"
-                                    : yen(s.parts_price) + "（総額に含む）"}
+                                    : yen(s.parts_price) +
+                                      (s.total_price !== null
+                                        ? "（総額に含む）"
+                                        : "")}
                                 </p>
                                 <div className="source-metadata">
                                   <span
@@ -891,18 +1102,42 @@ function App() {
                                     {s.vehicle_match_level}
                                   </span>
                                   <p>{s.work_conditions}</p>
-                                  {s.tax_included && (
-                                    <p>
-                                      税抜換算工賃：{yen(s.normalized_labor!)}
+                                  {s.tax_included &&
+                                    s.normalized_labor !== null && (
+                                      <p>
+                                        税抜換算工賃：{yen(s.normalized_labor!)}
+                                      </p>
+                                    )}
+                                  <small>
+                                    情報源{" "}
+                                    {s.mode === "live"
+                                      ? "Gemini Web調査"
+                                      : "simulator"}
+                                    <br />
+                                    参照日{" "}
+                                    {s.mode === "live"
+                                      ? date(s.retrieved_at)
+                                      : s.retrieved_at}
+                                    <br />
+                                    {s.mode === "live"
+                                      ? "掲載日 " + (s.published_at || "不明")
+                                      : "サンプル／実価格ではない"}
+                                  </small>
+                                  {s.source_url && (
+                                    <a
+                                      className="source-link"
+                                      href={s.source_url}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                    >
+                                      出典ページを確認
+                                    </a>
+                                  )}
+                                  {s.evidence && (
+                                    <p className="source-evidence">
+                                      抽出根拠：{s.evidence}
                                     </p>
                                   )}
-                                  <small>
-                                    情報源 simulator
-                                    <br />
-                                    参照日 {s.retrieved_at}
-                                    <br />
-                                    サンプル／実価格ではない
-                                  </small>
                                 </div>
                               </article>
                             );
@@ -1196,7 +1431,9 @@ function App() {
                 <strong>{step >= 2 && validMoney ? yen(total) : "—"}</strong>
               </div>
               <p className="summary-footnote">
-                サンプルによる概算です。
+                {mode === "live"
+                  ? "Web資料による参考概算です。"
+                  : "サンプルによる概算です。"}
                 <br />
                 最終金額は担当者が確認・決定します。
               </p>
@@ -1204,7 +1441,9 @@ function App() {
           </div>
           <footer className="page-footer">
             <span>当別未来フェス / 自動車整備デモ</span>
-            <span>参考情報の出所：simulator</span>
+            <span>
+              参考情報の出所：{mode === "live" ? "Gemini Web調査" : "simulator"}
+            </span>
           </footer>
         </main>
       </div>
@@ -1268,7 +1507,8 @@ function App() {
                   <p className="muted">
                     最終更新：{date(detail.created_at)}
                     <br />
-                    見積番号 {detail.id} / simulator
+                    見積番号 {detail.id} /{" "}
+                    {detail.mode === "live" ? "Gemini Web調査" : "simulator"}
                   </p>
                   {detail.items.map((i, index) => (
                     <div key={index} className="history-item">
@@ -1298,10 +1538,40 @@ function App() {
                             {s.labor_price !== null
                               ? "工賃 " + yen(s.labor_price)
                               : "総額 " + yen(s.total_price ?? 0)}
-                            （{s.tax_included ? "税込" : "税抜"}）<br />
+                            （{taxLabel(s.tax_included)}
+                            {s.mode === "live" &&
+                            s.tax_included &&
+                            s.tax_rate == null
+                              ? "（税率不明）"
+                              : ""}
+                            ）<br />
                             {s.work_conditions}
                             <br />
-                            simulator / {s.retrieved_at} / 架空データ
+                            {s.mode === "live"
+                              ? "Gemini Web調査・AI抽出"
+                              : "simulator・架空データ"}{" "}
+                            /{" "}
+                            {s.mode === "live"
+                              ? date(s.retrieved_at)
+                              : s.retrieved_at}
+                            {s.source_url && (
+                              <>
+                                <br />
+                                <a
+                                  href={s.source_url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  出典ページ
+                                </a>
+                              </>
+                            )}
+                            {s.evidence && (
+                              <>
+                                <br />
+                                抽出根拠：{s.evidence}
+                              </>
+                            )}
                           </p>
                         ))}
                       </details>
