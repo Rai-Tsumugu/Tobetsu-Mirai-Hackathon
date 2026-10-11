@@ -81,6 +81,12 @@ def initialize():
                 estimate['case_id'] = case['id']
                 db.execute("INSERT INTO cases VALUES (?, ?, ?)", (case['id'], case['created_at'], json.dumps(case, ensure_ascii=False)))
                 db.execute("UPDATE estimates SET data=? WHERE id=?", (json.dumps(estimate, ensure_ascii=False), row['id']))
+        for row in db.execute("SELECT id, data FROM cases").fetchall():
+            case = json.loads(row['data'])
+            if 'recipient_name' not in case or 'phone_memo' not in case:
+                case.setdefault('recipient_name', '')
+                case.setdefault('phone_memo', '')
+                db.execute("UPDATE cases SET data=? WHERE id=?", (json.dumps(case, ensure_ascii=False), row['id']))
         for maker, model, code, grade in MODELS:
             data = dict(id=code, maker=maker, model=model, model_code=code,
                         years=list(range(2015, 2027)), grades=[grade, "その他（要確認）"],
@@ -109,6 +115,8 @@ CaseStatus = Literal['unestimated', 'estimating', 'completed']
 
 
 class CaseInput(StrictModel):
+    recipient_name: str = Field(default='', max_length=120)
+    phone_memo: str = Field(default='', max_length=6000)
     title: str = Field(min_length=1, max_length=120)
     vehicle_label: str = Field(default='', max_length=160)
     status: CaseStatus = 'unestimated'
@@ -120,7 +128,7 @@ class CaseInput(StrictModel):
 def new_case(fields, created_at=None):
     now = datetime.now(timezone.utc).isoformat()
     return dict(id='CASE-' + uuid4().hex, created_at=created_at or now, updated_at=now,
-                **{'latest_estimate_id': None, **fields})
+                **{'latest_estimate_id': None, 'recipient_name': '', 'phone_memo': '', **fields})
 
 
 def vehicle_label(estimate):
@@ -144,6 +152,7 @@ def case_fields(body):
     fields['title'] = fields['title'].strip()
     if not fields['title']:
         raise HTTPException(422, '案件名を入力してください')
+    fields['recipient_name'] = fields['recipient_name'].strip()
     fields['vehicle_label'] = fields['vehicle_label'].strip()
     return fields
 
@@ -167,7 +176,11 @@ def create_case(body: CaseInput):
 def update_case(case_id: str, body: CaseInput):
     with connect() as db:
         case = case_by_id(db, case_id)
-        case.update(**case_fields(body), updated_at=datetime.now(timezone.utc).isoformat())
+        fields = case_fields(body)
+        for name in ['recipient_name', 'phone_memo']:
+            if name not in body.model_fields_set:
+                fields.pop(name)
+        case.update(**fields, updated_at=datetime.now(timezone.utc).isoformat())
         db.execute("UPDATE cases SET data=? WHERE id=?", (json.dumps(case, ensure_ascii=False), case_id))
     return case
 

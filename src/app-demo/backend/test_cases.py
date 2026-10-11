@@ -26,6 +26,25 @@ class CaseTest(unittest.TestCase):
                     items=[dict(job_id='oil', selected_source_ids=['oil-0'], labor_price=1000,
                                 parts_price=5000, conditions='検証', adjustment_reason='')])
 
+    def test_recipient_and_phone_memo_persist_without_entering_quote(self):
+        fields = dict(title='電話受付', recipient_name='サンプル 太郎様', phone_memo='折り返しは明日。価格は診断後。')
+        case = self.client.post('/api/cases', json=fields).json()
+        with TestClient(module.app) as restarted:
+            stored = next(c for c in restarted.get('/api/cases').json() if c['id'] == case['id'])
+            self.assertEqual(stored['recipient_name'], fields['recipient_name'])
+            self.assertEqual(stored['phone_memo'], fields['phone_memo'])
+        # Older clients changing status must not erase newly introduced metadata.
+        updated = self.client.put('/api/cases/' + case['id'], json=dict(title='電話受付', status='estimating')).json()
+        self.assertEqual(updated['phone_memo'], fields['phone_memo'])
+        self.assertEqual(updated['recipient_name'], fields['recipient_name'])
+        saved = self.client.post('/api/estimates', json=self.quote(case['id'])).json()
+        self.assertNotIn('recipient_name', saved)
+        self.assertNotIn('phone_memo', saved)
+        stored = next(c for c in self.client.get('/api/cases').json() if c['id'] == case['id'])
+        self.assertEqual(stored['phone_memo'], fields['phone_memo'])
+        self.assertEqual(self.client.post('/api/cases', json=dict(title='試験', recipient_name='a' * 121)).status_code, 422)
+        self.assertEqual(self.client.post('/api/cases', json=dict(title='試験', phone_memo='a' * 6001)).status_code, 422)
+
     def test_unique_ids_and_restart_persistence(self):
         first = self.client.post('/api/cases', json={'title': '同じ案件名'}).json()
         second = self.client.post('/api/cases', json={'title': '同じ案件名'}).json()

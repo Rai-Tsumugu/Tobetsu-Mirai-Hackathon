@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./cases.css";
+import { downloadDocument } from "./documents";
 
 export type CaseStatus = "unestimated" | "estimating" | "completed";
 export type EstimateCase = {
@@ -10,6 +11,8 @@ export type EstimateCase = {
   amount: number | null;
   due_date: string | null;
   notes: string;
+  recipient_name: string;
+  phone_memo: string;
   latest_estimate_id: string | null;
   created_at: string;
   updated_at: string;
@@ -51,6 +54,8 @@ export function caseFields(c: EstimateCase) {
     amount: c.amount,
     due_date: c.due_date,
     notes: c.notes,
+    recipient_name: c.recipient_name,
+    phone_memo: c.phone_memo,
   };
 }
 const yen = (value: number) =>
@@ -64,6 +69,8 @@ const blank = {
   amount: "",
   due_date: "",
   notes: "",
+  recipient_name: "",
+  phone_memo: "",
 };
 
 export default function CasesDashboard({
@@ -100,6 +107,7 @@ export default function CasesDashboard({
   const [loading, setLoading] = useState(true);
   const [reload, setReload] = useState(0);
   const [notice, setNotice] = useState("");
+  const [documentCase, setDocumentCase] = useState<EstimateCase | null>(null);
   useEffect(() => {
     let active = true;
     setLoading(true);
@@ -127,7 +135,14 @@ export default function CasesDashboard({
     .filter(
       (c) =>
         (filter === "all" || c.status === filter) &&
-        [c.id, c.title, c.vehicle_label, c.notes]
+        [
+          c.id,
+          c.title,
+          c.vehicle_label,
+          c.notes,
+          c.recipient_name,
+          c.phone_memo,
+        ]
           .join(" ")
           .toLocaleLowerCase()
           .includes(query.trim().toLocaleLowerCase()),
@@ -149,6 +164,8 @@ export default function CasesDashboard({
             amount: c.amount === null ? "" : String(c.amount),
             due_date: c.due_date ?? "",
             notes: c.notes,
+            recipient_name: c.recipient_name,
+            phone_memo: c.phone_memo,
           }
         : { ...blank },
     );
@@ -171,6 +188,7 @@ export default function CasesDashboard({
         },
       );
       setForm(null);
+      if (documentCase?.id === c.id) setDocumentCase(c);
       setNotice(`${c.title}を${editing ? "更新" : "登録"}しました。`);
       setReload((n) => n + 1);
     } catch (e) {
@@ -184,6 +202,28 @@ export default function CasesDashboard({
     setError("");
     try {
       await onOpen(c);
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  }
+  async function exportDocument(kind: "estimate" | "invoice") {
+    if (!documentCase?.latest_estimate_id) return;
+    setBusy(true);
+    setError("");
+    try {
+      const response = await fetch(
+        "/api/estimates/" + documentCase.latest_estimate_id,
+      );
+      if (!response.ok)
+        throw new Error(
+          "見積もりを取得できませんでした。再読み込みしてください。",
+        );
+      await downloadDocument(documentCase, await response.json(), kind);
+      setNotice(
+        `${kind === "estimate" ? "見積書" : "請求書"}PDFを出力しました。`,
+      );
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -316,6 +356,34 @@ export default function CasesDashboard({
               />
             </label>
             <label className="case-form-notes">
+              宛名（見積書・請求書）
+              <input
+                maxLength={120}
+                value={form.recipient_name}
+                placeholder="例：山田 太郎様"
+                onChange={(e) =>
+                  setForm({ ...form, recipient_name: e.target.value })
+                }
+              />
+            </label>
+            <label className="case-form-notes">
+              電話メモ（内部用）
+              <textarea
+                maxLength={6000}
+                aria-label="電話メモ（内部用）"
+                aria-describedby="phone-memo-help"
+                rows={4}
+                value={form.phone_memo}
+                placeholder="依頼内容、確認した条件、折り返し事項など"
+                onChange={(e) =>
+                  setForm({ ...form, phone_memo: e.target.value })
+                }
+              />
+              <span className="muted" id="phone-memo-help">
+                AIには送信せず、PDFにも記載しません。
+              </span>
+            </label>
+            <label className="case-form-notes">
               案件メモ
               <textarea
                 maxLength={2000}
@@ -344,6 +412,52 @@ export default function CasesDashboard({
           </form>
         </section>
       )}
+      {documentCase && (
+        <section className="case-document-panel" aria-label="帳票の出力">
+          <div>
+            <h2>見積書・請求書を出力</h2>
+            <p>{documentCase.title}</p>
+            <p>
+              宛名：
+              {documentCase.recipient_name ||
+                "未設定（案件の編集で入力してください）"}
+            </p>
+            <p className="muted">
+              保存済みの最新見積もりの金額・明細で作成します。電話メモ・内部メモは含めません。デモの発行元を記載します。
+            </p>
+          </div>
+          <div className="case-document-actions">
+            <button
+              className="secondary-button"
+              disabled={busy}
+              onClick={() => edit(documentCase)}
+            >
+              宛名・電話メモを編集
+            </button>
+            <button
+              className="primary-button"
+              disabled={busy || !!form || !documentCase.recipient_name.trim()}
+              onClick={() => exportDocument("estimate")}
+            >
+              見積書PDF
+            </button>
+            <button
+              className="primary-button"
+              disabled={busy || !!form || !documentCase.recipient_name.trim()}
+              onClick={() => exportDocument("invoice")}
+            >
+              請求書PDF
+            </button>
+            <button
+              className="secondary-button"
+              disabled={busy}
+              onClick={() => setDocumentCase(null)}
+            >
+              閉じる
+            </button>
+          </div>
+        </section>
+      )}
       <section className="case-register" aria-label="案件一覧">
         <div className="case-tools">
           <label>
@@ -351,7 +465,7 @@ export default function CasesDashboard({
             <input
               type="search"
               value={query}
-              placeholder="案件ID・案件名・型式・メモ"
+              placeholder="案件ID・案件名・型式・宛名・メモ"
               onChange={(e) => setQuery(e.target.value)}
             />
           </label>
@@ -421,6 +535,16 @@ export default function CasesDashboard({
                         <span className="case-id" title={c.id}>
                           {c.id}
                         </span>
+                        {c.recipient_name && (
+                          <span className="case-recipient">
+                            宛名：{c.recipient_name}
+                          </span>
+                        )}
+                        {c.phone_memo && (
+                          <span className="case-phone-preview">
+                            電話メモ：{c.phone_memo}
+                          </span>
+                        )}
                         {c.notes && (
                           <span className="case-memo">{c.notes}</span>
                         )}
@@ -474,6 +598,23 @@ export default function CasesDashboard({
                         {c.latest_estimate_id
                           ? "見積もりを開く"
                           : "見積もりを作成"}
+                      </button>
+                      <button
+                        className="case-document"
+                        disabled={busy || !!form || !c.latest_estimate_id}
+                        title={
+                          c.latest_estimate_id
+                            ? "見積書・請求書PDFを出力"
+                            : "見積もり保存後に出力できます"
+                        }
+                        onClick={() => {
+                          setDocumentCase(c);
+                          setError("");
+                          setNotice("");
+                        }}
+                        aria-label={`${c.title}の帳票`}
+                      >
+                        帳票
                       </button>
                       <button
                         className="case-edit"
