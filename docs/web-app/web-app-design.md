@@ -7,33 +7,38 @@
 - ハッカソンのテーマ（A・B・C）とMVPは未決定。現時点では業務機能、実データ、外部APIを仮定しない。
 - アプリのルートはリポジトリ内の `src/web-app/`。
 - Next.js App Router、TypeScript、Tailwind CSSを使う。Next.jsはVercelで追加設定なしに扱える。
-- データベースはNeonのPostgreSQLを採用する。テーマ、保存データ、利用者、権限が決まってからNeonのDBを作成し、必要なテーブルとアクセス制御を設計する。
+- データベースはNeonのPostgreSQLを採用し、`@neondatabase/serverless` でNext.jsのサーバー側から接続する。接続文字列は `DATABASE_URL` としてローカルの `.env.local` とVercelの環境変数に設定し、Gitには含めない。テーマ、保存データ、利用者、権限が決まってから必要なテーブルとアクセス制御を設計する。
 - サーバー側処理が必要になった時点でNext.jsのRoute HandlerやServer Actionを検討する。認証、Google連携、生成AI、課金機能は要件確定まで導入しない。
 
 ## ディレクトリ
 
 ```text
 src/web-app/
-├── public/                 # 静的アセット
 ├── app/
-│   ├── globals.css         # グローバルスタイル
-│   ├── layout.tsx          # 共通レイアウトとページメタデータ
-│   └── page.tsx            # 初期画面
-├── .env.example            # 環境変数の共有用ひな形（現在は未定義）
+│   ├── api/health/db/route.ts # Neon接続確認API
+│   ├── globals.css            # グローバルスタイル
+│   ├── layout.tsx             # 共通レイアウトとページメタデータ
+│   └── page.tsx               # 初期画面
+├── lib/db.ts                  # サーバー側Neon接続
+├── public/                 # 静的アセット
+├── .env.example            # DATABASE_URLの共有用ひな形（値は空）
 ├── package.json            # 開発・ビルド・起動スクリプト
 └── package-lock.json       # npm依存関係の固定
 ```
 
 ## ローカル開発
 
-Node.js 20.9以上を使用する。依存関係を導入した後、次のコマンドを `src/web-app/` で実行する。
+Node.js 20.9以上を使用する。依存関係を導入し、`.env.example` を `.env.local` へコピーして `DATABASE_URL` を設定した後、次のコマンドを `src/web-app/` で実行する。
 
 ```powershell
 npm install
+Copy-Item .env.example .env.local
 npm run dev
 ```
 
 ブラウザーで `http://localhost:3000` を開く。確認用ビルドと本番モードの起動は次の通り。
+
+Neon Project dashboardから取得した接続文字列を `src/web-app/.env.local` の `DATABASE_URL` に設定する。DB接続は `http://localhost:3000/api/health/db` で確認できる。未設定または接続失敗の場合はHTTP 503を返す。
 
 ```powershell
 npm run build
