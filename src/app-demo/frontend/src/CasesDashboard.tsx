@@ -77,6 +77,22 @@ export default function CasesDashboard({
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<CaseStatus | "all">("all");
   const [sort, setSort] = useState("created");
+  const [layout, setLayout] = useState<"standard" | "details">(() => {
+    try {
+      return localStorage.getItem("repair-case-layout") === "details"
+        ? "details"
+        : "standard";
+    } catch {
+      return "standard";
+    }
+  });
+  useEffect(() => {
+    try {
+      localStorage.setItem("repair-case-layout", layout);
+    } catch {
+      /* Storage may be unavailable. */
+    }
+  }, [layout]);
   const [form, setForm] = useState<typeof blank | null>(null);
   const [editing, setEditing] = useState<EstimateCase | null>(null);
   const [error, setError] = useState("");
@@ -350,16 +366,42 @@ export default function CasesDashboard({
               <option value="due">納期が近い順</option>
             </select>
           </label>
+          <div
+            className="case-layout-toggle"
+            role="group"
+            aria-label="案件一覧の表示方法"
+          >
+            <button
+              aria-pressed={layout === "standard"}
+              onClick={() => setLayout("standard")}
+            >
+              通常表示
+            </button>
+            <button
+              aria-pressed={layout === "details"}
+              onClick={() => setLayout("details")}
+            >
+              詳細表示
+            </button>
+          </div>
           <span>{visible.length} 件</span>
         </div>
         <div className="case-table-scroll">
-          <table className="case-table">
+          <table
+            className={`case-table ${layout === "details" ? "case-table--details" : ""}`}
+          >
             <caption className="sr-only">
               案件ID・ステータス・金額・納期の一覧
             </caption>
             <thead>
               <tr>
-                <th>案件 / ID</th>
+                <th>{layout === "details" ? "案件名" : "案件 / ID"}</th>
+                {layout === "details" && (
+                  <>
+                    <th>案件ID</th>
+                    <th>車両</th>
+                  </>
+                )}
                 <th>ステータス</th>
                 <th>金額（税込）</th>
                 <th>納期</th>
@@ -370,15 +412,34 @@ export default function CasesDashboard({
               {visible.map((c) => (
                 <tr key={c.id}>
                   <td>
-                    <strong>{c.title}</strong>
-                    <span className="case-vehicle">
-                      {c.vehicle_label || "車両未設定"}
-                    </span>
-                    <span className="case-id" title={c.id}>
-                      {c.id}
-                    </span>
-                    {c.notes && <span className="case-memo">{c.notes}</span>}
+                    <strong title={c.title}>{c.title}</strong>
+                    {layout === "standard" && (
+                      <>
+                        <span className="case-vehicle">
+                          {c.vehicle_label || "車両未設定"}
+                        </span>
+                        <span className="case-id" title={c.id}>
+                          {c.id}
+                        </span>
+                        {c.notes && (
+                          <span className="case-memo">{c.notes}</span>
+                        )}
+                      </>
+                    )}
                   </td>
+                  {layout === "details" && (
+                    <>
+                      <td className="case-detail-id" title={c.id}>
+                        {c.id}
+                      </td>
+                      <td
+                        className="case-detail-vehicle"
+                        title={c.vehicle_label || "車両未設定"}
+                      >
+                        {c.vehicle_label || "車両未設定"}
+                      </td>
+                    </>
+                  )}
                   <td>
                     <span className={`case-status ${c.status}`}>
                       {caseStatuses[c.status]}
@@ -392,7 +453,10 @@ export default function CasesDashboard({
                     )}
                     {c.latest_estimate_id && <small>見積もり保存済み</small>}
                   </td>
-                  <td>
+                  <td
+                    className={overdue(c) ? "case-late" : undefined}
+                    title={overdue(c) ? "納期を過ぎています" : undefined}
+                  >
                     <time dateTime={c.due_date ?? undefined}>
                       {c.due_date?.replaceAll("-", "/") ?? "未設定"}
                     </time>
@@ -426,6 +490,11 @@ export default function CasesDashboard({
             </tbody>
           </table>
         </div>
+        {layout === "details" && (
+          <p className="case-detail-hint">
+            長い案件名・IDはカーソルを合わせると確認できます。狭い画面では表を横にスクロールできます。
+          </p>
+        )}
         {loading ? (
           <p className="case-empty" role="status">
             案件を読み込んでいます…

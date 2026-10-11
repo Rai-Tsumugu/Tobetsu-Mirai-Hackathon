@@ -382,3 +382,126 @@
     flex: 1;
   }
 }
+
+.case-layout-toggle {
+  display: flex;
+  border: 1px solid #c7d4df;
+  border-radius: 5px;
+  padding: 3px;
+  gap: 3px;
+  flex-shrink: 0;
+}
+.case-layout-toggle button {
+  padding: 7px 10px;
+  background: transparent;
+  border: 0;
+  color: #60748b;
+  border-radius: 3px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.case-layout-toggle button[aria-pressed="true"] {
+  background: #173b63;
+  color: white;
+}
+.case-table.case-table--details {
+  display: table;
+  table-layout: fixed;
+  min-width: 1080px;
+}
+.case-table--details tbody {
+  display: table-row-group;
+}
+.case-table--details thead {
+  display: table-header-group;
+}
+.case-table--details tr {
+  display: table-row;
+}
+.case-table--details th,
+.case-table--details td {
+  padding: 8px 12px;
+}
+.case-table--details td {
+  display: table-cell;
+  border-top: 1px solid #e4ebf2;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.case-table.case-table--details th:first-child,
+.case-table.case-table--details td:first-child {
+  width: 23%;
+  min-width: 0;
+}
+.case-table--details th:nth-child(2) {
+  width: 13%;
+}
+.case-table--details th:nth-child(3) {
+  width: 17%;
+}
+.case-table--details th:nth-child(4) {
+  width: 10%;
+}
+.case-table--details th:nth-child(5) {
+  width: 11%;
+}
+.case-table--details th:nth-child(6) {
+  width: 11%;
+}
+.case-table--details th:last-child {
+  width: 15%;
+}
+.case-table--details td strong {
+  font-size: 13px;
+  font-weight: 500;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.case-table--details .case-detail-id {
+  color: #708399;
+  font-size: 11px;
+}
+.case-table--details td small {
+  display: none;
+}
+.case-table--details td::before {
+  display: none !important;
+}
+.case-table--details .case-late time {
+  color: #b04838;
+  text-decoration: underline dotted;
+}
+.case-table--details .case-status {
+  padding: 2px 7px;
+  font-size: 11px;
+}
+.case-table--details .case-row-actions {
+  flex-direction: row;
+  gap: 5px;
+  min-width: 0;
+}
+.case-table--details .case-row-actions button {
+  flex: none;
+  padding: 4px 6px;
+  font-size: 11px;
+}
+.case-table--details tbody tr:hover {
+  background: #f2f7fc;
+}
+.case-detail-hint {
+  padding: 10px 16px;
+  font-size: 11px;
+  color: #708399;
+  border-top: 1px solid #e4ebf2;
+}
+@media (max-width: 1100px) {
+  .case-tools {
+    flex-wrap: wrap;
+  }
+  .case-tools label:first-child {
+    flex: 1 1 280px;
+  }
+}
