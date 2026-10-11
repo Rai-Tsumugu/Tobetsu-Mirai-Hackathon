@@ -133,20 +133,27 @@ class GeminiTest(unittest.TestCase):
             self.assertEqual(self.client.post('/api/price-research', json=self.context).status_code, 429)
             request.assert_not_called()
 
-    def test_vehicle_search_registers_attributed_data_and_unknowns(self):
-        vehicle = dict(maker='トヨタ', model='試験車', model_code='TEST-1', years=[2020], grades=['試験仕様'], length_mm=4000, width_mm=None, height_mm=None, powertrain=None, source_url=URL, evidence='TEST-1 2020年 試験仕様')
-        with mock_google([httpx.Response(200, json=grounded()), httpx.Response(200, json=extracted({'vehicles': [vehicle]}))]):
-            result = self.client.post('/api/vehicle-research', json={'query': 'トヨタ'}).json()
-        self.assertEqual(len(result['values']), 1)
-        saved = result['values'][0]
-        self.assertEqual(saved['source_name'], 'gemini_web')
-        self.assertIsNone(saved['verified_at'])
-        self.assertIsNone(saved['width_mm'])
-        self.assertEqual(self.client.get('/api/vehicles/' + saved['id']).json(), saved)
-        self.assertEqual(len(self.client.get('/api/vehicles?origin=live&query=トヨタ').json()), 1)
-        vehicle['years'] = []
-        result = {'data': {'vehicles': [vehicle]}, 'citations': [{'url': URL, 'title': '記事'}], 'warnings': []}
-        self.assertEqual(gemini.extract_vehicles(result), [])
+    def test_vehicle_ai_is_removed_and_winter_context_is_bound(self):
+        with mock_google([]) as request:
+            self.assertNotIn('/api/vehicle-research', [getattr(route, 'path', '') for route in module.app.routes])
+            self.assertIn(self.client.post('/api/vehicle-research', json={'query': 'トヨタ'}).status_code, (404, 405))
+            request.assert_not_called()
+        self.context['winter_conditions'] = ['salt_roads', 'rust_check']
+        result, request = self.post_research([price()])
+        prompt = request.call_args_list[0].kwargs['json']['contents'][0]['parts'][0]['text']
+        self.assertIn('融雪剤を使う道路での走行', prompt)
+        self.assertIn('サビ・ボルトの固着を現車で確認', prompt)
+        self.assertIn('加算しない', prompt)
+        body = self.estimate(result, winter_conditions=['salt_roads', 'rust_check'])
+        saved = self.client.post('/api/estimates', json=body)
+        self.assertEqual(saved.status_code, 201, saved.text)
+        self.assertEqual(saved.json()['winter_conditions'], ['rust_check', 'salt_roads'])
+        self.assertEqual(saved.json()['total_amount'], 19800)
+        self.assertEqual(self.client.get('/api/estimates/' + saved.json()['id']).json()['winter_conditions'], ['rust_check', 'salt_roads'])
+        body['winter_conditions'] = []
+        self.assertEqual(self.client.post('/api/estimates', json=body).status_code, 422)
+        self.context['winter_conditions'] = ['invented']
+        self.assertEqual(self.client.post('/api/price-research', json=self.context).status_code, 422)
 
     def test_no_sources_no_invented_candidates(self):
         with mock_google([httpx.Response(200, json={'candidates': [{'content': {'parts': [{'text': '見つかりません'}]}}]})]) as request:

@@ -7,6 +7,7 @@ import sqlite3
 from contextlib import asynccontextmanager, contextmanager
 from datetime import datetime, timezone
 from decimal import Decimal, ROUND_FLOOR
+from typing import Literal
 from pathlib import Path
 from statistics import median
 from uuid import uuid4
@@ -133,22 +134,8 @@ def cached_investigation(kind, target, schema, extract):
     result.update(values=values, context=target, kind=kind, research_id=uuid4().hex, cached=False)
     result['warnings'] = list(dict.fromkeys(result['warnings']))
     with connect() as db:
-        if kind == 'vehicles':
-            for vehicle in values:
-                db.execute("INSERT INTO vehicles VALUES (?, ?)", (vehicle['id'], json.dumps(vehicle, ensure_ascii=False)))
         db.execute("INSERT INTO research_cache VALUES (?, ?, ?, ?)", (result['research_id'], cache_key, time.time(), json.dumps(result, ensure_ascii=False)))
     return result
-
-
-class VehicleSearch(StrictModel):
-    query: str = Field(min_length=2, max_length=160)
-
-
-@app.post("/api/vehicle-research")
-def vehicle_research(body: VehicleSearch):
-    if not body.query.strip():
-        raise HTTPException(422, "メーカー・車種または型式を入力してください")
-    return cached_investigation('vehicles', {"query": body.query.strip()}, gemini.VehicleRecords.model_json_schema(), gemini.extract_vehicles)
 
 
 @app.get("/api/vehicles/{vehicle_id}")
@@ -174,11 +161,20 @@ def jobs():
     return JOBS
 
 
+WINTER_LABELS = {
+    'salt_roads': '融雪剤を使う道路での走行',
+    'rust_check': 'サビ・ボルトの固着を現車で確認',
+    'cold_start': '寒い日の始動・補機バッテリーを相談',
+}
+WinterCondition = Literal['salt_roads', 'rust_check', 'cold_start']
+
+
 class Research(StrictModel):
     vehicle_id: str
     year: int
     grade: str
     job_ids: list[str] = Field(min_length=1, max_length=5)
+    winter_conditions: list[WinterCondition] = Field(default_factory=list, max_length=3)
     mode: str = Field(default="simulator", pattern="^(simulator|live)$")
 
 
@@ -210,6 +206,8 @@ def research(body: Research):
     if body.mode == 'simulator':
         return {job['id']: sources_for(job) for job in JOBS if job['id'] in body.job_ids}
     target = dict(vehicle_id=vehicle['id'], maker=vehicle['maker'], model=vehicle['model'], model_code=vehicle['model_code'], year=body.year, grade=body.grade,
+                  region='当別町・北海道', winter_conditions=sorted(set(body.winter_conditions)),
+                  winter_notes=[WINTER_LABELS[k] for k in sorted(set(body.winter_conditions))],
                   jobs=[{k: job[k] for k in ('id', 'name', 'description')} for job in JOBS if job['id'] in body.job_ids])
     result = cached_investigation('prices', target, gemini.Prices.model_json_schema(), lambda r: gemini.extract_prices(r, body.job_ids))
     return {**result, 'sources': result['values']}
@@ -226,6 +224,7 @@ class Item(StrictModel):
 
 
 class Estimate(StrictModel):
+    winter_conditions: list[WinterCondition] = Field(default_factory=list, max_length=3)
     mode: str = Field(default="simulator", pattern="^(simulator|live)$")
     research_id: str | None = None
     vehicle_id: str
@@ -247,8 +246,8 @@ def save_estimate(body: Estimate):
             raise HTTPException(422, '参照したWeb調査が見つかりません。再検索してください。')
         research = json.loads(row['data'])
         context = research['context']
-        if research['kind'] != 'prices' or context['vehicle_id'] != body.vehicle_id or context['year'] != body.year or context['grade'] != body.grade or {j['id'] for j in context['jobs']} != {i.job_id for i in body.items}:
-            raise HTTPException(422, 'Web調査時と車両・年式・仕様・作業が異なります。再検索してください。')
+        if research['kind'] != 'prices' or context['vehicle_id'] != body.vehicle_id or context['year'] != body.year or context['grade'] != body.grade or {j['id'] for j in context['jobs']} != {i.job_id for i in body.items} or set(context.get('winter_conditions', [])) != set(body.winter_conditions):
+            raise HTTPException(422, 'Web調査時と車両・年式・仕様・作業・雪国条件が異なります。再検索してください。')
         live_sources = research['values']
     elif body.research_id is not None:
         raise HTTPException(422, 'SimulatorにWeb調査を混ぜることはできません。')
@@ -268,7 +267,7 @@ def save_estimate(body: Estimate):
     subtotal = sum(i['labor_price'] + i['parts_price'] for i in records)
     tax = int((Decimal(subtotal) * TAX_RATE).quantize(Decimal('1'), rounding=ROUND_FLOOR))
     result = dict(id=uuid4().hex[:12], created_at=datetime.now(timezone.utc).isoformat(), status="confirmed",
-                  mode=body.mode, research_id=body.research_id, search_suggestions=research.get('search_suggestions', ''), vehicle=vehicle, year=body.year, grade=body.grade, items=records,
+                  mode=body.mode, winter_conditions=sorted(set(body.winter_conditions)), research_id=body.research_id, search_suggestions=research.get('search_suggestions', ''), vehicle=vehicle, year=body.year, grade=body.grade, items=records,
                   notes=body.notes, labor_total=sum(i['labor_price'] for i in records),
                   parts_total=sum(i['parts_price'] for i in records), tax_rate=float(TAX_RATE),
                   subtotal=subtotal, tax_amount=tax, total_amount=subtotal + tax)

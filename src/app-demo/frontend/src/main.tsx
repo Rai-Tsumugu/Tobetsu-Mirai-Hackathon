@@ -52,6 +52,7 @@ type SavedItem = Draft & {
 type Saved = {
   mode?: "simulator" | "live";
   research_id?: string | null;
+  winter_conditions?: string[];
   search_suggestions?: string;
   id: string;
   created_at: string;
@@ -68,7 +69,6 @@ type Saved = {
 type WebResult = {
   research_id: string;
   sources: Record<string, Source[]>;
-  values: Vehicle[];
   warnings: string[];
   cached: boolean;
   search_suggestions: string;
@@ -250,11 +250,43 @@ const steps = [
   "参考金額を比較",
   "金額を確定・保存",
 ];
+const winterOptions = [
+  {
+    id: "salt_roads",
+    label: "融雪剤を使う道路での走行",
+    detail: "下回りの状態を確認するための相談条件",
+  },
+  {
+    id: "rust_check",
+    label: "サビ・ボルトの固着を現車で確認",
+    detail: "追加工程の有無は作業前に担当者が確認",
+  },
+  {
+    id: "cold_start",
+    label: "寒い日の始動・補機バッテリーを相談",
+    detail: "交換の要否は点検後に確認",
+  },
+];
+function WinterSummary({ conditions }: { conditions: string[] }) {
+  if (!conditions.length) return null;
+  return (
+    <div className="winter-summary">
+      <strong>雪国の確認条件</strong>
+      <p>
+        {winterOptions
+          .filter((o) => conditions.includes(o.id))
+          .map((o) => o.label)
+          .join(" / ")}
+      </p>
+      <small>追加作業・追加工賃は現車確認後に相談</small>
+    </div>
+  );
+}
 function App() {
   const [step, setStep] = useState(0);
   const [mode, setMode] = useState<"simulator" | "live">("simulator");
   const [geminiReady, setGeminiReady] = useState(false);
-  const [webVehicles, setWebVehicles] = useState<WebResult | null>(null);
+  const [winterConditions, setWinterConditions] = useState<string[]>([]);
   const [webPrices, setWebPrices] = useState<WebResult | null>(null);
   const [researchId, setResearchId] = useState<string | null>(null);
   useEffect(() => {
@@ -280,7 +312,7 @@ function App() {
   const [historyQuery, setHistoryQuery] = useState("");
   const [history, setHistory] = useState<Saved[]>([]);
   const [detail, setDetail] = useState<Saved | null>(null);
-  const [manual, setManual] = useState(false);
+  const [manual, setManual] = useState(true);
   const [manualData, setManualData] = useState({
     maker: "",
     model: "",
@@ -296,12 +328,7 @@ function App() {
   useEffect(() => {
     let active = true;
     const timer = window.setTimeout(() => {
-      api<Vehicle[]>(
-        "/vehicles?origin=" +
-          (mode === "live" ? "live" : "all") +
-          "&query=" +
-          encodeURIComponent(query),
-      )
+      api<Vehicle[]>("/vehicles?query=" + encodeURIComponent(query))
         .then((v) => {
           if (active) setVehicles(v);
         })
@@ -313,7 +340,7 @@ function App() {
       active = false;
       clearTimeout(timer);
     };
-  }, [query, mode]);
+  }, [query]);
   useEffect(() => {
     if (!historyOpen) return;
     let active = true;
@@ -351,6 +378,7 @@ function App() {
   const updateDraft = (job: string, patch: Partial<Draft>) =>
     setDrafts((d) => d.map((i) => (i.job_id === job ? { ...i, ...patch } : i)));
   function chooseVehicle(v: Vehicle) {
+    setManual(false);
     setVehicle(v);
     setYear("");
     setGrade("");
@@ -362,25 +390,21 @@ function App() {
     setError("");
   }
   function switchMode(next: "simulator" | "live") {
-    reset();
     setMode(next);
-    setWebVehicles(null);
+    setSources({});
+    setDrafts([]);
     setWebPrices(null);
     setResearchId(null);
-    setVehicles([]);
-  }
-  async function searchWebVehicles() {
-    setBusy(true);
     setError("");
-    try {
-      const result = await api<WebResult>("/vehicle-research", { query });
-      setWebVehicles(result);
-      setVehicles(result.values);
-    } catch (e) {
-      setError((e as Error).message);
-    } finally {
-      setBusy(false);
-    }
+  }
+  function changeWinterCondition(id: string, checked: boolean) {
+    setWinterConditions((current) =>
+      checked ? [...current, id] : current.filter((value) => value !== id),
+    );
+    setSources({});
+    setDrafts([]);
+    setResearchId(null);
+    setWebPrices(null);
   }
   async function research() {
     if (!vehicle) return;
@@ -394,6 +418,7 @@ function App() {
           year: Number(year),
           grade,
           job_ids: jobIds,
+          winter_conditions: winterConditions,
           mode,
         },
       );
@@ -418,7 +443,15 @@ function App() {
                 selected_source_ids: selected,
                 labor_price: median(result[id], selected) ?? 0,
                 parts_price: 0,
-                conditions: jobs.find((j) => j.id === id)!.description,
+                conditions: [
+                  jobs.find((j) => j.id === id)!.description,
+                  ...winterOptions
+                    .filter((o) => winterConditions.includes(o.id))
+                    .map((o) => o.label),
+                  ...(winterConditions.length
+                    ? ["追加作業・追加工賃は現車確認後に相談"]
+                    : []),
+                ].join(" / "),
                 adjustment_reason: "",
               };
         }),
@@ -469,6 +502,7 @@ function App() {
           vehicle_id: vehicle.id,
           year: Number(year),
           grade,
+          winter_conditions: winterConditions,
           items: drafts,
           notes,
         }),
@@ -500,12 +534,12 @@ function App() {
   function reset() {
     setStep(0);
     setVehicle(null);
-    setWebVehicles(null);
     setWebPrices(null);
     setResearchId(null);
     setYear("");
     setGrade("");
     setJobIds([]);
+    setWinterConditions([]);
     setDrafts([]);
     setSources({});
     setSaved(null);
@@ -514,8 +548,8 @@ function App() {
   }
   function reuse(item: Saved) {
     setMode(item.mode ?? "simulator");
+    setWinterConditions(item.winter_conditions ?? []);
     setResearchId(item.research_id ?? null);
-    setWebVehicles(null);
     setWebPrices(null);
     setVehicle(item.vehicle);
     setYear(String(item.year));
@@ -563,7 +597,7 @@ function App() {
         <div className="header-right">
           <span className="mode-tag">
             <span />
-            {mode === "live" ? "Gemini Web検索" : "Simulator"}
+            {mode === "live" ? "Gemini 工賃調査" : "Simulator"}
           </span>
           <button
             className="history-button"
@@ -581,7 +615,7 @@ function App() {
         <Icon name="info" size={16} />
         <span>
           {mode === "live"
-            ? "Web調査モード：AI抽出は未確認です。出典・適合・作業条件を確認してください。"
+            ? "工賃調査モード：入力した型式・作業条件をもとにAIが参考料金を調べます。出典を確認してください。"
             : "デモモード：車両情報・参考価格はサンプルです。実価格・実車への適合を保証しません。"}
         </span>
         <span className="offline-badge">
@@ -644,7 +678,7 @@ function App() {
                 {saved
                   ? "金額と、その判断に使った根拠を記録しました。"
                   : [
-                      "車種名または型式で検索し、年式と仕様を確認してください。",
+                      "車検証を見ながら型式・年式・仕様を入力してください。AIによる型式特定は行いません。",
                       "今回の作業を選び、金額を左右する条件を確認します。",
                       "比較できる工賃を採用し、参考金額を確認します。",
                       "部品代と工賃を確認・調整し、見積もりを記録します。",
@@ -664,7 +698,7 @@ function App() {
               </button>
             </div>
           )}
-          {step === 0 && (
+          {step === 1 && (
             <div className="mode-selector" role="group" aria-label="調査モード">
               <button
                 className={mode === "simulator" ? "active" : ""}
@@ -680,11 +714,11 @@ function App() {
                 aria-pressed={mode === "live"}
                 onClick={() => switchMode("live")}
               >
-                Web検索（無料枠）
+                AIで工賃を調査（Gemini）
               </button>
             </div>
           )}
-          {mode === "live" && !geminiReady && (
+          {step >= 1 && mode === "live" && !geminiReady && (
             <div className="info-strip">
               APIキーが未設定です。src/app-demo/.env の GEMINI_API_KEY
               に設定してバックエンドを再起動してください。Simulatorはそのまま使えます。
@@ -702,10 +736,10 @@ function App() {
                   <div className="panel search-panel">
                     <h2>
                       <Icon name="search" />
-                      車両を検索
+                      車検証の情報を入力・確認
                     </h2>
                     <label htmlFor="vehicle-search" className="field-label">
-                      車種名・型式
+                      登録済み車両を検索（外部通信なし）
                     </label>
                     <div className="search-input">
                       <Icon name="search" />
@@ -717,25 +751,10 @@ function App() {
                         autoComplete="off"
                       />
                     </div>
-                    {mode === "live" && (
-                      <>
-                        <button
-                          className="primary-button web-search-button"
-                          disabled={
-                            busy || !geminiReady || query.trim().length < 2
-                          }
-                          onClick={() => void searchWebVehicles()}
-                        >
-                          Webで車両情報を調べる
-                        </button>
-                        <p className="help-text">
-                          メーカー名・車種・型式で検索できます。型式と年式・仕様が確認できた候補を表示します。網羅的な車両一覧ではありません。
-                        </p>
-                        <ResearchNotes result={webVehicles} />
-                      </>
-                    )}
                     <div className="search-meta">
-                      <span>{vehicles.length}件の候補</span>
+                      <span>
+                        {vehicles.length}件の登録済み車両（サンプルを含む）
+                      </span>
                       <span>型式とVIN・車台番号は別の識別子です</span>
                     </div>
                     <div className="vehicle-results">
@@ -976,6 +995,45 @@ function App() {
                         ))}
                     </div>
                   </div>
+                  <div className="panel winter-panel">
+                    <div className="winter-heading">
+                      <span className="winter-mark" aria-hidden="true">
+                        ❄
+                      </span>
+                      <div>
+                        <h2>雪国の作業条件</h2>
+                        <p>当別・北海道での使い方を、工賃調査の条件に。</p>
+                      </div>
+                    </div>
+                    <div className="winter-options">
+                      {winterOptions.map((option) => (
+                        <label
+                          key={option.id}
+                          className={
+                            winterConditions.includes(option.id)
+                              ? "selected"
+                              : ""
+                          }
+                        >
+                          <input
+                            type="checkbox"
+                            checked={winterConditions.includes(option.id)}
+                            disabled={busy}
+                            onChange={(e) =>
+                              changeWinterCondition(option.id, e.target.checked)
+                            }
+                          />
+                          <span>
+                            <strong>{option.label}</strong>
+                            <small>{option.detail}</small>
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                    <p className="help-text">
+                      選択した条件をAIの工賃調査と見積もり記録へ引き継ぎます。サビ・固着の有無は現車で確認し、追加工賃は担当者が判断します。
+                    </p>
+                  </div>
                   <div className="info-strip">
                     <Icon name="info" />
                     <span>
@@ -998,7 +1056,7 @@ function App() {
                       }
                       onClick={() => void research()}
                     >
-                      {busy ? "候補を準備中…" : "参考価格を比較する"}
+                      {busy ? "工賃を調査中…" : "参考価格を比較する"}
                       <Icon name="arrow" size={18} />
                     </button>
                   </div>
@@ -1014,6 +1072,7 @@ function App() {
                         : "すべて架空の価格です。税込の工賃は税抜に換算し、採用した工賃の中央値を算出します。"}
                     </span>
                   </div>
+                  <WinterSummary conditions={winterConditions} />
                   <ResearchNotes result={webPrices} />
                   {chosenJobs.map((j) => {
                     const draft = drafts.find((i) => i.job_id === j.id)!;
@@ -1430,6 +1489,7 @@ function App() {
                 <span>合計（税込）</span>
                 <strong>{step >= 2 && validMoney ? yen(total) : "—"}</strong>
               </div>
+              <WinterSummary conditions={winterConditions} />
               <p className="summary-footnote">
                 {mode === "live"
                   ? "Web資料による参考概算です。"
@@ -1510,6 +1570,7 @@ function App() {
                     見積番号 {detail.id} /{" "}
                     {detail.mode === "live" ? "Gemini Web調査" : "simulator"}
                   </p>
+                  <WinterSummary conditions={detail.winter_conditions ?? []} />
                   {detail.items.map((i, index) => (
                     <div key={index} className="history-item">
                       <h4>{i.name}</h4>

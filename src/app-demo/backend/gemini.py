@@ -98,7 +98,10 @@ def investigate(target, schema):
     reserve_request()
     candidate, report = generate(
         '日本国内の車両・整備情報をWeb検索し、公開ページを参照して回答してください。'
-        '車両情報はメーカー公式資料を優先。修理料金は整備業者のブログ・料金表を参照。'
+        '入力された車両・型式は利用者が確定した条件として扱い、型式の特定・変更はしない。'
+        '修理料金は整備業者のブログ・料金表を参照。'
+        '北海道・雪国の選択条件も調査するが、融雪剤使用や寒冷地という理由だけで加算しない。'
+        'サビ・固着の有無や追加作業は現車確認が必要。根拠のある基本工賃と追加作業を区別する。'
         '資料の版、対象年式、グレード、工賃、部品代、総額、税込/税抜、掲載日、'
         '作業条件を区別。円の正確な金額が書かれていない場合は不明。'
         '同じ型式でも年式・仕様を推定しない。値やURLを創作せず、見つからない場合は見つからないと報告。'
@@ -126,8 +129,7 @@ def investigate(target, schema):
         'sourcesは作業ごと最大4件。重複ページを増やさない。'
         'vehicle_matchはexact/similar/unknown。exactは型式・年式・仕様が資料に一致する場合のみ。'
         'work_matchesは作業・位置・数量・部品持込条件が一致する場合のみtrue。'
-        'vehiclesは最大8件、メーカーからの検索の場合も正式な型式と根拠がある候補だけ返す。'
-        '型式だけから年式やグレードを補完しない。evidenceは価格や諸元の根拠の短い抜粋（120文字以内）。\n'
+        'evidenceは価格と条件の根拠の短い抜粋（120文字以内）。\n'
         + json.dumps({'target': target, 'allowed_sources': links, 'report': report}, ensure_ascii=False),
         schema=schema,
     )
@@ -163,24 +165,6 @@ class Prices(Extraction):
     sources: list[Price] = Field(max_length=20)
 
 
-class VehicleRecord(Extraction):
-    maker: str = Field(min_length=1, max_length=80)
-    model: str = Field(min_length=1, max_length=80)
-    model_code: str = Field(min_length=1, max_length=40)
-    years: list[int] = Field(max_length=100)
-    grades: list[str] = Field(max_length=20)
-    length_mm: int | None = Field(ge=1000, le=20000, strict=True)
-    width_mm: int | None = Field(ge=500, le=5000, strict=True)
-    height_mm: int | None = Field(ge=500, le=5000, strict=True)
-    powertrain: str | None = Field(max_length=80)
-    source_url: str = Field(max_length=2000)
-    evidence: str = Field(max_length=120)
-
-
-class VehicleRecords(Extraction):
-    vehicles: list[VehicleRecord] = Field(max_length=8)
-
-
 def extract_prices(result, job_ids):
     try:
         values = Prices.model_validate(result['data'] or {'sources': []}).sources
@@ -210,27 +194,3 @@ def extract_prices(result, job_ids):
             vehicle_match_level={'exact': '型式・年式・仕様一致（AI抽出・要確認）', 'similar': '類似条件（要確認）', 'unknown': '適合不明'}[value.vehicle_match],
             extraction_notes='AI抽出・人による確認前'))
     return groups
-
-
-def extract_vehicles(result):
-    try:
-        records = VehicleRecords.model_validate(result['data'] or {'vehicles': []}).vehicles
-    except ValidationError:
-        raise HTTPException(502, '車両情報の形式が不正なため登録しませんでした。') from None
-    urls = {s['url'] for s in result['citations']}
-    vehicles = []
-    seen = set()
-    for record in records:
-        if record.source_url not in urls or not record.evidence.strip() or not record.years or not record.grades:
-            result['warnings'].append('年式・仕様・出典が確認できない車両候補を除外しました。手入力で補えます。')
-            continue
-        if any(not isinstance(y, int) or isinstance(y, bool) or y < 1900 or y > 2100 for y in record.years) or any(not g.strip() or len(g) > 80 for g in record.grades):
-            continue
-        key = (record.model_code, tuple(record.years), tuple(record.grades))
-        if key in seen:
-            continue
-        seen.add(key)
-        vehicles.append(dict(**record.model_dump(), id='web-' + uuid4().hex[:12],
-            source_name='gemini_web', verified_at=None, retrieved_at=datetime.now(timezone.utc).isoformat(),
-            note='Web資料からのAI抽出です。年式・仕様・諸元は出典で確認してください。'))
-    return vehicles

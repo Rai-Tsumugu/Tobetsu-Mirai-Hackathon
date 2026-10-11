@@ -1473,3 +1473,78 @@ small {
   min-height: 140px;
   border: 0;
 }
+
+.winter-panel {
+  margin-top: 20px;
+  border-top: 3px solid #7babc7;
+}
+.winter-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.winter-heading h2 {
+  margin: 0 0 5px;
+}
+.winter-heading p {
+  margin: 0;
+  font-size: 13px;
+  color: #536c80;
+}
+.winter-mark {
+  font-size: 30px;
+  color: #367599;
+}
+.winter-options {
+  display: grid;
+  gap: 10px;
+}
+.winter-options label {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  border: 1px solid #d3e0e9;
+  padding: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.winter-options label.selected {
+  background: #edf5fa;
+  border-color: #6095b9;
+}
+.winter-options input {
+  margin-top: 3px;
+  accent-color: #226399;
+}
+.winter-options strong,
+.winter-options small {
+  display: block;
+}
+.winter-options strong {
+  font-size: 13px;
+}
+.winter-options small {
+  margin-top: 5px;
+  font-size: 12px;
+  color: #60758b;
+}
+.winter-summary {
+  background: #edf5fa;
+  padding: 14px;
+  border-left: 3px solid #7babc7;
+  margin: 16px 0;
+}
+.winter-summary strong {
+  font-size: 12px;
+  color: #22567d;
+}
+.winter-summary p {
+  font-size: 12px;
+  line-height: 1.7;
+  margin: 6px 0;
+}
+.winter-summary small {
+  font-size: 11px;
+  color: #60758b;
+}
