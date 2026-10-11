@@ -1,0 +1,85 @@
+{
+  "scenarios": [
+    {
+      "name": "SPEC defaults（register → lookup）",
+      "steps": [
+        {"op": "seed_demo"},
+        {"op": "run", "module": "M01", "payload": {"action": "register", "item_id": "demo-paint", "maker": "架空メーカー", "raw_code": "DEMO-001", "finish": "メタリック", "price_type": "販売", "as_of": "2026-10-11", "confirmed_by": "架空デモ担当"}},
+        {"op": "run", "module": "M01", "payload": {"action": "lookup", "item_id": "demo-paint", "maker": "架空メーカー", "raw_code": "DEMO-001", "finish": "メタリック", "price_type": "販売", "as_of": "2026-10-11", "confirmed_by": "架空デモ担当"}},
+        {"op": "run", "module": "M01", "payload": {"action": "lookup", "item_id": "demo-paint", "maker": "架空メーカー", "raw_code": "demo-001", "finish": "メタリック", "price_type": "販売", "as_of": "2026-10-11", "confirmed_by": "架空デモ担当"}},
+        {"op": "run", "module": "M01", "payload": {"action": "register", "item_id": "demo-paint", "maker": "架空メーカー", "raw_code": "DEMO-001", "finish": "メタリック", "price_type": "販売", "as_of": "2026-10-11", "confirmed_by": "架空デモ担当"}},
+        {"op": "records", "namespace": "paint_code"}
+      ]
+    },
+    {
+      "name": "NFKC と大文字化・原表記は保持",
+      "steps": [
+        {"op": "seed_demo"},
+        {"op": "run", "module": "M01", "payload": {"action": "register", "item_id": "demo-paint", "maker": "架空メーカー", "raw_code": "  ａｂ-１２  ", "finish": "メタリック", "confirmed_by": "架空デモ担当"}},
+        {"op": "run", "module": "M01", "payload": {"action": "lookup", "maker": "架空メーカー", "raw_code": "  ａｂ-１２  ", "finish": "メタリック"}},
+        {"op": "run", "module": "M01", "payload": {"action": "lookup", "maker": "架空メーカー", "raw_code": "AB-12", "finish": "メタリック"}},
+        {"op": "run", "module": "M01", "payload": {"action": "lookup", "maker": "架空メーカー", "raw_code": "ZZ-1", "finish": "メタリック"}}
+      ]
+    },
+    {
+      "name": "正規化後の衝突は保留",
+      "steps": [
+        {"op": "seed_demo"},
+        {"op": "add_price", "item": {"item_id": "paint-upper", "name": "架空塗料 paint-upper", "category": "塗料", "unit": "ml", "unit_price": "100", "price_type": "販売", "source": "simulator:架空値", "updated_at": "2026-10-11"}, "confirmed_by": "架空デモ担当"},
+        {"op": "add_price", "item": {"item_id": "paint-lower", "name": "架空塗料 paint-lower", "category": "塗料", "unit": "ml", "unit_price": "100", "price_type": "販売", "source": "simulator:架空値", "updated_at": "2026-10-11"}, "confirmed_by": "架空デモ担当"},
+        {"op": "run", "module": "M01", "payload": {"action": "register", "item_id": "paint-upper", "maker": "架空メーカー", "raw_code": "AB-9", "finish": "メタリック", "price_type": "販売", "as_of": "2026-10-11", "confirmed_by": "架空デモ担当"}},
+        {"op": "run", "module": "M01", "payload": {"action": "register", "item_id": "paint-lower", "maker": "架空メーカー", "raw_code": "ab-9", "finish": "メタリック", "price_type": "販売", "as_of": "2026-10-11", "confirmed_by": "架空デモ担当"}},
+        {"op": "run", "module": "M01", "payload": {"action": "register", "item_id": "paint-lower", "maker": "架空メーカー", "raw_code": "ab-9", "finish": "メタリック", "price_type": "販売", "as_of": "2026-10-11", "confirmed_by": "架空デモ担当"}},
+        {"op": "run", "module": "M01", "payload": {"action": "register", "item_id": "paint-upper", "maker": "架空メーカー", "raw_code": "AB-9", "finish": "メタリック", "price_type": "販売", "as_of": "2026-10-11", "confirmed_by": "架空デモ担当"}},
+        {"op": "run", "module": "M01", "payload": {"action": "lookup", "maker": "架空メーカー", "raw_code": "AB-9", "finish": "メタリック"}},
+        {"op": "records", "namespace": "paint_code"}
+      ]
+    },
+    {
+      "name": "曖昧なコード・制御文字は拒否",
+      "steps": [
+        {"op": "seed_demo"},
+        {"op": "run", "module": "M01", "payload": {"action": "register", "item_id": "demo-paint", "maker": "架空メーカー", "raw_code": "   ", "finish": "メタリック", "confirmed_by": "架空デモ担当"}},
+        {"op": "run", "module": "M01", "payload": {"action": "register", "item_id": "demo-paint", "maker": "架空メーカー", "raw_code": "---", "finish": "メタリック", "confirmed_by": "架空デモ担当"}},
+        {"op": "run", "module": "M01", "payload": {"action": "register", "item_id": "demo-paint", "maker": "架空メーカー", "raw_code": "A B", "finish": "メタリック", "confirmed_by": "架空デモ担当"}},
+        {"op": "run", "module": "M01", "payload": {"action": "register", "item_id": "demo-paint", "maker": "架空メーカー", "raw_code": "A\nB", "finish": "メタリック", "confirmed_by": "架空デモ担当"}},
+        {"op": "run", "module": "M01", "payload": {"action": "register", "item_id": "demo-paint", "maker": "架空メーカー", "raw_code": "A\u0000B", "finish": "メタリック", "confirmed_by": "架空デモ担当"}},
+        {"op": "run", "module": "M01", "payload": {"action": "register", "item_id": "demo-paint", "maker": "架空\u0007メーカー", "raw_code": "AB", "finish": "メタリック", "confirmed_by": "架空デモ担当"}},
+        {"op": "run", "module": "M01", "payload": {"action": "register", "item_id": "demo-paint", "maker": "架空メーカー", "raw_code": 12, "finish": "メタリック", "confirmed_by": "架空デモ担当"}},
+        {"op": "run", "module": "M01", "payload": {"action": "register", "item_id": "demo-paint", "maker": "架空メーカー", "raw_code": "AB", "finish": "  ", "confirmed_by": "架空デモ担当"}},
+        {"op": "run", "module": "M01", "payload": {"action": "register", "item_id": "demo-paint", "maker": "架空メーカー", "raw_code": "AB", "finish": "メタリック"}},
+        {"op": "run", "module": "M01", "payload": {"action": "register", "item_id": "demo-paint", "maker": "架空メーカー", "raw_code": "AB", "finish": "メタリック", "as_of": "2026/10/11", "confirmed_by": "x"}},
+        {"op": "records", "namespace": "paint_code"}
+      ]
+    },
+    {
+      "name": "承認済みの塗料価格が必要",
+      "steps": [
+        {"op": "seed_demo"},
+        {"op": "run", "module": "M01", "payload": {"action": "register", "item_id": "missing-item", "maker": "架空メーカー", "raw_code": "DEMO-001", "finish": "メタリック", "confirmed_by": "架空デモ担当"}},
+        {"op": "add_price", "item": {"item_id": "part-1", "name": "架空部品", "category": "部品", "unit": "ml", "unit_price": "50", "price_type": "販売", "source": "simulator:架空値", "updated_at": "2026-10-11"}, "confirmed_by": "架空デモ担当"},
+        {"op": "run", "module": "M01", "payload": {"action": "register", "item_id": "part-1", "maker": "架空メーカー", "raw_code": "DEMO-001", "finish": "メタリック", "confirmed_by": "架空デモ担当"}},
+        {"op": "records", "namespace": "paint_code"}
+      ]
+    },
+    {
+      "name": "価格区分を区別（仕入）",
+      "steps": [
+        {"op": "add_price", "item": {"item_id": "demo-paint", "name": "架空サンプル塗料", "category": "塗料", "unit": "ml", "unit_price": "80", "price_type": "仕入", "source": "simulator:架空値", "updated_at": "2026-10-11"}, "confirmed_by": "架空デモ担当"},
+        {"op": "run", "module": "M01", "payload": {"action": "register", "item_id": "demo-paint", "maker": "架空メーカー", "raw_code": "DEMO-001", "finish": "メタリック", "price_type": "販売", "confirmed_by": "架空デモ担当"}},
+        {"op": "run", "module": "M01", "payload": {"action": "register", "item_id": "demo-paint", "maker": "架空メーカー", "raw_code": "DEMO-001", "finish": "メタリック", "price_type": "仕入", "confirmed_by": "架空デモ担当"}},
+        {"op": "run", "module": "M01", "payload": {"action": "lookup", "maker": "架空メーカー", "raw_code": "DEMO-001", "finish": "メタリック", "price_type": "販売"}},
+        {"op": "run", "module": "M01", "payload": {"action": "register", "item_id": "demo-paint", "maker": "架空メーカー", "raw_code": "DEMO-001", "finish": "メタリック", "price_type": "その他", "confirmed_by": "架空デモ担当"}}
+      ]
+    },
+    {
+      "name": "不正な action / payload",
+      "steps": [
+        {"op": "run", "module": "M01", "payload": null},
+        {"op": "run", "module": "M01", "payload": []},
+        {"op": "run", "module": "M01", "payload": {"action": "guess"}},
+        {"op": "run", "module": "M01", "payload": {"maker": "架空メーカー", "raw_code": "X1", "finish": "f", "item_id": "nothing", "confirmed_by": "c"}}
+      ]
+    }
+  ]
+}

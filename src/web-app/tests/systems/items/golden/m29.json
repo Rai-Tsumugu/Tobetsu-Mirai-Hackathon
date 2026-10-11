@@ -1,0 +1,3307 @@
+{
+ "source": "scenarios/m29.json",
+ "scenarios": [
+  {
+   "name": "HTTP 既定値（quote_demo）",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "status": "quoted",
+      "quote": {
+       "quote_id": "demo-m29-quote",
+       "lines": [
+        {
+         "quote_line_id": "demo-m29-line-1",
+         "name": "架空デモ材料A",
+         "quantity": "1",
+         "unit_price": "1.005",
+         "unrounded_line_total": "1.005",
+         "line_total": "1.01",
+         "tax_category": "demo-tax",
+         "rounding_rule": {
+          "id": "demo-m29-line-rule",
+          "rounding_rule_version_id": "fd06b130fefa4b8892700e1bbd3c77ba",
+          "stage": "line",
+          "mode": "half_up",
+          "decimal_places": 2,
+          "confirmed_by": "架空デモ担当"
+         }
+        },
+        {
+         "quote_line_id": "demo-m29-line-2",
+         "name": "架空デモ材料B",
+         "quantity": "1",
+         "unit_price": "1.005",
+         "unrounded_line_total": "1.005",
+         "line_total": "1.01",
+         "tax_category": "demo-tax",
+         "rounding_rule": {
+          "id": "demo-m29-line-rule",
+          "rounding_rule_version_id": "fd06b130fefa4b8892700e1bbd3c77ba",
+          "stage": "line",
+          "mode": "half_up",
+          "decimal_places": 2,
+          "confirmed_by": "架空デモ担当"
+         }
+        }
+       ],
+       "subtotal": "2.02",
+       "tax": "0.20",
+       "total": "2.22",
+       "tax_groups": [
+        {
+         "tax_category": "demo-tax",
+         "tax_rate": "0.1",
+         "unrounded_taxable_total": "2.010",
+         "unrounded_tax": "0.2010",
+         "tax": "0.20",
+         "rounding_rule": {
+          "id": "demo-m29-tax-rule",
+          "rounding_rule_version_id": "9c86684e8a7b4f90920e4b2603afcacc",
+          "stage": "tax_category_total",
+          "mode": "half_up",
+          "decimal_places": 2,
+          "confirmed_by": "架空デモ担当"
+         }
+        }
+       ],
+       "confirmed_by": "架空デモ担当",
+       "rounding_rules": {
+        "line": {
+         "id": "demo-m29-line-rule",
+         "rounding_rule_version_id": "fd06b130fefa4b8892700e1bbd3c77ba",
+         "stage": "line",
+         "mode": "half_up",
+         "decimal_places": 2,
+         "confirmed_by": "架空デモ担当"
+        },
+        "tax_category_total": {
+         "id": "demo-m29-tax-rule",
+         "rounding_rule_version_id": "9c86684e8a7b4f90920e4b2603afcacc",
+         "stage": "tax_category_total",
+         "mode": "half_up",
+         "decimal_places": 2,
+         "confirmed_by": "架空デモ担当"
+        }
+       },
+       "tax_rate_source": "human_supplied_fictional_configuration",
+       "simulator": true,
+       "record_id": "demo-m29-quote"
+      },
+      "simulator": true,
+      "notice": "税率は人が指定した架空設定です。法令・会計適合性を示すものではありません。"
+     }
+    },
+    {
+     "ok": [
+      {
+       "id": "demo-m29-line-rule",
+       "stage": "line",
+       "mode": "half_up",
+       "decimal_places": 2,
+       "confirmed_by": "架空デモ担当",
+       "rounding_rule_version_id": "fd06b130fefa4b8892700e1bbd3c77ba",
+       "record_id": "demo-m29-line-rule"
+      }
+     ]
+    },
+    {
+     "ok": {
+      "status": "quoted",
+      "quote": {
+       "quote_id": "demo-m29-quote",
+       "lines": [
+        {
+         "quote_line_id": "demo-m29-line-1",
+         "name": "架空デモ材料A",
+         "quantity": "1",
+         "unit_price": "1.005",
+         "unrounded_line_total": "1.005",
+         "line_total": "1.01",
+         "tax_category": "demo-tax",
+         "rounding_rule": {
+          "id": "demo-m29-line-rule",
+          "rounding_rule_version_id": "fd06b130fefa4b8892700e1bbd3c77ba",
+          "stage": "line",
+          "mode": "half_up",
+          "decimal_places": 2,
+          "confirmed_by": "架空デモ担当"
+         }
+        },
+        {
+         "quote_line_id": "demo-m29-line-2",
+         "name": "架空デモ材料B",
+         "quantity": "1",
+         "unit_price": "1.005",
+         "unrounded_line_total": "1.005",
+         "line_total": "1.01",
+         "tax_category": "demo-tax",
+         "rounding_rule": {
+          "id": "demo-m29-line-rule",
+          "rounding_rule_version_id": "fd06b130fefa4b8892700e1bbd3c77ba",
+          "stage": "line",
+          "mode": "half_up",
+          "decimal_places": 2,
+          "confirmed_by": "架空デモ担当"
+         }
+        }
+       ],
+       "subtotal": "2.02",
+       "tax": "0.20",
+       "total": "2.22",
+       "tax_groups": [
+        {
+         "tax_category": "demo-tax",
+         "tax_rate": "0.1",
+         "unrounded_taxable_total": "2.010",
+         "unrounded_tax": "0.2010",
+         "tax": "0.20",
+         "rounding_rule": {
+          "id": "demo-m29-tax-rule",
+          "rounding_rule_version_id": "9c86684e8a7b4f90920e4b2603afcacc",
+          "stage": "tax_category_total",
+          "mode": "half_up",
+          "decimal_places": 2,
+          "confirmed_by": "架空デモ担当"
+         }
+        }
+       ],
+       "confirmed_by": "架空デモ担当",
+       "rounding_rules": {
+        "line": {
+         "id": "demo-m29-line-rule",
+         "rounding_rule_version_id": "fd06b130fefa4b8892700e1bbd3c77ba",
+         "stage": "line",
+         "mode": "half_up",
+         "decimal_places": 2,
+         "confirmed_by": "架空デモ担当"
+        },
+        "tax_category_total": {
+         "id": "demo-m29-tax-rule",
+         "rounding_rule_version_id": "9c86684e8a7b4f90920e4b2603afcacc",
+         "stage": "tax_category_total",
+         "mode": "half_up",
+         "decimal_places": 2,
+         "confirmed_by": "架空デモ担当"
+        }
+       },
+       "tax_rate_source": "human_supplied_fictional_configuration",
+       "simulator": true,
+       "record_id": "demo-m29-quote"
+      },
+      "simulator": true,
+      "notice": "税率は人が指定した架空設定です。法令・会計適合性を示すものではありません。"
+     }
+    },
+    {
+     "ok": [
+      {
+       "id": "demo-m29-line-rule",
+       "stage": "line",
+       "mode": "half_up",
+       "decimal_places": 2,
+       "confirmed_by": "架空デモ担当",
+       "rounding_rule_version_id": "fd06b130fefa4b8892700e1bbd3c77ba",
+       "record_id": "demo-m29-line-rule"
+      },
+      {
+       "id": "demo-m29-tax-rule",
+       "stage": "tax_category_total",
+       "mode": "half_up",
+       "decimal_places": 2,
+       "confirmed_by": "架空デモ担当",
+       "rounding_rule_version_id": "9c86684e8a7b4f90920e4b2603afcacc",
+       "record_id": "demo-m29-tax-rule"
+      }
+     ]
+    },
+    {
+     "ok": [
+      {
+       "quote_id": "demo-m29-quote",
+       "lines": [
+        {
+         "quote_line_id": "demo-m29-line-1",
+         "name": "架空デモ材料A",
+         "quantity": "1",
+         "unit_price": "1.005",
+         "unrounded_line_total": "1.005",
+         "line_total": "1.01",
+         "tax_category": "demo-tax",
+         "rounding_rule": {
+          "id": "demo-m29-line-rule",
+          "rounding_rule_version_id": "fd06b130fefa4b8892700e1bbd3c77ba",
+          "stage": "line",
+          "mode": "half_up",
+          "decimal_places": 2,
+          "confirmed_by": "架空デモ担当"
+         }
+        },
+        {
+         "quote_line_id": "demo-m29-line-2",
+         "name": "架空デモ材料B",
+         "quantity": "1",
+         "unit_price": "1.005",
+         "unrounded_line_total": "1.005",
+         "line_total": "1.01",
+         "tax_category": "demo-tax",
+         "rounding_rule": {
+          "id": "demo-m29-line-rule",
+          "rounding_rule_version_id": "fd06b130fefa4b8892700e1bbd3c77ba",
+          "stage": "line",
+          "mode": "half_up",
+          "decimal_places": 2,
+          "confirmed_by": "架空デモ担当"
+         }
+        }
+       ],
+       "subtotal": "2.02",
+       "tax": "0.20",
+       "total": "2.22",
+       "tax_groups": [
+        {
+         "tax_category": "demo-tax",
+         "tax_rate": "0.1",
+         "unrounded_taxable_total": "2.010",
+         "unrounded_tax": "0.2010",
+         "tax": "0.20",
+         "rounding_rule": {
+          "id": "demo-m29-tax-rule",
+          "rounding_rule_version_id": "9c86684e8a7b4f90920e4b2603afcacc",
+          "stage": "tax_category_total",
+          "mode": "half_up",
+          "decimal_places": 2,
+          "confirmed_by": "架空デモ担当"
+         }
+        }
+       ],
+       "confirmed_by": "架空デモ担当",
+       "rounding_rules": {
+        "line": {
+         "id": "demo-m29-line-rule",
+         "rounding_rule_version_id": "fd06b130fefa4b8892700e1bbd3c77ba",
+         "stage": "line",
+         "mode": "half_up",
+         "decimal_places": 2,
+         "confirmed_by": "架空デモ担当"
+        },
+        "tax_category_total": {
+         "id": "demo-m29-tax-rule",
+         "rounding_rule_version_id": "9c86684e8a7b4f90920e4b2603afcacc",
+         "stage": "tax_category_total",
+         "mode": "half_up",
+         "decimal_places": 2,
+         "confirmed_by": "架空デモ担当"
+        }
+       },
+       "tax_rate_source": "human_supplied_fictional_configuration",
+       "simulator": true,
+       "record_id": "demo-m29-quote"
+      },
+      {
+       "quote_id": "demo-m29-quote",
+       "lines": [
+        {
+         "quote_line_id": "demo-m29-line-1",
+         "name": "架空デモ材料A",
+         "quantity": "1",
+         "unit_price": "1.005",
+         "unrounded_line_total": "1.005",
+         "line_total": "1.01",
+         "tax_category": "demo-tax",
+         "rounding_rule": {
+          "id": "demo-m29-line-rule",
+          "rounding_rule_version_id": "fd06b130fefa4b8892700e1bbd3c77ba",
+          "stage": "line",
+          "mode": "half_up",
+          "decimal_places": 2,
+          "confirmed_by": "架空デモ担当"
+         }
+        },
+        {
+         "quote_line_id": "demo-m29-line-2",
+         "name": "架空デモ材料B",
+         "quantity": "1",
+         "unit_price": "1.005",
+         "unrounded_line_total": "1.005",
+         "line_total": "1.01",
+         "tax_category": "demo-tax",
+         "rounding_rule": {
+          "id": "demo-m29-line-rule",
+          "rounding_rule_version_id": "fd06b130fefa4b8892700e1bbd3c77ba",
+          "stage": "line",
+          "mode": "half_up",
+          "decimal_places": 2,
+          "confirmed_by": "架空デモ担当"
+         }
+        }
+       ],
+       "subtotal": "2.02",
+       "tax": "0.20",
+       "total": "2.22",
+       "tax_groups": [
+        {
+         "tax_category": "demo-tax",
+         "tax_rate": "0.1",
+         "unrounded_taxable_total": "2.010",
+         "unrounded_tax": "0.2010",
+         "tax": "0.20",
+         "rounding_rule": {
+          "id": "demo-m29-tax-rule",
+          "rounding_rule_version_id": "9c86684e8a7b4f90920e4b2603afcacc",
+          "stage": "tax_category_total",
+          "mode": "half_up",
+          "decimal_places": 2,
+          "confirmed_by": "架空デモ担当"
+         }
+        }
+       ],
+       "confirmed_by": "架空デモ担当",
+       "rounding_rules": {
+        "line": {
+         "id": "demo-m29-line-rule",
+         "rounding_rule_version_id": "fd06b130fefa4b8892700e1bbd3c77ba",
+         "stage": "line",
+         "mode": "half_up",
+         "decimal_places": 2,
+         "confirmed_by": "架空デモ担当"
+        },
+        "tax_category_total": {
+         "id": "demo-m29-tax-rule",
+         "rounding_rule_version_id": "9c86684e8a7b4f90920e4b2603afcacc",
+         "stage": "tax_category_total",
+         "mode": "half_up",
+         "decimal_places": 2,
+         "confirmed_by": "架空デモ担当"
+        }
+       },
+       "tax_rate_source": "human_supplied_fictional_configuration",
+       "simulator": true,
+       "record_id": "demo-m29-quote"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "規約は追記で版を残す",
+   "expected": [
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "line-rule",
+       "stage": "line",
+       "mode": "half_up",
+       "decimal_places": 2,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "0f2207583faa4f1793abcd2749925d4c",
+       "record_id": "line-rule"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "line-rule",
+       "stage": "line",
+       "mode": "down",
+       "decimal_places": 2,
+       "confirmed_by": "担当B",
+       "rounding_rule_version_id": "49962f31a84b4b6180a44eacefaacd18",
+       "record_id": "line-rule"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": [
+      {
+       "id": "line-rule",
+       "stage": "line",
+       "mode": "half_up",
+       "decimal_places": 2,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "0f2207583faa4f1793abcd2749925d4c",
+       "record_id": "line-rule"
+      },
+      {
+       "id": "line-rule",
+       "stage": "line",
+       "mode": "down",
+       "decimal_places": 2,
+       "confirmed_by": "担当B",
+       "rounding_rule_version_id": "49962f31a84b4b6180a44eacefaacd18",
+       "record_id": "line-rule"
+      }
+     ]
+    },
+    {
+     "ok": {
+      "id": "line-rule",
+      "stage": "line",
+      "mode": "down",
+      "decimal_places": 2,
+      "confirmed_by": "担当B",
+      "rounding_rule_version_id": "49962f31a84b4b6180a44eacefaacd18",
+      "record_id": "line-rule"
+     }
+    }
+   ]
+  },
+  {
+   "name": "未丸めの積を残し規約の版を記録",
+   "expected": [
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "line-rule",
+       "stage": "line",
+       "mode": "half_up",
+       "decimal_places": 2,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "96746147c3ca4852a1e1aff33a371465",
+       "record_id": "line-rule"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "tax-rule",
+       "stage": "tax_category_total",
+       "mode": "half_up",
+       "decimal_places": 2,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "ea5887e4ff564343b1184da57b6f80fe",
+       "record_id": "tax-rule"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "quoted",
+      "quote": {
+       "quote_id": "quote-a",
+       "lines": [
+        {
+         "quote_line_id": "line-a",
+         "name": "材料A",
+         "quantity": "1",
+         "unit_price": "1.005",
+         "unrounded_line_total": "1.005",
+         "line_total": "1.01",
+         "tax_category": "tax-a",
+         "rounding_rule": {
+          "id": "line-rule",
+          "rounding_rule_version_id": "96746147c3ca4852a1e1aff33a371465",
+          "stage": "line",
+          "mode": "half_up",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "line-b",
+         "name": "材料B",
+         "quantity": "1",
+         "unit_price": "1.005",
+         "unrounded_line_total": "1.005",
+         "line_total": "1.01",
+         "tax_category": "tax-a",
+         "rounding_rule": {
+          "id": "line-rule",
+          "rounding_rule_version_id": "96746147c3ca4852a1e1aff33a371465",
+          "stage": "line",
+          "mode": "half_up",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        }
+       ],
+       "subtotal": "2.02",
+       "tax": "0.20",
+       "total": "2.22",
+       "tax_groups": [
+        {
+         "tax_category": "tax-a",
+         "tax_rate": "0.1",
+         "unrounded_taxable_total": "2.010",
+         "unrounded_tax": "0.2010",
+         "tax": "0.20",
+         "rounding_rule": {
+          "id": "tax-rule",
+          "rounding_rule_version_id": "ea5887e4ff564343b1184da57b6f80fe",
+          "stage": "tax_category_total",
+          "mode": "half_up",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        }
+       ],
+       "confirmed_by": "見積担当",
+       "rounding_rules": {
+        "line": {
+         "id": "line-rule",
+         "rounding_rule_version_id": "96746147c3ca4852a1e1aff33a371465",
+         "stage": "line",
+         "mode": "half_up",
+         "decimal_places": 2,
+         "confirmed_by": "会計担当"
+        },
+        "tax_category_total": {
+         "id": "tax-rule",
+         "rounding_rule_version_id": "ea5887e4ff564343b1184da57b6f80fe",
+         "stage": "tax_category_total",
+         "mode": "half_up",
+         "decimal_places": 2,
+         "confirmed_by": "会計担当"
+        }
+       },
+       "tax_rate_source": "human_supplied_fictional_configuration",
+       "simulator": false,
+       "record_id": "quote-a"
+      },
+      "simulator": false,
+      "notice": "税率は人が指定した架空設定です。法令・会計適合性を示すものではありません。"
+     }
+    },
+    {
+     "ok": {
+      "quote_id": "quote-a",
+      "lines": [
+       {
+        "quote_line_id": "line-a",
+        "name": "材料A",
+        "quantity": "1",
+        "unit_price": "1.005",
+        "unrounded_line_total": "1.005",
+        "line_total": "1.01",
+        "tax_category": "tax-a",
+        "rounding_rule": {
+         "id": "line-rule",
+         "rounding_rule_version_id": "96746147c3ca4852a1e1aff33a371465",
+         "stage": "line",
+         "mode": "half_up",
+         "decimal_places": 2,
+         "confirmed_by": "会計担当"
+        }
+       },
+       {
+        "quote_line_id": "line-b",
+        "name": "材料B",
+        "quantity": "1",
+        "unit_price": "1.005",
+        "unrounded_line_total": "1.005",
+        "line_total": "1.01",
+        "tax_category": "tax-a",
+        "rounding_rule": {
+         "id": "line-rule",
+         "rounding_rule_version_id": "96746147c3ca4852a1e1aff33a371465",
+         "stage": "line",
+         "mode": "half_up",
+         "decimal_places": 2,
+         "confirmed_by": "会計担当"
+        }
+       }
+      ],
+      "subtotal": "2.02",
+      "tax": "0.20",
+      "total": "2.22",
+      "tax_groups": [
+       {
+        "tax_category": "tax-a",
+        "tax_rate": "0.1",
+        "unrounded_taxable_total": "2.010",
+        "unrounded_tax": "0.2010",
+        "tax": "0.20",
+        "rounding_rule": {
+         "id": "tax-rule",
+         "rounding_rule_version_id": "ea5887e4ff564343b1184da57b6f80fe",
+         "stage": "tax_category_total",
+         "mode": "half_up",
+         "decimal_places": 2,
+         "confirmed_by": "会計担当"
+        }
+       }
+      ],
+      "confirmed_by": "見積担当",
+      "rounding_rules": {
+       "line": {
+        "id": "line-rule",
+        "rounding_rule_version_id": "96746147c3ca4852a1e1aff33a371465",
+        "stage": "line",
+        "mode": "half_up",
+        "decimal_places": 2,
+        "confirmed_by": "会計担当"
+       },
+       "tax_category_total": {
+        "id": "tax-rule",
+        "rounding_rule_version_id": "ea5887e4ff564343b1184da57b6f80fe",
+        "stage": "tax_category_total",
+        "mode": "half_up",
+        "decimal_places": 2,
+        "confirmed_by": "会計担当"
+       }
+      },
+      "tax_rate_source": "human_supplied_fictional_configuration",
+      "simulator": false,
+      "record_id": "quote-a"
+     }
+    },
+    {
+     "ok": {
+      "status": "quoted",
+      "quote": {
+       "quote_id": "quote-a",
+       "lines": [
+        {
+         "quote_line_id": "line-a",
+         "name": "材料A",
+         "quantity": "1",
+         "unit_price": "1.005",
+         "unrounded_line_total": "1.005",
+         "line_total": "1.01",
+         "tax_category": "tax-a",
+         "rounding_rule": {
+          "id": "line-rule",
+          "rounding_rule_version_id": "96746147c3ca4852a1e1aff33a371465",
+          "stage": "line",
+          "mode": "half_up",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "line-b",
+         "name": "材料B",
+         "quantity": "1",
+         "unit_price": "1.005",
+         "unrounded_line_total": "1.005",
+         "line_total": "1.01",
+         "tax_category": "tax-a",
+         "rounding_rule": {
+          "id": "line-rule",
+          "rounding_rule_version_id": "96746147c3ca4852a1e1aff33a371465",
+          "stage": "line",
+          "mode": "half_up",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        }
+       ],
+       "subtotal": "2.02",
+       "tax": "0.20",
+       "total": "2.22",
+       "tax_groups": [
+        {
+         "tax_category": "tax-a",
+         "tax_rate": "0.1",
+         "unrounded_taxable_total": "2.010",
+         "unrounded_tax": "0.2010",
+         "tax": "0.20",
+         "rounding_rule": {
+          "id": "tax-rule",
+          "rounding_rule_version_id": "ea5887e4ff564343b1184da57b6f80fe",
+          "stage": "tax_category_total",
+          "mode": "half_up",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        }
+       ],
+       "confirmed_by": "見積担当",
+       "rounding_rules": {
+        "line": {
+         "id": "line-rule",
+         "rounding_rule_version_id": "96746147c3ca4852a1e1aff33a371465",
+         "stage": "line",
+         "mode": "half_up",
+         "decimal_places": 2,
+         "confirmed_by": "会計担当"
+        },
+        "tax_category_total": {
+         "id": "tax-rule",
+         "rounding_rule_version_id": "ea5887e4ff564343b1184da57b6f80fe",
+         "stage": "tax_category_total",
+         "mode": "half_up",
+         "decimal_places": 2,
+         "confirmed_by": "会計担当"
+        }
+       },
+       "tax_rate_source": "human_supplied_fictional_configuration",
+       "simulator": false,
+       "record_id": "quote-a"
+      },
+      "simulator": false,
+      "notice": "税率は人が指定した架空設定です。法令・会計適合性を示すものではありません。"
+     }
+    }
+   ]
+  },
+  {
+   "name": "規約の stage が一致しない",
+   "expected": [
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "line-rule",
+       "stage": "tax_category_total",
+       "mode": "half_up",
+       "decimal_places": 2,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "b17895279cdf45158bcb77354c5460eb",
+       "record_id": "line-rule"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "tax-rule",
+       "stage": "tax_category_total",
+       "mode": "half_up",
+       "decimal_places": 2,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "b0b75f345ecb42869eecff2a46d8a043",
+       "record_id": "tax-rule"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "line-rule: 対象stageが一致しません"
+    },
+    {
+     "ok": []
+    },
+    {
+     "error": "ValidationError",
+     "message": "rounding_rule: 指定した記録がありません"
+    }
+   ]
+  },
+  {
+   "name": "承認なし・不正な規約",
+   "expected": [
+    {
+     "error": "ValidationError",
+     "message": "confirmed_by: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "id: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "stage: line / tax_category_total を選択してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "mode: half_up / down / up / floor を選択してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "decimal_places: 0〜6の整数を指定してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "decimal_places: 0〜6の整数を指定してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "decimal_places: 0〜6の整数を指定してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "decimal_places: 0〜6の整数を指定してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "decimal_places: 0〜6の整数を指定してください"
+    },
+    {
+     "ok": []
+    }
+   ]
+  },
+  {
+   "name": "負数・NaN・税率の不備は保存しない",
+   "expected": [
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "line-rule",
+       "stage": "line",
+       "mode": "half_up",
+       "decimal_places": 2,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "c2e430d09a3b4e4fb77c6690d870f1a5",
+       "record_id": "line-rule"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "tax-rule",
+       "stage": "tax_category_total",
+       "mode": "half_up",
+       "decimal_places": 2,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "441be57e24314a848e713b142d3d6429",
+       "record_id": "tax-rule"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "confirmed_by: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "lines[0].quantity: 有限の正数/非負数を入力してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "lines[0].unit_price: 有限の正数/非負数を入力してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "tax_rates.tax-a: 有限の正数/非負数を入力してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "tax_rates.tax-a: 税率は0〜1の十進比率で指定してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "lines[0].tax_category: 税率の指定がありません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "lines: 見積行を1件以上指定してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "tax_rates: 人が指定した架空税率設定が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "quote_line_id: 重複しています"
+    },
+    {
+     "error": "ValidationError",
+     "message": "lines[0]: 見積行を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "tax_rates: 人が指定した架空税率設定が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "lines[0].quantity: 数値の桁数が大きすぎます"
+    },
+    {
+     "ok": []
+    }
+   ]
+  },
+  {
+   "name": "全丸めモード・桁数・税区分の並び",
+   "expected": [
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "l-half_up-0",
+       "stage": "line",
+       "mode": "half_up",
+       "decimal_places": 0,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "bd0055fe993640598b3d22fc5343948a",
+       "record_id": "l-half_up-0"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "t-half_up-0",
+       "stage": "tax_category_total",
+       "mode": "half_up",
+       "decimal_places": 0,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "072cbec44b8244778829b44572c67849",
+       "record_id": "t-half_up-0"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "quoted",
+      "quote": {
+       "quote_id": "q-half_up-0",
+       "lines": [
+        {
+         "quote_line_id": "1",
+         "name": "x",
+         "quantity": "3",
+         "unit_price": "0.3335",
+         "unrounded_line_total": "1.0005",
+         "line_total": "1",
+         "tax_category": "b",
+         "rounding_rule": {
+          "id": "l-half_up-0",
+          "rounding_rule_version_id": "bd0055fe993640598b3d22fc5343948a",
+          "stage": "line",
+          "mode": "half_up",
+          "decimal_places": 0,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "2",
+         "name": "y",
+         "quantity": "2.5",
+         "unit_price": "12.345",
+         "unrounded_line_total": "30.8625",
+         "line_total": "31",
+         "tax_category": "a",
+         "rounding_rule": {
+          "id": "l-half_up-0",
+          "rounding_rule_version_id": "bd0055fe993640598b3d22fc5343948a",
+          "stage": "line",
+          "mode": "half_up",
+          "decimal_places": 0,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "3",
+         "name": "z",
+         "quantity": "0",
+         "unit_price": "9.99",
+         "unrounded_line_total": "0.00",
+         "line_total": "0",
+         "tax_category": "c",
+         "rounding_rule": {
+          "id": "l-half_up-0",
+          "rounding_rule_version_id": "bd0055fe993640598b3d22fc5343948a",
+          "stage": "line",
+          "mode": "half_up",
+          "decimal_places": 0,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "4",
+         "name": "w",
+         "quantity": "1.5",
+         "unit_price": "0.0005",
+         "unrounded_line_total": "0.00075",
+         "line_total": "0",
+         "tax_category": "a",
+         "rounding_rule": {
+          "id": "l-half_up-0",
+          "rounding_rule_version_id": "bd0055fe993640598b3d22fc5343948a",
+          "stage": "line",
+          "mode": "half_up",
+          "decimal_places": 0,
+          "confirmed_by": "会計担当"
+         }
+        }
+       ],
+       "subtotal": "32",
+       "tax": "3",
+       "total": "35",
+       "tax_groups": [
+        {
+         "tax_category": "a",
+         "tax_rate": "0.1",
+         "unrounded_taxable_total": "30.86325",
+         "unrounded_tax": "3.086325",
+         "tax": "3",
+         "rounding_rule": {
+          "id": "t-half_up-0",
+          "rounding_rule_version_id": "072cbec44b8244778829b44572c67849",
+          "stage": "tax_category_total",
+          "mode": "half_up",
+          "decimal_places": 0,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "tax_category": "b",
+         "tax_rate": "0.08",
+         "unrounded_taxable_total": "1.0005",
+         "unrounded_tax": "0.080040",
+         "tax": "0",
+         "rounding_rule": {
+          "id": "t-half_up-0",
+          "rounding_rule_version_id": "072cbec44b8244778829b44572c67849",
+          "stage": "tax_category_total",
+          "mode": "half_up",
+          "decimal_places": 0,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "tax_category": "c",
+         "tax_rate": "0",
+         "unrounded_taxable_total": "0.00",
+         "unrounded_tax": "0.00",
+         "tax": "0",
+         "rounding_rule": {
+          "id": "t-half_up-0",
+          "rounding_rule_version_id": "072cbec44b8244778829b44572c67849",
+          "stage": "tax_category_total",
+          "mode": "half_up",
+          "decimal_places": 0,
+          "confirmed_by": "会計担当"
+         }
+        }
+       ],
+       "confirmed_by": "見積担当",
+       "rounding_rules": {
+        "line": {
+         "id": "l-half_up-0",
+         "rounding_rule_version_id": "bd0055fe993640598b3d22fc5343948a",
+         "stage": "line",
+         "mode": "half_up",
+         "decimal_places": 0,
+         "confirmed_by": "会計担当"
+        },
+        "tax_category_total": {
+         "id": "t-half_up-0",
+         "rounding_rule_version_id": "072cbec44b8244778829b44572c67849",
+         "stage": "tax_category_total",
+         "mode": "half_up",
+         "decimal_places": 0,
+         "confirmed_by": "会計担当"
+        }
+       },
+       "tax_rate_source": "human_supplied_fictional_configuration",
+       "simulator": false,
+       "record_id": "q-half_up-0"
+      },
+      "simulator": false,
+      "notice": "税率は人が指定した架空設定です。法令・会計適合性を示すものではありません。"
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "l-half_up-2",
+       "stage": "line",
+       "mode": "half_up",
+       "decimal_places": 2,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "4ffc3bb1edcf4b279f1d5f79457310de",
+       "record_id": "l-half_up-2"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "t-half_up-2",
+       "stage": "tax_category_total",
+       "mode": "half_up",
+       "decimal_places": 2,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "03e57d0e81574dec9ce2de612eccdd5c",
+       "record_id": "t-half_up-2"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "quoted",
+      "quote": {
+       "quote_id": "q-half_up-2",
+       "lines": [
+        {
+         "quote_line_id": "1",
+         "name": "x",
+         "quantity": "3",
+         "unit_price": "0.3335",
+         "unrounded_line_total": "1.0005",
+         "line_total": "1.00",
+         "tax_category": "b",
+         "rounding_rule": {
+          "id": "l-half_up-2",
+          "rounding_rule_version_id": "4ffc3bb1edcf4b279f1d5f79457310de",
+          "stage": "line",
+          "mode": "half_up",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "2",
+         "name": "y",
+         "quantity": "2.5",
+         "unit_price": "12.345",
+         "unrounded_line_total": "30.8625",
+         "line_total": "30.86",
+         "tax_category": "a",
+         "rounding_rule": {
+          "id": "l-half_up-2",
+          "rounding_rule_version_id": "4ffc3bb1edcf4b279f1d5f79457310de",
+          "stage": "line",
+          "mode": "half_up",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "3",
+         "name": "z",
+         "quantity": "0",
+         "unit_price": "9.99",
+         "unrounded_line_total": "0.00",
+         "line_total": "0.00",
+         "tax_category": "c",
+         "rounding_rule": {
+          "id": "l-half_up-2",
+          "rounding_rule_version_id": "4ffc3bb1edcf4b279f1d5f79457310de",
+          "stage": "line",
+          "mode": "half_up",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "4",
+         "name": "w",
+         "quantity": "1.5",
+         "unit_price": "0.0005",
+         "unrounded_line_total": "0.00075",
+         "line_total": "0.00",
+         "tax_category": "a",
+         "rounding_rule": {
+          "id": "l-half_up-2",
+          "rounding_rule_version_id": "4ffc3bb1edcf4b279f1d5f79457310de",
+          "stage": "line",
+          "mode": "half_up",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        }
+       ],
+       "subtotal": "31.86",
+       "tax": "3.17",
+       "total": "35.03",
+       "tax_groups": [
+        {
+         "tax_category": "a",
+         "tax_rate": "0.1",
+         "unrounded_taxable_total": "30.86325",
+         "unrounded_tax": "3.086325",
+         "tax": "3.09",
+         "rounding_rule": {
+          "id": "t-half_up-2",
+          "rounding_rule_version_id": "03e57d0e81574dec9ce2de612eccdd5c",
+          "stage": "tax_category_total",
+          "mode": "half_up",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "tax_category": "b",
+         "tax_rate": "0.08",
+         "unrounded_taxable_total": "1.0005",
+         "unrounded_tax": "0.080040",
+         "tax": "0.08",
+         "rounding_rule": {
+          "id": "t-half_up-2",
+          "rounding_rule_version_id": "03e57d0e81574dec9ce2de612eccdd5c",
+          "stage": "tax_category_total",
+          "mode": "half_up",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "tax_category": "c",
+         "tax_rate": "0",
+         "unrounded_taxable_total": "0.00",
+         "unrounded_tax": "0.00",
+         "tax": "0.00",
+         "rounding_rule": {
+          "id": "t-half_up-2",
+          "rounding_rule_version_id": "03e57d0e81574dec9ce2de612eccdd5c",
+          "stage": "tax_category_total",
+          "mode": "half_up",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        }
+       ],
+       "confirmed_by": "見積担当",
+       "rounding_rules": {
+        "line": {
+         "id": "l-half_up-2",
+         "rounding_rule_version_id": "4ffc3bb1edcf4b279f1d5f79457310de",
+         "stage": "line",
+         "mode": "half_up",
+         "decimal_places": 2,
+         "confirmed_by": "会計担当"
+        },
+        "tax_category_total": {
+         "id": "t-half_up-2",
+         "rounding_rule_version_id": "03e57d0e81574dec9ce2de612eccdd5c",
+         "stage": "tax_category_total",
+         "mode": "half_up",
+         "decimal_places": 2,
+         "confirmed_by": "会計担当"
+        }
+       },
+       "tax_rate_source": "human_supplied_fictional_configuration",
+       "simulator": false,
+       "record_id": "q-half_up-2"
+      },
+      "simulator": false,
+      "notice": "税率は人が指定した架空設定です。法令・会計適合性を示すものではありません。"
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "l-half_up-6",
+       "stage": "line",
+       "mode": "half_up",
+       "decimal_places": 6,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "1ffcc6000c5d427784194b058cc526cc",
+       "record_id": "l-half_up-6"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "t-half_up-6",
+       "stage": "tax_category_total",
+       "mode": "half_up",
+       "decimal_places": 6,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "7952597d9f694feaa4e4e306c8ae89ca",
+       "record_id": "t-half_up-6"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "quoted",
+      "quote": {
+       "quote_id": "q-half_up-6",
+       "lines": [
+        {
+         "quote_line_id": "1",
+         "name": "x",
+         "quantity": "3",
+         "unit_price": "0.3335",
+         "unrounded_line_total": "1.0005",
+         "line_total": "1.000500",
+         "tax_category": "b",
+         "rounding_rule": {
+          "id": "l-half_up-6",
+          "rounding_rule_version_id": "1ffcc6000c5d427784194b058cc526cc",
+          "stage": "line",
+          "mode": "half_up",
+          "decimal_places": 6,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "2",
+         "name": "y",
+         "quantity": "2.5",
+         "unit_price": "12.345",
+         "unrounded_line_total": "30.8625",
+         "line_total": "30.862500",
+         "tax_category": "a",
+         "rounding_rule": {
+          "id": "l-half_up-6",
+          "rounding_rule_version_id": "1ffcc6000c5d427784194b058cc526cc",
+          "stage": "line",
+          "mode": "half_up",
+          "decimal_places": 6,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "3",
+         "name": "z",
+         "quantity": "0",
+         "unit_price": "9.99",
+         "unrounded_line_total": "0.00",
+         "line_total": "0.000000",
+         "tax_category": "c",
+         "rounding_rule": {
+          "id": "l-half_up-6",
+          "rounding_rule_version_id": "1ffcc6000c5d427784194b058cc526cc",
+          "stage": "line",
+          "mode": "half_up",
+          "decimal_places": 6,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "4",
+         "name": "w",
+         "quantity": "1.5",
+         "unit_price": "0.0005",
+         "unrounded_line_total": "0.00075",
+         "line_total": "0.000750",
+         "tax_category": "a",
+         "rounding_rule": {
+          "id": "l-half_up-6",
+          "rounding_rule_version_id": "1ffcc6000c5d427784194b058cc526cc",
+          "stage": "line",
+          "mode": "half_up",
+          "decimal_places": 6,
+          "confirmed_by": "会計担当"
+         }
+        }
+       ],
+       "subtotal": "31.863750",
+       "tax": "3.166365",
+       "total": "35.030115",
+       "tax_groups": [
+        {
+         "tax_category": "a",
+         "tax_rate": "0.1",
+         "unrounded_taxable_total": "30.86325",
+         "unrounded_tax": "3.086325",
+         "tax": "3.086325",
+         "rounding_rule": {
+          "id": "t-half_up-6",
+          "rounding_rule_version_id": "7952597d9f694feaa4e4e306c8ae89ca",
+          "stage": "tax_category_total",
+          "mode": "half_up",
+          "decimal_places": 6,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "tax_category": "b",
+         "tax_rate": "0.08",
+         "unrounded_taxable_total": "1.0005",
+         "unrounded_tax": "0.080040",
+         "tax": "0.080040",
+         "rounding_rule": {
+          "id": "t-half_up-6",
+          "rounding_rule_version_id": "7952597d9f694feaa4e4e306c8ae89ca",
+          "stage": "tax_category_total",
+          "mode": "half_up",
+          "decimal_places": 6,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "tax_category": "c",
+         "tax_rate": "0",
+         "unrounded_taxable_total": "0.00",
+         "unrounded_tax": "0.00",
+         "tax": "0.000000",
+         "rounding_rule": {
+          "id": "t-half_up-6",
+          "rounding_rule_version_id": "7952597d9f694feaa4e4e306c8ae89ca",
+          "stage": "tax_category_total",
+          "mode": "half_up",
+          "decimal_places": 6,
+          "confirmed_by": "会計担当"
+         }
+        }
+       ],
+       "confirmed_by": "見積担当",
+       "rounding_rules": {
+        "line": {
+         "id": "l-half_up-6",
+         "rounding_rule_version_id": "1ffcc6000c5d427784194b058cc526cc",
+         "stage": "line",
+         "mode": "half_up",
+         "decimal_places": 6,
+         "confirmed_by": "会計担当"
+        },
+        "tax_category_total": {
+         "id": "t-half_up-6",
+         "rounding_rule_version_id": "7952597d9f694feaa4e4e306c8ae89ca",
+         "stage": "tax_category_total",
+         "mode": "half_up",
+         "decimal_places": 6,
+         "confirmed_by": "会計担当"
+        }
+       },
+       "tax_rate_source": "human_supplied_fictional_configuration",
+       "simulator": false,
+       "record_id": "q-half_up-6"
+      },
+      "simulator": false,
+      "notice": "税率は人が指定した架空設定です。法令・会計適合性を示すものではありません。"
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "l-down-0",
+       "stage": "line",
+       "mode": "down",
+       "decimal_places": 0,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "46d66ca8b7d04b43938e35af224115dd",
+       "record_id": "l-down-0"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "t-down-0",
+       "stage": "tax_category_total",
+       "mode": "down",
+       "decimal_places": 0,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "110de0d4d2c24710a37dd2ecde66d5fc",
+       "record_id": "t-down-0"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "quoted",
+      "quote": {
+       "quote_id": "q-down-0",
+       "lines": [
+        {
+         "quote_line_id": "1",
+         "name": "x",
+         "quantity": "3",
+         "unit_price": "0.3335",
+         "unrounded_line_total": "1.0005",
+         "line_total": "1",
+         "tax_category": "b",
+         "rounding_rule": {
+          "id": "l-down-0",
+          "rounding_rule_version_id": "46d66ca8b7d04b43938e35af224115dd",
+          "stage": "line",
+          "mode": "down",
+          "decimal_places": 0,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "2",
+         "name": "y",
+         "quantity": "2.5",
+         "unit_price": "12.345",
+         "unrounded_line_total": "30.8625",
+         "line_total": "30",
+         "tax_category": "a",
+         "rounding_rule": {
+          "id": "l-down-0",
+          "rounding_rule_version_id": "46d66ca8b7d04b43938e35af224115dd",
+          "stage": "line",
+          "mode": "down",
+          "decimal_places": 0,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "3",
+         "name": "z",
+         "quantity": "0",
+         "unit_price": "9.99",
+         "unrounded_line_total": "0.00",
+         "line_total": "0",
+         "tax_category": "c",
+         "rounding_rule": {
+          "id": "l-down-0",
+          "rounding_rule_version_id": "46d66ca8b7d04b43938e35af224115dd",
+          "stage": "line",
+          "mode": "down",
+          "decimal_places": 0,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "4",
+         "name": "w",
+         "quantity": "1.5",
+         "unit_price": "0.0005",
+         "unrounded_line_total": "0.00075",
+         "line_total": "0",
+         "tax_category": "a",
+         "rounding_rule": {
+          "id": "l-down-0",
+          "rounding_rule_version_id": "46d66ca8b7d04b43938e35af224115dd",
+          "stage": "line",
+          "mode": "down",
+          "decimal_places": 0,
+          "confirmed_by": "会計担当"
+         }
+        }
+       ],
+       "subtotal": "31",
+       "tax": "3",
+       "total": "34",
+       "tax_groups": [
+        {
+         "tax_category": "a",
+         "tax_rate": "0.1",
+         "unrounded_taxable_total": "30.86325",
+         "unrounded_tax": "3.086325",
+         "tax": "3",
+         "rounding_rule": {
+          "id": "t-down-0",
+          "rounding_rule_version_id": "110de0d4d2c24710a37dd2ecde66d5fc",
+          "stage": "tax_category_total",
+          "mode": "down",
+          "decimal_places": 0,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "tax_category": "b",
+         "tax_rate": "0.08",
+         "unrounded_taxable_total": "1.0005",
+         "unrounded_tax": "0.080040",
+         "tax": "0",
+         "rounding_rule": {
+          "id": "t-down-0",
+          "rounding_rule_version_id": "110de0d4d2c24710a37dd2ecde66d5fc",
+          "stage": "tax_category_total",
+          "mode": "down",
+          "decimal_places": 0,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "tax_category": "c",
+         "tax_rate": "0",
+         "unrounded_taxable_total": "0.00",
+         "unrounded_tax": "0.00",
+         "tax": "0",
+         "rounding_rule": {
+          "id": "t-down-0",
+          "rounding_rule_version_id": "110de0d4d2c24710a37dd2ecde66d5fc",
+          "stage": "tax_category_total",
+          "mode": "down",
+          "decimal_places": 0,
+          "confirmed_by": "会計担当"
+         }
+        }
+       ],
+       "confirmed_by": "見積担当",
+       "rounding_rules": {
+        "line": {
+         "id": "l-down-0",
+         "rounding_rule_version_id": "46d66ca8b7d04b43938e35af224115dd",
+         "stage": "line",
+         "mode": "down",
+         "decimal_places": 0,
+         "confirmed_by": "会計担当"
+        },
+        "tax_category_total": {
+         "id": "t-down-0",
+         "rounding_rule_version_id": "110de0d4d2c24710a37dd2ecde66d5fc",
+         "stage": "tax_category_total",
+         "mode": "down",
+         "decimal_places": 0,
+         "confirmed_by": "会計担当"
+        }
+       },
+       "tax_rate_source": "human_supplied_fictional_configuration",
+       "simulator": false,
+       "record_id": "q-down-0"
+      },
+      "simulator": false,
+      "notice": "税率は人が指定した架空設定です。法令・会計適合性を示すものではありません。"
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "l-down-2",
+       "stage": "line",
+       "mode": "down",
+       "decimal_places": 2,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "603934ea8ec34b8daa868bbabed462da",
+       "record_id": "l-down-2"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "t-down-2",
+       "stage": "tax_category_total",
+       "mode": "down",
+       "decimal_places": 2,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "ffc39563d6d24ec3926606beb1802101",
+       "record_id": "t-down-2"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "quoted",
+      "quote": {
+       "quote_id": "q-down-2",
+       "lines": [
+        {
+         "quote_line_id": "1",
+         "name": "x",
+         "quantity": "3",
+         "unit_price": "0.3335",
+         "unrounded_line_total": "1.0005",
+         "line_total": "1.00",
+         "tax_category": "b",
+         "rounding_rule": {
+          "id": "l-down-2",
+          "rounding_rule_version_id": "603934ea8ec34b8daa868bbabed462da",
+          "stage": "line",
+          "mode": "down",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "2",
+         "name": "y",
+         "quantity": "2.5",
+         "unit_price": "12.345",
+         "unrounded_line_total": "30.8625",
+         "line_total": "30.86",
+         "tax_category": "a",
+         "rounding_rule": {
+          "id": "l-down-2",
+          "rounding_rule_version_id": "603934ea8ec34b8daa868bbabed462da",
+          "stage": "line",
+          "mode": "down",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "3",
+         "name": "z",
+         "quantity": "0",
+         "unit_price": "9.99",
+         "unrounded_line_total": "0.00",
+         "line_total": "0.00",
+         "tax_category": "c",
+         "rounding_rule": {
+          "id": "l-down-2",
+          "rounding_rule_version_id": "603934ea8ec34b8daa868bbabed462da",
+          "stage": "line",
+          "mode": "down",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "4",
+         "name": "w",
+         "quantity": "1.5",
+         "unit_price": "0.0005",
+         "unrounded_line_total": "0.00075",
+         "line_total": "0.00",
+         "tax_category": "a",
+         "rounding_rule": {
+          "id": "l-down-2",
+          "rounding_rule_version_id": "603934ea8ec34b8daa868bbabed462da",
+          "stage": "line",
+          "mode": "down",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        }
+       ],
+       "subtotal": "31.86",
+       "tax": "3.16",
+       "total": "35.02",
+       "tax_groups": [
+        {
+         "tax_category": "a",
+         "tax_rate": "0.1",
+         "unrounded_taxable_total": "30.86325",
+         "unrounded_tax": "3.086325",
+         "tax": "3.08",
+         "rounding_rule": {
+          "id": "t-down-2",
+          "rounding_rule_version_id": "ffc39563d6d24ec3926606beb1802101",
+          "stage": "tax_category_total",
+          "mode": "down",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "tax_category": "b",
+         "tax_rate": "0.08",
+         "unrounded_taxable_total": "1.0005",
+         "unrounded_tax": "0.080040",
+         "tax": "0.08",
+         "rounding_rule": {
+          "id": "t-down-2",
+          "rounding_rule_version_id": "ffc39563d6d24ec3926606beb1802101",
+          "stage": "tax_category_total",
+          "mode": "down",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "tax_category": "c",
+         "tax_rate": "0",
+         "unrounded_taxable_total": "0.00",
+         "unrounded_tax": "0.00",
+         "tax": "0.00",
+         "rounding_rule": {
+          "id": "t-down-2",
+          "rounding_rule_version_id": "ffc39563d6d24ec3926606beb1802101",
+          "stage": "tax_category_total",
+          "mode": "down",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        }
+       ],
+       "confirmed_by": "見積担当",
+       "rounding_rules": {
+        "line": {
+         "id": "l-down-2",
+         "rounding_rule_version_id": "603934ea8ec34b8daa868bbabed462da",
+         "stage": "line",
+         "mode": "down",
+         "decimal_places": 2,
+         "confirmed_by": "会計担当"
+        },
+        "tax_category_total": {
+         "id": "t-down-2",
+         "rounding_rule_version_id": "ffc39563d6d24ec3926606beb1802101",
+         "stage": "tax_category_total",
+         "mode": "down",
+         "decimal_places": 2,
+         "confirmed_by": "会計担当"
+        }
+       },
+       "tax_rate_source": "human_supplied_fictional_configuration",
+       "simulator": false,
+       "record_id": "q-down-2"
+      },
+      "simulator": false,
+      "notice": "税率は人が指定した架空設定です。法令・会計適合性を示すものではありません。"
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "l-down-6",
+       "stage": "line",
+       "mode": "down",
+       "decimal_places": 6,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "aa4913cd05ae41ba9f948f43b25f2199",
+       "record_id": "l-down-6"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "t-down-6",
+       "stage": "tax_category_total",
+       "mode": "down",
+       "decimal_places": 6,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "63161552adc140f5b9c51388137bb130",
+       "record_id": "t-down-6"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "quoted",
+      "quote": {
+       "quote_id": "q-down-6",
+       "lines": [
+        {
+         "quote_line_id": "1",
+         "name": "x",
+         "quantity": "3",
+         "unit_price": "0.3335",
+         "unrounded_line_total": "1.0005",
+         "line_total": "1.000500",
+         "tax_category": "b",
+         "rounding_rule": {
+          "id": "l-down-6",
+          "rounding_rule_version_id": "aa4913cd05ae41ba9f948f43b25f2199",
+          "stage": "line",
+          "mode": "down",
+          "decimal_places": 6,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "2",
+         "name": "y",
+         "quantity": "2.5",
+         "unit_price": "12.345",
+         "unrounded_line_total": "30.8625",
+         "line_total": "30.862500",
+         "tax_category": "a",
+         "rounding_rule": {
+          "id": "l-down-6",
+          "rounding_rule_version_id": "aa4913cd05ae41ba9f948f43b25f2199",
+          "stage": "line",
+          "mode": "down",
+          "decimal_places": 6,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "3",
+         "name": "z",
+         "quantity": "0",
+         "unit_price": "9.99",
+         "unrounded_line_total": "0.00",
+         "line_total": "0.000000",
+         "tax_category": "c",
+         "rounding_rule": {
+          "id": "l-down-6",
+          "rounding_rule_version_id": "aa4913cd05ae41ba9f948f43b25f2199",
+          "stage": "line",
+          "mode": "down",
+          "decimal_places": 6,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "4",
+         "name": "w",
+         "quantity": "1.5",
+         "unit_price": "0.0005",
+         "unrounded_line_total": "0.00075",
+         "line_total": "0.000750",
+         "tax_category": "a",
+         "rounding_rule": {
+          "id": "l-down-6",
+          "rounding_rule_version_id": "aa4913cd05ae41ba9f948f43b25f2199",
+          "stage": "line",
+          "mode": "down",
+          "decimal_places": 6,
+          "confirmed_by": "会計担当"
+         }
+        }
+       ],
+       "subtotal": "31.863750",
+       "tax": "3.166365",
+       "total": "35.030115",
+       "tax_groups": [
+        {
+         "tax_category": "a",
+         "tax_rate": "0.1",
+         "unrounded_taxable_total": "30.86325",
+         "unrounded_tax": "3.086325",
+         "tax": "3.086325",
+         "rounding_rule": {
+          "id": "t-down-6",
+          "rounding_rule_version_id": "63161552adc140f5b9c51388137bb130",
+          "stage": "tax_category_total",
+          "mode": "down",
+          "decimal_places": 6,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "tax_category": "b",
+         "tax_rate": "0.08",
+         "unrounded_taxable_total": "1.0005",
+         "unrounded_tax": "0.080040",
+         "tax": "0.080040",
+         "rounding_rule": {
+          "id": "t-down-6",
+          "rounding_rule_version_id": "63161552adc140f5b9c51388137bb130",
+          "stage": "tax_category_total",
+          "mode": "down",
+          "decimal_places": 6,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "tax_category": "c",
+         "tax_rate": "0",
+         "unrounded_taxable_total": "0.00",
+         "unrounded_tax": "0.00",
+         "tax": "0.000000",
+         "rounding_rule": {
+          "id": "t-down-6",
+          "rounding_rule_version_id": "63161552adc140f5b9c51388137bb130",
+          "stage": "tax_category_total",
+          "mode": "down",
+          "decimal_places": 6,
+          "confirmed_by": "会計担当"
+         }
+        }
+       ],
+       "confirmed_by": "見積担当",
+       "rounding_rules": {
+        "line": {
+         "id": "l-down-6",
+         "rounding_rule_version_id": "aa4913cd05ae41ba9f948f43b25f2199",
+         "stage": "line",
+         "mode": "down",
+         "decimal_places": 6,
+         "confirmed_by": "会計担当"
+        },
+        "tax_category_total": {
+         "id": "t-down-6",
+         "rounding_rule_version_id": "63161552adc140f5b9c51388137bb130",
+         "stage": "tax_category_total",
+         "mode": "down",
+         "decimal_places": 6,
+         "confirmed_by": "会計担当"
+        }
+       },
+       "tax_rate_source": "human_supplied_fictional_configuration",
+       "simulator": false,
+       "record_id": "q-down-6"
+      },
+      "simulator": false,
+      "notice": "税率は人が指定した架空設定です。法令・会計適合性を示すものではありません。"
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "l-up-0",
+       "stage": "line",
+       "mode": "up",
+       "decimal_places": 0,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "306b78b80cd74bcdb8bf98c8ca8e0023",
+       "record_id": "l-up-0"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "t-up-0",
+       "stage": "tax_category_total",
+       "mode": "up",
+       "decimal_places": 0,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "5a165e2a29604284933a6f6c8527502f",
+       "record_id": "t-up-0"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "quoted",
+      "quote": {
+       "quote_id": "q-up-0",
+       "lines": [
+        {
+         "quote_line_id": "1",
+         "name": "x",
+         "quantity": "3",
+         "unit_price": "0.3335",
+         "unrounded_line_total": "1.0005",
+         "line_total": "2",
+         "tax_category": "b",
+         "rounding_rule": {
+          "id": "l-up-0",
+          "rounding_rule_version_id": "306b78b80cd74bcdb8bf98c8ca8e0023",
+          "stage": "line",
+          "mode": "up",
+          "decimal_places": 0,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "2",
+         "name": "y",
+         "quantity": "2.5",
+         "unit_price": "12.345",
+         "unrounded_line_total": "30.8625",
+         "line_total": "31",
+         "tax_category": "a",
+         "rounding_rule": {
+          "id": "l-up-0",
+          "rounding_rule_version_id": "306b78b80cd74bcdb8bf98c8ca8e0023",
+          "stage": "line",
+          "mode": "up",
+          "decimal_places": 0,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "3",
+         "name": "z",
+         "quantity": "0",
+         "unit_price": "9.99",
+         "unrounded_line_total": "0.00",
+         "line_total": "0",
+         "tax_category": "c",
+         "rounding_rule": {
+          "id": "l-up-0",
+          "rounding_rule_version_id": "306b78b80cd74bcdb8bf98c8ca8e0023",
+          "stage": "line",
+          "mode": "up",
+          "decimal_places": 0,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "4",
+         "name": "w",
+         "quantity": "1.5",
+         "unit_price": "0.0005",
+         "unrounded_line_total": "0.00075",
+         "line_total": "1",
+         "tax_category": "a",
+         "rounding_rule": {
+          "id": "l-up-0",
+          "rounding_rule_version_id": "306b78b80cd74bcdb8bf98c8ca8e0023",
+          "stage": "line",
+          "mode": "up",
+          "decimal_places": 0,
+          "confirmed_by": "会計担当"
+         }
+        }
+       ],
+       "subtotal": "34",
+       "tax": "5",
+       "total": "39",
+       "tax_groups": [
+        {
+         "tax_category": "a",
+         "tax_rate": "0.1",
+         "unrounded_taxable_total": "30.86325",
+         "unrounded_tax": "3.086325",
+         "tax": "4",
+         "rounding_rule": {
+          "id": "t-up-0",
+          "rounding_rule_version_id": "5a165e2a29604284933a6f6c8527502f",
+          "stage": "tax_category_total",
+          "mode": "up",
+          "decimal_places": 0,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "tax_category": "b",
+         "tax_rate": "0.08",
+         "unrounded_taxable_total": "1.0005",
+         "unrounded_tax": "0.080040",
+         "tax": "1",
+         "rounding_rule": {
+          "id": "t-up-0",
+          "rounding_rule_version_id": "5a165e2a29604284933a6f6c8527502f",
+          "stage": "tax_category_total",
+          "mode": "up",
+          "decimal_places": 0,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "tax_category": "c",
+         "tax_rate": "0",
+         "unrounded_taxable_total": "0.00",
+         "unrounded_tax": "0.00",
+         "tax": "0",
+         "rounding_rule": {
+          "id": "t-up-0",
+          "rounding_rule_version_id": "5a165e2a29604284933a6f6c8527502f",
+          "stage": "tax_category_total",
+          "mode": "up",
+          "decimal_places": 0,
+          "confirmed_by": "会計担当"
+         }
+        }
+       ],
+       "confirmed_by": "見積担当",
+       "rounding_rules": {
+        "line": {
+         "id": "l-up-0",
+         "rounding_rule_version_id": "306b78b80cd74bcdb8bf98c8ca8e0023",
+         "stage": "line",
+         "mode": "up",
+         "decimal_places": 0,
+         "confirmed_by": "会計担当"
+        },
+        "tax_category_total": {
+         "id": "t-up-0",
+         "rounding_rule_version_id": "5a165e2a29604284933a6f6c8527502f",
+         "stage": "tax_category_total",
+         "mode": "up",
+         "decimal_places": 0,
+         "confirmed_by": "会計担当"
+        }
+       },
+       "tax_rate_source": "human_supplied_fictional_configuration",
+       "simulator": false,
+       "record_id": "q-up-0"
+      },
+      "simulator": false,
+      "notice": "税率は人が指定した架空設定です。法令・会計適合性を示すものではありません。"
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "l-up-2",
+       "stage": "line",
+       "mode": "up",
+       "decimal_places": 2,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "b49ba0ec2ab74bbcad17631c777a1235",
+       "record_id": "l-up-2"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "t-up-2",
+       "stage": "tax_category_total",
+       "mode": "up",
+       "decimal_places": 2,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "43d082a6ec8a46f5b2a32dd19b4bc784",
+       "record_id": "t-up-2"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "quoted",
+      "quote": {
+       "quote_id": "q-up-2",
+       "lines": [
+        {
+         "quote_line_id": "1",
+         "name": "x",
+         "quantity": "3",
+         "unit_price": "0.3335",
+         "unrounded_line_total": "1.0005",
+         "line_total": "1.01",
+         "tax_category": "b",
+         "rounding_rule": {
+          "id": "l-up-2",
+          "rounding_rule_version_id": "b49ba0ec2ab74bbcad17631c777a1235",
+          "stage": "line",
+          "mode": "up",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "2",
+         "name": "y",
+         "quantity": "2.5",
+         "unit_price": "12.345",
+         "unrounded_line_total": "30.8625",
+         "line_total": "30.87",
+         "tax_category": "a",
+         "rounding_rule": {
+          "id": "l-up-2",
+          "rounding_rule_version_id": "b49ba0ec2ab74bbcad17631c777a1235",
+          "stage": "line",
+          "mode": "up",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "3",
+         "name": "z",
+         "quantity": "0",
+         "unit_price": "9.99",
+         "unrounded_line_total": "0.00",
+         "line_total": "0.00",
+         "tax_category": "c",
+         "rounding_rule": {
+          "id": "l-up-2",
+          "rounding_rule_version_id": "b49ba0ec2ab74bbcad17631c777a1235",
+          "stage": "line",
+          "mode": "up",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "4",
+         "name": "w",
+         "quantity": "1.5",
+         "unit_price": "0.0005",
+         "unrounded_line_total": "0.00075",
+         "line_total": "0.01",
+         "tax_category": "a",
+         "rounding_rule": {
+          "id": "l-up-2",
+          "rounding_rule_version_id": "b49ba0ec2ab74bbcad17631c777a1235",
+          "stage": "line",
+          "mode": "up",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        }
+       ],
+       "subtotal": "31.89",
+       "tax": "3.18",
+       "total": "35.07",
+       "tax_groups": [
+        {
+         "tax_category": "a",
+         "tax_rate": "0.1",
+         "unrounded_taxable_total": "30.86325",
+         "unrounded_tax": "3.086325",
+         "tax": "3.09",
+         "rounding_rule": {
+          "id": "t-up-2",
+          "rounding_rule_version_id": "43d082a6ec8a46f5b2a32dd19b4bc784",
+          "stage": "tax_category_total",
+          "mode": "up",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "tax_category": "b",
+         "tax_rate": "0.08",
+         "unrounded_taxable_total": "1.0005",
+         "unrounded_tax": "0.080040",
+         "tax": "0.09",
+         "rounding_rule": {
+          "id": "t-up-2",
+          "rounding_rule_version_id": "43d082a6ec8a46f5b2a32dd19b4bc784",
+          "stage": "tax_category_total",
+          "mode": "up",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "tax_category": "c",
+         "tax_rate": "0",
+         "unrounded_taxable_total": "0.00",
+         "unrounded_tax": "0.00",
+         "tax": "0.00",
+         "rounding_rule": {
+          "id": "t-up-2",
+          "rounding_rule_version_id": "43d082a6ec8a46f5b2a32dd19b4bc784",
+          "stage": "tax_category_total",
+          "mode": "up",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        }
+       ],
+       "confirmed_by": "見積担当",
+       "rounding_rules": {
+        "line": {
+         "id": "l-up-2",
+         "rounding_rule_version_id": "b49ba0ec2ab74bbcad17631c777a1235",
+         "stage": "line",
+         "mode": "up",
+         "decimal_places": 2,
+         "confirmed_by": "会計担当"
+        },
+        "tax_category_total": {
+         "id": "t-up-2",
+         "rounding_rule_version_id": "43d082a6ec8a46f5b2a32dd19b4bc784",
+         "stage": "tax_category_total",
+         "mode": "up",
+         "decimal_places": 2,
+         "confirmed_by": "会計担当"
+        }
+       },
+       "tax_rate_source": "human_supplied_fictional_configuration",
+       "simulator": false,
+       "record_id": "q-up-2"
+      },
+      "simulator": false,
+      "notice": "税率は人が指定した架空設定です。法令・会計適合性を示すものではありません。"
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "l-up-6",
+       "stage": "line",
+       "mode": "up",
+       "decimal_places": 6,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "06206008b97e41a0a61d44cfdac74e0c",
+       "record_id": "l-up-6"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "t-up-6",
+       "stage": "tax_category_total",
+       "mode": "up",
+       "decimal_places": 6,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "5a0bc2086b664539a60e34c092eeca2e",
+       "record_id": "t-up-6"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "quoted",
+      "quote": {
+       "quote_id": "q-up-6",
+       "lines": [
+        {
+         "quote_line_id": "1",
+         "name": "x",
+         "quantity": "3",
+         "unit_price": "0.3335",
+         "unrounded_line_total": "1.0005",
+         "line_total": "1.000500",
+         "tax_category": "b",
+         "rounding_rule": {
+          "id": "l-up-6",
+          "rounding_rule_version_id": "06206008b97e41a0a61d44cfdac74e0c",
+          "stage": "line",
+          "mode": "up",
+          "decimal_places": 6,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "2",
+         "name": "y",
+         "quantity": "2.5",
+         "unit_price": "12.345",
+         "unrounded_line_total": "30.8625",
+         "line_total": "30.862500",
+         "tax_category": "a",
+         "rounding_rule": {
+          "id": "l-up-6",
+          "rounding_rule_version_id": "06206008b97e41a0a61d44cfdac74e0c",
+          "stage": "line",
+          "mode": "up",
+          "decimal_places": 6,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "3",
+         "name": "z",
+         "quantity": "0",
+         "unit_price": "9.99",
+         "unrounded_line_total": "0.00",
+         "line_total": "0.000000",
+         "tax_category": "c",
+         "rounding_rule": {
+          "id": "l-up-6",
+          "rounding_rule_version_id": "06206008b97e41a0a61d44cfdac74e0c",
+          "stage": "line",
+          "mode": "up",
+          "decimal_places": 6,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "4",
+         "name": "w",
+         "quantity": "1.5",
+         "unit_price": "0.0005",
+         "unrounded_line_total": "0.00075",
+         "line_total": "0.000750",
+         "tax_category": "a",
+         "rounding_rule": {
+          "id": "l-up-6",
+          "rounding_rule_version_id": "06206008b97e41a0a61d44cfdac74e0c",
+          "stage": "line",
+          "mode": "up",
+          "decimal_places": 6,
+          "confirmed_by": "会計担当"
+         }
+        }
+       ],
+       "subtotal": "31.863750",
+       "tax": "3.166365",
+       "total": "35.030115",
+       "tax_groups": [
+        {
+         "tax_category": "a",
+         "tax_rate": "0.1",
+         "unrounded_taxable_total": "30.86325",
+         "unrounded_tax": "3.086325",
+         "tax": "3.086325",
+         "rounding_rule": {
+          "id": "t-up-6",
+          "rounding_rule_version_id": "5a0bc2086b664539a60e34c092eeca2e",
+          "stage": "tax_category_total",
+          "mode": "up",
+          "decimal_places": 6,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "tax_category": "b",
+         "tax_rate": "0.08",
+         "unrounded_taxable_total": "1.0005",
+         "unrounded_tax": "0.080040",
+         "tax": "0.080040",
+         "rounding_rule": {
+          "id": "t-up-6",
+          "rounding_rule_version_id": "5a0bc2086b664539a60e34c092eeca2e",
+          "stage": "tax_category_total",
+          "mode": "up",
+          "decimal_places": 6,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "tax_category": "c",
+         "tax_rate": "0",
+         "unrounded_taxable_total": "0.00",
+         "unrounded_tax": "0.00",
+         "tax": "0.000000",
+         "rounding_rule": {
+          "id": "t-up-6",
+          "rounding_rule_version_id": "5a0bc2086b664539a60e34c092eeca2e",
+          "stage": "tax_category_total",
+          "mode": "up",
+          "decimal_places": 6,
+          "confirmed_by": "会計担当"
+         }
+        }
+       ],
+       "confirmed_by": "見積担当",
+       "rounding_rules": {
+        "line": {
+         "id": "l-up-6",
+         "rounding_rule_version_id": "06206008b97e41a0a61d44cfdac74e0c",
+         "stage": "line",
+         "mode": "up",
+         "decimal_places": 6,
+         "confirmed_by": "会計担当"
+        },
+        "tax_category_total": {
+         "id": "t-up-6",
+         "rounding_rule_version_id": "5a0bc2086b664539a60e34c092eeca2e",
+         "stage": "tax_category_total",
+         "mode": "up",
+         "decimal_places": 6,
+         "confirmed_by": "会計担当"
+        }
+       },
+       "tax_rate_source": "human_supplied_fictional_configuration",
+       "simulator": false,
+       "record_id": "q-up-6"
+      },
+      "simulator": false,
+      "notice": "税率は人が指定した架空設定です。法令・会計適合性を示すものではありません。"
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "l-floor-0",
+       "stage": "line",
+       "mode": "floor",
+       "decimal_places": 0,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "a633235672914c6bbadb30e369815d8d",
+       "record_id": "l-floor-0"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "t-floor-0",
+       "stage": "tax_category_total",
+       "mode": "floor",
+       "decimal_places": 0,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "a1bce04a7af1426489196abc1654b742",
+       "record_id": "t-floor-0"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "quoted",
+      "quote": {
+       "quote_id": "q-floor-0",
+       "lines": [
+        {
+         "quote_line_id": "1",
+         "name": "x",
+         "quantity": "3",
+         "unit_price": "0.3335",
+         "unrounded_line_total": "1.0005",
+         "line_total": "1",
+         "tax_category": "b",
+         "rounding_rule": {
+          "id": "l-floor-0",
+          "rounding_rule_version_id": "a633235672914c6bbadb30e369815d8d",
+          "stage": "line",
+          "mode": "floor",
+          "decimal_places": 0,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "2",
+         "name": "y",
+         "quantity": "2.5",
+         "unit_price": "12.345",
+         "unrounded_line_total": "30.8625",
+         "line_total": "30",
+         "tax_category": "a",
+         "rounding_rule": {
+          "id": "l-floor-0",
+          "rounding_rule_version_id": "a633235672914c6bbadb30e369815d8d",
+          "stage": "line",
+          "mode": "floor",
+          "decimal_places": 0,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "3",
+         "name": "z",
+         "quantity": "0",
+         "unit_price": "9.99",
+         "unrounded_line_total": "0.00",
+         "line_total": "0",
+         "tax_category": "c",
+         "rounding_rule": {
+          "id": "l-floor-0",
+          "rounding_rule_version_id": "a633235672914c6bbadb30e369815d8d",
+          "stage": "line",
+          "mode": "floor",
+          "decimal_places": 0,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "4",
+         "name": "w",
+         "quantity": "1.5",
+         "unit_price": "0.0005",
+         "unrounded_line_total": "0.00075",
+         "line_total": "0",
+         "tax_category": "a",
+         "rounding_rule": {
+          "id": "l-floor-0",
+          "rounding_rule_version_id": "a633235672914c6bbadb30e369815d8d",
+          "stage": "line",
+          "mode": "floor",
+          "decimal_places": 0,
+          "confirmed_by": "会計担当"
+         }
+        }
+       ],
+       "subtotal": "31",
+       "tax": "3",
+       "total": "34",
+       "tax_groups": [
+        {
+         "tax_category": "a",
+         "tax_rate": "0.1",
+         "unrounded_taxable_total": "30.86325",
+         "unrounded_tax": "3.086325",
+         "tax": "3",
+         "rounding_rule": {
+          "id": "t-floor-0",
+          "rounding_rule_version_id": "a1bce04a7af1426489196abc1654b742",
+          "stage": "tax_category_total",
+          "mode": "floor",
+          "decimal_places": 0,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "tax_category": "b",
+         "tax_rate": "0.08",
+         "unrounded_taxable_total": "1.0005",
+         "unrounded_tax": "0.080040",
+         "tax": "0",
+         "rounding_rule": {
+          "id": "t-floor-0",
+          "rounding_rule_version_id": "a1bce04a7af1426489196abc1654b742",
+          "stage": "tax_category_total",
+          "mode": "floor",
+          "decimal_places": 0,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "tax_category": "c",
+         "tax_rate": "0",
+         "unrounded_taxable_total": "0.00",
+         "unrounded_tax": "0.00",
+         "tax": "0",
+         "rounding_rule": {
+          "id": "t-floor-0",
+          "rounding_rule_version_id": "a1bce04a7af1426489196abc1654b742",
+          "stage": "tax_category_total",
+          "mode": "floor",
+          "decimal_places": 0,
+          "confirmed_by": "会計担当"
+         }
+        }
+       ],
+       "confirmed_by": "見積担当",
+       "rounding_rules": {
+        "line": {
+         "id": "l-floor-0",
+         "rounding_rule_version_id": "a633235672914c6bbadb30e369815d8d",
+         "stage": "line",
+         "mode": "floor",
+         "decimal_places": 0,
+         "confirmed_by": "会計担当"
+        },
+        "tax_category_total": {
+         "id": "t-floor-0",
+         "rounding_rule_version_id": "a1bce04a7af1426489196abc1654b742",
+         "stage": "tax_category_total",
+         "mode": "floor",
+         "decimal_places": 0,
+         "confirmed_by": "会計担当"
+        }
+       },
+       "tax_rate_source": "human_supplied_fictional_configuration",
+       "simulator": false,
+       "record_id": "q-floor-0"
+      },
+      "simulator": false,
+      "notice": "税率は人が指定した架空設定です。法令・会計適合性を示すものではありません。"
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "l-floor-2",
+       "stage": "line",
+       "mode": "floor",
+       "decimal_places": 2,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "e0bf1789d2ba46c5b930df941300087a",
+       "record_id": "l-floor-2"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "t-floor-2",
+       "stage": "tax_category_total",
+       "mode": "floor",
+       "decimal_places": 2,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "bc3e96601f8e4f979a64cbf30c66b311",
+       "record_id": "t-floor-2"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "quoted",
+      "quote": {
+       "quote_id": "q-floor-2",
+       "lines": [
+        {
+         "quote_line_id": "1",
+         "name": "x",
+         "quantity": "3",
+         "unit_price": "0.3335",
+         "unrounded_line_total": "1.0005",
+         "line_total": "1.00",
+         "tax_category": "b",
+         "rounding_rule": {
+          "id": "l-floor-2",
+          "rounding_rule_version_id": "e0bf1789d2ba46c5b930df941300087a",
+          "stage": "line",
+          "mode": "floor",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "2",
+         "name": "y",
+         "quantity": "2.5",
+         "unit_price": "12.345",
+         "unrounded_line_total": "30.8625",
+         "line_total": "30.86",
+         "tax_category": "a",
+         "rounding_rule": {
+          "id": "l-floor-2",
+          "rounding_rule_version_id": "e0bf1789d2ba46c5b930df941300087a",
+          "stage": "line",
+          "mode": "floor",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "3",
+         "name": "z",
+         "quantity": "0",
+         "unit_price": "9.99",
+         "unrounded_line_total": "0.00",
+         "line_total": "0.00",
+         "tax_category": "c",
+         "rounding_rule": {
+          "id": "l-floor-2",
+          "rounding_rule_version_id": "e0bf1789d2ba46c5b930df941300087a",
+          "stage": "line",
+          "mode": "floor",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "4",
+         "name": "w",
+         "quantity": "1.5",
+         "unit_price": "0.0005",
+         "unrounded_line_total": "0.00075",
+         "line_total": "0.00",
+         "tax_category": "a",
+         "rounding_rule": {
+          "id": "l-floor-2",
+          "rounding_rule_version_id": "e0bf1789d2ba46c5b930df941300087a",
+          "stage": "line",
+          "mode": "floor",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        }
+       ],
+       "subtotal": "31.86",
+       "tax": "3.16",
+       "total": "35.02",
+       "tax_groups": [
+        {
+         "tax_category": "a",
+         "tax_rate": "0.1",
+         "unrounded_taxable_total": "30.86325",
+         "unrounded_tax": "3.086325",
+         "tax": "3.08",
+         "rounding_rule": {
+          "id": "t-floor-2",
+          "rounding_rule_version_id": "bc3e96601f8e4f979a64cbf30c66b311",
+          "stage": "tax_category_total",
+          "mode": "floor",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "tax_category": "b",
+         "tax_rate": "0.08",
+         "unrounded_taxable_total": "1.0005",
+         "unrounded_tax": "0.080040",
+         "tax": "0.08",
+         "rounding_rule": {
+          "id": "t-floor-2",
+          "rounding_rule_version_id": "bc3e96601f8e4f979a64cbf30c66b311",
+          "stage": "tax_category_total",
+          "mode": "floor",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "tax_category": "c",
+         "tax_rate": "0",
+         "unrounded_taxable_total": "0.00",
+         "unrounded_tax": "0.00",
+         "tax": "0.00",
+         "rounding_rule": {
+          "id": "t-floor-2",
+          "rounding_rule_version_id": "bc3e96601f8e4f979a64cbf30c66b311",
+          "stage": "tax_category_total",
+          "mode": "floor",
+          "decimal_places": 2,
+          "confirmed_by": "会計担当"
+         }
+        }
+       ],
+       "confirmed_by": "見積担当",
+       "rounding_rules": {
+        "line": {
+         "id": "l-floor-2",
+         "rounding_rule_version_id": "e0bf1789d2ba46c5b930df941300087a",
+         "stage": "line",
+         "mode": "floor",
+         "decimal_places": 2,
+         "confirmed_by": "会計担当"
+        },
+        "tax_category_total": {
+         "id": "t-floor-2",
+         "rounding_rule_version_id": "bc3e96601f8e4f979a64cbf30c66b311",
+         "stage": "tax_category_total",
+         "mode": "floor",
+         "decimal_places": 2,
+         "confirmed_by": "会計担当"
+        }
+       },
+       "tax_rate_source": "human_supplied_fictional_configuration",
+       "simulator": false,
+       "record_id": "q-floor-2"
+      },
+      "simulator": false,
+      "notice": "税率は人が指定した架空設定です。法令・会計適合性を示すものではありません。"
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "l-floor-6",
+       "stage": "line",
+       "mode": "floor",
+       "decimal_places": 6,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "c6be80faa2b74000a054d2585498fd83",
+       "record_id": "l-floor-6"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "t-floor-6",
+       "stage": "tax_category_total",
+       "mode": "floor",
+       "decimal_places": 6,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "73b3b9c8c4524bdd9b206551e654fa87",
+       "record_id": "t-floor-6"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "quoted",
+      "quote": {
+       "quote_id": "q-floor-6",
+       "lines": [
+        {
+         "quote_line_id": "1",
+         "name": "x",
+         "quantity": "3",
+         "unit_price": "0.3335",
+         "unrounded_line_total": "1.0005",
+         "line_total": "1.000500",
+         "tax_category": "b",
+         "rounding_rule": {
+          "id": "l-floor-6",
+          "rounding_rule_version_id": "c6be80faa2b74000a054d2585498fd83",
+          "stage": "line",
+          "mode": "floor",
+          "decimal_places": 6,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "2",
+         "name": "y",
+         "quantity": "2.5",
+         "unit_price": "12.345",
+         "unrounded_line_total": "30.8625",
+         "line_total": "30.862500",
+         "tax_category": "a",
+         "rounding_rule": {
+          "id": "l-floor-6",
+          "rounding_rule_version_id": "c6be80faa2b74000a054d2585498fd83",
+          "stage": "line",
+          "mode": "floor",
+          "decimal_places": 6,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "3",
+         "name": "z",
+         "quantity": "0",
+         "unit_price": "9.99",
+         "unrounded_line_total": "0.00",
+         "line_total": "0.000000",
+         "tax_category": "c",
+         "rounding_rule": {
+          "id": "l-floor-6",
+          "rounding_rule_version_id": "c6be80faa2b74000a054d2585498fd83",
+          "stage": "line",
+          "mode": "floor",
+          "decimal_places": 6,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "quote_line_id": "4",
+         "name": "w",
+         "quantity": "1.5",
+         "unit_price": "0.0005",
+         "unrounded_line_total": "0.00075",
+         "line_total": "0.000750",
+         "tax_category": "a",
+         "rounding_rule": {
+          "id": "l-floor-6",
+          "rounding_rule_version_id": "c6be80faa2b74000a054d2585498fd83",
+          "stage": "line",
+          "mode": "floor",
+          "decimal_places": 6,
+          "confirmed_by": "会計担当"
+         }
+        }
+       ],
+       "subtotal": "31.863750",
+       "tax": "3.166365",
+       "total": "35.030115",
+       "tax_groups": [
+        {
+         "tax_category": "a",
+         "tax_rate": "0.1",
+         "unrounded_taxable_total": "30.86325",
+         "unrounded_tax": "3.086325",
+         "tax": "3.086325",
+         "rounding_rule": {
+          "id": "t-floor-6",
+          "rounding_rule_version_id": "73b3b9c8c4524bdd9b206551e654fa87",
+          "stage": "tax_category_total",
+          "mode": "floor",
+          "decimal_places": 6,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "tax_category": "b",
+         "tax_rate": "0.08",
+         "unrounded_taxable_total": "1.0005",
+         "unrounded_tax": "0.080040",
+         "tax": "0.080040",
+         "rounding_rule": {
+          "id": "t-floor-6",
+          "rounding_rule_version_id": "73b3b9c8c4524bdd9b206551e654fa87",
+          "stage": "tax_category_total",
+          "mode": "floor",
+          "decimal_places": 6,
+          "confirmed_by": "会計担当"
+         }
+        },
+        {
+         "tax_category": "c",
+         "tax_rate": "0",
+         "unrounded_taxable_total": "0.00",
+         "unrounded_tax": "0.00",
+         "tax": "0.000000",
+         "rounding_rule": {
+          "id": "t-floor-6",
+          "rounding_rule_version_id": "73b3b9c8c4524bdd9b206551e654fa87",
+          "stage": "tax_category_total",
+          "mode": "floor",
+          "decimal_places": 6,
+          "confirmed_by": "会計担当"
+         }
+        }
+       ],
+       "confirmed_by": "見積担当",
+       "rounding_rules": {
+        "line": {
+         "id": "l-floor-6",
+         "rounding_rule_version_id": "c6be80faa2b74000a054d2585498fd83",
+         "stage": "line",
+         "mode": "floor",
+         "decimal_places": 6,
+         "confirmed_by": "会計担当"
+        },
+        "tax_category_total": {
+         "id": "t-floor-6",
+         "rounding_rule_version_id": "73b3b9c8c4524bdd9b206551e654fa87",
+         "stage": "tax_category_total",
+         "mode": "floor",
+         "decimal_places": 6,
+         "confirmed_by": "会計担当"
+        }
+       },
+       "tax_rate_source": "human_supplied_fictional_configuration",
+       "simulator": false,
+       "record_id": "q-floor-6"
+      },
+      "simulator": false,
+      "notice": "税率は人が指定した架空設定です。法令・会計適合性を示すものではありません。"
+     }
+    }
+   ]
+  },
+  {
+   "name": "桁あふれ",
+   "expected": [
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "l6",
+       "stage": "line",
+       "mode": "half_up",
+       "decimal_places": 6,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "ee7fd2d9d2b3408e82ab246e7c15d8d6",
+       "record_id": "l6"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "rounding_rule": {
+       "id": "t6",
+       "stage": "tax_category_total",
+       "mode": "half_up",
+       "decimal_places": 6,
+       "confirmed_by": "会計担当",
+       "rounding_rule_version_id": "d985f14a2706484ba02ef1204217df9f",
+       "record_id": "t6"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "quoted",
+      "quote": {
+       "quote_id": "quote-a",
+       "lines": [
+        {
+         "quote_line_id": "line-a",
+         "name": "材料A",
+         "quantity": "9999999999999999999999999999",
+         "unit_price": "9999999999999999999999999999",
+         "unrounded_line_total": "99999999999999999999999999980000000000000000000000000001",
+         "line_total": "99999999999999999999999999980000000000000000000000000001.000000",
+         "tax_category": "tax-a",
+         "rounding_rule": {
+          "id": "l6",
+          "rounding_rule_version_id": "ee7fd2d9d2b3408e82ab246e7c15d8d6",
+          "stage": "line",
+          "mode": "half_up",
+          "decimal_places": 6,
+          "confirmed_by": "会計担当"
+         }
+        }
+       ],
+       "subtotal": "99999999999999999999999999980000000000000000000000000001.000000",
+       "tax": "9999999999999999999999999998000000000000000000000000000.100000",
+       "total": "109999999999999999999999999978000000000000000000000000001.100000",
+       "tax_groups": [
+        {
+         "tax_category": "tax-a",
+         "tax_rate": "0.1",
+         "unrounded_taxable_total": "99999999999999999999999999980000000000000000000000000001",
+         "unrounded_tax": "9999999999999999999999999998000000000000000000000000000.1",
+         "tax": "9999999999999999999999999998000000000000000000000000000.100000",
+         "rounding_rule": {
+          "id": "t6",
+          "rounding_rule_version_id": "d985f14a2706484ba02ef1204217df9f",
+          "stage": "tax_category_total",
+          "mode": "half_up",
+          "decimal_places": 6,
+          "confirmed_by": "会計担当"
+         }
+        }
+       ],
+       "confirmed_by": "見積担当",
+       "rounding_rules": {
+        "line": {
+         "id": "l6",
+         "rounding_rule_version_id": "ee7fd2d9d2b3408e82ab246e7c15d8d6",
+         "stage": "line",
+         "mode": "half_up",
+         "decimal_places": 6,
+         "confirmed_by": "会計担当"
+        },
+        "tax_category_total": {
+         "id": "t6",
+         "rounding_rule_version_id": "d985f14a2706484ba02ef1204217df9f",
+         "stage": "tax_category_total",
+         "mode": "half_up",
+         "decimal_places": 6,
+         "confirmed_by": "会計担当"
+        }
+       },
+       "tax_rate_source": "human_supplied_fictional_configuration",
+       "simulator": false,
+       "record_id": "quote-a"
+      },
+      "simulator": false,
+      "notice": "税率は人が指定した架空設定です。法令・会計適合性を示すものではありません。"
+     }
+    },
+    {
+     "ok": {
+      "status": "quoted",
+      "quote": {
+       "quote_id": "quote-a",
+       "lines": [
+        {
+         "quote_line_id": "line-a",
+         "name": "材料A",
+         "quantity": "1E-12",
+         "unit_price": "1E-12",
+         "unrounded_line_total": "1E-24",
+         "line_total": "0.000000",
+         "tax_category": "tax-a",
+         "rounding_rule": {
+          "id": "l6",
+          "rounding_rule_version_id": "ee7fd2d9d2b3408e82ab246e7c15d8d6",
+          "stage": "line",
+          "mode": "half_up",
+          "decimal_places": 6,
+          "confirmed_by": "会計担当"
+         }
+        }
+       ],
+       "subtotal": "0.000000",
+       "tax": "0.000000",
+       "total": "0.000000",
+       "tax_groups": [
+        {
+         "tax_category": "tax-a",
+         "tax_rate": "0.1",
+         "unrounded_taxable_total": "1E-24",
+         "unrounded_tax": "1E-25",
+         "tax": "0.000000",
+         "rounding_rule": {
+          "id": "t6",
+          "rounding_rule_version_id": "d985f14a2706484ba02ef1204217df9f",
+          "stage": "tax_category_total",
+          "mode": "half_up",
+          "decimal_places": 6,
+          "confirmed_by": "会計担当"
+         }
+        }
+       ],
+       "confirmed_by": "見積担当",
+       "rounding_rules": {
+        "line": {
+         "id": "l6",
+         "rounding_rule_version_id": "ee7fd2d9d2b3408e82ab246e7c15d8d6",
+         "stage": "line",
+         "mode": "half_up",
+         "decimal_places": 6,
+         "confirmed_by": "会計担当"
+        },
+        "tax_category_total": {
+         "id": "t6",
+         "rounding_rule_version_id": "d985f14a2706484ba02ef1204217df9f",
+         "stage": "tax_category_total",
+         "mode": "half_up",
+         "decimal_places": 6,
+         "confirmed_by": "会計担当"
+        }
+       },
+       "tax_rate_source": "human_supplied_fictional_configuration",
+       "simulator": false,
+       "record_id": "quote-a"
+      },
+      "simulator": false,
+      "notice": "税率は人が指定した架空設定です。法令・会計適合性を示すものではありません。"
+     }
+    }
+   ]
+  },
+  {
+   "name": "未対応操作",
+   "expected": [
+    {
+     "error": "ValidationError",
+     "message": "action: save_rule / quote / quote_demo を選択してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "quote_id: 入力が必要です"
+    }
+   ]
+  }
+ ]
+}

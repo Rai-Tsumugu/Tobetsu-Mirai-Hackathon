@@ -1,0 +1,751 @@
+{
+ "source": "scenarios/m05.json",
+ "scenarios": [
+  {
+   "name": "SPEC defaults",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "formula": {
+       "formula_id": "demo-metallic-blue",
+       "code": "SIM-BLUE-01",
+       "version": 1,
+       "status": "approved",
+       "confirmed_by": "架空デモ担当",
+       "formula_lines": [
+        {
+         "item_id": "demo-paint",
+         "ratio": "1",
+         "unit": "ml"
+        }
+       ],
+       "source": "simulator:架空レシピ"
+      },
+      "base_qty": "100",
+      "unit": "ml",
+      "as_of": "2026-10-11",
+      "lines": [
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "ratio": "1",
+        "quantity": "100",
+        "unit": "ml",
+        "unit_price": "80",
+        "price_version_id": "b2b59614f38843e7b13041bfcb0320e0",
+        "line_total": "8000"
+       }
+      ],
+      "total_cost": "8000",
+      "currency": "JPY",
+      "confirmed_by": "架空デモ担当",
+      "simulator": true,
+      "notice": "架空価格による金額候補です。塗着率・廃棄分を含まず、実塗装には使用できません。"
+     }
+    },
+    {
+     "ok": {
+      "formula_id": "demo-metallic-blue",
+      "code": "SIM-BLUE-01",
+      "version": 1,
+      "status": "approved",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": "1",
+        "unit": "ml"
+       }
+      ],
+      "source": "simulator:架空レシピ",
+      "record_id": "demo-metallic-blue"
+     }
+    }
+   ]
+  },
+  {
+   "name": "保存と計算",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "formula": {
+       "formula_id": "formula-1",
+       "code": "SIM-BLUE-01",
+       "version": 1,
+       "status": "approved",
+       "confirmed_by": "架空デモ担当",
+       "formula_lines": [
+        {
+         "item_id": "demo-paint",
+         "ratio": "1",
+         "unit": "ml"
+        }
+       ],
+       "source": "simulator:架空レシピ"
+      },
+      "base_qty": "100",
+      "unit": "ml",
+      "as_of": "2026-10-11",
+      "lines": [
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "ratio": "1",
+        "quantity": "100",
+        "unit": "ml",
+        "unit_price": "80",
+        "price_version_id": "da7d8d7162854119baed8a1c214c2fff",
+        "line_total": "8000"
+       }
+      ],
+      "total_cost": "8000",
+      "currency": "JPY",
+      "confirmed_by": "架空デモ担当",
+      "simulator": true,
+      "notice": "架空価格による金額候補です。塗着率・廃棄分を含まず、実塗装には使用できません。"
+     }
+    },
+    {
+     "ok": {
+      "formula_id": "formula-1",
+      "code": "SIM-BLUE-01",
+      "version": 1,
+      "status": "approved",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": "1",
+        "unit": "ml"
+       }
+      ],
+      "source": "simulator:架空レシピ",
+      "record_id": "formula-1"
+     }
+    },
+    {
+     "ok": {
+      "formula": {
+       "formula_id": "formula-1",
+       "code": "SIM-BLUE-01",
+       "version": 1,
+       "status": "approved",
+       "confirmed_by": "架空デモ担当",
+       "formula_lines": [
+        {
+         "item_id": "demo-paint",
+         "ratio": "1",
+         "unit": "ml"
+        }
+       ],
+       "source": "simulator:架空レシピ",
+       "record_id": "formula-1"
+      },
+      "simulator": true
+     }
+    },
+    {
+     "ok": {
+      "formula": {
+       "formula_id": "formula-1",
+       "code": "SIM-BLUE-01",
+       "version": 1,
+       "status": "approved",
+       "confirmed_by": "架空デモ担当",
+       "formula_lines": [
+        {
+         "item_id": "demo-paint",
+         "ratio": "1",
+         "unit": "ml"
+        }
+       ],
+       "source": "simulator:架空レシピ",
+       "record_id": "formula-1"
+      },
+      "base_qty": "2.5",
+      "unit": "ml",
+      "as_of": "2026-10-11",
+      "lines": [
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "ratio": "1",
+        "quantity": "2.5",
+        "unit": "ml",
+        "unit_price": "80",
+        "price_version_id": "da7d8d7162854119baed8a1c214c2fff",
+        "line_total": "200.0"
+       }
+      ],
+      "total_cost": "200.0",
+      "currency": "JPY",
+      "confirmed_by": "架空デモ担当",
+      "simulator": true,
+      "notice": "架空価格による金額候補です。塗着率・廃棄分を含まず、実塗装には使用できません。"
+     }
+    }
+   ]
+  },
+  {
+   "name": "複数行の正確な比率",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "price_version_id": "8e6cd5184bc1491dace09bae5448f326",
+      "item": {
+       "item_id": "demo-solvent",
+       "name": "架空溶剤",
+       "category": "溶剤",
+       "unit": "ml",
+       "unit_price": "0.15",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空デモ担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {}
+     }
+    },
+    {
+     "ok": {
+      "formula": {
+       "formula_id": "formula-2",
+       "code": "SIM-02",
+       "version": 1,
+       "status": "approved",
+       "confirmed_by": "架空デモ担当",
+       "formula_lines": [
+        {
+         "item_id": "demo-paint",
+         "ratio": "0.75",
+         "unit": "ml"
+        },
+        {
+         "item_id": "demo-solvent",
+         "ratio": "0.25",
+         "unit": "ml"
+        }
+       ],
+       "source": "simulator:架空レシピ"
+      },
+      "base_qty": "10.4",
+      "unit": "ml",
+      "as_of": "2026-10-11",
+      "lines": [
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "ratio": "0.75",
+        "quantity": "7.800",
+        "unit": "ml",
+        "unit_price": "80",
+        "price_version_id": "72bfad2ed080472fbd63d8b6742daa9f",
+        "line_total": "624.000"
+       },
+       {
+        "item_id": "demo-solvent",
+        "name": "架空溶剤",
+        "ratio": "0.25",
+        "quantity": "2.600",
+        "unit": "ml",
+        "unit_price": "0.15",
+        "price_version_id": "8e6cd5184bc1491dace09bae5448f326",
+        "line_total": "0.39000"
+       }
+      ],
+      "total_cost": "624.39000",
+      "currency": "JPY",
+      "confirmed_by": "架空デモ担当",
+      "simulator": true,
+      "notice": "架空価格による金額候補です。塗着率・廃棄分を含まず、実塗装には使用できません。"
+     }
+    },
+    {
+     "ok": {
+      "formula": {
+       "formula_id": "formula-2",
+       "code": "SIM-02",
+       "version": 1,
+       "status": "approved",
+       "confirmed_by": "架空デモ担当",
+       "formula_lines": [
+        {
+         "item_id": "demo-paint",
+         "ratio": "0.75",
+         "unit": "ml"
+        },
+        {
+         "item_id": "demo-solvent",
+         "ratio": "0.25",
+         "unit": "ml"
+        }
+       ],
+       "source": "simulator:架空レシピ",
+       "record_id": "formula-2"
+      },
+      "base_qty": "10.4",
+      "unit": "ml",
+      "as_of": "2026-10-11",
+      "lines": [
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "ratio": "0.75",
+        "quantity": "7.800",
+        "unit": "ml",
+        "unit_price": "80",
+        "price_version_id": "72bfad2ed080472fbd63d8b6742daa9f",
+        "line_total": "624.000"
+       },
+       {
+        "item_id": "demo-solvent",
+        "name": "架空溶剤",
+        "ratio": "0.25",
+        "quantity": "2.600",
+        "unit": "ml",
+        "unit_price": "0.15",
+        "price_version_id": "8e6cd5184bc1491dace09bae5448f326",
+        "line_total": "0.39000"
+       }
+      ],
+      "total_cost": "624.39000",
+      "currency": "JPY",
+      "confirmed_by": "架空デモ担当",
+      "simulator": true,
+      "notice": "架空価格による金額候補です。塗着率・廃棄分を含まず、実塗装には使用できません。"
+     }
+    },
+    {
+     "ok": {
+      "formula": {
+       "formula_id": "formula-3",
+       "code": "SIM-03",
+       "version": 2,
+       "status": "approved",
+       "confirmed_by": "架空デモ担当",
+       "formula_lines": [
+        {
+         "item_id": "demo-paint",
+         "ratio": "0.333333333333",
+         "unit": "ml"
+        },
+        {
+         "item_id": "demo-solvent",
+         "ratio": "0.666666666667",
+         "unit": "ml"
+        }
+       ],
+       "source": "simulator:架空レシピ"
+      },
+      "base_qty": "3E-12",
+      "unit": "ml",
+      "as_of": "2026-10-11",
+      "lines": [
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "ratio": "0.333333333333",
+        "quantity": "9.99999999999E-13",
+        "unit": "ml",
+        "unit_price": "80",
+        "price_version_id": "72bfad2ed080472fbd63d8b6742daa9f",
+        "line_total": "7.9999999999920E-11"
+       },
+       {
+        "item_id": "demo-solvent",
+        "name": "架空溶剤",
+        "ratio": "0.666666666667",
+        "quantity": "2.000000000001E-12",
+        "unit": "ml",
+        "unit_price": "0.15",
+        "price_version_id": "8e6cd5184bc1491dace09bae5448f326",
+        "line_total": "3.0000000000015E-13"
+       }
+      ],
+      "total_cost": "8.029999999992015E-11",
+      "currency": "JPY",
+      "confirmed_by": "架空デモ担当",
+      "simulator": true,
+      "notice": "架空価格による金額候補です。塗着率・廃棄分を含まず、実塗装には使用できません。"
+     }
+    }
+   ]
+  },
+  {
+   "name": "未承認の配合は計算しない",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "formula": {
+       "formula_id": "formula-1",
+       "code": "SIM-BLUE-01",
+       "version": 1,
+       "status": "pending",
+       "confirmed_by": "架空デモ担当",
+       "formula_lines": [
+        {
+         "item_id": "demo-paint",
+         "ratio": "1",
+         "unit": "ml"
+        }
+       ],
+       "source": "simulator:架空レシピ"
+      },
+      "simulator": true
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "未承認配合: 担当者の承認が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "未承認配合: 担当者の承認が必要です"
+    },
+    {
+     "ok": {
+      "formula": {
+       "formula_id": "formula-1",
+       "code": "SIM-BLUE-01",
+       "version": 1,
+       "status": "approved",
+       "confirmed_by": "架空承認者",
+       "formula_lines": [
+        {
+         "item_id": "demo-paint",
+         "ratio": "1",
+         "unit": "ml"
+        }
+       ],
+       "source": "simulator:架空レシピ",
+       "record_id": "formula-1"
+      },
+      "simulator": true
+     }
+    },
+    {
+     "ok": {
+      "formula": {
+       "formula_id": "formula-1",
+       "code": "SIM-BLUE-01",
+       "version": 1,
+       "status": "approved",
+       "confirmed_by": "架空承認者",
+       "formula_lines": [
+        {
+         "item_id": "demo-paint",
+         "ratio": "1",
+         "unit": "ml"
+        }
+       ],
+       "source": "simulator:架空レシピ",
+       "record_id": "formula-1"
+      },
+      "base_qty": "100",
+      "unit": "ml",
+      "as_of": "2026-10-11",
+      "lines": [
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "ratio": "1",
+        "quantity": "100",
+        "unit": "ml",
+        "unit_price": "80",
+        "price_version_id": "90d24e2ee52a46db8f0f42aa03adfb0f",
+        "line_total": "8000"
+       }
+      ],
+      "total_cost": "8000",
+      "currency": "JPY",
+      "confirmed_by": "架空承認者",
+      "simulator": true,
+      "notice": "架空価格による金額候補です。塗着率・廃棄分を含まず、実塗装には使用できません。"
+     }
+    },
+    {
+     "ok": [
+      {
+       "formula_id": "formula-1",
+       "code": "SIM-BLUE-01",
+       "version": 1,
+       "status": "pending",
+       "confirmed_by": "架空デモ担当",
+       "formula_lines": [
+        {
+         "item_id": "demo-paint",
+         "ratio": "1",
+         "unit": "ml"
+        }
+       ],
+       "source": "simulator:架空レシピ",
+       "record_id": "formula-1"
+      },
+      {
+       "formula_id": "formula-1",
+       "code": "SIM-BLUE-01",
+       "version": 1,
+       "status": "approved",
+       "confirmed_by": "架空承認者",
+       "formula_lines": [
+        {
+         "item_id": "demo-paint",
+         "ratio": "1",
+         "unit": "ml"
+        }
+       ],
+       "source": "simulator:架空レシピ",
+       "record_id": "formula-1"
+      }
+     ]
+    },
+    {
+     "error": "ValidationError",
+     "message": "配合はすでに承認済みです"
+    },
+    {
+     "error": "ValidationError",
+     "message": "formula: 指定した記録がありません"
+    }
+   ]
+  },
+  {
+   "name": "比率・単位の不整合は保存しない",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "error": "ValidationError",
+     "message": "配合比率不整合: 比率の合計を1にしてください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "単位不一致: 配合構成と基準量の単位が一致しません"
+    },
+    {
+     "ok": []
+    },
+    {
+     "error": "ValidationError",
+     "message": "status: approved または pending を指定してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "version: 1以上の整数が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "version: 1以上の整数が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "version: 1以上の整数が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "base_qty: 有限の正数/非負数を入力してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "code: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "formula_lines: 1〜100件の構成が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "formula_lines[0]: 構成を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "配合比率不整合: 比率の合計を1にしてください"
+    }
+   ]
+  },
+  {
+   "name": "不正な構成・版・価格なし",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "error": "ValidationError",
+     "message": "formula_lines: 1〜100件の構成が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "formula_lines[0].ratio: 有限の正数/非負数を入力してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "formula_lines[0].ratio: 1以下で入力してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "formula_lines: 同じ品目は1行にまとめてください"
+    },
+    {
+     "ok": {
+      "formula": {
+       "formula_id": "invalid",
+       "code": "SIM",
+       "version": 1,
+       "status": "pending",
+       "confirmed_by": "架空デモ担当",
+       "formula_lines": [
+        {
+         "item_id": "demo-paint",
+         "ratio": "1",
+         "unit": "ml"
+        }
+       ],
+       "source": "simulator:架空レシピ"
+      },
+      "simulator": true
+     }
+    },
+    {
+     "ok": {
+      "formula": {
+       "formula_id": "formula-1",
+       "code": "SIM-BLUE-01",
+       "version": 1,
+       "status": "approved",
+       "confirmed_by": "架空デモ担当",
+       "formula_lines": [
+        {
+         "item_id": "demo-paint",
+         "ratio": "1",
+         "unit": "ml"
+        }
+       ],
+       "source": "simulator:架空レシピ"
+      },
+      "base_qty": "100",
+      "unit": "ml",
+      "as_of": "2026-10-11",
+      "lines": [
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "ratio": "1",
+        "quantity": "100",
+        "unit": "ml",
+        "unit_price": "80",
+        "price_version_id": "393e73f1450644738abda9f29740be80",
+        "line_total": "8000"
+       }
+      ],
+      "total_cost": "8000",
+      "currency": "JPY",
+      "confirmed_by": "架空デモ担当",
+      "simulator": true,
+      "notice": "架空価格による金額候補です。塗着率・廃棄分を含まず、実塗装には使用できません。"
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "formula: 指定した版がありません"
+    },
+    {
+     "ok": {
+      "formula": {
+       "formula_id": "formula-1",
+       "code": "SIM-BLUE-01",
+       "version": 1,
+       "status": "approved",
+       "confirmed_by": "架空デモ担当",
+       "formula_lines": [
+        {
+         "item_id": "demo-paint",
+         "ratio": "1",
+         "unit": "ml"
+        }
+       ],
+       "source": "simulator:架空レシピ",
+       "record_id": "formula-1"
+      },
+      "simulator": true
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "version: 1以上の整数が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "価格未確認: 承認済みの対象価格がありません"
+    },
+    {
+     "ok": []
+    },
+    {
+     "ok": {
+      "price_version_id": "97881d6392374f93940a9766fb582cf3",
+      "item": {
+       "item_id": "part-ml",
+       "name": "架空部品",
+       "category": "部品",
+       "unit": "ml",
+       "unit_price": "5",
+       "price_type": "仕入",
+       "source": "s",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "c",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {}
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "配合構成品は塗料または溶剤を指定してください"
+    }
+   ]
+  },
+  {
+   "name": "不正な action / payload",
+   "expected": [
+    {
+     "error": "ValidationError",
+     "message": "payload: 入力を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "payload: 入力を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "action: save_formula / get_formula / calculate / approve_formula を選択してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "formula: 指定した記録がありません"
+    }
+   ]
+  }
+ ]
+}

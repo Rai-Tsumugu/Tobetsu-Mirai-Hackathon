@@ -1,0 +1,492 @@
+{
+ "scenarios": [
+  {
+   "name": "既定値は架空の対応だけ登録",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M22",
+     "payload": {
+      "action": "register_rule",
+      "operation_id": "rust-treatment",
+      "item_id": "demo-m22-paint",
+      "required_when": "架空: 塗装工程を選択した場合",
+      "quantity_rule": "架空: 人が数量を入力",
+      "evidence": "simulator:架空デモ用の仮定",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": null,
+     "price_type": null,
+     "supplier_id": null
+    },
+    {
+     "op": "records",
+     "namespace": "operation_material"
+    }
+   ]
+  },
+  {
+   "name": "承認済みの対応から候補を出し品目を追加しない",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M22",
+     "payload": {
+      "action": "register_rule",
+      "operation_id": "paint",
+      "item_id": "paint-a",
+      "required_when": "塗装を行う場合",
+      "quantity_rule": "数量は人が入力",
+      "evidence": "整備士確認の架空辞書",
+      "confirmed_by": "整備士A"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M22",
+     "payload": {
+      "action": "suggest",
+      "labor": {
+       "breakdown": [
+        {
+         "operation": "paint",
+         "hours": {},
+         "reason": "確認済み",
+         "status": "conditional"
+        },
+        {
+         "operation": "mask",
+         "hours": {},
+         "reason": "未確認",
+         "status": "unknown"
+        },
+        {
+         "operation": "paint",
+         "status": "unknown"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "op": "records",
+     "namespace": "operation_material"
+    },
+    {
+     "op": "price_versions",
+     "item_id": null,
+     "price_type": null,
+     "supplier_id": null
+    }
+   ]
+  },
+  {
+   "name": "提案は保存しない・未知の工程は質問",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M22",
+     "payload": {
+      "action": "suggest",
+      "labor": {
+       "breakdown": [
+        {
+         "operation": "paint",
+         "status": "confirmed"
+        },
+        {
+         "operation": "unknown-op",
+         "status": "unknown"
+        },
+        {
+         "operation": "dry",
+         "status": "confirmed"
+        }
+       ]
+      },
+      "proposed_rules": [
+       {
+        "operation_id": "paint",
+        "item_id": "fictional-item",
+        "required_when": "架空条件",
+        "quantity_rule": "数量は人が選択",
+        "evidence": "simulator:fixture",
+        "confirmed_by": "架空デモ担当"
+       }
+      ]
+     }
+    },
+    {
+     "op": "records",
+     "namespace": "operation_material"
+    }
+   ]
+  },
+  {
+   "name": "確定は人の数量と同単位の承認済み価格が必要",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M22",
+     "payload": {
+      "action": "register_rule",
+      "operation_id": "paint",
+      "item_id": "paint-a",
+      "required_when": "塗装を行う場合",
+      "quantity_rule": "数量は人が入力",
+      "evidence": "整備士確認の架空辞書",
+      "confirmed_by": "整備士A"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M22",
+     "payload": {
+      "action": "suggest",
+      "labor": {
+       "breakdown": [
+        {
+         "operation": "paint",
+         "status": "confirmed"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "paint-a",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "12.50",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "価格担当",
+     "kwargs": {}
+    },
+    {
+     "op": "run",
+     "module": "M22",
+     "payload": {
+      "action": "confirm_selection",
+      "suggestion_id": "$ref:1.suggestion.suggestion_id",
+      "operation_id": "paint",
+      "item_id": "paint-a",
+      "confirmed_by": "整備士A",
+      "quantity": "2.4",
+      "unit": "ml"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M22",
+     "payload": {
+      "action": "get_snapshot",
+      "snapshot_id": "$ref:3.snapshot_id"
+     }
+    }
+   ]
+  },
+  {
+   "name": "提示外の品目・価格なし・単位違い",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M22",
+     "payload": {
+      "action": "register_rule",
+      "operation_id": "paint",
+      "item_id": "paint-a",
+      "required_when": "塗装を行う場合",
+      "quantity_rule": "数量は人が入力",
+      "evidence": "整備士確認の架空辞書",
+      "confirmed_by": "整備士A"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M22",
+     "payload": {
+      "action": "suggest",
+      "labor": {
+       "breakdown": [
+        {
+         "operation": "paint",
+         "status": "confirmed"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M22",
+     "payload": {
+      "action": "confirm_selection",
+      "suggestion_id": "$ref:1.suggestion.suggestion_id",
+      "operation_id": "paint",
+      "item_id": "other",
+      "confirmed_by": "整備士A",
+      "quantity": "2",
+      "unit": "ml"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M22",
+     "payload": {
+      "action": "confirm_selection",
+      "suggestion_id": "$ref:1.suggestion.suggestion_id",
+      "operation_id": "paint",
+      "item_id": "paint-a",
+      "confirmed_by": "整備士A",
+      "quantity": "2",
+      "unit": "ml"
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "paint-a",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "L",
+      "unit_price": "12",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "価格担当",
+     "kwargs": {}
+    },
+    {
+     "op": "run",
+     "module": "M22",
+     "payload": {
+      "action": "confirm_selection",
+      "suggestion_id": "$ref:1.suggestion.suggestion_id",
+      "operation_id": "paint",
+      "item_id": "paint-a",
+      "confirmed_by": "整備士A",
+      "quantity": "2",
+      "unit": "ml"
+     }
+    },
+    {
+     "op": "records",
+     "namespace": "operation_material_quantity_snapshot"
+    }
+   ]
+  },
+  {
+   "name": "数量は正・単位は必須・その他の入力検査",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M22",
+     "payload": {
+      "action": "register_rule",
+      "operation_id": "paint",
+      "item_id": "paint-a",
+      "required_when": "塗装を行う場合",
+      "quantity_rule": "数量は人が入力",
+      "evidence": "整備士確認の架空辞書",
+      "confirmed_by": "整備士A"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M22",
+     "payload": {
+      "action": "suggest",
+      "labor": {
+       "breakdown": [
+        {
+         "operation": "paint",
+         "status": "confirmed"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "paint-a",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "12",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "価格担当",
+     "kwargs": {}
+    },
+    {
+     "op": "run",
+     "module": "M22",
+     "payload": {
+      "action": "confirm_selection",
+      "suggestion_id": "$ref:1.suggestion.suggestion_id",
+      "operation_id": "paint",
+      "item_id": "paint-a",
+      "confirmed_by": "整備士A",
+      "quantity": "0",
+      "unit": "ml"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M22",
+     "payload": {
+      "action": "confirm_selection",
+      "suggestion_id": "$ref:1.suggestion.suggestion_id",
+      "operation_id": "paint",
+      "item_id": "paint-a",
+      "confirmed_by": "整備士A",
+      "quantity": "1.5",
+      "unit": ""
+     }
+    },
+    {
+     "op": "run",
+     "module": "M22",
+     "payload": {
+      "action": "confirm_selection",
+      "suggestion_id": "$ref:1.suggestion.suggestion_id",
+      "operation_id": "paint",
+      "item_id": "paint-a",
+      "confirmed_by": "整備士A",
+      "quantity": "1.5",
+      "unit": "ml",
+      "price_type": "仕入"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M22",
+     "payload": {
+      "action": "confirm_selection",
+      "suggestion_id": "$ref:1.suggestion.suggestion_id",
+      "operation_id": "paint",
+      "item_id": "paint-a",
+      "confirmed_by": "整備士A",
+      "quantity": "1.5",
+      "unit": "ml",
+      "extra": 1
+     }
+    },
+    {
+     "op": "run",
+     "module": "M22",
+     "payload": {
+      "action": "suggest",
+      "labor": {}
+     }
+    },
+    {
+     "op": "run",
+     "module": "M22",
+     "payload": {
+      "action": "suggest",
+      "labor": {
+       "breakdown": [
+        "x"
+       ]
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M22",
+     "payload": {
+      "action": "suggest",
+      "labor": {
+       "breakdown": [
+        {
+         "operation": "a"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M22",
+     "payload": {
+      "action": "suggest",
+      "labor": {
+       "breakdown": [
+        {
+         "operation": "paint",
+         "status": "confirmed"
+        }
+       ]
+      },
+      "proposed_rules": null
+     }
+    },
+    {
+     "op": "run",
+     "module": "M22",
+     "payload": {
+      "action": "suggest",
+      "labor": {
+       "breakdown": [
+        {
+         "operation": "paint",
+         "status": "confirmed"
+        }
+       ]
+      },
+      "proposed_rules": [
+       {
+        "operation_id": "paint"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M22",
+     "payload": {
+      "action": "register_rule",
+      "operation_id": "paint",
+      "item_id": "paint-a",
+      "required_when": "塗装を行う場合",
+      "quantity_rule": "数量は人が入力",
+      "evidence": "",
+      "confirmed_by": "整備士A"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M22",
+     "payload": {
+      "action": "x"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M22",
+     "payload": {
+      "action": "get_snapshot",
+      "snapshot_id": "none"
+     }
+    }
+   ]
+  }
+ ]
+}

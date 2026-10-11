@@ -1,0 +1,592 @@
+{
+ "scenarios": [
+  {
+   "name": "SPEC defaults（プレビューは保存しない）",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M08",
+     "payload": {
+      "action": "preview_change",
+      "item_id": "demo-paint",
+      "price_type": "販売",
+      "new_price": "130",
+      "reason": "架空デモ価格の見直し",
+      "source": "simulator:架空値、架空価格票で確認",
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "demo-paint",
+     "price_type": "販売"
+    }
+   ]
+  },
+  {
+   "name": "検索は名前かIDで・価格区分を分ける",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "demo-paint",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "80",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "架空デモ担当",
+     "kwargs": {
+      "supplier_id": "supplier-a"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M08",
+     "payload": {
+      "action": "search_items",
+      "query": "架空サンプル"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M08",
+     "payload": {
+      "action": "search_items",
+      "query": "DEMO-PAINT",
+      "price_type": "仕入"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M08",
+     "payload": {
+      "action": "search_items",
+      "query": "zzz"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M08",
+     "payload": {
+      "action": "search_items",
+      "query": "demo",
+      "price_type": "原価"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M08",
+     "payload": {
+      "action": "search_items",
+      "query": "demo",
+      "as_of": "2026-10-01"
+     }
+    }
+   ]
+  },
+  {
+   "name": "確定で版を追記し旧価格と別区分を保つ",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "demo-paint",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "80",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "架空デモ担当",
+     "kwargs": {
+      "supplier_id": "supplier-a"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M08",
+     "payload": {
+      "action": "preview_change",
+      "item_id": "demo-paint",
+      "price_type": "販売",
+      "new_price": "130",
+      "reason": "架空デモ価格の見直し",
+      "source": "simulator:架空値、架空価格票で確認",
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M08",
+     "payload": {
+      "action": "confirm_change",
+      "item_id": "demo-paint",
+      "price_type": "販売",
+      "new_price": "130",
+      "reason": "架空デモ価格の見直し",
+      "source": "simulator:架空値、架空価格票で確認",
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当",
+      "expected_price_version_id": "$ref:2.current_price_version_id"
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "demo-paint",
+     "price_type": "販売"
+    },
+    {
+     "op": "price_versions",
+     "item_id": "demo-paint",
+     "price_type": "仕入"
+    }
+   ]
+  },
+  {
+   "name": "仕入先が複数なら指定が必要",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "demo-paint",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "80",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "架空デモ担当",
+     "kwargs": {
+      "supplier_id": "supplier-a"
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "demo-paint",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "90",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "架空デモ担当",
+     "kwargs": {
+      "supplier_id": "supplier-b"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M08",
+     "payload": {
+      "action": "preview_change",
+      "item_id": "demo-paint",
+      "price_type": "仕入",
+      "new_price": "85",
+      "reason": "架空デモ価格の見直し",
+      "source": "simulator:架空値、架空価格票で確認",
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M08",
+     "payload": {
+      "action": "preview_change",
+      "item_id": "demo-paint",
+      "price_type": "仕入",
+      "new_price": "85",
+      "reason": "架空デモ価格の見直し",
+      "source": "simulator:架空値、架空価格票で確認",
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当",
+      "supplier_id": "supplier-a"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M08",
+     "payload": {
+      "action": "confirm_change",
+      "item_id": "demo-paint",
+      "price_type": "仕入",
+      "new_price": "85",
+      "reason": "架空デモ価格の見直し",
+      "source": "simulator:架空値、架空価格票で確認",
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当",
+      "supplier_id": "supplier-a",
+      "expected_price_version_id": "$ref:4.current_price_version_id"
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "demo-paint",
+     "price_type": "仕入",
+     "supplier_id": "supplier-b"
+    },
+    {
+     "op": "run",
+     "module": "M08",
+     "payload": {
+      "action": "preview_change",
+      "item_id": "demo-paint",
+      "price_type": "仕入",
+      "new_price": "85",
+      "reason": "架空デモ価格の見直し",
+      "source": "simulator:架空値、架空価格票で確認",
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当",
+      "supplier_id": ""
+     }
+    },
+    {
+     "op": "run",
+     "module": "M08",
+     "payload": {
+      "action": "preview_change",
+      "item_id": "demo-paint",
+      "price_type": "仕入",
+      "new_price": "79.995",
+      "reason": "架空デモ価格の見直し",
+      "source": "simulator:架空値、架空価格票で確認",
+      "checked_at": "2026-10-12",
+      "confirmed_by": "架空デモ担当",
+      "supplier_id": "supplier-a"
+     }
+    }
+   ]
+  },
+  {
+   "name": "古いプレビューや確認なしでは保存しない",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M08",
+     "payload": {
+      "action": "preview_change",
+      "item_id": "demo-paint",
+      "price_type": "販売",
+      "new_price": "130",
+      "reason": "架空デモ価格の見直し",
+      "source": "simulator:架空値、架空価格票で確認",
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "demo-paint",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "70",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "架空デモ担当"
+    },
+    {
+     "op": "run",
+     "module": "M08",
+     "payload": {
+      "action": "confirm_change",
+      "item_id": "demo-paint",
+      "price_type": "販売",
+      "new_price": "130",
+      "reason": "架空デモ価格の見直し",
+      "source": "simulator:架空値、架空価格票で確認",
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当",
+      "expected_price_version_id": "$ref:1.current_price_version_id"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M08",
+     "payload": {
+      "action": "confirm_change",
+      "item_id": "demo-paint",
+      "price_type": "販売",
+      "new_price": "130",
+      "reason": "架空デモ価格の見直し",
+      "source": "simulator:架空値、架空価格票で確認",
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "demo-paint",
+     "price_type": "販売"
+    }
+   ]
+  },
+  {
+   "name": "正の価格と根拠が必要",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M08",
+     "payload": {
+      "action": "preview_change",
+      "item_id": "missing-item",
+      "price_type": "販売",
+      "new_price": "130",
+      "reason": "架空デモ価格の見直し",
+      "source": "simulator:架空値、架空価格票で確認",
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M08",
+     "payload": {
+      "action": "preview_change",
+      "item_id": "demo-paint",
+      "price_type": "不明",
+      "new_price": "130",
+      "reason": "架空デモ価格の見直し",
+      "source": "simulator:架空値、架空価格票で確認",
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M08",
+     "payload": {
+      "action": "preview_change",
+      "item_id": "demo-paint",
+      "price_type": "販売",
+      "new_price": "0",
+      "reason": "架空デモ価格の見直し",
+      "source": "simulator:架空値、架空価格票で確認",
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M08",
+     "payload": {
+      "action": "preview_change",
+      "item_id": "demo-paint",
+      "price_type": "販売",
+      "new_price": "-1",
+      "reason": "架空デモ価格の見直し",
+      "source": "simulator:架空値、架空価格票で確認",
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M08",
+     "payload": {
+      "action": "preview_change",
+      "item_id": "demo-paint",
+      "price_type": "販売",
+      "new_price": "NaN",
+      "reason": "架空デモ価格の見直し",
+      "source": "simulator:架空値、架空価格票で確認",
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M08",
+     "payload": {
+      "action": "preview_change",
+      "item_id": "demo-paint",
+      "price_type": "販売",
+      "new_price": "130",
+      "reason": " ",
+      "source": "simulator:架空値、架空価格票で確認",
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M08",
+     "payload": {
+      "action": "preview_change",
+      "item_id": "demo-paint",
+      "price_type": "販売",
+      "new_price": "130",
+      "reason": "架空デモ価格の見直し",
+      "source": "",
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M08",
+     "payload": {
+      "action": "preview_change",
+      "item_id": "demo-paint",
+      "price_type": "販売",
+      "new_price": "130",
+      "reason": "架空デモ価格の見直し",
+      "source": "simulator:架空値、架空価格票で確認",
+      "checked_at": "yesterday",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M08",
+     "payload": {
+      "action": "preview_change",
+      "item_id": "demo-paint",
+      "price_type": "販売",
+      "new_price": "130",
+      "reason": "架空デモ価格の見直し",
+      "source": "simulator:架空値、架空価格票で確認",
+      "checked_at": "2026-10-11",
+      "confirmed_by": null
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "demo-paint",
+     "price_type": "販売"
+    }
+   ]
+  },
+  {
+   "name": "同額は unchanged・過去日は不可",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M08",
+     "payload": {
+      "action": "preview_change",
+      "item_id": "demo-paint",
+      "price_type": "販売",
+      "new_price": "120",
+      "reason": "架空デモ価格の見直し",
+      "source": "simulator:架空値、架空価格票で確認",
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M08",
+     "payload": {
+      "action": "preview_change",
+      "item_id": "demo-paint",
+      "price_type": "販売",
+      "new_price": "120.00",
+      "reason": "架空デモ価格の見直し",
+      "source": "simulator:架空値、架空価格票で確認",
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M08",
+     "payload": {
+      "action": "preview_change",
+      "item_id": "demo-paint",
+      "price_type": "販売",
+      "new_price": 99.5,
+      "reason": "架空デモ価格の見直し",
+      "source": "simulator:架空値、架空価格票で確認",
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M08",
+     "payload": {
+      "action": "preview_change",
+      "item_id": "demo-paint",
+      "price_type": "販売",
+      "new_price": "130",
+      "reason": "架空デモ価格の見直し",
+      "source": "simulator:架空値、架空価格票で確認",
+      "checked_at": "2026-10-10",
+      "confirmed_by": "架空デモ担当"
+     }
+    }
+   ]
+  },
+  {
+   "name": "不正な action / payload / 空検索",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M08",
+     "payload": null
+    },
+    {
+     "op": "run",
+     "module": "M08",
+     "payload": []
+    },
+    {
+     "op": "run",
+     "module": "M08",
+     "payload": {
+      "action": "delete"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M08",
+     "payload": {
+      "action": "search_items",
+      "query": " "
+     }
+    }
+   ]
+  }
+ ]
+}

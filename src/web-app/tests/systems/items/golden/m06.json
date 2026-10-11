@@ -1,0 +1,970 @@
+{
+ "source": "scenarios/m06.json",
+ "scenarios": [
+  {
+   "name": "SPEC defaults",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "event": {
+       "item_id": "demo-paint",
+       "old_version": "6a89769f26944b86b2737b546cc96db5",
+       "new_version": "d25c59a273194ca398c630ed33bffe61",
+       "event_type": "increase",
+       "reason": "架空デモの価格改定",
+       "source": "simulator:架空値",
+       "actor": "架空デモ担当",
+       "occurred_at": "2026-10-11",
+       "status": "approved"
+      },
+      "price_version": {
+       "price_version_id": "d25c59a273194ca398c630ed33bffe61",
+       "item": {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "125",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空デモ担当",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "架空デモの価格改定",
+       "metadata": {}
+      },
+      "items": [
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "125",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "simulator": true,
+      "notice": "価格は架空デモ値です。承認済みの価格だけを items に返しています。"
+     }
+    },
+    {
+     "ok": [
+      {
+       "price_version_id": "6a89769f26944b86b2737b546cc96db5",
+       "item": {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "120",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空デモ担当",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "初回登録",
+       "metadata": {}
+      },
+      {
+       "price_version_id": "d25c59a273194ca398c630ed33bffe61",
+       "item": {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "125",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空デモ担当",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "架空デモの価格改定",
+       "metadata": {}
+      }
+     ]
+    },
+    {
+     "ok": {
+      "item_id": "demo-paint",
+      "events": [
+       {
+        "item_id": "demo-paint",
+        "old_version": "6a89769f26944b86b2737b546cc96db5",
+        "new_version": "d25c59a273194ca398c630ed33bffe61",
+        "event_type": "increase",
+        "reason": "架空デモの価格改定",
+        "source": "simulator:架空値",
+        "actor": "架空デモ担当",
+        "occurred_at": "2026-10-11",
+        "status": "approved"
+       }
+      ],
+      "simulator": true
+     }
+    }
+   ]
+  },
+  {
+   "name": "変更ごとに追記",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "event": {
+       "item_id": "demo-paint",
+       "old_version": "6ab4414159614dd1a72f7ae6c3747b30",
+       "new_version": "8dbf8b3cd5d547b9a9c43aadc6a767ef",
+       "event_type": "increase",
+       "reason": "仕入価格の確認に基づく改定",
+       "source": "simulator:架空価格表",
+       "actor": "架空確認者",
+       "occurred_at": "2026-10-11",
+       "status": "approved"
+      },
+      "price_version": {
+       "price_version_id": "8dbf8b3cd5d547b9a9c43aadc6a767ef",
+       "item": {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "125",
+        "price_type": "販売",
+        "source": "simulator:架空価格表",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空確認者",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "仕入価格の確認に基づく改定",
+       "metadata": {}
+      },
+      "items": [
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "125",
+        "price_type": "販売",
+        "source": "simulator:架空価格表",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "simulator": true,
+      "notice": "価格は架空デモ値です。承認済みの価格だけを items に返しています。"
+     }
+    },
+    {
+     "ok": {
+      "event": {
+       "item_id": "demo-paint",
+       "old_version": "8dbf8b3cd5d547b9a9c43aadc6a767ef",
+       "new_version": "6fa26efaed32405f93eca2b90ade0407",
+       "event_type": "correction",
+       "reason": "入力額を伝票で訂正",
+       "source": "simulator:架空価格表",
+       "actor": "架空確認者",
+       "occurred_at": "2026-10-12T09:30:00+09:00",
+       "status": "approved"
+      },
+      "price_version": {
+       "price_version_id": "6fa26efaed32405f93eca2b90ade0407",
+       "item": {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "130",
+        "price_type": "販売",
+        "source": "simulator:架空価格表",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空確認者",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "入力額を伝票で訂正",
+       "metadata": {}
+      },
+      "items": [
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "130",
+        "price_type": "販売",
+        "source": "simulator:架空価格表",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "simulator": true,
+      "notice": "価格は架空デモ値です。承認済みの価格だけを items に返しています。"
+     }
+    },
+    {
+     "ok": [
+      {
+       "item_id": "demo-paint",
+       "old_version": "6ab4414159614dd1a72f7ae6c3747b30",
+       "new_version": "8dbf8b3cd5d547b9a9c43aadc6a767ef",
+       "event_type": "increase",
+       "reason": "仕入価格の確認に基づく改定",
+       "source": "simulator:架空価格表",
+       "actor": "架空確認者",
+       "occurred_at": "2026-10-11",
+       "status": "approved",
+       "record_id": "demo-paint"
+      },
+      {
+       "item_id": "demo-paint",
+       "old_version": "8dbf8b3cd5d547b9a9c43aadc6a767ef",
+       "new_version": "6fa26efaed32405f93eca2b90ade0407",
+       "event_type": "correction",
+       "reason": "入力額を伝票で訂正",
+       "source": "simulator:架空価格表",
+       "actor": "架空確認者",
+       "occurred_at": "2026-10-12T09:30:00+09:00",
+       "status": "approved",
+       "record_id": "demo-paint"
+      }
+     ]
+    },
+    {
+     "ok": [
+      {
+       "price_version_id": "6ab4414159614dd1a72f7ae6c3747b30",
+       "item": {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "120",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空デモ担当",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "初回登録",
+       "metadata": {}
+      },
+      {
+       "price_version_id": "8dbf8b3cd5d547b9a9c43aadc6a767ef",
+       "item": {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "125",
+        "price_type": "販売",
+        "source": "simulator:架空価格表",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空確認者",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "仕入価格の確認に基づく改定",
+       "metadata": {}
+      },
+      {
+       "price_version_id": "6fa26efaed32405f93eca2b90ade0407",
+       "item": {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "130",
+        "price_type": "販売",
+        "source": "simulator:架空価格表",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空確認者",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "入力額を伝票で訂正",
+       "metadata": {}
+      }
+     ]
+    },
+    {
+     "ok": {
+      "event": {
+       "item_id": "demo-paint",
+       "old_version": "6fa26efaed32405f93eca2b90ade0407",
+       "new_version": "6c01ac271cab42b6be99eb4aab5a24f8",
+       "event_type": "condition_change",
+       "reason": "仕入価格の確認に基づく改定",
+       "source": "simulator:架空価格表",
+       "actor": "架空確認者",
+       "occurred_at": "2026-10-12T09:30:00.500000+00:00",
+       "status": "approved"
+      },
+      "price_version": {
+       "price_version_id": "6c01ac271cab42b6be99eb4aab5a24f8",
+       "item": {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "131",
+        "price_type": "販売",
+        "source": "simulator:架空価格表",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空確認者",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "仕入価格の確認に基づく改定",
+       "metadata": {}
+      },
+      "items": [
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "131",
+        "price_type": "販売",
+        "source": "simulator:架空価格表",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "simulator": true,
+      "notice": "価格は架空デモ値です。承認済みの価格だけを items に返しています。"
+     }
+    },
+    {
+     "ok": {
+      "event": {
+       "item_id": "demo-paint",
+       "old_version": "6c01ac271cab42b6be99eb4aab5a24f8",
+       "new_version": "9f92bbe49fed43b68fd4318e674aa215",
+       "event_type": "condition_change",
+       "reason": "仕入価格の確認に基づく改定",
+       "source": "simulator:架空価格表",
+       "actor": "架空確認者",
+       "occurred_at": "2026-10-13",
+       "status": "approved"
+      },
+      "price_version": {
+       "price_version_id": "9f92bbe49fed43b68fd4318e674aa215",
+       "item": {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "132",
+        "price_type": "販売",
+        "source": "simulator:架空価格表",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空確認者",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "仕入価格の確認に基づく改定",
+       "metadata": {}
+      },
+      "items": [
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "132",
+        "price_type": "販売",
+        "source": "simulator:架空価格表",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "simulator": true,
+      "notice": "価格は架空デモ値です。承認済みの価格だけを items に返しています。"
+     }
+    },
+    {
+     "ok": {
+      "event": {
+       "item_id": "demo-paint",
+       "old_version": "9f92bbe49fed43b68fd4318e674aa215",
+       "new_version": "d9d1d8151b74444785e2388ea66bfdde",
+       "event_type": "condition_change",
+       "reason": "仕入価格の確認に基づく改定",
+       "source": "simulator:架空価格表",
+       "actor": "架空確認者",
+       "occurred_at": "2026-10-13T09:30:00+00:00",
+       "status": "approved"
+      },
+      "price_version": {
+       "price_version_id": "d9d1d8151b74444785e2388ea66bfdde",
+       "item": {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "133",
+        "price_type": "販売",
+        "source": "simulator:架空価格表",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空確認者",
+       "supplier_id": "",
+       "valid_from": "2026-10-14",
+       "valid_until": "2026-10-20",
+       "status": "approved",
+       "reason": "仕入価格の確認に基づく改定",
+       "metadata": {}
+      },
+      "items": [
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "133",
+        "price_type": "販売",
+        "source": "simulator:架空価格表",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "simulator": true,
+      "notice": "価格は架空デモ値です。承認済みの価格だけを items に返しています。"
+     }
+    }
+   ]
+  },
+  {
+   "name": "保留イベントは承認済み価格を置き換えない",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "event": {
+       "item_id": "demo-paint",
+       "old_version": "201ad6aa94d34a229af2f3c49b128c46",
+       "new_version": "885b263e3bb1404b807c48fab90d01af",
+       "event_type": "increase",
+       "reason": "仕入価格の確認に基づく改定",
+       "source": "simulator:架空価格表",
+       "actor": "架空確認者",
+       "occurred_at": "2026-10-11",
+       "status": "pending"
+      },
+      "price_version": {
+       "price_version_id": "885b263e3bb1404b807c48fab90d01af",
+       "item": {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "150",
+        "price_type": "販売",
+        "source": "simulator:架空価格表",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空確認者",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "pending",
+       "reason": "仕入価格の確認に基づく改定",
+       "metadata": {}
+      },
+      "items": [
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "120",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "simulator": true,
+      "notice": "価格は架空デモ値です。承認済みの価格だけを items に返しています。"
+     }
+    },
+    {
+     "ok": {
+      "price_version_id": "201ad6aa94d34a229af2f3c49b128c46",
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "120",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空デモ担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {}
+     }
+    },
+    {
+     "ok": {
+      "event": {
+       "item_id": "new-pending",
+       "old_version": null,
+       "new_version": "cff7166bded84af3985faeade27a5fc6",
+       "event_type": "initial",
+       "reason": "仕入価格の確認に基づく改定",
+       "source": "simulator:架空価格表",
+       "actor": "架空確認者",
+       "occurred_at": "2026-10-11",
+       "status": "pending"
+      },
+      "price_version": {
+       "price_version_id": "cff7166bded84af3985faeade27a5fc6",
+       "item": {
+        "item_id": "new-pending",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "1",
+        "price_type": "販売",
+        "source": "simulator:架空価格表",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空確認者",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "pending",
+       "reason": "仕入価格の確認に基づく改定",
+       "metadata": {}
+      },
+      "items": [],
+      "simulator": true,
+      "notice": "価格は架空デモ値です。承認済みの価格だけを items に返しています。"
+     }
+    },
+    {
+     "ok": {
+      "event": {
+       "item_id": "demo-paint",
+       "old_version": "885b263e3bb1404b807c48fab90d01af",
+       "new_version": "507e7f49e375420c8af290587bf40bbd",
+       "event_type": "increase",
+       "reason": "仕入価格の確認に基づく改定",
+       "source": "simulator:架空価格表",
+       "actor": "架空確認者",
+       "occurred_at": "2026-10-11",
+       "status": "approved"
+      },
+      "price_version": {
+       "price_version_id": "507e7f49e375420c8af290587bf40bbd",
+       "item": {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "160",
+        "price_type": "販売",
+        "source": "simulator:架空価格表",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空確認者",
+       "supplier_id": "",
+       "valid_from": "2026-10-01",
+       "valid_until": "2026-10-05",
+       "status": "approved",
+       "reason": "仕入価格の確認に基づく改定",
+       "metadata": {}
+      },
+      "items": [
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "160",
+        "price_type": "販売",
+        "source": "simulator:架空価格表",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "simulator": true,
+      "notice": "価格は架空デモ値です。承認済みの価格だけを items に返しています。"
+     }
+    }
+   ]
+  },
+  {
+   "name": "初回は initial",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "error": "ValidationError",
+     "message": "event_type: 初回登録は initial を選択してください"
+    },
+    {
+     "ok": {
+      "event": {
+       "item_id": "new-item",
+       "old_version": null,
+       "new_version": "6aea08c77c104596bdb6730b6626e140",
+       "event_type": "initial",
+       "reason": "仕入価格の確認に基づく改定",
+       "source": "simulator:架空価格表",
+       "actor": "架空確認者",
+       "occurred_at": "2026-10-11",
+       "status": "approved"
+      },
+      "price_version": {
+       "price_version_id": "6aea08c77c104596bdb6730b6626e140",
+       "item": {
+        "item_id": "new-item",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "25",
+        "price_type": "販売",
+        "source": "simulator:架空価格表",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空確認者",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "仕入価格の確認に基づく改定",
+       "metadata": {}
+      },
+      "items": [
+       {
+        "item_id": "new-item",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "25",
+        "price_type": "販売",
+        "source": "simulator:架空価格表",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "simulator": true,
+      "notice": "価格は架空デモ値です。承認済みの価格だけを items に返しています。"
+     }
+    },
+    {
+     "ok": {
+      "event": {
+       "item_id": "new-item",
+       "old_version": null,
+       "new_version": "a4cfd744bf8146aa8ae7191acadcb790",
+       "event_type": "initial",
+       "reason": "仕入価格の確認に基づく改定",
+       "source": "simulator:架空価格表",
+       "actor": "架空確認者",
+       "occurred_at": "2026-10-11",
+       "status": "approved"
+      },
+      "price_version": {
+       "price_version_id": "a4cfd744bf8146aa8ae7191acadcb790",
+       "item": {
+        "item_id": "new-item",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "25",
+        "price_type": "販売",
+        "source": "simulator:架空価格表",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空確認者",
+       "supplier_id": "sup-a",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "仕入価格の確認に基づく改定",
+       "metadata": {}
+      },
+      "items": [
+       {
+        "item_id": "new-item",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "25",
+        "price_type": "販売",
+        "source": "simulator:架空価格表",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "simulator": true,
+      "notice": "価格は架空デモ値です。承認済みの価格だけを items に返しています。"
+     }
+    },
+    {
+     "ok": {
+      "event": {
+       "item_id": "new-item",
+       "old_version": "6aea08c77c104596bdb6730b6626e140",
+       "new_version": "75ac392823204719b6cf9c1f2e0d0047",
+       "event_type": "increase",
+       "reason": "仕入価格の確認に基づく改定",
+       "source": "simulator:架空価格表",
+       "actor": "架空確認者",
+       "occurred_at": "2026-10-11",
+       "status": "approved"
+      },
+      "price_version": {
+       "price_version_id": "75ac392823204719b6cf9c1f2e0d0047",
+       "item": {
+        "item_id": "new-item",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "26",
+        "price_type": "販売",
+        "source": "simulator:架空価格表",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空確認者",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "仕入価格の確認に基づく改定",
+       "metadata": {}
+      },
+      "items": [
+       {
+        "item_id": "new-item",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "26",
+        "price_type": "販売",
+        "source": "simulator:架空価格表",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "simulator": true,
+      "notice": "価格は架空デモ値です。承認済みの価格だけを items に返しています。"
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "supplier_id: 文字列を入力してください"
+    }
+   ]
+  },
+  {
+   "name": "不正入力は保存しない",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "error": "ValidationError",
+     "message": "event_type: initial / increase / correction / condition_change を選択してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "reason: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "source: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "confirmed_by: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "occurred_at: ISO形式の日付または日時が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "occurred_at: ISO形式の日付または日時が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "status: approved または pending を指定してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "event_type: 既存価格の変更には別のイベント種別を選択してください"
+    },
+    {
+     "ok": [
+      {
+       "price_version_id": "1d9a69c699694a7586e55500593777e5",
+       "item": {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "120",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空デモ担当",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "初回登録",
+       "metadata": {}
+      }
+     ]
+    },
+    {
+     "ok": []
+    }
+   ]
+  },
+  {
+   "name": "履歴は品目ごと",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "event": {
+       "item_id": "demo-paint",
+       "old_version": "a9bb262ced5043c39b59987fb224d148",
+       "new_version": "e379ef9c4a124536850e3763ec16bbdb",
+       "event_type": "increase",
+       "reason": "仕入価格の確認に基づく改定",
+       "source": "simulator:架空価格表",
+       "actor": "架空確認者",
+       "occurred_at": "2026-10-11",
+       "status": "approved"
+      },
+      "price_version": {
+       "price_version_id": "e379ef9c4a124536850e3763ec16bbdb",
+       "item": {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "125",
+        "price_type": "販売",
+        "source": "simulator:架空価格表",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空確認者",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "仕入価格の確認に基づく改定",
+       "metadata": {}
+      },
+      "items": [
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "125",
+        "price_type": "販売",
+        "source": "simulator:架空価格表",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "simulator": true,
+      "notice": "価格は架空デモ値です。承認済みの価格だけを items に返しています。"
+     }
+    },
+    {
+     "ok": {
+      "item_id": "demo-paint",
+      "events": [
+       {
+        "item_id": "demo-paint",
+        "old_version": "a9bb262ced5043c39b59987fb224d148",
+        "new_version": "e379ef9c4a124536850e3763ec16bbdb",
+        "event_type": "increase",
+        "reason": "仕入価格の確認に基づく改定",
+        "source": "simulator:架空価格表",
+        "actor": "架空確認者",
+        "occurred_at": "2026-10-11",
+        "status": "approved"
+       }
+      ],
+      "simulator": true
+     }
+    },
+    {
+     "ok": {
+      "item_id": "missing",
+      "events": [],
+      "simulator": true
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "item_id: 入力が必要です"
+    }
+   ]
+  },
+  {
+   "name": "不正な action / payload",
+   "expected": [
+    {
+     "error": "ValidationError",
+     "message": "payload: 入力を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "payload: 入力を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "action: record_event または list_events を選択してください"
+    }
+   ]
+  }
+ ]
+}

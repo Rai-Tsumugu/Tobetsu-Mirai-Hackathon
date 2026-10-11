@@ -1,0 +1,763 @@
+{
+ "scenarios": [
+  {
+   "name": "SPEC defaults",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "save_formula",
+      "formula_id": "demo-metallic-blue",
+      "code": "SIM-BLUE-01",
+      "version": 1,
+      "status": "approved",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": "1",
+        "unit": "ml"
+       }
+      ],
+      "base_qty": "100",
+      "unit": "ml",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "latest",
+     "namespace": "formula",
+     "record_id": "demo-metallic-blue"
+    }
+   ]
+  },
+  {
+   "name": "保存と計算",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "save_formula",
+      "formula_id": "formula-1",
+      "code": "SIM-BLUE-01",
+      "version": 1,
+      "status": "approved",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": "1",
+        "unit": "ml"
+       }
+      ],
+      "base_qty": "100",
+      "unit": "ml",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "latest",
+     "namespace": "formula",
+     "record_id": "formula-1"
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "get_formula",
+      "formula_id": "formula-1"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "formula_id": "formula-1",
+      "base_qty": 2.5,
+      "unit": "ml"
+     }
+    }
+   ]
+  },
+  {
+   "name": "複数行の正確な比率",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "demo-solvent",
+      "name": "架空溶剤",
+      "category": "溶剤",
+      "unit": "ml",
+      "unit_price": "0.15",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "架空デモ担当"
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "save_formula",
+      "formula_id": "formula-2",
+      "code": "SIM-02",
+      "version": 1,
+      "status": "approved",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": "0.75",
+        "unit": "ml"
+       },
+       {
+        "item_id": "demo-solvent",
+        "ratio": "0.25",
+        "unit": "ml"
+       }
+      ],
+      "base_qty": "10.4",
+      "unit": "ml",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "calculate",
+      "formula_id": "formula-2",
+      "base_qty": "10.4",
+      "unit": "ml",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "save_formula",
+      "formula_id": "formula-3",
+      "code": "SIM-03",
+      "version": 2,
+      "status": "approved",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": "0.333333333333",
+        "unit": "ml"
+       },
+       {
+        "item_id": "demo-solvent",
+        "ratio": "0.666666666667",
+        "unit": "ml"
+       }
+      ],
+      "base_qty": "0.000000000003",
+      "unit": "ml"
+     }
+    }
+   ]
+  },
+  {
+   "name": "未承認の配合は計算しない",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "save_formula",
+      "formula_id": "formula-1",
+      "code": "SIM-BLUE-01",
+      "version": 1,
+      "status": "pending",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": "1",
+        "unit": "ml"
+       }
+      ],
+      "base_qty": "100",
+      "unit": "ml",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "get_formula",
+      "formula_id": "formula-1",
+      "base_qty": "100",
+      "unit": "ml"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "calculate",
+      "formula_id": "formula-1",
+      "base_qty": "100",
+      "unit": "ml"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "approve_formula",
+      "formula_id": "formula-1",
+      "confirmed_by": "架空承認者"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "calculate",
+      "formula_id": "formula-1",
+      "base_qty": "100",
+      "unit": "ml"
+     }
+    },
+    {
+     "op": "records",
+     "namespace": "formula",
+     "record_id": "formula-1"
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "approve_formula",
+      "formula_id": "formula-1",
+      "confirmed_by": "架空承認者"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "approve_formula",
+      "formula_id": "formula-x",
+      "confirmed_by": "架空承認者"
+     }
+    }
+   ]
+  },
+  {
+   "name": "比率・単位の不整合は保存しない",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "save_formula",
+      "formula_id": "formula-1",
+      "code": "SIM-BLUE-01",
+      "version": 1,
+      "status": "approved",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": "0.9",
+        "unit": "ml"
+       }
+      ],
+      "base_qty": "100",
+      "unit": "ml",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "save_formula",
+      "formula_id": "formula-1",
+      "code": "SIM-BLUE-01",
+      "version": 1,
+      "status": "approved",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": "1",
+        "unit": "g"
+       }
+      ],
+      "base_qty": "100",
+      "unit": "ml",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "records",
+     "namespace": "formula",
+     "record_id": "formula-1"
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "save_formula",
+      "formula_id": "formula-1",
+      "code": "SIM-BLUE-01",
+      "version": 1,
+      "status": "draft",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": "1",
+        "unit": "ml"
+       }
+      ],
+      "base_qty": "100",
+      "unit": "ml",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "save_formula",
+      "formula_id": "formula-1",
+      "code": "SIM-BLUE-01",
+      "version": 0,
+      "status": "approved",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": "1",
+        "unit": "ml"
+       }
+      ],
+      "base_qty": "100",
+      "unit": "ml",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "save_formula",
+      "formula_id": "formula-1",
+      "code": "SIM-BLUE-01",
+      "version": true,
+      "status": "approved",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": "1",
+        "unit": "ml"
+       }
+      ],
+      "base_qty": "100",
+      "unit": "ml",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "save_formula",
+      "formula_id": "formula-1",
+      "code": "SIM-BLUE-01",
+      "version": 1.0,
+      "status": "approved",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": "1",
+        "unit": "ml"
+       }
+      ],
+      "base_qty": "100",
+      "unit": "ml",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "save_formula",
+      "formula_id": "formula-1",
+      "code": "SIM-BLUE-01",
+      "version": 1,
+      "status": "approved",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": "1",
+        "unit": "ml"
+       }
+      ],
+      "base_qty": "0",
+      "unit": "ml",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "save_formula",
+      "formula_id": "formula-1",
+      "code": " ",
+      "version": 1,
+      "status": "approved",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": "1",
+        "unit": "ml"
+       }
+      ],
+      "base_qty": "100",
+      "unit": "ml",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "save_formula",
+      "formula_id": "formula-1",
+      "code": "SIM-BLUE-01",
+      "version": 1,
+      "status": "approved",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": "x",
+      "base_qty": "100",
+      "unit": "ml",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "save_formula",
+      "formula_id": "formula-1",
+      "code": "SIM-BLUE-01",
+      "version": 1,
+      "status": "approved",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       1
+      ],
+      "base_qty": "100",
+      "unit": "ml",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "save_formula",
+      "formula_id": "formula-1",
+      "code": "SIM-BLUE-01",
+      "version": 1,
+      "status": "approved",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": 0.5,
+        "unit": "ml"
+       }
+      ],
+      "base_qty": "100",
+      "unit": "ml",
+      "as_of": "2026-10-11"
+     }
+    }
+   ]
+  },
+  {
+   "name": "不正な構成・版・価格なし",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "save_formula",
+      "formula_id": "invalid",
+      "code": "SIM",
+      "version": 1,
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [],
+      "base_qty": "1",
+      "unit": "ml"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "save_formula",
+      "formula_id": "invalid",
+      "code": "SIM",
+      "version": 1,
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": "0",
+        "unit": "ml"
+       }
+      ],
+      "base_qty": "1",
+      "unit": "ml"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "save_formula",
+      "formula_id": "invalid",
+      "code": "SIM",
+      "version": 1,
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": "1.1",
+        "unit": "ml"
+       }
+      ],
+      "base_qty": "1",
+      "unit": "ml"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "save_formula",
+      "formula_id": "invalid",
+      "code": "SIM",
+      "version": 1,
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": "0.5",
+        "unit": "ml"
+       },
+       {
+        "item_id": "demo-paint",
+        "ratio": "0.5",
+        "unit": "ml"
+       }
+      ],
+      "base_qty": "1",
+      "unit": "ml"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "save_formula",
+      "formula_id": "invalid",
+      "code": "SIM",
+      "version": 1,
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": "1",
+        "unit": "ml"
+       }
+      ],
+      "base_qty": "1",
+      "unit": "ml"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "save_formula",
+      "formula_id": "formula-1",
+      "code": "SIM-BLUE-01",
+      "version": 1,
+      "status": "approved",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": "1",
+        "unit": "ml"
+       }
+      ],
+      "base_qty": "100",
+      "unit": "ml",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "get_formula",
+      "formula_id": "formula-1",
+      "version": 2
+     }
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "get_formula",
+      "formula_id": "formula-1",
+      "version": 1
+     }
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "get_formula",
+      "formula_id": "formula-1",
+      "version": "1"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "save_formula",
+      "formula_id": "missing-price",
+      "code": "SIM",
+      "version": 1,
+      "status": "approved",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "absent-item",
+        "ratio": "1",
+        "unit": "ml"
+       }
+      ],
+      "base_qty": "1",
+      "unit": "ml",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "records",
+     "namespace": "formula",
+     "record_id": "missing-price"
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "part-ml",
+      "name": "架空部品",
+      "category": "部品",
+      "unit": "ml",
+      "unit_price": "5",
+      "price_type": "仕入",
+      "source": "s",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "c"
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "save_formula",
+      "formula_id": "part",
+      "code": "SIM",
+      "version": 1,
+      "status": "approved",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "part-ml",
+        "ratio": "1",
+        "unit": "ml"
+       }
+      ],
+      "base_qty": "1",
+      "unit": "ml"
+     }
+    }
+   ]
+  },
+  {
+   "name": "不正な action / payload",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": null
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": []
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "action": "remove_formula"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M05",
+     "payload": {
+      "formula_id": "none",
+      "unit": "ml",
+      "base_qty": "1"
+     }
+    }
+   ]
+  }
+ ]
+}

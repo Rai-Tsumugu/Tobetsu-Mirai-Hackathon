@@ -1,0 +1,591 @@
+{
+ "source": "scenarios/m07.json",
+ "scenarios": [
+  {
+   "name": "SPEC defaults",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "status": "approved",
+      "item": {
+       "item_id": "demo-m07-brake-pad",
+       "name": "架空サンプルブレーキパッド",
+       "category": "部品",
+       "unit": "個",
+       "unit_price": "2400",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "items": [
+       {
+        "item_id": "demo-m07-brake-pad",
+        "name": "架空サンプルブレーキパッド",
+        "category": "部品",
+        "unit": "個",
+        "unit_price": "2400",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "price_version_id": "4ab35f8728c54a1e9ce16c03abf6e062",
+      "confirmed_by": "架空デモ担当",
+      "reason": "単品価格の初回確認",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "currency": "JPY"
+     }
+    },
+    {
+     "ok": [
+      {
+       "price_version_id": "4ab35f8728c54a1e9ce16c03abf6e062",
+       "item": {
+        "item_id": "demo-m07-brake-pad",
+        "name": "架空サンプルブレーキパッド",
+        "category": "部品",
+        "unit": "個",
+        "unit_price": "2400",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空デモ担当",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "単品価格の初回確認",
+       "metadata": {
+        "currency": "JPY"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "検索と一覧の絞り込み",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "status": "approved",
+      "item": {
+       "item_id": "demo-m07-brake-pad",
+       "name": "架空サンプルブレーキパッド",
+       "category": "部品",
+       "unit": "個",
+       "unit_price": "2400",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "items": [
+       {
+        "item_id": "demo-m07-brake-pad",
+        "name": "架空サンプルブレーキパッド",
+        "category": "部品",
+        "unit": "個",
+        "unit_price": "2400",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "price_version_id": "bd0c86685a6a4a5eadc6bbc041efa0b6",
+      "confirmed_by": "架空デモ担当",
+      "reason": "単品価格の初回確認",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "currency": "JPY"
+     }
+    },
+    {
+     "ok": {
+      "as_of": "2026-10-11",
+      "count": 3,
+      "items": [
+       {
+        "item_id": "demo-m07-brake-pad",
+        "name": "架空サンプルブレーキパッド",
+        "category": "部品",
+        "unit": "個",
+        "unit_price": "2400",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "80",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "120",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       }
+      ]
+     }
+    },
+    {
+     "ok": {
+      "as_of": "2026-10-11",
+      "count": 1,
+      "items": [
+       {
+        "item_id": "demo-m07-brake-pad",
+        "name": "架空サンプルブレーキパッド",
+        "category": "部品",
+        "unit": "個",
+        "unit_price": "2400",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       }
+      ]
+     }
+    },
+    {
+     "ok": {
+      "as_of": "2026-10-11",
+      "count": 1,
+      "items": [
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "80",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       }
+      ]
+     }
+    },
+    {
+     "ok": {
+      "as_of": "2026-10-11",
+      "count": 3,
+      "items": [
+       {
+        "item_id": "demo-m07-brake-pad",
+        "name": "架空サンプルブレーキパッド",
+        "category": "部品",
+        "unit": "個",
+        "unit_price": "2400",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "80",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "120",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       }
+      ]
+     }
+    },
+    {
+     "ok": {
+      "status": "approved",
+      "item": {
+       "item_id": "Zeta",
+       "name": "ａ品",
+       "category": "消耗品",
+       "unit": "個",
+       "unit_price": "1",
+       "price_type": "販売",
+       "source": "x",
+       "updated_at": "2026-10-11"
+      },
+      "items": [
+       {
+        "item_id": "Zeta",
+        "name": "ａ品",
+        "category": "消耗品",
+        "unit": "個",
+        "unit_price": "1",
+        "price_type": "販売",
+        "source": "x",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "price_version_id": "bf796b41e70844ebb21f59102517f3e0",
+      "confirmed_by": "架空デモ担当",
+      "reason": "単品価格の初回確認",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "currency": "JPY"
+     }
+    },
+    {
+     "ok": {
+      "status": "approved",
+      "item": {
+       "item_id": "alpha",
+       "name": "B品",
+       "category": "消耗品",
+       "unit": "個",
+       "unit_price": "1",
+       "price_type": "販売",
+       "source": "x",
+       "updated_at": "2026-10-01"
+      },
+      "items": [
+       {
+        "item_id": "alpha",
+        "name": "B品",
+        "category": "消耗品",
+        "unit": "個",
+        "unit_price": "1",
+        "price_type": "販売",
+        "source": "x",
+        "updated_at": "2026-10-01"
+       }
+      ],
+      "price_version_id": "1f0f4e1f7b84459686b71c3c89fd15e2",
+      "confirmed_by": "架空デモ担当",
+      "reason": "単品価格の初回確認",
+      "valid_from": "2026-10-01",
+      "valid_until": null,
+      "currency": "JPY"
+     }
+    },
+    {
+     "ok": {
+      "status": "approved",
+      "item": {
+       "item_id": "alpha",
+       "name": "B品",
+       "category": "消耗品",
+       "unit": "個",
+       "unit_price": "2",
+       "price_type": "販売",
+       "source": "x",
+       "updated_at": "2026-10-05"
+      },
+      "items": [
+       {
+        "item_id": "alpha",
+        "name": "B品",
+        "category": "消耗品",
+        "unit": "個",
+        "unit_price": "2",
+        "price_type": "販売",
+        "source": "x",
+        "updated_at": "2026-10-05"
+       }
+      ],
+      "price_version_id": "dd47873ad788486aaf31058865c89f59",
+      "confirmed_by": "架空デモ担当",
+      "reason": "単品価格の初回確認",
+      "valid_from": "2026-10-05",
+      "valid_until": "2026-12-31",
+      "currency": "JPY"
+     }
+    },
+    {
+     "ok": {
+      "as_of": "2026-10-11",
+      "count": 5,
+      "items": [
+       {
+        "item_id": "alpha",
+        "name": "B品",
+        "category": "消耗品",
+        "unit": "個",
+        "unit_price": "2",
+        "price_type": "販売",
+        "source": "x",
+        "updated_at": "2026-10-05"
+       },
+       {
+        "item_id": "demo-m07-brake-pad",
+        "name": "架空サンプルブレーキパッド",
+        "category": "部品",
+        "unit": "個",
+        "unit_price": "2400",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "80",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "120",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       {
+        "item_id": "Zeta",
+        "name": "ａ品",
+        "category": "消耗品",
+        "unit": "個",
+        "unit_price": "1",
+        "price_type": "販売",
+        "source": "x",
+        "updated_at": "2026-10-11"
+       }
+      ]
+     }
+    },
+    {
+     "ok": {
+      "as_of": "2026-10-02",
+      "count": 1,
+      "items": [
+       {
+        "item_id": "alpha",
+        "name": "B品",
+        "category": "消耗品",
+        "unit": "個",
+        "unit_price": "1",
+        "price_type": "販売",
+        "source": "x",
+        "updated_at": "2026-10-01"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "必須項目がなければ保存しない",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "error": "ValidationError",
+     "message": "item_id: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "name: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "category / price_type: 選択値を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "unit: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "unit_price: 数値を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "category / price_type: 選択値を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "source: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "updated_at: ISO形式の日付が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "confirmed_by: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "reason: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "valid_from: ISO形式の日付が必要です"
+    },
+    {
+     "ok": []
+    }
+   ]
+  },
+  {
+   "name": "不正な価格・期限",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "error": "ValidationError",
+     "message": "unit_price: 有限の正数/非負数を入力してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "unit_price: 有限の正数/非負数を入力してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "valid_until: 開始日より前です"
+    },
+    {
+     "ok": []
+    }
+   ]
+  },
+  {
+   "name": "保留・期限切れは検索しない",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "price_version_id": "9a899966ec4c472c83a921b8c159366b",
+      "item": {
+       "item_id": "pending-part",
+       "name": "架空サンプルブレーキパッド",
+       "category": "部品",
+       "unit": "個",
+       "unit_price": "2400",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "pending",
+      "reason": "初回登録",
+      "metadata": {}
+     }
+    },
+    {
+     "ok": {
+      "price_version_id": "60766a58ac894ffcab435b6b402ee718",
+      "item": {
+       "item_id": "expired-part",
+       "name": "架空サンプルブレーキパッド",
+       "category": "部品",
+       "unit": "個",
+       "unit_price": "2400",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-01"
+      },
+      "confirmed_by": "架空担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-01",
+      "valid_until": "2026-10-10",
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {}
+     }
+    },
+    {
+     "ok": {
+      "as_of": "2026-10-11",
+      "count": 0,
+      "items": []
+     }
+    },
+    {
+     "ok": {
+      "as_of": "2026-10-05",
+      "count": 1,
+      "items": [
+       {
+        "item_id": "expired-part",
+        "name": "架空サンプルブレーキパッド",
+        "category": "部品",
+        "unit": "個",
+        "unit_price": "2400",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-01"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "不正な action / 絞り込み",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "error": "ValidationError",
+     "message": "payload: 入力を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "payload: 入力を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "action: register、search、list のいずれかを指定してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "category_filter: 選択値を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "price_type_filter: 選択値を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "query: 文字列を入力してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "as_of: ISO形式の日付が必要です"
+    }
+   ]
+  }
+ ]
+}

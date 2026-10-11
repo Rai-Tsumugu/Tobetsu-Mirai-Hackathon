@@ -1,0 +1,186 @@
+{
+ "scenarios": [
+  {
+   "name": "既定値で架空の候補を表示",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M19",
+     "payload": {
+      "action": "list",
+      "panel_id": "front_door",
+      "finish_type": "metallic"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M19",
+     "payload": {
+      "action": "list",
+      "panel_id": "front_door",
+      "finish_type": "metallic"
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": null,
+     "price_type": null,
+     "supplier_id": null
+    }
+   ]
+  },
+  {
+   "name": "候補の記録と一覧",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M19",
+     "payload": {
+      "action": "record",
+      "panel_id": "hood",
+      "finish_type": "pearl",
+      "item_id": "paint-pearlescent",
+      "applicability": "下地確認後に使用",
+      "source": "工場材料表 v2",
+      "confirmed_by": "整備士A"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M19",
+     "payload": {
+      "panel_id": "hood",
+      "finish_type": "pearl"
+     }
+    }
+   ]
+  },
+  {
+   "name": "未登録の組み合わせ",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M19",
+     "payload": {
+      "panel_id": "roof",
+      "finish_type": "matte"
+     }
+    }
+   ]
+  },
+  {
+   "name": "選択の記録",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M19",
+     "payload": {
+      "action": "record",
+      "panel_id": "door",
+      "finish_type": "solid",
+      "item_id": "paint-red",
+      "applicability": "色合わせ後",
+      "source": "塗料台帳",
+      "confirmed_by": "担当A"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M19",
+     "payload": {
+      "action": "record",
+      "panel_id": "door",
+      "finish_type": "solid",
+      "item_id": "paint-red",
+      "applicability": "色合わせ後 v2",
+      "source": "simulator:台帳2",
+      "confirmed_by": "担当C"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M19",
+     "payload": {
+      "action": "select",
+      "panel_id": "door",
+      "finish_type": "solid",
+      "item_id": "paint-red",
+      "application_condition": "色合わせを担当者が確認",
+      "confirmed_by": "担当B"
+     }
+    },
+    {
+     "op": "latest",
+     "namespace": "panel_material_selection",
+     "record_id": "$ref:2.selection_id"
+    }
+   ]
+  },
+  {
+   "name": "不正な記録・未登録の選択",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M19",
+     "payload": {
+      "action": "record",
+      "panel_id": "door",
+      "finish_type": "solid",
+      "item_id": "paint-red",
+      "applicability": "ok",
+      "source": "",
+      "confirmed_by": "担当A"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M19",
+     "payload": {
+      "action": "select",
+      "panel_id": "door",
+      "finish_type": "solid",
+      "item_id": "paint-red",
+      "application_condition": "ok",
+      "confirmed_by": "担当A"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M19",
+     "payload": {
+      "action": "list",
+      "panel_id": "door",
+      "finish_type": "solid",
+      "item_id": "x"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M19",
+     "payload": {
+      "action": "list",
+      "panel_id": " ",
+      "finish_type": "solid"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M19",
+     "payload": {
+      "action": "remove"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M19",
+     "payload": [
+      "list"
+     ]
+    }
+   ]
+  }
+ ]
+}

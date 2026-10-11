@@ -1,0 +1,1700 @@
+{
+ "scenarios": [
+  {
+   "name": "HTTP 既定値（quote_demo）",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "quote_demo",
+      "quote_id": "demo-m29-quote",
+      "line_rule_id": "demo-m29-line-rule",
+      "tax_rule_id": "demo-m29-tax-rule",
+      "confirmed_by": "架空デモ担当",
+      "tax_rates": {
+       "demo-tax": "0.1"
+      },
+      "lines": [
+       {
+        "quote_line_id": "demo-m29-line-1",
+        "name": "架空デモ材料A",
+        "quantity": "1",
+        "unit_price": "1.005",
+        "tax_category": "demo-tax"
+       },
+       {
+        "quote_line_id": "demo-m29-line-2",
+        "name": "架空デモ材料B",
+        "quantity": "1",
+        "unit_price": "1.005",
+        "tax_category": "demo-tax"
+       }
+      ]
+     }
+    },
+    {
+     "op": "records",
+     "namespace": "rounding_rule",
+     "record_id": "demo-m29-line-rule"
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "quote_demo",
+      "quote_id": "demo-m29-quote",
+      "line_rule_id": "demo-m29-line-rule",
+      "tax_rule_id": "demo-m29-tax-rule",
+      "confirmed_by": "架空デモ担当",
+      "tax_rates": {
+       "demo-tax": "0.1"
+      },
+      "lines": [
+       {
+        "quote_line_id": "demo-m29-line-1",
+        "name": "架空デモ材料A",
+        "quantity": "1",
+        "unit_price": "1.005",
+        "tax_category": "demo-tax"
+       },
+       {
+        "quote_line_id": "demo-m29-line-2",
+        "name": "架空デモ材料B",
+        "quantity": "1",
+        "unit_price": "1.005",
+        "tax_category": "demo-tax"
+       }
+      ]
+     }
+    },
+    {
+     "op": "records",
+     "namespace": "rounding_rule"
+    },
+    {
+     "op": "records",
+     "namespace": "quote_snapshot"
+    }
+   ]
+  },
+  {
+   "name": "規約は追記で版を残す",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "line-rule",
+      "stage": "line",
+      "mode": "half_up",
+      "decimal_places": 2,
+      "confirmed_by": "会計担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "line-rule",
+      "stage": "line",
+      "mode": "down",
+      "decimal_places": 2,
+      "confirmed_by": "担当B"
+     }
+    },
+    {
+     "op": "records",
+     "namespace": "rounding_rule",
+     "record_id": "line-rule"
+    },
+    {
+     "op": "latest",
+     "namespace": "rounding_rule",
+     "record_id": "line-rule"
+    }
+   ]
+  },
+  {
+   "name": "未丸めの積を残し規約の版を記録",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "line-rule",
+      "stage": "line",
+      "mode": "half_up",
+      "decimal_places": 2,
+      "confirmed_by": "会計担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "tax-rule",
+      "stage": "tax_category_total",
+      "mode": "half_up",
+      "decimal_places": 2,
+      "confirmed_by": "会計担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "quote",
+      "quote_id": "quote-a",
+      "line_rule_id": "line-rule",
+      "tax_rule_id": "tax-rule",
+      "confirmed_by": "見積担当",
+      "tax_rates": {
+       "tax-a": "0.1"
+      },
+      "lines": [
+       {
+        "quote_line_id": "line-a",
+        "name": "材料A",
+        "quantity": "1",
+        "unit_price": "1.005",
+        "tax_category": "tax-a"
+       },
+       {
+        "quote_line_id": "line-b",
+        "name": "材料B",
+        "quantity": "1",
+        "unit_price": "1.005",
+        "tax_category": "tax-a"
+       }
+      ]
+     }
+    },
+    {
+     "op": "latest",
+     "namespace": "quote_snapshot",
+     "record_id": "quote-a"
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "quote",
+      "quote_id": "quote-a",
+      "line_rule_id": "line-rule",
+      "tax_rule_id": "tax-rule",
+      "confirmed_by": "見積担当",
+      "tax_rates": {
+       "tax-a": "0.1"
+      },
+      "lines": [
+       {
+        "quote_line_id": "line-a",
+        "name": "材料A",
+        "quantity": "1",
+        "unit_price": "1.005",
+        "tax_category": "tax-a"
+       },
+       {
+        "quote_line_id": "line-b",
+        "name": "材料B",
+        "quantity": "1",
+        "unit_price": "1.005",
+        "tax_category": "tax-a"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "規約の stage が一致しない",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "line-rule",
+      "stage": "tax_category_total",
+      "mode": "half_up",
+      "decimal_places": 2,
+      "confirmed_by": "会計担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "tax-rule",
+      "stage": "tax_category_total",
+      "mode": "half_up",
+      "decimal_places": 2,
+      "confirmed_by": "会計担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "quote",
+      "quote_id": "quote-a",
+      "line_rule_id": "line-rule",
+      "tax_rule_id": "tax-rule",
+      "confirmed_by": "見積担当",
+      "tax_rates": {
+       "tax-a": "0.1"
+      },
+      "lines": [
+       {
+        "quote_line_id": "line-a",
+        "name": "材料A",
+        "quantity": "1",
+        "unit_price": "1.005",
+        "tax_category": "tax-a"
+       },
+       {
+        "quote_line_id": "line-b",
+        "name": "材料B",
+        "quantity": "1",
+        "unit_price": "1.005",
+        "tax_category": "tax-a"
+       }
+      ]
+     }
+    },
+    {
+     "op": "records",
+     "namespace": "quote_snapshot"
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "quote",
+      "quote_id": "quote-a",
+      "line_rule_id": "none",
+      "tax_rule_id": "tax-rule",
+      "confirmed_by": "見積担当",
+      "tax_rates": {
+       "tax-a": "0.1"
+      },
+      "lines": [
+       {
+        "quote_line_id": "line-a",
+        "name": "材料A",
+        "quantity": "1",
+        "unit_price": "1.005",
+        "tax_category": "tax-a"
+       },
+       {
+        "quote_line_id": "line-b",
+        "name": "材料B",
+        "quantity": "1",
+        "unit_price": "1.005",
+        "tax_category": "tax-a"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "承認なし・不正な規約",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "line-rule",
+      "stage": "line",
+      "mode": "half_up",
+      "decimal_places": 2,
+      "confirmed_by": ""
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "",
+      "stage": "line",
+      "mode": "half_up",
+      "decimal_places": 2,
+      "confirmed_by": "担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "line-rule",
+      "stage": "total",
+      "mode": "half_up",
+      "decimal_places": 2,
+      "confirmed_by": "担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "line-rule",
+      "stage": "line",
+      "mode": "truncate",
+      "decimal_places": 2,
+      "confirmed_by": "担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "line-rule",
+      "stage": "line",
+      "mode": "half_up",
+      "decimal_places": -1,
+      "confirmed_by": "担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "line-rule",
+      "stage": "line",
+      "mode": "half_up",
+      "decimal_places": 1.5,
+      "confirmed_by": "担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "line-rule",
+      "stage": "line",
+      "mode": "half_up",
+      "decimal_places": 7,
+      "confirmed_by": "担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "line-rule",
+      "stage": "line",
+      "mode": "half_up",
+      "decimal_places": true,
+      "confirmed_by": "担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "line-rule",
+      "stage": "line",
+      "mode": "half_up",
+      "decimal_places": "2",
+      "confirmed_by": "担当"
+     }
+    },
+    {
+     "op": "records",
+     "namespace": "rounding_rule"
+    }
+   ]
+  },
+  {
+   "name": "負数・NaN・税率の不備は保存しない",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "line-rule",
+      "stage": "line",
+      "mode": "half_up",
+      "decimal_places": 2,
+      "confirmed_by": "会計担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "tax-rule",
+      "stage": "tax_category_total",
+      "mode": "half_up",
+      "decimal_places": 2,
+      "confirmed_by": "会計担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "quote",
+      "quote_id": "quote-a",
+      "line_rule_id": "line-rule",
+      "tax_rule_id": "tax-rule",
+      "confirmed_by": "",
+      "tax_rates": {
+       "tax-a": "0.1"
+      },
+      "lines": [
+       {
+        "quote_line_id": "line-a",
+        "name": "材料A",
+        "quantity": "1",
+        "unit_price": "1.005",
+        "tax_category": "tax-a"
+       },
+       {
+        "quote_line_id": "line-b",
+        "name": "材料B",
+        "quantity": "1",
+        "unit_price": "1.005",
+        "tax_category": "tax-a"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "quote",
+      "quote_id": "quote-a",
+      "line_rule_id": "line-rule",
+      "tax_rule_id": "tax-rule",
+      "confirmed_by": "見積担当",
+      "tax_rates": {
+       "tax-a": "0.1"
+      },
+      "lines": [
+       {
+        "quote_line_id": "line-a",
+        "name": "材料A",
+        "quantity": "-1",
+        "unit_price": "1.005",
+        "tax_category": "tax-a"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "quote",
+      "quote_id": "quote-a",
+      "line_rule_id": "line-rule",
+      "tax_rule_id": "tax-rule",
+      "confirmed_by": "見積担当",
+      "tax_rates": {
+       "tax-a": "0.1"
+      },
+      "lines": [
+       {
+        "quote_line_id": "line-a",
+        "name": "材料A",
+        "quantity": "1",
+        "unit_price": "NaN",
+        "tax_category": "tax-a"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "quote",
+      "quote_id": "quote-a",
+      "line_rule_id": "line-rule",
+      "tax_rule_id": "tax-rule",
+      "confirmed_by": "見積担当",
+      "tax_rates": {
+       "tax-a": "Infinity"
+      },
+      "lines": [
+       {
+        "quote_line_id": "line-a",
+        "name": "材料A",
+        "quantity": "1",
+        "unit_price": "1.005",
+        "tax_category": "tax-a"
+       },
+       {
+        "quote_line_id": "line-b",
+        "name": "材料B",
+        "quantity": "1",
+        "unit_price": "1.005",
+        "tax_category": "tax-a"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "quote",
+      "quote_id": "quote-a",
+      "line_rule_id": "line-rule",
+      "tax_rule_id": "tax-rule",
+      "confirmed_by": "見積担当",
+      "tax_rates": {
+       "tax-a": "1.1"
+      },
+      "lines": [
+       {
+        "quote_line_id": "line-a",
+        "name": "材料A",
+        "quantity": "1",
+        "unit_price": "1.005",
+        "tax_category": "tax-a"
+       },
+       {
+        "quote_line_id": "line-b",
+        "name": "材料B",
+        "quantity": "1",
+        "unit_price": "1.005",
+        "tax_category": "tax-a"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "quote",
+      "quote_id": "quote-a",
+      "line_rule_id": "line-rule",
+      "tax_rule_id": "tax-rule",
+      "confirmed_by": "見積担当",
+      "tax_rates": {
+       "tax-a": "0.1"
+      },
+      "lines": [
+       {
+        "quote_line_id": "line-a",
+        "name": "材料A",
+        "quantity": "1",
+        "unit_price": "1.005",
+        "tax_category": "missing"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "quote",
+      "quote_id": "quote-a",
+      "line_rule_id": "line-rule",
+      "tax_rule_id": "tax-rule",
+      "confirmed_by": "見積担当",
+      "tax_rates": {
+       "tax-a": "0.1"
+      },
+      "lines": []
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "quote",
+      "quote_id": "quote-a",
+      "line_rule_id": "line-rule",
+      "tax_rule_id": "tax-rule",
+      "confirmed_by": "見積担当",
+      "tax_rates": {},
+      "lines": [
+       {
+        "quote_line_id": "line-a",
+        "name": "材料A",
+        "quantity": "1",
+        "unit_price": "1.005",
+        "tax_category": "tax-a"
+       },
+       {
+        "quote_line_id": "line-b",
+        "name": "材料B",
+        "quantity": "1",
+        "unit_price": "1.005",
+        "tax_category": "tax-a"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "quote",
+      "quote_id": "quote-a",
+      "line_rule_id": "line-rule",
+      "tax_rule_id": "tax-rule",
+      "confirmed_by": "見積担当",
+      "tax_rates": {
+       "tax-a": "0.1"
+      },
+      "lines": [
+       {
+        "quote_line_id": "line-a",
+        "name": "材料A",
+        "quantity": "1",
+        "unit_price": "1.005",
+        "tax_category": "tax-a"
+       },
+       {
+        "quote_line_id": "line-a",
+        "name": "材料A",
+        "quantity": "1",
+        "unit_price": "1.005",
+        "tax_category": "tax-a"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "quote",
+      "quote_id": "quote-a",
+      "line_rule_id": "line-rule",
+      "tax_rule_id": "tax-rule",
+      "confirmed_by": "見積担当",
+      "tax_rates": {
+       "tax-a": "0.1"
+      },
+      "lines": [
+       "x"
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "quote",
+      "quote_id": "quote-a",
+      "line_rule_id": "line-rule",
+      "tax_rule_id": "tax-rule",
+      "confirmed_by": "見積担当",
+      "tax_rates": [
+       "x"
+      ],
+      "lines": [
+       {
+        "quote_line_id": "line-a",
+        "name": "材料A",
+        "quantity": "1",
+        "unit_price": "1.005",
+        "tax_category": "tax-a"
+       },
+       {
+        "quote_line_id": "line-b",
+        "name": "材料B",
+        "quantity": "1",
+        "unit_price": "1.005",
+        "tax_category": "tax-a"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "quote",
+      "quote_id": "quote-a",
+      "line_rule_id": "line-rule",
+      "tax_rule_id": "tax-rule",
+      "confirmed_by": "見積担当",
+      "tax_rates": {
+       "tax-a": "0.1"
+      },
+      "lines": [
+       {
+        "quote_line_id": "line-a",
+        "name": "材料A",
+        "quantity": "1E+40",
+        "unit_price": "1E+40",
+        "tax_category": "tax-a"
+       }
+      ]
+     }
+    },
+    {
+     "op": "records",
+     "namespace": "quote_snapshot"
+    }
+   ]
+  },
+  {
+   "name": "全丸めモード・桁数・税区分の並び",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "l-half_up-0",
+      "stage": "line",
+      "mode": "half_up",
+      "decimal_places": 0,
+      "confirmed_by": "会計担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "t-half_up-0",
+      "stage": "tax_category_total",
+      "mode": "half_up",
+      "decimal_places": 0,
+      "confirmed_by": "会計担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "quote",
+      "quote_id": "q-half_up-0",
+      "line_rule_id": "l-half_up-0",
+      "tax_rule_id": "t-half_up-0",
+      "confirmed_by": "見積担当",
+      "tax_rates": {
+       "b": "0.08",
+       "a": "0.1",
+       " c ": "0"
+      },
+      "lines": [
+       {
+        "quote_line_id": "1",
+        "name": "x",
+        "quantity": "3",
+        "unit_price": "0.3335",
+        "tax_category": "b"
+       },
+       {
+        "quote_line_id": "2",
+        "name": "y",
+        "quantity": "2.5",
+        "unit_price": "12.345",
+        "tax_category": "a"
+       },
+       {
+        "quote_line_id": "3",
+        "name": "z",
+        "quantity": "0",
+        "unit_price": "9.99",
+        "tax_category": "c"
+       },
+       {
+        "quote_line_id": "4",
+        "name": "w",
+        "quantity": "1.5",
+        "unit_price": "0.0005",
+        "tax_category": "a"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "l-half_up-2",
+      "stage": "line",
+      "mode": "half_up",
+      "decimal_places": 2,
+      "confirmed_by": "会計担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "t-half_up-2",
+      "stage": "tax_category_total",
+      "mode": "half_up",
+      "decimal_places": 2,
+      "confirmed_by": "会計担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "quote",
+      "quote_id": "q-half_up-2",
+      "line_rule_id": "l-half_up-2",
+      "tax_rule_id": "t-half_up-2",
+      "confirmed_by": "見積担当",
+      "tax_rates": {
+       "b": "0.08",
+       "a": "0.1",
+       " c ": "0"
+      },
+      "lines": [
+       {
+        "quote_line_id": "1",
+        "name": "x",
+        "quantity": "3",
+        "unit_price": "0.3335",
+        "tax_category": "b"
+       },
+       {
+        "quote_line_id": "2",
+        "name": "y",
+        "quantity": "2.5",
+        "unit_price": "12.345",
+        "tax_category": "a"
+       },
+       {
+        "quote_line_id": "3",
+        "name": "z",
+        "quantity": "0",
+        "unit_price": "9.99",
+        "tax_category": "c"
+       },
+       {
+        "quote_line_id": "4",
+        "name": "w",
+        "quantity": "1.5",
+        "unit_price": "0.0005",
+        "tax_category": "a"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "l-half_up-6",
+      "stage": "line",
+      "mode": "half_up",
+      "decimal_places": 6,
+      "confirmed_by": "会計担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "t-half_up-6",
+      "stage": "tax_category_total",
+      "mode": "half_up",
+      "decimal_places": 6,
+      "confirmed_by": "会計担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "quote",
+      "quote_id": "q-half_up-6",
+      "line_rule_id": "l-half_up-6",
+      "tax_rule_id": "t-half_up-6",
+      "confirmed_by": "見積担当",
+      "tax_rates": {
+       "b": "0.08",
+       "a": "0.1",
+       " c ": "0"
+      },
+      "lines": [
+       {
+        "quote_line_id": "1",
+        "name": "x",
+        "quantity": "3",
+        "unit_price": "0.3335",
+        "tax_category": "b"
+       },
+       {
+        "quote_line_id": "2",
+        "name": "y",
+        "quantity": "2.5",
+        "unit_price": "12.345",
+        "tax_category": "a"
+       },
+       {
+        "quote_line_id": "3",
+        "name": "z",
+        "quantity": "0",
+        "unit_price": "9.99",
+        "tax_category": "c"
+       },
+       {
+        "quote_line_id": "4",
+        "name": "w",
+        "quantity": "1.5",
+        "unit_price": "0.0005",
+        "tax_category": "a"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "l-down-0",
+      "stage": "line",
+      "mode": "down",
+      "decimal_places": 0,
+      "confirmed_by": "会計担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "t-down-0",
+      "stage": "tax_category_total",
+      "mode": "down",
+      "decimal_places": 0,
+      "confirmed_by": "会計担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "quote",
+      "quote_id": "q-down-0",
+      "line_rule_id": "l-down-0",
+      "tax_rule_id": "t-down-0",
+      "confirmed_by": "見積担当",
+      "tax_rates": {
+       "b": "0.08",
+       "a": "0.1",
+       " c ": "0"
+      },
+      "lines": [
+       {
+        "quote_line_id": "1",
+        "name": "x",
+        "quantity": "3",
+        "unit_price": "0.3335",
+        "tax_category": "b"
+       },
+       {
+        "quote_line_id": "2",
+        "name": "y",
+        "quantity": "2.5",
+        "unit_price": "12.345",
+        "tax_category": "a"
+       },
+       {
+        "quote_line_id": "3",
+        "name": "z",
+        "quantity": "0",
+        "unit_price": "9.99",
+        "tax_category": "c"
+       },
+       {
+        "quote_line_id": "4",
+        "name": "w",
+        "quantity": "1.5",
+        "unit_price": "0.0005",
+        "tax_category": "a"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "l-down-2",
+      "stage": "line",
+      "mode": "down",
+      "decimal_places": 2,
+      "confirmed_by": "会計担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "t-down-2",
+      "stage": "tax_category_total",
+      "mode": "down",
+      "decimal_places": 2,
+      "confirmed_by": "会計担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "quote",
+      "quote_id": "q-down-2",
+      "line_rule_id": "l-down-2",
+      "tax_rule_id": "t-down-2",
+      "confirmed_by": "見積担当",
+      "tax_rates": {
+       "b": "0.08",
+       "a": "0.1",
+       " c ": "0"
+      },
+      "lines": [
+       {
+        "quote_line_id": "1",
+        "name": "x",
+        "quantity": "3",
+        "unit_price": "0.3335",
+        "tax_category": "b"
+       },
+       {
+        "quote_line_id": "2",
+        "name": "y",
+        "quantity": "2.5",
+        "unit_price": "12.345",
+        "tax_category": "a"
+       },
+       {
+        "quote_line_id": "3",
+        "name": "z",
+        "quantity": "0",
+        "unit_price": "9.99",
+        "tax_category": "c"
+       },
+       {
+        "quote_line_id": "4",
+        "name": "w",
+        "quantity": "1.5",
+        "unit_price": "0.0005",
+        "tax_category": "a"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "l-down-6",
+      "stage": "line",
+      "mode": "down",
+      "decimal_places": 6,
+      "confirmed_by": "会計担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "t-down-6",
+      "stage": "tax_category_total",
+      "mode": "down",
+      "decimal_places": 6,
+      "confirmed_by": "会計担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "quote",
+      "quote_id": "q-down-6",
+      "line_rule_id": "l-down-6",
+      "tax_rule_id": "t-down-6",
+      "confirmed_by": "見積担当",
+      "tax_rates": {
+       "b": "0.08",
+       "a": "0.1",
+       " c ": "0"
+      },
+      "lines": [
+       {
+        "quote_line_id": "1",
+        "name": "x",
+        "quantity": "3",
+        "unit_price": "0.3335",
+        "tax_category": "b"
+       },
+       {
+        "quote_line_id": "2",
+        "name": "y",
+        "quantity": "2.5",
+        "unit_price": "12.345",
+        "tax_category": "a"
+       },
+       {
+        "quote_line_id": "3",
+        "name": "z",
+        "quantity": "0",
+        "unit_price": "9.99",
+        "tax_category": "c"
+       },
+       {
+        "quote_line_id": "4",
+        "name": "w",
+        "quantity": "1.5",
+        "unit_price": "0.0005",
+        "tax_category": "a"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "l-up-0",
+      "stage": "line",
+      "mode": "up",
+      "decimal_places": 0,
+      "confirmed_by": "会計担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "t-up-0",
+      "stage": "tax_category_total",
+      "mode": "up",
+      "decimal_places": 0,
+      "confirmed_by": "会計担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "quote",
+      "quote_id": "q-up-0",
+      "line_rule_id": "l-up-0",
+      "tax_rule_id": "t-up-0",
+      "confirmed_by": "見積担当",
+      "tax_rates": {
+       "b": "0.08",
+       "a": "0.1",
+       " c ": "0"
+      },
+      "lines": [
+       {
+        "quote_line_id": "1",
+        "name": "x",
+        "quantity": "3",
+        "unit_price": "0.3335",
+        "tax_category": "b"
+       },
+       {
+        "quote_line_id": "2",
+        "name": "y",
+        "quantity": "2.5",
+        "unit_price": "12.345",
+        "tax_category": "a"
+       },
+       {
+        "quote_line_id": "3",
+        "name": "z",
+        "quantity": "0",
+        "unit_price": "9.99",
+        "tax_category": "c"
+       },
+       {
+        "quote_line_id": "4",
+        "name": "w",
+        "quantity": "1.5",
+        "unit_price": "0.0005",
+        "tax_category": "a"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "l-up-2",
+      "stage": "line",
+      "mode": "up",
+      "decimal_places": 2,
+      "confirmed_by": "会計担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "t-up-2",
+      "stage": "tax_category_total",
+      "mode": "up",
+      "decimal_places": 2,
+      "confirmed_by": "会計担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "quote",
+      "quote_id": "q-up-2",
+      "line_rule_id": "l-up-2",
+      "tax_rule_id": "t-up-2",
+      "confirmed_by": "見積担当",
+      "tax_rates": {
+       "b": "0.08",
+       "a": "0.1",
+       " c ": "0"
+      },
+      "lines": [
+       {
+        "quote_line_id": "1",
+        "name": "x",
+        "quantity": "3",
+        "unit_price": "0.3335",
+        "tax_category": "b"
+       },
+       {
+        "quote_line_id": "2",
+        "name": "y",
+        "quantity": "2.5",
+        "unit_price": "12.345",
+        "tax_category": "a"
+       },
+       {
+        "quote_line_id": "3",
+        "name": "z",
+        "quantity": "0",
+        "unit_price": "9.99",
+        "tax_category": "c"
+       },
+       {
+        "quote_line_id": "4",
+        "name": "w",
+        "quantity": "1.5",
+        "unit_price": "0.0005",
+        "tax_category": "a"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "l-up-6",
+      "stage": "line",
+      "mode": "up",
+      "decimal_places": 6,
+      "confirmed_by": "会計担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "t-up-6",
+      "stage": "tax_category_total",
+      "mode": "up",
+      "decimal_places": 6,
+      "confirmed_by": "会計担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "quote",
+      "quote_id": "q-up-6",
+      "line_rule_id": "l-up-6",
+      "tax_rule_id": "t-up-6",
+      "confirmed_by": "見積担当",
+      "tax_rates": {
+       "b": "0.08",
+       "a": "0.1",
+       " c ": "0"
+      },
+      "lines": [
+       {
+        "quote_line_id": "1",
+        "name": "x",
+        "quantity": "3",
+        "unit_price": "0.3335",
+        "tax_category": "b"
+       },
+       {
+        "quote_line_id": "2",
+        "name": "y",
+        "quantity": "2.5",
+        "unit_price": "12.345",
+        "tax_category": "a"
+       },
+       {
+        "quote_line_id": "3",
+        "name": "z",
+        "quantity": "0",
+        "unit_price": "9.99",
+        "tax_category": "c"
+       },
+       {
+        "quote_line_id": "4",
+        "name": "w",
+        "quantity": "1.5",
+        "unit_price": "0.0005",
+        "tax_category": "a"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "l-floor-0",
+      "stage": "line",
+      "mode": "floor",
+      "decimal_places": 0,
+      "confirmed_by": "会計担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "t-floor-0",
+      "stage": "tax_category_total",
+      "mode": "floor",
+      "decimal_places": 0,
+      "confirmed_by": "会計担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "quote",
+      "quote_id": "q-floor-0",
+      "line_rule_id": "l-floor-0",
+      "tax_rule_id": "t-floor-0",
+      "confirmed_by": "見積担当",
+      "tax_rates": {
+       "b": "0.08",
+       "a": "0.1",
+       " c ": "0"
+      },
+      "lines": [
+       {
+        "quote_line_id": "1",
+        "name": "x",
+        "quantity": "3",
+        "unit_price": "0.3335",
+        "tax_category": "b"
+       },
+       {
+        "quote_line_id": "2",
+        "name": "y",
+        "quantity": "2.5",
+        "unit_price": "12.345",
+        "tax_category": "a"
+       },
+       {
+        "quote_line_id": "3",
+        "name": "z",
+        "quantity": "0",
+        "unit_price": "9.99",
+        "tax_category": "c"
+       },
+       {
+        "quote_line_id": "4",
+        "name": "w",
+        "quantity": "1.5",
+        "unit_price": "0.0005",
+        "tax_category": "a"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "l-floor-2",
+      "stage": "line",
+      "mode": "floor",
+      "decimal_places": 2,
+      "confirmed_by": "会計担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "t-floor-2",
+      "stage": "tax_category_total",
+      "mode": "floor",
+      "decimal_places": 2,
+      "confirmed_by": "会計担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "quote",
+      "quote_id": "q-floor-2",
+      "line_rule_id": "l-floor-2",
+      "tax_rule_id": "t-floor-2",
+      "confirmed_by": "見積担当",
+      "tax_rates": {
+       "b": "0.08",
+       "a": "0.1",
+       " c ": "0"
+      },
+      "lines": [
+       {
+        "quote_line_id": "1",
+        "name": "x",
+        "quantity": "3",
+        "unit_price": "0.3335",
+        "tax_category": "b"
+       },
+       {
+        "quote_line_id": "2",
+        "name": "y",
+        "quantity": "2.5",
+        "unit_price": "12.345",
+        "tax_category": "a"
+       },
+       {
+        "quote_line_id": "3",
+        "name": "z",
+        "quantity": "0",
+        "unit_price": "9.99",
+        "tax_category": "c"
+       },
+       {
+        "quote_line_id": "4",
+        "name": "w",
+        "quantity": "1.5",
+        "unit_price": "0.0005",
+        "tax_category": "a"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "l-floor-6",
+      "stage": "line",
+      "mode": "floor",
+      "decimal_places": 6,
+      "confirmed_by": "会計担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "t-floor-6",
+      "stage": "tax_category_total",
+      "mode": "floor",
+      "decimal_places": 6,
+      "confirmed_by": "会計担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "quote",
+      "quote_id": "q-floor-6",
+      "line_rule_id": "l-floor-6",
+      "tax_rule_id": "t-floor-6",
+      "confirmed_by": "見積担当",
+      "tax_rates": {
+       "b": "0.08",
+       "a": "0.1",
+       " c ": "0"
+      },
+      "lines": [
+       {
+        "quote_line_id": "1",
+        "name": "x",
+        "quantity": "3",
+        "unit_price": "0.3335",
+        "tax_category": "b"
+       },
+       {
+        "quote_line_id": "2",
+        "name": "y",
+        "quantity": "2.5",
+        "unit_price": "12.345",
+        "tax_category": "a"
+       },
+       {
+        "quote_line_id": "3",
+        "name": "z",
+        "quantity": "0",
+        "unit_price": "9.99",
+        "tax_category": "c"
+       },
+       {
+        "quote_line_id": "4",
+        "name": "w",
+        "quantity": "1.5",
+        "unit_price": "0.0005",
+        "tax_category": "a"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "桁あふれ",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "l6",
+      "stage": "line",
+      "mode": "half_up",
+      "decimal_places": 6,
+      "confirmed_by": "会計担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "save_rule",
+      "id": "t6",
+      "stage": "tax_category_total",
+      "mode": "half_up",
+      "decimal_places": 6,
+      "confirmed_by": "会計担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "quote",
+      "quote_id": "quote-a",
+      "line_rule_id": "l6",
+      "tax_rule_id": "t6",
+      "confirmed_by": "見積担当",
+      "tax_rates": {
+       "tax-a": "0.1"
+      },
+      "lines": [
+       {
+        "quote_line_id": "line-a",
+        "name": "材料A",
+        "quantity": "9999999999999999999999999999",
+        "unit_price": "9999999999999999999999999999",
+        "tax_category": "tax-a"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "quote",
+      "quote_id": "quote-a",
+      "line_rule_id": "l6",
+      "tax_rule_id": "t6",
+      "confirmed_by": "見積担当",
+      "tax_rates": {
+       "tax-a": "0.1"
+      },
+      "lines": [
+       {
+        "quote_line_id": "line-a",
+        "name": "材料A",
+        "quantity": "0.000000000001",
+        "unit_price": "0.000000000001",
+        "tax_category": "tax-a"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "未対応操作",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {
+      "action": "x"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M29",
+     "payload": {}
+    }
+   ]
+  }
+ ]
+}

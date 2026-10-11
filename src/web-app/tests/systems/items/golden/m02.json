@@ -1,0 +1,688 @@
+{
+ "source": "scenarios/m02.json",
+ "scenarios": [
+  {
+   "name": "SPEC defaults",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "80",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "items": [
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "80",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "source_quantity": "1",
+      "source_unit": "ml",
+      "quantity": "1",
+      "unit": "ml",
+      "source_unit_price": "80",
+      "unit_price": "80",
+      "price_type": "仕入",
+      "price_version_id": "3b8cc14f91f24aa983fc5527d1246a47",
+      "conversion": {
+       "factor": "1",
+       "evidence": "simulator:架空値、同一単位のデモ換算",
+       "confirmed_by": "架空デモ担当"
+      }
+     }
+    },
+    {
+     "ok": {
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "80",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "items": [
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "80",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "source_quantity": "1",
+      "source_unit": "ml",
+      "quantity": "1",
+      "unit": "ml",
+      "source_unit_price": "80",
+      "unit_price": "80",
+      "price_type": "仕入",
+      "price_version_id": "3b8cc14f91f24aa983fc5527d1246a47",
+      "conversion": {
+       "factor": "1",
+       "evidence": "simulator:架空値、同一単位のデモ換算",
+       "confirmed_by": "架空デモ担当"
+      }
+     }
+    },
+    {
+     "ok": [
+      {
+       "item_id": "demo-paint",
+       "source_unit": "ml",
+       "base_unit": "ml",
+       "factor": "1",
+       "evidence": "simulator:架空値、同一単位のデモ換算",
+       "confirmed_by": "架空デモ担当",
+       "record_id": "demo-paint|ml|ml"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "箱 → 本 と小数の換算",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "price_version_id": "e80ef3dbd4194eed9b1924765446b162",
+      "item": {
+       "item_id": "demo-bolts",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "箱",
+       "unit_price": "100",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空デモ担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {}
+     }
+    },
+    {
+     "ok": {
+      "item": {
+       "item_id": "demo-bolts",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "本",
+       "unit_price": "25",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "items": [
+       {
+        "item_id": "demo-bolts",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "本",
+        "unit_price": "25",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "source_quantity": "2",
+      "source_unit": "箱",
+      "quantity": "8",
+      "unit": "本",
+      "source_unit_price": "100",
+      "unit_price": "25",
+      "price_type": "仕入",
+      "price_version_id": "e80ef3dbd4194eed9b1924765446b162",
+      "conversion": {
+       "factor": "4",
+       "evidence": "simulator:架空値、納品書で1箱4本と確認",
+       "confirmed_by": "架空デモ担当"
+      }
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "換算根拠が登録済み内容と異なります: 再確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "換算根拠が登録済み内容と異なります: 再確認してください"
+    },
+    {
+     "ok": {
+      "price_version_id": "aa90db02ff5d4db08109b340ef222459",
+      "item": {
+       "item_id": "demo-powder",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "kg",
+       "unit_price": "12.5",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空デモ担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {}
+     }
+    },
+    {
+     "ok": {
+      "item": {
+       "item_id": "demo-powder",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "g",
+       "unit_price": "0.0125",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "items": [
+       {
+        "item_id": "demo-powder",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "g",
+        "unit_price": "0.0125",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "source_quantity": "0.25",
+      "source_unit": "kg",
+      "quantity": "250.00",
+      "unit": "g",
+      "source_unit_price": "12.5",
+      "unit_price": "0.0125",
+      "price_type": "仕入",
+      "price_version_id": "aa90db02ff5d4db08109b340ef222459",
+      "conversion": {
+       "factor": "1000",
+       "evidence": "simulator:架空値、1kg=1000g",
+       "confirmed_by": "架空デモ担当"
+      }
+     }
+    },
+    {
+     "ok": {
+      "price_version_id": "420e77998493403c913252001661374b",
+      "item": {
+       "item_id": "demo-can",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "L",
+       "unit_price": "3",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空デモ担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {}
+     }
+    },
+    {
+     "ok": {
+      "item": {
+       "item_id": "demo-can",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "0.003",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "items": [
+       {
+        "item_id": "demo-can",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "0.003",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "source_quantity": "0.50",
+      "source_unit": "L",
+      "quantity": "5.0E+2",
+      "unit": "ml",
+      "source_unit_price": "3",
+      "unit_price": "0.003",
+      "price_type": "仕入",
+      "price_version_id": "420e77998493403c913252001661374b",
+      "conversion": {
+       "factor": "1E+3",
+       "evidence": "e",
+       "confirmed_by": "架空デモ担当"
+      }
+     }
+    },
+    {
+     "ok": {
+      "item": {
+       "item_id": "demo-bolts",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "個",
+       "unit_price": "12.5",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "items": [
+       {
+        "item_id": "demo-bolts",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "個",
+        "unit_price": "12.5",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "source_quantity": "0",
+      "source_unit": "箱",
+      "quantity": "0",
+      "unit": "個",
+      "source_unit_price": "100",
+      "unit_price": "12.5",
+      "price_type": "仕入",
+      "price_version_id": "e80ef3dbd4194eed9b1924765446b162",
+      "conversion": {
+       "factor": "8",
+       "evidence": "e",
+       "confirmed_by": "架空デモ担当"
+      }
+     }
+    },
+    {
+     "ok": [
+      {
+       "item_id": "demo-bolts",
+       "source_unit": "箱",
+       "base_unit": "本",
+       "factor": "4",
+       "evidence": "simulator:架空値、納品書で1箱4本と確認",
+       "confirmed_by": "架空デモ担当",
+       "record_id": "demo-bolts|箱|本"
+      },
+      {
+       "item_id": "demo-powder",
+       "source_unit": "kg",
+       "base_unit": "g",
+       "factor": "1000",
+       "evidence": "simulator:架空値、1kg=1000g",
+       "confirmed_by": "架空デモ担当",
+       "record_id": "demo-powder|kg|g"
+      },
+      {
+       "item_id": "demo-can",
+       "source_unit": "L",
+       "base_unit": "ml",
+       "factor": "1E+3",
+       "evidence": "e",
+       "confirmed_by": "架空デモ担当",
+       "record_id": "demo-can|L|ml"
+      },
+      {
+       "item_id": "demo-bolts",
+       "source_unit": "箱",
+       "base_unit": "個",
+       "factor": "8",
+       "evidence": "e",
+       "confirmed_by": "架空デモ担当",
+       "record_id": "demo-bolts|箱|個"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "割り切れない単価は丸めずに拒否",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "price_version_id": "2f9c145ad4e545dc9f214302d9ba6476",
+      "item": {
+       "item_id": "demo-three",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "箱",
+       "unit_price": "100",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空デモ担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {}
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "単価を有限桁で正確に表せません: 丸め規則を確認してください"
+    },
+    {
+     "ok": []
+    }
+   ]
+  },
+  {
+   "name": "係数・数量・単位・根拠の検査",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "price_version_id": "6f6ed6e4341d4da791cfdc5fab9fcc0c",
+      "item": {
+       "item_id": "demo-bolts",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "箱",
+       "unit_price": "100",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空デモ担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {}
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "factor: 有限の正数/非負数を入力してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "factor: 有限の正数/非負数を入力してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "factor: 有限の正数/非負数を入力してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "factor: 有限の正数/非負数を入力してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "quantity: 有限の正数/非負数を入力してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "unit: 次元が異なる単位は換算できません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "factor: 同一単位の換算係数は1です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "unit: 対応する単位を選択してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "evidence: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "factor: 数値を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "単位不一致: 換算根拠を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "confirmed_by: 入力が必要です"
+    },
+    {
+     "ok": {
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "120",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "items": [
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "120",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "source_quantity": "1",
+      "source_unit": "ml",
+      "quantity": "1",
+      "unit": "ml",
+      "source_unit_price": "120",
+      "unit_price": "120",
+      "price_type": "販売",
+      "price_version_id": "050732593fb74437902e9cc2778482e7",
+      "conversion": {
+       "factor": "1",
+       "evidence": "e",
+       "confirmed_by": "x"
+      }
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "as_of: ISO形式の日付が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "payload: 入力を確認してください"
+    }
+   ]
+  },
+  {
+   "name": "未承認・未登録・期限切れ",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "price_version_id": "05b237ad6dc9488cb6c7fe9a041e711e",
+      "item": {
+       "item_id": "pending-box",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "箱",
+       "unit_price": "120",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空デモ担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "pending",
+      "reason": "初回登録",
+      "metadata": {}
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "価格未確認: 承認済みの対象価格がありません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "価格未確認: 承認済みの対象価格がありません"
+    },
+    {
+     "ok": {
+      "price_version_id": "36f942afe8534166877af9864736a5b2",
+      "item": {
+       "item_id": "expired-box",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "箱",
+       "unit_price": "120",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空デモ担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-01",
+      "valid_until": "2026-10-10",
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {}
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "価格期限切れ: 再確認してください"
+    }
+   ]
+  },
+  {
+   "name": "根拠と係数の表記を保存",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "price_version_id": "e6e424f8d41f4893845afc7650748f91",
+      "item": {
+       "item_id": "demo-bolts",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "箱",
+       "unit_price": "100",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空デモ担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {}
+     }
+    },
+    {
+     "ok": {
+      "item": {
+       "item_id": "demo-bolts",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "本",
+       "unit_price": "25",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "items": [
+       {
+        "item_id": "demo-bolts",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "本",
+        "unit_price": "25",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "source_quantity": "1",
+      "source_unit": "箱",
+      "quantity": "4.00",
+      "unit": "本",
+      "source_unit_price": "100",
+      "unit_price": "25",
+      "price_type": "仕入",
+      "price_version_id": "e6e424f8d41f4893845afc7650748f91",
+      "conversion": {
+       "factor": "4.00",
+       "evidence": "simulator:架空値、1箱4本",
+       "confirmed_by": "架空デモ担当"
+      }
+     }
+    },
+    {
+     "ok": {
+      "item_id": "demo-bolts",
+      "source_unit": "箱",
+      "base_unit": "本",
+      "factor": "4.00",
+      "evidence": "simulator:架空値、1箱4本",
+      "confirmed_by": "架空デモ担当",
+      "record_id": "demo-bolts|箱|本"
+     }
+    }
+   ]
+  }
+ ]
+}

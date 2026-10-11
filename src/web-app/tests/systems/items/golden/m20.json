@@ -1,0 +1,706 @@
+{
+ "source": "scenarios/m20.json",
+ "scenarios": [
+  {
+   "name": "既定値は架空の記録で価格を作らない",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "usage_band": {
+       "item_id": "demo-m20-paint",
+       "area_band": "架空の小面積",
+       "low_qty": "10",
+       "typical_qty": "15",
+       "high_qty": "20",
+       "unit": "ml",
+       "evidence": "simulator:架空デモ用の仮定値",
+       "approved_by": "架空デモ担当",
+       "status": "approved",
+       "reason": "架空デモデータ",
+       "record_id": "demo-m20-paint:架空の小面積"
+      },
+      "simulator": true
+     }
+    },
+    {
+     "ok": []
+    },
+    {
+     "ok": {
+      "status": "needs_human_input",
+      "item_id": "demo-m20-paint",
+      "area_band": "架空の小面積",
+      "quantity": null,
+      "unit": "ml",
+      "candidate_amount": null,
+      "unknowns": [
+       "同じ単位の承認済み価格がありません"
+      ],
+      "simulator": false
+     }
+    }
+   ]
+  },
+  {
+   "name": "数量の順序・根拠・承認者の検査",
+   "expected": [
+    {
+     "ok": {
+      "status": "saved",
+      "usage_band": {
+       "item_id": "paint-a",
+       "area_band": "small",
+       "low_qty": "1.2",
+       "typical_qty": "2.5",
+       "high_qty": "4",
+       "unit": "ml",
+       "evidence": "架空の工場記録に基づくテスト根拠",
+       "approved_by": "整備士A",
+       "status": "approved",
+       "reason": "確認済みの目安",
+       "record_id": "paint-a:small"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "数量帯: low_qty <= typical_qty <= high_qty の順にしてください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "数量帯: low_qty <= typical_qty <= high_qty の順にしてください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "evidence: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "approved_by: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "low_qty: 有限の正数/非負数を入力してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "payload: 指定できない項目があります"
+    },
+    {
+     "ok": [
+      {
+       "item_id": "paint-a",
+       "area_band": "small",
+       "low_qty": "1.2",
+       "typical_qty": "2.5",
+       "high_qty": "4",
+       "unit": "ml",
+       "evidence": "架空の工場記録に基づくテスト根拠",
+       "approved_by": "整備士A",
+       "status": "approved",
+       "reason": "確認済みの目安",
+       "record_id": "paint-a:small"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "十進の数量と同単位の価格から幅を出す",
+   "expected": [
+    {
+     "ok": {
+      "status": "saved",
+      "usage_band": {
+       "item_id": "paint-a",
+       "area_band": "small",
+       "low_qty": "1.2",
+       "typical_qty": "2.5",
+       "high_qty": "4",
+       "unit": "ml",
+       "evidence": "架空の工場記録に基づくテスト根拠",
+       "approved_by": "整備士A",
+       "status": "approved",
+       "reason": "確認済みの目安",
+       "record_id": "paint-a:small"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "price_version_id": "e94e6ddc18054d1ea4dde69f2780ff74",
+      "item": {
+       "item_id": "paint-a",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "10",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "価格確認者",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {}
+     }
+    },
+    {
+     "ok": {
+      "status": "needs_human_confirmation",
+      "item_id": "paint-a",
+      "area_band": "small",
+      "quantity": {
+       "low": "1.2",
+       "typical": "2.5",
+       "high": "4",
+       "unit": "ml",
+       "evidence": "架空の工場記録に基づくテスト根拠",
+       "approved_by": "整備士A"
+      },
+      "price": {
+       "unit_price": "10",
+       "unit": "ml",
+       "price_type": "販売",
+       "price_version_id": "e94e6ddc18054d1ea4dde69f2780ff74"
+      },
+      "candidate_amount": {
+       "low": "12.0",
+       "typical": "25.0",
+       "high": "40",
+       "currency": "JPY"
+      },
+      "unknowns": [],
+      "simulator": true
+     }
+    },
+    {
+     "ok": [
+      {
+       "price_version_id": "e94e6ddc18054d1ea4dde69f2780ff74",
+       "item": {
+        "item_id": "paint-a",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "10",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "価格確認者",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "初回登録",
+       "metadata": {}
+      }
+     ]
+    },
+    {
+     "ok": {
+      "status": "needs_human_input",
+      "item_id": "paint-a",
+      "area_band": "small",
+      "quantity": null,
+      "unit": "ml",
+      "candidate_amount": null,
+      "unknowns": [
+       "同じ単位の承認済み価格がありません"
+      ],
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "needs_human_input",
+      "item_id": "paint-a",
+      "area_band": "small",
+      "quantity": null,
+      "unit": "ml",
+      "candidate_amount": null,
+      "unknowns": [
+       "同じ単位の承認済み価格がありません"
+      ],
+      "simulator": false
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "as_of: ISO形式の日付が必要です"
+    }
+   ]
+  },
+  {
+   "name": "未登録・未承認の帯は数量なし",
+   "expected": [
+    {
+     "ok": {
+      "price_version_id": "b79d32c3a8c04e5694772557ec28aa63",
+      "item": {
+       "item_id": "paint-a",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "10",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "価格確認者",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {}
+     }
+    },
+    {
+     "ok": {
+      "status": "needs_human_input",
+      "item_id": "paint-a",
+      "area_band": "small",
+      "quantity": null,
+      "unit": null,
+      "candidate_amount": null,
+      "unknowns": [
+       "承認済みの使用量目安がありません"
+      ],
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "item_id": "paint-a",
+      "area_band": "small",
+      "low_qty": "1",
+      "typical_qty": "2",
+      "high_qty": "3",
+      "unit": "ml",
+      "evidence": "架空根拠",
+      "approved_by": "",
+      "status": "pending",
+      "record_id": "paint-a:small"
+     }
+    },
+    {
+     "ok": {
+      "status": "needs_human_input",
+      "item_id": "paint-a",
+      "area_band": "small",
+      "quantity": null,
+      "unit": null,
+      "candidate_amount": null,
+      "unknowns": [
+       "承認済みの使用量目安がありません"
+      ],
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "item_id": "paint-a",
+      "area_band": "small",
+      "low_qty": "3",
+      "typical_qty": "2",
+      "high_qty": "3",
+      "unit": "ml",
+      "evidence": "架空根拠",
+      "approved_by": "x",
+      "status": "approved",
+      "record_id": "paint-a:small"
+     }
+    },
+    {
+     "ok": {
+      "status": "needs_human_input",
+      "item_id": "paint-a",
+      "area_band": "small",
+      "quantity": null,
+      "unit": null,
+      "candidate_amount": null,
+      "unknowns": [
+       "使用量の単位・数量・根拠を確認してください"
+      ],
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "item_id": "paint-a",
+      "area_band": "small",
+      "low_qty": "1",
+      "typical_qty": "2",
+      "high_qty": "3",
+      "unit": "",
+      "evidence": "架空根拠",
+      "approved_by": "x",
+      "status": "approved",
+      "record_id": "paint-a:small"
+     }
+    },
+    {
+     "ok": {
+      "status": "needs_human_input",
+      "item_id": "paint-a",
+      "area_band": "small",
+      "quantity": null,
+      "unit": null,
+      "candidate_amount": null,
+      "unknowns": [
+       "使用量の単位・数量・根拠を確認してください"
+      ],
+      "simulator": false
+     }
+    }
+   ]
+  },
+  {
+   "name": "価格なし・単位違いは0円にしない",
+   "expected": [
+    {
+     "ok": {
+      "status": "saved",
+      "usage_band": {
+       "item_id": "paint-a",
+       "area_band": "small",
+       "low_qty": "1.2",
+       "typical_qty": "2.5",
+       "high_qty": "4",
+       "unit": "ml",
+       "evidence": "架空の工場記録に基づくテスト根拠",
+       "approved_by": "整備士A",
+       "status": "approved",
+       "reason": "確認済みの目安",
+       "record_id": "paint-a:small"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "needs_human_input",
+      "item_id": "paint-a",
+      "area_band": "small",
+      "quantity": null,
+      "unit": "ml",
+      "candidate_amount": null,
+      "unknowns": [
+       "同じ単位の承認済み価格がありません"
+      ],
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "price_version_id": "cf472f8cc88742c1b7eb1da4fb9f1456",
+      "item": {
+       "item_id": "paint-a",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "L",
+       "unit_price": "10",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "価格確認者",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {}
+     }
+    },
+    {
+     "ok": {
+      "status": "needs_human_input",
+      "item_id": "paint-a",
+      "area_band": "small",
+      "quantity": null,
+      "unit": "ml",
+      "candidate_amount": null,
+      "unknowns": [
+       "同じ単位の承認済み価格がありません"
+      ],
+      "simulator": false
+     }
+    }
+   ]
+  },
+  {
+   "name": "一覧は帯ごとの最新だけ",
+   "expected": [
+    {
+     "ok": {
+      "status": "saved",
+      "usage_band": {
+       "item_id": "paint-a",
+       "area_band": "small",
+       "low_qty": "1.2",
+       "typical_qty": "2.5",
+       "high_qty": "4",
+       "unit": "ml",
+       "evidence": "架空の工場記録に基づくテスト根拠",
+       "approved_by": "整備士A",
+       "status": "approved",
+       "reason": "確認済みの目安",
+       "record_id": "paint-a:small"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "usage_band": {
+       "item_id": "paint-a",
+       "area_band": "small",
+       "low_qty": "1.2",
+       "typical_qty": "3",
+       "high_qty": "4",
+       "unit": "ml",
+       "evidence": "架空の工場記録に基づくテスト根拠",
+       "approved_by": "整備士A",
+       "status": "approved",
+       "reason": "改訂した架空目安",
+       "record_id": "paint-a:small"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "usage_band": {
+       "item_id": "paint-0",
+       "area_band": "z",
+       "low_qty": "1.2",
+       "typical_qty": "2.5",
+       "high_qty": "4",
+       "unit": "ml",
+       "evidence": "simulator:x",
+       "approved_by": "整備士A",
+       "status": "approved",
+       "reason": "確認済みの目安",
+       "record_id": "paint-0:z"
+      },
+      "simulator": true
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "usage_band": {
+       "item_id": "paint-a",
+       "area_band": "large",
+       "low_qty": "1.2",
+       "typical_qty": "2.5",
+       "high_qty": "4",
+       "unit": "ml",
+       "evidence": "架空の工場記録に基づくテスト根拠",
+       "approved_by": "整備士A",
+       "status": "approved",
+       "reason": "確認済みの目安",
+       "record_id": "paint-a:large"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "usage_bands": [
+       {
+        "item_id": "paint-a",
+        "area_band": "large",
+        "low_qty": "1.2",
+        "typical_qty": "2.5",
+        "high_qty": "4",
+        "unit": "ml",
+        "evidence": "架空の工場記録に基づくテスト根拠",
+        "approved_by": "整備士A",
+        "status": "approved",
+        "reason": "確認済みの目安",
+        "record_id": "paint-a:large"
+       },
+       {
+        "item_id": "paint-a",
+        "area_band": "small",
+        "low_qty": "1.2",
+        "typical_qty": "3",
+        "high_qty": "4",
+        "unit": "ml",
+        "evidence": "架空の工場記録に基づくテスト根拠",
+        "approved_by": "整備士A",
+        "status": "approved",
+        "reason": "改訂した架空目安",
+        "record_id": "paint-a:small"
+       }
+      ],
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "usage_bands": [
+       {
+        "item_id": "paint-0",
+        "area_band": "z",
+        "low_qty": "1.2",
+        "typical_qty": "2.5",
+        "high_qty": "4",
+        "unit": "ml",
+        "evidence": "simulator:x",
+        "approved_by": "整備士A",
+        "status": "approved",
+        "reason": "確認済みの目安",
+        "record_id": "paint-0:z"
+       },
+       {
+        "item_id": "paint-a",
+        "area_band": "large",
+        "low_qty": "1.2",
+        "typical_qty": "2.5",
+        "high_qty": "4",
+        "unit": "ml",
+        "evidence": "架空の工場記録に基づくテスト根拠",
+        "approved_by": "整備士A",
+        "status": "approved",
+        "reason": "確認済みの目安",
+        "record_id": "paint-a:large"
+       },
+       {
+        "item_id": "paint-a",
+        "area_band": "small",
+        "low_qty": "1.2",
+        "typical_qty": "3",
+        "high_qty": "4",
+        "unit": "ml",
+        "evidence": "架空の工場記録に基づくテスト根拠",
+        "approved_by": "整備士A",
+        "status": "approved",
+        "reason": "改訂した架空目安",
+        "record_id": "paint-a:small"
+       }
+      ],
+      "simulator": true
+     }
+    },
+    {
+     "ok": {
+      "usage_bands": [
+       {
+        "item_id": "paint-a",
+        "area_band": "small",
+        "low_qty": "1.2",
+        "typical_qty": "3",
+        "high_qty": "4",
+        "unit": "ml",
+        "evidence": "架空の工場記録に基づくテスト根拠",
+        "approved_by": "整備士A",
+        "status": "approved",
+        "reason": "改訂した架空目安",
+        "record_id": "paint-a:small"
+       }
+      ],
+      "simulator": false
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "item_id: 入力が必要です"
+    },
+    {
+     "ok": []
+    }
+   ]
+  },
+  {
+   "name": "割り切れない単価との積（prec 60）",
+   "expected": [
+    {
+     "ok": {
+      "status": "saved",
+      "usage_band": {
+       "item_id": "paint-a",
+       "area_band": "small",
+       "low_qty": "0.333333333333",
+       "typical_qty": "1.000000000001",
+       "high_qty": "99999999999999",
+       "unit": "ml",
+       "evidence": "架空の工場記録に基づくテスト根拠",
+       "approved_by": "整備士A",
+       "status": "approved",
+       "reason": "確認済みの目安",
+       "record_id": "paint-a:small"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "price_version_id": "f686d839b15d40459ae645c0d46c99d3",
+      "item": {
+       "item_id": "paint-a",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "123456789012345.678901234567",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "価格確認者",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {}
+     }
+    },
+    {
+     "ok": {
+      "status": "needs_human_confirmation",
+      "item_id": "paint-a",
+      "area_band": "small",
+      "quantity": {
+       "low": "0.333333333333",
+       "typical": "1.000000000001",
+       "high": "99999999999999",
+       "unit": "ml",
+       "evidence": "架空の工場記録に基づくテスト根拠",
+       "approved_by": "整備士A"
+      },
+      "price": {
+       "unit_price": "123456789012345.678901234567",
+       "unit": "ml",
+       "price_type": "販売",
+       "price_version_id": "f686d839b15d40459ae645c0d46c99d3"
+      },
+      "candidate_amount": {
+       "low": "41152263004074.074037407407107032921811",
+       "typical": "123456789012469.135690246912678901234567",
+       "high": "12345678901234444433334444354.321098765433",
+       "currency": "JPY"
+      },
+      "unknowns": [],
+      "simulator": true
+     }
+    }
+   ]
+  }
+ ]
+}

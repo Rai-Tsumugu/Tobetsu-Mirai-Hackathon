@@ -1,0 +1,540 @@
+{
+ "source": "scenarios/m23.json",
+ "scenarios": [
+  {
+   "name": "既定値は架空の見積に記録し価格を作らない",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "item_usage": {
+       "quote_id": "demo-m23-quote",
+       "quote_line_id": "demo-m23-line",
+       "item_id": "demo-m23-material",
+       "estimated_qty": "15",
+       "actual_qty": "12.5",
+       "difference": "-2.5",
+       "unit": "ml",
+       "reason": "simulator:架空デモ作業で一部を使い切らなかった",
+       "confirmed_by": "架空デモ担当",
+       "recorded_at": "2026-10-11T08:15:12.010862+00:00",
+       "simulator": true,
+       "record_id": "3567240e289b4535ad17da44a59cf4e5"
+      },
+      "comparison": {
+       "estimated_qty": "15",
+       "actual_qty": "12.5",
+       "difference": "-2.5",
+       "unit": "ml"
+      },
+      "simulator": true,
+      "notice": "実使用量を別記録しました。見積数量・標準量・価格は変更していません。"
+     }
+    },
+    {
+     "ok": []
+    },
+    {
+     "ok": {
+      "quote_id": "demo-m23-quote",
+      "lines": [
+       {
+        "quote_line_id": "demo-m23-line",
+        "item_id": "demo-m23-material",
+        "name": "架空デモ材料",
+        "category": "消耗品",
+        "quantity": "15",
+        "unit": "ml",
+        "unit_price_snapshot": "0",
+        "price_type": "販売",
+        "price_version_id": "simulator:no-price-seeded",
+        "source_snapshot": "simulator:架空見積スナップショット",
+        "updated_at": "2026-10-11T00:00:00+09:00",
+        "supplier_id": "",
+        "conditions": {},
+        "line_total": "0"
+       }
+      ],
+      "confirmed_by": "架空デモ担当",
+      "created_at": "2026-10-11T00:00:00+09:00",
+      "simulator": true,
+      "record_id": "demo-m23-quote"
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "item_usage": {
+       "quote_id": "demo-m23-quote",
+       "quote_line_id": "demo-m23-line",
+       "item_id": "demo-m23-material",
+       "estimated_qty": "15",
+       "actual_qty": "12.5",
+       "difference": "-2.5",
+       "unit": "ml",
+       "reason": "simulator:架空デモ作業で一部を使い切らなかった",
+       "confirmed_by": "架空デモ担当",
+       "recorded_at": "2026-10-11T08:15:12.010989+00:00",
+       "simulator": true,
+       "record_id": "1cb7d16b79b4463cbb03ce36c53dd412"
+      },
+      "comparison": {
+       "estimated_qty": "15",
+       "actual_qty": "12.5",
+       "difference": "-2.5",
+       "unit": "ml"
+      },
+      "simulator": true,
+      "notice": "実使用量を別記録しました。見積数量・標準量・価格は変更していません。"
+     }
+    },
+    {
+     "ok": [
+      {
+       "quote_id": "demo-m23-quote",
+       "lines": [
+        {
+         "quote_line_id": "demo-m23-line",
+         "item_id": "demo-m23-material",
+         "name": "架空デモ材料",
+         "category": "消耗品",
+         "quantity": "15",
+         "unit": "ml",
+         "unit_price_snapshot": "0",
+         "price_type": "販売",
+         "price_version_id": "simulator:no-price-seeded",
+         "source_snapshot": "simulator:架空見積スナップショット",
+         "updated_at": "2026-10-11T00:00:00+09:00",
+         "supplier_id": "",
+         "conditions": {},
+         "line_total": "0"
+        }
+       ],
+       "confirmed_by": "架空デモ担当",
+       "created_at": "2026-10-11T00:00:00+09:00",
+       "simulator": true,
+       "record_id": "demo-m23-quote"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "十進の数量を比べ見積を変えない",
+   "expected": [
+    {
+     "ok": {
+      "quote_id": "quote-a",
+      "confirmed_by": "見積担当",
+      "created_at": "2026-10-11T09:00:00+09:00",
+      "lines": [
+       {
+        "quote_line_id": "line-a",
+        "item_id": "paint-a",
+        "name": "塗料",
+        "category": "塗料",
+        "quantity": "1.250",
+        "unit": "ml",
+        "unit_price_snapshot": "120",
+        "price_type": "販売",
+        "price_version_id": "price-v1",
+        "source_snapshot": "manual:見積入力",
+        "updated_at": "2026-10-11",
+        "supplier_id": "",
+        "conditions": {},
+        "line_total": "1200"
+       }
+      ],
+      "record_id": "quote-a"
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "item_usage": {
+       "quote_id": "quote-a",
+       "quote_line_id": "line-a",
+       "item_id": "paint-a",
+       "estimated_qty": "1.250",
+       "actual_qty": "2.75",
+       "difference": "1.500",
+       "unit": "ml",
+       "reason": "余分に塗布した",
+       "confirmed_by": "整備士A",
+       "recorded_at": "2026-10-11T08:15:12.011305+00:00",
+       "simulator": false,
+       "record_id": "988b43c17d8746eb9d80e6e8a083f331"
+      },
+      "comparison": {
+       "estimated_qty": "1.250",
+       "actual_qty": "2.75",
+       "difference": "1.500",
+       "unit": "ml"
+      },
+      "simulator": false,
+      "notice": "実使用量を別記録しました。見積数量・標準量・価格は変更していません。"
+     }
+    },
+    {
+     "ok": {
+      "quote_id": "quote-a",
+      "confirmed_by": "見積担当",
+      "created_at": "2026-10-11T09:00:00+09:00",
+      "lines": [
+       {
+        "quote_line_id": "line-a",
+        "item_id": "paint-a",
+        "name": "塗料",
+        "category": "塗料",
+        "quantity": "1.250",
+        "unit": "ml",
+        "unit_price_snapshot": "120",
+        "price_type": "販売",
+        "price_version_id": "price-v1",
+        "source_snapshot": "manual:見積入力",
+        "updated_at": "2026-10-11",
+        "supplier_id": "",
+        "conditions": {},
+        "line_total": "1200"
+       }
+      ],
+      "record_id": "quote-a"
+     }
+    },
+    {
+     "ok": [
+      {
+       "quote_id": "quote-a",
+       "quote_line_id": "line-a",
+       "item_id": "paint-a",
+       "estimated_qty": "1.250",
+       "actual_qty": "2.75",
+       "difference": "1.500",
+       "unit": "ml",
+       "reason": "余分に塗布した",
+       "confirmed_by": "整備士A",
+       "recorded_at": "2026-10-11T08:15:12.011305+00:00",
+       "simulator": false,
+       "record_id": "988b43c17d8746eb9d80e6e8a083f331"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "見積・行がない・不正値は記録しない",
+   "expected": [
+    {
+     "error": "ValidationError",
+     "message": "quote_snapshot: 指定した記録がありません"
+    },
+    {
+     "ok": {
+      "quote_id": "quote-a",
+      "confirmed_by": "見積担当",
+      "created_at": "2026-10-11T09:00:00+09:00",
+      "lines": [
+       {
+        "quote_line_id": "line-a",
+        "item_id": "paint-a",
+        "name": "塗料",
+        "category": "塗料",
+        "quantity": "10",
+        "unit": "ml",
+        "unit_price_snapshot": "120",
+        "price_type": "販売",
+        "price_version_id": "price-v1",
+        "source_snapshot": "manual:見積入力",
+        "updated_at": "2026-10-11",
+        "supplier_id": "",
+        "conditions": {},
+        "line_total": "1200"
+       }
+      ],
+      "record_id": "quote-a"
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "quote_line_id: 見積スナップショット内の一意な行を指定してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "actual_qty: 有限の正数/非負数を入力してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "reason: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "confirmed_by: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "actual_qty: 数値を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "action: record_demo / record / list を選択してください"
+    },
+    {
+     "ok": []
+    }
+   ]
+  },
+  {
+   "name": "一覧の絞り込み",
+   "expected": [
+    {
+     "ok": {
+      "quote_id": "quote-a",
+      "confirmed_by": "見積担当",
+      "created_at": "2026-10-11T09:00:00+09:00",
+      "lines": [
+       {
+        "quote_line_id": "line-a",
+        "item_id": "paint-a",
+        "name": "塗料",
+        "category": "塗料",
+        "quantity": "10",
+        "unit": "ml",
+        "unit_price_snapshot": "120",
+        "price_type": "販売",
+        "price_version_id": "price-v1",
+        "source_snapshot": "manual:見積入力",
+        "updated_at": "2026-10-11",
+        "supplier_id": "",
+        "conditions": {},
+        "line_total": "1200"
+       }
+      ],
+      "record_id": "quote-a"
+     }
+    },
+    {
+     "ok": {
+      "quote_id": "quote-b",
+      "confirmed_by": "見積担当",
+      "created_at": "2026-10-11T09:00:00+09:00",
+      "lines": [
+       {
+        "quote_line_id": "line-b",
+        "item_id": "paint-a",
+        "name": "塗料",
+        "category": "塗料",
+        "quantity": "10",
+        "unit": "ml",
+        "unit_price_snapshot": "120",
+        "price_type": "販売",
+        "price_version_id": "price-v1",
+        "source_snapshot": "manual:見積入力",
+        "updated_at": "2026-10-11",
+        "supplier_id": "",
+        "conditions": {},
+        "line_total": "1200"
+       }
+      ],
+      "source": "simulator:x",
+      "record_id": "quote-b"
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "item_usage": {
+       "quote_id": "quote-a",
+       "quote_line_id": "line-a",
+       "item_id": "paint-a",
+       "estimated_qty": "10",
+       "actual_qty": "8",
+       "difference": "-2",
+       "unit": "ml",
+       "reason": "記録",
+       "confirmed_by": "担当",
+       "recorded_at": "2026-10-11T08:15:12.011941+00:00",
+       "simulator": false,
+       "record_id": "a4556a27f8854d11adc0a45a32a9a905"
+      },
+      "comparison": {
+       "estimated_qty": "10",
+       "actual_qty": "8",
+       "difference": "-2",
+       "unit": "ml"
+      },
+      "simulator": false,
+      "notice": "実使用量を別記録しました。見積数量・標準量・価格は変更していません。"
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "item_usage": {
+       "quote_id": "quote-b",
+       "quote_line_id": "line-b",
+       "item_id": "paint-a",
+       "estimated_qty": "10",
+       "actual_qty": "8",
+       "difference": "-2",
+       "unit": "ml",
+       "reason": "記録",
+       "confirmed_by": "担当",
+       "recorded_at": "2026-10-11T08:15:12.012006+00:00",
+       "simulator": true,
+       "record_id": "00b607ed53c142bd967ad3094c7c6298"
+      },
+      "comparison": {
+       "estimated_qty": "10",
+       "actual_qty": "8",
+       "difference": "-2",
+       "unit": "ml"
+      },
+      "simulator": true,
+      "notice": "実使用量を別記録しました。見積数量・標準量・価格は変更していません。"
+     }
+    },
+    {
+     "ok": {
+      "item_usages": [
+       {
+        "quote_id": "quote-a",
+        "quote_line_id": "line-a",
+        "item_id": "paint-a",
+        "estimated_qty": "10",
+        "actual_qty": "8",
+        "difference": "-2",
+        "unit": "ml",
+        "reason": "記録",
+        "confirmed_by": "担当",
+        "recorded_at": "2026-10-11T08:15:12.011941+00:00",
+        "simulator": false,
+        "record_id": "a4556a27f8854d11adc0a45a32a9a905"
+       }
+      ],
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "item_usages": [
+       {
+        "quote_id": "quote-b",
+        "quote_line_id": "line-b",
+        "item_id": "paint-a",
+        "estimated_qty": "10",
+        "actual_qty": "8",
+        "difference": "-2",
+        "unit": "ml",
+        "reason": "記録",
+        "confirmed_by": "担当",
+        "recorded_at": "2026-10-11T08:15:12.012006+00:00",
+        "simulator": true,
+        "record_id": "00b607ed53c142bd967ad3094c7c6298"
+       }
+      ],
+      "simulator": true
+     }
+    },
+    {
+     "ok": {
+      "item_usages": [
+       {
+        "quote_id": "quote-a",
+        "quote_line_id": "line-a",
+        "item_id": "paint-a",
+        "estimated_qty": "10",
+        "actual_qty": "8",
+        "difference": "-2",
+        "unit": "ml",
+        "reason": "記録",
+        "confirmed_by": "担当",
+        "recorded_at": "2026-10-11T08:15:12.011941+00:00",
+        "simulator": false,
+        "record_id": "a4556a27f8854d11adc0a45a32a9a905"
+       },
+       {
+        "quote_id": "quote-b",
+        "quote_line_id": "line-b",
+        "item_id": "paint-a",
+        "estimated_qty": "10",
+        "actual_qty": "8",
+        "difference": "-2",
+        "unit": "ml",
+        "reason": "記録",
+        "confirmed_by": "担当",
+        "recorded_at": "2026-10-11T08:15:12.012006+00:00",
+        "simulator": true,
+        "record_id": "00b607ed53c142bd967ad3094c7c6298"
+       }
+      ],
+      "simulator": true
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "quote_id: 入力が必要です"
+    }
+   ]
+  },
+  {
+   "name": "壊れた見積スナップショット",
+   "expected": [
+    {
+     "ok": {
+      "quote_id": "q",
+      "lines": "x",
+      "record_id": "q"
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "quote_snapshot.lines: 見積行を確認してください"
+    },
+    {
+     "ok": {
+      "quote_id": "q2",
+      "lines": [
+       {
+        "quote_line_id": "l",
+        "quantity": "1",
+        "unit": "ml",
+        "item_id": "a"
+       },
+       {
+        "quote_line_id": "l",
+        "quantity": "2",
+        "unit": "ml",
+        "item_id": "a"
+       }
+      ],
+      "record_id": "q2"
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "quote_line_id: 見積スナップショット内の一意な行を指定してください"
+    },
+    {
+     "ok": {
+      "quote_id": "q3",
+      "lines": [
+       {
+        "quote_line_id": "l",
+        "quantity": "1",
+        "unit": "ml"
+       }
+      ],
+      "record_id": "q3"
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "quote_snapshot.item_id: 入力が必要です"
+    }
+   ]
+  }
+ ]
+}

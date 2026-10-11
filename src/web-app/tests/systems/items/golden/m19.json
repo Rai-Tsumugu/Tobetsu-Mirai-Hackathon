@@ -1,0 +1,231 @@
+{
+ "source": "scenarios/m19.json",
+ "scenarios": [
+  {
+   "name": "既定値で架空の候補を表示",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "panel_id": "front_door",
+      "finish_type": "metallic",
+      "candidates": [
+       {
+        "item_id": "demo-metallic-paint",
+        "applicability": "架空デモ用。実車・工程への適合は未確認",
+        "source": "simulator:架空材料辞書",
+        "confirmed_by": "架空デモ担当",
+        "simulator": true
+       }
+      ],
+      "simulator": true
+     }
+    },
+    {
+     "ok": {
+      "panel_id": "front_door",
+      "finish_type": "metallic",
+      "candidates": [
+       {
+        "item_id": "demo-metallic-paint",
+        "applicability": "架空デモ用。実車・工程への適合は未確認",
+        "source": "simulator:架空材料辞書",
+        "confirmed_by": "架空デモ担当",
+        "simulator": true
+       }
+      ],
+      "simulator": true
+     }
+    },
+    {
+     "ok": [
+      {
+       "price_version_id": "a4c0628ec04a4f72bb6d3b8808a73ef2",
+       "item": {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "80",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空デモ担当",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "初回登録",
+       "metadata": {}
+      },
+      {
+       "price_version_id": "aeee4dacb1304ab498ad1ad3e76c8e90",
+       "item": {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "120",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空デモ担当",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "初回登録",
+       "metadata": {}
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "候補の記録と一覧",
+   "expected": [
+    {
+     "ok": {
+      "status": "saved",
+      "panel_material_id": "72bf55f820ef4a29bc985465b8517a5e",
+      "candidate": {
+       "panel_id": "hood",
+       "finish_type": "pearl",
+       "item_id": "paint-pearlescent",
+       "applicability": "下地確認後に使用",
+       "source": "工場材料表 v2",
+       "confirmed_by": "整備士A",
+       "simulator": false
+      }
+     }
+    },
+    {
+     "ok": {
+      "panel_id": "hood",
+      "finish_type": "pearl",
+      "candidates": [
+       {
+        "item_id": "paint-pearlescent",
+        "applicability": "下地確認後に使用",
+        "source": "工場材料表 v2",
+        "confirmed_by": "整備士A",
+        "simulator": false
+       }
+      ],
+      "simulator": false
+     }
+    }
+   ]
+  },
+  {
+   "name": "未登録の組み合わせ",
+   "expected": [
+    {
+     "ok": {
+      "panel_id": "roof",
+      "finish_type": "matte",
+      "candidates": [],
+      "simulator": false,
+      "unknowns": [
+       "panel_id/finish_type の材料候補辞書が未登録"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "選択の記録",
+   "expected": [
+    {
+     "ok": {
+      "status": "saved",
+      "panel_material_id": "fb38787965dd493f8591310534aebdd9",
+      "candidate": {
+       "panel_id": "door",
+       "finish_type": "solid",
+       "item_id": "paint-red",
+       "applicability": "色合わせ後",
+       "source": "塗料台帳",
+       "confirmed_by": "担当A",
+       "simulator": false
+      }
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "panel_material_id": "d769ff1660c24e698b2532d5345cc9cc",
+      "candidate": {
+       "panel_id": "door",
+       "finish_type": "solid",
+       "item_id": "paint-red",
+       "applicability": "色合わせ後 v2",
+       "source": "simulator:台帳2",
+       "confirmed_by": "担当C",
+       "simulator": true
+      }
+     }
+    },
+    {
+     "ok": {
+      "status": "selected",
+      "selection_id": "2b5886acb35048a4b97fda5b5363ef69",
+      "selection": {
+       "panel_id": "door",
+       "finish_type": "solid",
+       "item_id": "paint-red",
+       "application_condition": "色合わせを担当者が確認",
+       "source": "simulator:台帳2",
+       "confirmed_by": "担当B"
+      },
+      "simulator": true
+     }
+    },
+    {
+     "ok": {
+      "panel_id": "door",
+      "finish_type": "solid",
+      "item_id": "paint-red",
+      "application_condition": "色合わせを担当者が確認",
+      "source": "simulator:台帳2",
+      "confirmed_by": "担当B",
+      "record_id": "2b5886acb35048a4b97fda5b5363ef69"
+     }
+    }
+   ]
+  },
+  {
+   "name": "不正な記録・未登録の選択",
+   "expected": [
+    {
+     "error": "ValidationError",
+     "message": "source: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "候補未登録: 選択前に辞書を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "payload: 指定できない項目があります"
+    },
+    {
+     "error": "ValidationError",
+     "message": "panel_id: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "action: record / list / select を選択してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "payload: 入力を確認してください"
+    }
+   ]
+  }
+ ]
+}

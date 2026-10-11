@@ -1,0 +1,362 @@
+{
+ "scenarios": [
+  {
+   "name": "HTTP 既定値（seed_demo）",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M25",
+     "payload": {
+      "action": "seed_demo",
+      "source": "simulator:架空データ出典",
+      "series": "架空ナフサ指数",
+      "value": "123.4",
+      "unit": "指数ポイント",
+      "published_at": "2026-10-01",
+      "fetched_at": "2026-10-11T09:00:00+09:00",
+      "terms_status": "未確認"
+     }
+    },
+    {
+     "op": "price_versions"
+    }
+   ]
+  },
+  {
+   "name": "手入力の記録は価格を変えない",
+   "steps": [
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "m25-price",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "80",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "架空担当",
+     "kwargs": {}
+    },
+    {
+     "op": "run",
+     "module": "M25",
+     "payload": {
+      "action": "record",
+      "source": "手入力fixture:架空",
+      "series": "架空原料指標",
+      "value": "123.4",
+      "unit": "指数ポイント",
+      "published_at": "2026-10-01",
+      "fetched_at": "2026-10-11T09:00:00+09:00",
+      "terms_status": "未確認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M25",
+     "payload": {
+      "action": "list"
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "m25-price"
+    },
+    {
+     "op": "get_price",
+     "item_id": "m25-price",
+     "price_type": "仕入"
+    }
+   ]
+  },
+  {
+   "name": "空一覧は seed しない・seed は明示の追記",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M25",
+     "payload": {}
+    },
+    {
+     "op": "records",
+     "namespace": "index_observation"
+    },
+    {
+     "op": "run",
+     "module": "M25",
+     "payload": {
+      "action": "seed_demo",
+      "source": "simulator:架空データ出典",
+      "series": "架空ナフサ指数",
+      "value": "123.4",
+      "unit": "指数ポイント",
+      "published_at": "2026-10-01",
+      "fetched_at": "2026-10-11T09:00:00+09:00",
+      "terms_status": "未確認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M25",
+     "payload": {
+      "action": "seed_demo",
+      "source": "simulator:架空データ出典",
+      "series": "架空ナフサ指数",
+      "value": "123.4",
+      "unit": "指数ポイント",
+      "published_at": "2026-10-01",
+      "fetched_at": "2026-10-11T09:00:00+09:00",
+      "terms_status": "未確認"
+     }
+    },
+    {
+     "op": "records",
+     "namespace": "index_observation"
+    },
+    {
+     "op": "price_versions"
+    }
+   ]
+  },
+  {
+   "name": "不正な値と日時",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M25",
+     "payload": {
+      "action": "record",
+      "source": "simulator:架空データ出典",
+      "series": "架空ナフサ指数",
+      "value": "NaN",
+      "unit": "指数ポイント",
+      "published_at": "2026-10-01",
+      "fetched_at": "2026-10-11T09:00:00+09:00",
+      "terms_status": "未確認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M25",
+     "payload": {
+      "action": "record",
+      "source": "simulator:架空データ出典",
+      "series": "架空ナフサ指数",
+      "value": "-2",
+      "unit": "指数ポイント",
+      "published_at": "2026-10-01",
+      "fetched_at": "2026-10-11T09:00:00+09:00",
+      "terms_status": "未確認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M25",
+     "payload": {
+      "action": "record",
+      "source": " ",
+      "series": "架空ナフサ指数",
+      "value": "123.4",
+      "unit": "指数ポイント",
+      "published_at": "2026-10-01",
+      "fetched_at": "2026-10-11T09:00:00+09:00",
+      "terms_status": "未確認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M25",
+     "payload": {
+      "action": "record",
+      "source": "simulator:架空データ出典",
+      "series": "架空ナフサ指数",
+      "value": "123.4",
+      "unit": "指数ポイント",
+      "published_at": "yesterday",
+      "fetched_at": "2026-10-11T09:00:00+09:00",
+      "terms_status": "未確認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M25",
+     "payload": {
+      "action": "record",
+      "source": "simulator:架空データ出典",
+      "series": "架空ナフサ指数",
+      "value": "123.4",
+      "unit": "指数ポイント",
+      "published_at": "2026-10-01",
+      "fetched_at": "2026-10-11T09:00:00",
+      "terms_status": "未確認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M25",
+     "payload": {
+      "action": "record",
+      "source": "simulator:架空データ出典",
+      "series": "架空ナフサ指数",
+      "value": "123.4",
+      "unit": "指数ポイント",
+      "published_at": "2026-1-1",
+      "fetched_at": "2026-10-11T09:00:00+09:00",
+      "terms_status": "未確認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M25",
+     "payload": {
+      "action": "record",
+      "source": "simulator:架空データ出典",
+      "series": "架空ナフサ指数",
+      "value": "123.4",
+      "unit": "指数ポイント",
+      "published_at": "2026-02-30",
+      "fetched_at": "2026-10-11T09:00:00+09:00",
+      "terms_status": "未確認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M25",
+     "payload": {
+      "action": "record",
+      "source": "simulator:架空データ出典",
+      "series": "架空ナフサ指数",
+      "value": "123.4",
+      "unit": "指数ポイント",
+      "published_at": "2026-10- 1",
+      "fetched_at": "2026-10-11T09:00:00+09:00",
+      "terms_status": "未確認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M25",
+     "payload": {
+      "action": "record",
+      "source": "simulator:架空データ出典",
+      "series": "架空ナフサ指数",
+      "value": "123.4",
+      "unit": "指数ポイント",
+      "published_at": "2026-10-01T00:00:00Z",
+      "fetched_at": "2026-10-11T09:00:00+09:00",
+      "terms_status": "未確認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M25",
+     "payload": {
+      "action": "record",
+      "source": "simulator:架空データ出典",
+      "series": "架空ナフサ指数",
+      "value": "123.4",
+      "unit": "指数ポイント",
+      "published_at": "2026-10-01",
+      "fetched_at": "2026-10-11T09:00:00Z",
+      "terms_status": "未確認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M25",
+     "payload": {
+      "action": "record",
+      "source": "simulator:架空データ出典",
+      "series": "架空ナフサ指数",
+      "value": "123.4",
+      "unit": "指数ポイント",
+      "published_at": "2026-10-01",
+      "fetched_at": "2026-10-11 09:00+0900",
+      "terms_status": "未確認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M25",
+     "payload": {
+      "action": "record",
+      "source": "simulator:架空データ出典",
+      "series": "架空ナフサ指数",
+      "value": "1E+3",
+      "unit": "指数ポイント",
+      "published_at": "2026-10-01",
+      "fetched_at": "2026-10-11T09:00:00+09:00",
+      "terms_status": "未確認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M25",
+     "payload": {
+      "action": "record",
+      "source": "simulator:架空データ出典",
+      "series": "架空ナフサ指数",
+      "value": "123.4",
+      "unit": "指数ポイント",
+      "published_at": "2026-1-01 ",
+      "fetched_at": "2026-10-11T09:00:00+09:00",
+      "terms_status": "未確認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M25",
+     "payload": {
+      "action": "list",
+      "unexpected": true
+     }
+    },
+    {
+     "op": "run",
+     "module": "M25",
+     "payload": {
+      "action": "unknown"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M25",
+     "payload": {
+      "action": "seed_demo",
+      "source": "simulator:架空データ出典",
+      "series": "架空ナフサ指数",
+      "value": "123.40",
+      "unit": "指数ポイント",
+      "published_at": "2026-10-01",
+      "fetched_at": "2026-10-11T09:00:00+09:00",
+      "terms_status": "未確認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M25",
+     "payload": {
+      "action": "seed_demo",
+      "source": "other",
+      "series": "架空ナフサ指数",
+      "value": "123.4",
+      "unit": "指数ポイント",
+      "published_at": "2026-10-01",
+      "fetched_at": "2026-10-11T09:00:00+09:00",
+      "terms_status": "未確認"
+     }
+    },
+    {
+     "op": "records",
+     "namespace": "index_observation"
+    }
+   ]
+  }
+ ]
+}

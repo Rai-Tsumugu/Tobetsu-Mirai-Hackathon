@@ -1,0 +1,566 @@
+{
+ "scenarios": [
+  {
+   "name": "既定値の配合登録→計算→承認→取得",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M21",
+     "payload": {
+      "action": "register_formula",
+      "formula_id": "demo-m21-blue",
+      "code": "SIM-M21-BLUE",
+      "version": 1,
+      "status": "approved",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": "1",
+        "unit": "ml"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M21",
+     "payload": {
+      "action": "calculate",
+      "formula_id": "demo-m21-blue",
+      "version": 1,
+      "total_qty": "12.50",
+      "unit": "ml",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M21",
+     "payload": {
+      "action": "approve_snapshot",
+      "snapshot_id": "$ref:2.snapshot.snapshot_id",
+      "confirmed_by": "工場担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M21",
+     "payload": {
+      "action": "get_snapshot",
+      "snapshot_id": "$ref:2.snapshot.snapshot_id"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M21",
+     "payload": {
+      "action": "approve_snapshot",
+      "snapshot_id": "$ref:2.snapshot.snapshot_id",
+      "confirmed_by": "工場担当"
+     }
+    },
+    {
+     "op": "records",
+     "namespace": "formula_quantity_approval"
+    }
+   ]
+  },
+  {
+   "name": "比率合計と単位の検査",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M21",
+     "payload": {
+      "action": "register_formula",
+      "formula_id": "demo-m21-blue",
+      "code": "SIM-M21-BLUE",
+      "version": 1,
+      "status": "approved",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": "0.5",
+        "unit": "ml"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M21",
+     "payload": {
+      "action": "register_formula",
+      "formula_id": "demo-m21-blue",
+      "code": "SIM-M21-BLUE",
+      "version": 1,
+      "status": "approved",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": "1",
+        "unit": "ml"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M21",
+     "payload": {
+      "action": "calculate",
+      "formula_id": "demo-m21-blue",
+      "total_qty": "3",
+      "unit": "g"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M21",
+     "payload": {
+      "action": "register_formula",
+      "formula_id": "demo-m21-blue",
+      "code": "SIM-M21-BLUE",
+      "version": 1,
+      "status": "approved",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": "1.5",
+        "unit": "ml"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M21",
+     "payload": {
+      "action": "register_formula",
+      "formula_id": "demo-m21-blue",
+      "code": "SIM-M21-BLUE",
+      "version": 1,
+      "status": "approved",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": "0.5",
+        "unit": "ml"
+       },
+       {
+        "item_id": "demo-paint",
+        "ratio": "0.5",
+        "unit": "ml"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M21",
+     "payload": {
+      "action": "register_formula",
+      "formula_id": "demo-m21-blue",
+      "code": "SIM-M21-BLUE",
+      "version": 0,
+      "status": "approved",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": "1",
+        "unit": "ml"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M21",
+     "payload": {
+      "action": "register_formula",
+      "formula_id": "demo-m21-blue",
+      "code": "SIM-M21-BLUE",
+      "version": true,
+      "status": "approved",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": "1",
+        "unit": "ml"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M21",
+     "payload": {
+      "action": "register_formula",
+      "formula_id": "demo-m21-blue",
+      "code": "SIM-M21-BLUE",
+      "version": "1",
+      "status": "approved",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": "1",
+        "unit": "ml"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M21",
+     "payload": {
+      "action": "register_formula",
+      "formula_id": "demo-m21-blue",
+      "code": "SIM-M21-BLUE",
+      "version": 1,
+      "status": "draft",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": "1",
+        "unit": "ml"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M21",
+     "payload": {
+      "action": "register_formula",
+      "formula_id": "demo-m21-blue",
+      "code": "SIM-M21-BLUE",
+      "version": 1,
+      "status": "approved",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": []
+     }
+    },
+    {
+     "op": "run",
+     "module": "M21",
+     "payload": {
+      "action": "register_formula",
+      "formula_id": "demo-m21-blue",
+      "code": "SIM-M21-BLUE",
+      "version": 1,
+      "status": "approved",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       "x"
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M21",
+     "payload": {
+      "action": "register_formula",
+      "formula_id": "demo-m21-blue",
+      "code": "SIM-M21-BLUE",
+      "version": 1,
+      "status": "approved",
+      "confirmed_by": "",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": "1",
+        "unit": "ml"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M21",
+     "payload": {
+      "action": "calculate",
+      "formula_id": "demo-m21-blue",
+      "total_qty": "3",
+      "unit": "ml",
+      "version": 2
+     }
+    },
+    {
+     "op": "run",
+     "module": "M21",
+     "payload": {
+      "action": "calculate",
+      "formula_id": "demo-m21-blue",
+      "total_qty": "0",
+      "unit": "ml"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M21",
+     "payload": {
+      "action": "nope"
+     }
+    }
+   ]
+  },
+  {
+   "name": "未承認配合と価格未確認",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M21",
+     "payload": {
+      "action": "register_formula",
+      "formula_id": "demo-m21-blue",
+      "code": "SIM-M21-BLUE",
+      "version": 1,
+      "status": "pending",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": "1",
+        "unit": "ml"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M21",
+     "payload": {
+      "action": "calculate",
+      "formula_id": "demo-m21-blue",
+      "total_qty": "3",
+      "unit": "ml"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M21",
+     "payload": {
+      "action": "register_formula",
+      "formula_id": "no-price-formula",
+      "code": "SIM-M21-BLUE",
+      "version": 1,
+      "status": "approved",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "missing-item",
+        "ratio": "1",
+        "unit": "ml"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M21",
+     "payload": {
+      "action": "calculate",
+      "formula_id": "no-price-formula",
+      "total_qty": "3",
+      "unit": "ml"
+     }
+    }
+   ]
+  },
+  {
+   "name": "0円価格は計算しない",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "zero-paint",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "0",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "架空デモ担当",
+     "kwargs": {}
+    },
+    {
+     "op": "run",
+     "module": "M21",
+     "payload": {
+      "action": "register_formula",
+      "formula_id": "zero-formula",
+      "code": "SIM-M21-BLUE",
+      "version": 1,
+      "status": "approved",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "zero-paint",
+        "ratio": "1",
+        "unit": "ml"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M21",
+     "payload": {
+      "action": "calculate",
+      "formula_id": "zero-formula",
+      "total_qty": "1",
+      "unit": "ml"
+     }
+    }
+   ]
+  },
+  {
+   "name": "複数構成・端数・塗料以外",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "thinner",
+      "name": "架空溶剤",
+      "category": "溶剤",
+      "unit": "ml",
+      "unit_price": "0.3",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "担当",
+     "kwargs": {}
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "part-x",
+      "name": "架空部品",
+      "category": "部品",
+      "unit": "ml",
+      "unit_price": "5",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "担当",
+     "kwargs": {}
+    },
+    {
+     "op": "run",
+     "module": "M21",
+     "payload": {
+      "action": "register_formula",
+      "formula_id": "mix",
+      "code": "SIM-M21-BLUE",
+      "version": 1,
+      "status": "approved",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": "0.333",
+        "unit": "ml"
+       },
+       {
+        "item_id": "thinner",
+        "ratio": "0.667",
+        "unit": "ml"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M21",
+     "payload": {
+      "action": "calculate",
+      "formula_id": "mix",
+      "total_qty": "7.77",
+      "unit": "ml"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M21",
+     "payload": {
+      "action": "register_formula",
+      "formula_id": "mix",
+      "code": "SIM-M21-BLUE",
+      "version": 2,
+      "status": "approved",
+      "confirmed_by": "架空デモ担当",
+      "formula_lines": [
+       {
+        "item_id": "demo-paint",
+        "ratio": "0.5",
+        "unit": "ml"
+       },
+       {
+        "item_id": "part-x",
+        "ratio": "0.5",
+        "unit": "ml"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M21",
+     "payload": {
+      "action": "calculate",
+      "formula_id": "mix",
+      "total_qty": "3",
+      "unit": "ml"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M21",
+     "payload": {
+      "action": "calculate",
+      "formula_id": "mix",
+      "total_qty": "3",
+      "unit": "ml",
+      "version": 1
+     }
+    },
+    {
+     "op": "run",
+     "module": "M21",
+     "payload": {
+      "action": "get_snapshot",
+      "snapshot_id": "none"
+     }
+    }
+   ]
+  }
+ ]
+}

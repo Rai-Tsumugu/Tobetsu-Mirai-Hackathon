@@ -1,0 +1,543 @@
+{
+ "scenarios": [
+  {
+   "name": "SPEC defaults",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "action": "get_price",
+      "item_id": "demo-paint",
+      "price_type": "販売",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "action": "get_price",
+      "item_id": "demo-paint",
+      "price_type": "仕入"
+     }
+    }
+   ]
+  },
+  {
+   "name": "仕入と販売は独立",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "action": "save_price",
+      "item": {
+       "item_id": "paint-1",
+       "name": "架空塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "80.25",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "action": "save_price",
+      "item": {
+       "item_id": "paint-1",
+       "name": "架空塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "123.40",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "item_id": "paint-1",
+      "price_type": "仕入",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "item_id": "paint-1",
+      "price_type": "販売",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "paint-1",
+     "price_type": "仕入"
+    }
+   ]
+  },
+  {
+   "name": "販売の更新は仕入を変えない",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "action": "save_price",
+      "item": {
+       "item_id": "paint-1",
+       "name": "架空塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "80",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "action": "save_price",
+      "item": {
+       "item_id": "paint-1",
+       "name": "架空塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "125",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "action": "save_price",
+      "item": {
+       "item_id": "paint-1",
+       "name": "架空塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "130",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-12"
+      },
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "item_id": "paint-1",
+      "price_type": "仕入"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "item_id": "paint-1",
+      "price_type": "販売",
+      "as_of": "2026-10-12"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "item_id": "paint-1",
+      "price_type": "販売"
+     }
+    }
+   ]
+  },
+  {
+   "name": "販売価格がなければ止める",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "action": "save_price",
+      "item": {
+       "item_id": "paint-1",
+       "name": "架空塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "80",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "item_id": "paint-1",
+      "price_type": "販売"
+     }
+    }
+   ]
+  },
+  {
+   "name": "取得時の区分・単位・日付",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "action": "save_price",
+      "item": {
+       "item_id": "paint-1",
+       "name": "架空塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "123.45",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "item_id": "paint-1",
+      "price_type": "掛率"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "item_id": "paint-1",
+      "price_type": "販売",
+      "unit": "本"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "item_id": "paint-1",
+      "price_type": "販売",
+      "as_of": "2026-10-10"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "item_id": "paint-1",
+      "price_type": "販売",
+      "unit": "ml",
+      "supplier_id": ""
+     }
+    },
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "item_id": "paint-1",
+      "price_type": "販売",
+      "supplier_id": "x"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "item_id": " paint-1 ",
+      "price_type": null
+     }
+    }
+   ]
+  },
+  {
+   "name": "保存時の検査",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "action": "save_price",
+      "item": {
+       "item_id": "paint-1",
+       "name": "架空塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "1",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "action": "save_price",
+      "item": {
+       "item_id": "paint-1",
+       "name": "架空塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "-1",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "action": "save_price",
+      "item": {
+       "item_id": "paint-1",
+       "name": "架空塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "1",
+       "price_type": "不明",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "action": "save_price",
+      "item": {
+       "item_id": "paint-1",
+       "name": "架空塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "1",
+       "price_type": "販売",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "action": "save_price",
+      "item": {
+       "item_id": "paint-1",
+       "name": "架空塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "1",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空デモ担当",
+      "valid_until": "2026-10-10"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "action": "save_price",
+      "item": {
+       "item_id": "paint-1",
+       "name": "架空塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "1",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空デモ担当",
+      "currency": "JP"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "action": "save_price",
+      "item": {
+       "item_id": "paint-1",
+       "name": "架空塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "1",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空デモ担当",
+      "currency": "usd",
+      "supplier_id": " sup ",
+      "valid_until": "2026-12-31",
+      "reason": "通貨確認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "action": "save_price",
+      "item": {
+       "item_id": "paint-1",
+       "name": "架空塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "1",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空デモ担当",
+      "supplier_id": 5
+     }
+    },
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "action": "save_price",
+      "item": {
+       "item_id": "paint-1",
+       "name": "架空塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "1",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空デモ担当",
+      "status": "draft"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "action": "save_price",
+      "item": {
+       "item_id": "paint-1",
+       "name": "架空塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "1",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空デモ担当",
+      "status": "pending",
+      "valid_from": "2026-10-01"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "action": "save_price",
+      "item": {
+       "item_id": "paint-1",
+       "name": "架空塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "1",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空デモ担当",
+      "currency": "ＪＰＹ"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "action": "save_price",
+      "item": {
+       "item_id": "paint-1",
+       "name": "架空塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "1",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空デモ担当",
+      "currency": "j1y"
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "paint-1"
+    }
+   ]
+  },
+  {
+   "name": "不正な action / payload",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": {
+      "action": "calculate_markup"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": null
+    },
+    {
+     "op": "run",
+     "module": "M03",
+     "payload": []
+    }
+   ]
+  }
+ ]
+}

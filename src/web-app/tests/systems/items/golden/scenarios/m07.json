@@ -1,0 +1,652 @@
+{
+ "scenarios": [
+  {
+   "name": "SPEC defaults",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": {
+      "action": "register",
+      "item_id": "demo-m07-brake-pad",
+      "name": "架空サンプルブレーキパッド",
+      "category": "部品",
+      "unit": "個",
+      "unit_price": "2400",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当",
+      "reason": "単品価格の初回確認",
+      "as_of": "2026-10-11",
+      "query": "",
+      "category_filter": "",
+      "price_type_filter": ""
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "demo-m07-brake-pad",
+     "price_type": "販売"
+    }
+   ]
+  },
+  {
+   "name": "検索と一覧の絞り込み",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": {
+      "action": "register",
+      "item_id": "demo-m07-brake-pad",
+      "name": "架空サンプルブレーキパッド",
+      "category": "部品",
+      "unit": "個",
+      "unit_price": "2400",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当",
+      "reason": "単品価格の初回確認",
+      "as_of": "2026-10-11",
+      "query": "",
+      "category_filter": "",
+      "price_type_filter": ""
+     }
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": {
+      "action": "list",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": {
+      "action": "search",
+      "as_of": "2026-10-11",
+      "query": "brake",
+      "category_filter": "部品",
+      "price_type_filter": "販売"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": {
+      "action": "search",
+      "query": " SIMULATOR ",
+      "price_type_filter": "仕入"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": {
+      "action": "search",
+      "query": null,
+      "category_filter": null
+     }
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": {
+      "action": "register",
+      "item_id": "demo-m07-brake-pad",
+      "name": "架空サンプルブレーキパッド",
+      "category": "部品",
+      "unit": "個",
+      "unit_price": "2400",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当",
+      "reason": "単品価格の初回確認",
+      "as_of": "2026-10-11",
+      "query": "",
+      "category_filter": "",
+      "price_type_filter": "",
+      "item": {
+       "item_id": "Zeta",
+       "name": "ａ品",
+       "category": "消耗品",
+       "unit": "個",
+       "unit_price": "1",
+       "price_type": "販売",
+       "source": "x",
+       "updated_at": "2026-10-11"
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": {
+      "action": "register",
+      "item_id": "demo-m07-brake-pad",
+      "name": "架空サンプルブレーキパッド",
+      "category": "部品",
+      "unit": "個",
+      "unit_price": "2400",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当",
+      "reason": "単品価格の初回確認",
+      "as_of": "2026-10-11",
+      "query": "",
+      "category_filter": "",
+      "price_type_filter": "",
+      "item": {
+       "item_id": "alpha",
+       "name": "B品",
+       "category": "消耗品",
+       "unit": "個",
+       "unit_price": "1",
+       "price_type": "販売",
+       "source": "x",
+       "updated_at": "2026-10-01"
+      },
+      "valid_until": ""
+     }
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": {
+      "action": "register",
+      "item_id": "demo-m07-brake-pad",
+      "name": "架空サンプルブレーキパッド",
+      "category": "部品",
+      "unit": "個",
+      "unit_price": "2400",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当",
+      "reason": "単品価格の初回確認",
+      "as_of": "2026-10-11",
+      "query": "",
+      "category_filter": "",
+      "price_type_filter": "",
+      "item": {
+       "item_id": "alpha",
+       "name": "B品",
+       "category": "消耗品",
+       "unit": "個",
+       "unit_price": "2",
+       "price_type": "販売",
+       "source": "x",
+       "updated_at": "2026-10-05"
+      },
+      "valid_until": "2026-12-31"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": {
+      "action": "list"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": {
+      "action": "list",
+      "as_of": "2026-10-02"
+     }
+    }
+   ]
+  },
+  {
+   "name": "必須項目がなければ保存しない",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": {
+      "action": "register",
+      "item_id": "",
+      "name": "架空サンプルブレーキパッド",
+      "category": "部品",
+      "unit": "個",
+      "unit_price": "2400",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当",
+      "reason": "単品価格の初回確認",
+      "as_of": "2026-10-11",
+      "query": "",
+      "category_filter": "",
+      "price_type_filter": ""
+     }
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": {
+      "action": "register",
+      "item_id": "demo-m07-brake-pad",
+      "name": " ",
+      "category": "部品",
+      "unit": "個",
+      "unit_price": "2400",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当",
+      "reason": "単品価格の初回確認",
+      "as_of": "2026-10-11",
+      "query": "",
+      "category_filter": "",
+      "price_type_filter": ""
+     }
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": {
+      "action": "register",
+      "item_id": "demo-m07-brake-pad",
+      "name": "架空サンプルブレーキパッド",
+      "category": "その他",
+      "unit": "個",
+      "unit_price": "2400",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当",
+      "reason": "単品価格の初回確認",
+      "as_of": "2026-10-11",
+      "query": "",
+      "category_filter": "",
+      "price_type_filter": ""
+     }
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": {
+      "action": "register",
+      "item_id": "demo-m07-brake-pad",
+      "name": "架空サンプルブレーキパッド",
+      "category": "部品",
+      "unit": "",
+      "unit_price": "2400",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当",
+      "reason": "単品価格の初回確認",
+      "as_of": "2026-10-11",
+      "query": "",
+      "category_filter": "",
+      "price_type_filter": ""
+     }
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": {
+      "action": "register",
+      "item_id": "demo-m07-brake-pad",
+      "name": "架空サンプルブレーキパッド",
+      "category": "部品",
+      "unit": "個",
+      "unit_price": null,
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当",
+      "reason": "単品価格の初回確認",
+      "as_of": "2026-10-11",
+      "query": "",
+      "category_filter": "",
+      "price_type_filter": ""
+     }
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": {
+      "action": "register",
+      "item_id": "demo-m07-brake-pad",
+      "name": "架空サンプルブレーキパッド",
+      "category": "部品",
+      "unit": "個",
+      "unit_price": "2400",
+      "price_type": "原価",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当",
+      "reason": "単品価格の初回確認",
+      "as_of": "2026-10-11",
+      "query": "",
+      "category_filter": "",
+      "price_type_filter": ""
+     }
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": {
+      "action": "register",
+      "item_id": "demo-m07-brake-pad",
+      "name": "架空サンプルブレーキパッド",
+      "category": "部品",
+      "unit": "個",
+      "unit_price": "2400",
+      "price_type": "販売",
+      "source": "",
+      "updated_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当",
+      "reason": "単品価格の初回確認",
+      "as_of": "2026-10-11",
+      "query": "",
+      "category_filter": "",
+      "price_type_filter": ""
+     }
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": {
+      "action": "register",
+      "item_id": "demo-m07-brake-pad",
+      "name": "架空サンプルブレーキパッド",
+      "category": "部品",
+      "unit": "個",
+      "unit_price": "2400",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "not-a-date",
+      "confirmed_by": "架空デモ担当",
+      "reason": "単品価格の初回確認",
+      "as_of": "2026-10-11",
+      "query": "",
+      "category_filter": "",
+      "price_type_filter": ""
+     }
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": {
+      "action": "register",
+      "item_id": "demo-m07-brake-pad",
+      "name": "架空サンプルブレーキパッド",
+      "category": "部品",
+      "unit": "個",
+      "unit_price": "2400",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11",
+      "confirmed_by": "",
+      "reason": "単品価格の初回確認",
+      "as_of": "2026-10-11",
+      "query": "",
+      "category_filter": "",
+      "price_type_filter": ""
+     }
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": {
+      "action": "register",
+      "item_id": "demo-m07-brake-pad",
+      "name": "架空サンプルブレーキパッド",
+      "category": "部品",
+      "unit": "個",
+      "unit_price": "2400",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当",
+      "reason": null,
+      "as_of": "2026-10-11",
+      "query": "",
+      "category_filter": "",
+      "price_type_filter": ""
+     }
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": {
+      "action": "register",
+      "item_id": "demo-m07-brake-pad",
+      "name": "架空サンプルブレーキパッド",
+      "category": "部品",
+      "unit": "個",
+      "unit_price": "2400",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当",
+      "reason": "単品価格の初回確認",
+      "as_of": "2026-10-11",
+      "query": "",
+      "category_filter": "",
+      "price_type_filter": "",
+      "valid_from": "bad"
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "demo-m07-brake-pad"
+    }
+   ]
+  },
+  {
+   "name": "不正な価格・期限",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": {
+      "action": "register",
+      "item_id": "demo-m07-brake-pad",
+      "name": "架空サンプルブレーキパッド",
+      "category": "部品",
+      "unit": "個",
+      "unit_price": "-1",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当",
+      "reason": "単品価格の初回確認",
+      "as_of": "2026-10-11",
+      "query": "",
+      "category_filter": "",
+      "price_type_filter": ""
+     }
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": {
+      "action": "register",
+      "item_id": "demo-m07-brake-pad",
+      "name": "架空サンプルブレーキパッド",
+      "category": "部品",
+      "unit": "個",
+      "unit_price": "NaN",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当",
+      "reason": "単品価格の初回確認",
+      "as_of": "2026-10-11",
+      "query": "",
+      "category_filter": "",
+      "price_type_filter": ""
+     }
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": {
+      "action": "register",
+      "item_id": "demo-m07-brake-pad",
+      "name": "架空サンプルブレーキパッド",
+      "category": "部品",
+      "unit": "個",
+      "unit_price": "2400",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当",
+      "reason": "単品価格の初回確認",
+      "as_of": "2026-10-11",
+      "query": "",
+      "category_filter": "",
+      "price_type_filter": "",
+      "valid_from": "2026-10-12",
+      "valid_until": "2026-10-11"
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "demo-m07-brake-pad"
+    }
+   ]
+  },
+  {
+   "name": "保留・期限切れは検索しない",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "pending-part",
+      "name": "架空サンプルブレーキパッド",
+      "category": "部品",
+      "unit": "個",
+      "unit_price": "2400",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "架空担当",
+     "kwargs": {
+      "status": "pending"
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "expired-part",
+      "name": "架空サンプルブレーキパッド",
+      "category": "部品",
+      "unit": "個",
+      "unit_price": "2400",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-01"
+     },
+     "confirmed_by": "架空担当",
+     "kwargs": {
+      "valid_from": "2026-10-01",
+      "valid_until": "2026-10-10"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": {
+      "action": "search",
+      "query": "part"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": {
+      "action": "search",
+      "query": "part",
+      "as_of": "2026-10-05"
+     }
+    }
+   ]
+  },
+  {
+   "name": "不正な action / 絞り込み",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": null
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": []
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": {
+      "action": "delete"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": {
+      "action": "search",
+      "category_filter": "工賃"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": {
+      "action": "search",
+      "price_type_filter": "掛率"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": {
+      "action": "search",
+      "query": 10
+     }
+    },
+    {
+     "op": "run",
+     "module": "M07",
+     "payload": {
+      "action": "search",
+      "as_of": "invalid"
+     }
+    }
+   ]
+  }
+ ]
+}

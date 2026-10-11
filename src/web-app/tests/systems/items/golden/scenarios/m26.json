@@ -1,0 +1,615 @@
+{
+ "scenarios": [
+  {
+   "name": "HTTP 既定値（seed_demo 後に共通seedを再利用）",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M26",
+     "payload": {
+      "action": "seed_demo",
+      "item_id": "demo-paint",
+      "unit": "ml",
+      "quantity": "10",
+      "transaction_conditions": {},
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "demo-paint"
+    },
+    {
+     "op": "records",
+     "namespace": "gross_margin_simulation"
+    }
+   ]
+  },
+  {
+   "name": "明示 seed で4価格を作る",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M26",
+     "payload": {
+      "action": "seed_demo",
+      "item_id": "demo-paint",
+      "unit": "ml",
+      "quantity": "10",
+      "transaction_conditions": {},
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "demo-paint"
+    },
+    {
+     "op": "run",
+     "module": "M26",
+     "payload": {
+      "action": "list"
+     }
+    }
+   ]
+  },
+  {
+   "name": "指定価格版で試算し価格を変えない",
+   "steps": [
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "paint-x",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "10.25",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "担当者",
+     "kwargs": {
+      "transaction_conditions": {
+       "freight_basis": "included"
+      }
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "paint-x",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "16.5",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "担当者",
+     "kwargs": {
+      "transaction_conditions": {
+       "freight_basis": "included"
+      }
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "paint-x",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "12",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "担当者",
+     "kwargs": {
+      "transaction_conditions": {
+       "freight_basis": "included"
+      }
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "paint-x",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "19.75",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "担当者",
+     "kwargs": {
+      "transaction_conditions": {
+       "freight_basis": "included"
+      }
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "paint-x"
+    },
+    {
+     "op": "run",
+     "module": "M26",
+     "payload": {
+      "action": "simulate",
+      "item_id": "paint-x",
+      "unit": "ml",
+      "quantity": "2.5",
+      "transaction_conditions": {
+       "freight_basis": "included"
+      },
+      "confirmed_by": "担当者",
+      "old_purchase": "$ref:0.price_version_id",
+      "old_sales": "$ref:1.price_version_id",
+      "new_purchase": "$ref:2.price_version_id",
+      "new_sales": "$ref:3.price_version_id"
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "paint-x"
+    },
+    {
+     "op": "records",
+     "namespace": "gross_margin_simulation"
+    }
+   ]
+  },
+  {
+   "name": "不一致は止める",
+   "steps": [
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "paint-x",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "10",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "担当者",
+     "kwargs": {
+      "transaction_conditions": {
+       "freight_basis": "included"
+      }
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "paint-x",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "15",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "担当者",
+     "kwargs": {
+      "transaction_conditions": {
+       "freight_basis": "included"
+      }
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "paint-x",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "11",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "担当者",
+     "kwargs": {
+      "transaction_conditions": {
+       "freight_basis": "included"
+      }
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "paint-x",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "17",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "担当者",
+     "kwargs": {
+      "transaction_conditions": {
+       "freight_basis": "included"
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M26",
+     "payload": {
+      "action": "simulate",
+      "item_id": "paint-x",
+      "unit": "g",
+      "quantity": "1",
+      "transaction_conditions": {
+       "freight_basis": "included"
+      },
+      "confirmed_by": "担当者",
+      "old_purchase": "$ref:0.price_version_id",
+      "old_sales": "$ref:1.price_version_id",
+      "new_purchase": "$ref:2.price_version_id",
+      "new_sales": "$ref:3.price_version_id"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M26",
+     "payload": {
+      "action": "simulate",
+      "item_id": "paint-x",
+      "unit": "ml",
+      "quantity": "1",
+      "transaction_conditions": {},
+      "confirmed_by": "担当者",
+      "old_purchase": "$ref:0.price_version_id",
+      "old_sales": "$ref:1.price_version_id",
+      "new_purchase": "$ref:2.price_version_id",
+      "new_sales": "$ref:3.price_version_id"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M26",
+     "payload": {
+      "action": "simulate",
+      "item_id": "paint-x",
+      "unit": "ml",
+      "quantity": "1",
+      "transaction_conditions": {
+       "freight_basis": "included"
+      },
+      "confirmed_by": "担当者",
+      "old_purchase": "$ref:0.price_version_id",
+      "old_sales": "$ref:0.price_version_id",
+      "new_purchase": "$ref:2.price_version_id",
+      "new_sales": "$ref:3.price_version_id"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M26",
+     "payload": {
+      "action": "simulate",
+      "item_id": "paint-x",
+      "unit": "ml",
+      "quantity": "1",
+      "transaction_conditions": {
+       "freight_basis": "included"
+      },
+      "confirmed_by": "担当者",
+      "old_purchase": "$ref:0.price_version_id",
+      "old_sales": "$ref:1.price_version_id",
+      "new_purchase": "missing",
+      "new_sales": "$ref:3.price_version_id"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M26",
+     "payload": {
+      "action": "simulate",
+      "item_id": "paint-x",
+      "unit": "ml",
+      "quantity": "3.30",
+      "transaction_conditions": {
+       "freight_basis": "included"
+      },
+      "confirmed_by": "担当者",
+      "old_purchase": "$ref:0.price_version_id",
+      "old_sales": "$ref:1.price_version_id",
+      "new_purchase": "$ref:2.price_version_id",
+      "new_sales": "$ref:3.price_version_id"
+     }
+    },
+    {
+     "op": "records",
+     "namespace": "gross_margin_simulation"
+    }
+   ]
+  },
+  {
+   "name": "未承認・通貨・仕入先の不一致",
+   "steps": [
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "p",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "1",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "a",
+     "kwargs": {}
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "p",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "2",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "a",
+     "kwargs": {
+      "status": "pending"
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "p",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "3",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "a",
+     "kwargs": {
+      "currency": "USD"
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "p",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "4",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "a",
+     "kwargs": {
+      "supplier_id": "s"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M26",
+     "payload": {
+      "action": "simulate",
+      "item_id": "p",
+      "unit": "ml",
+      "quantity": "1",
+      "confirmed_by": "a",
+      "old_purchase": "$ref:0.price_version_id",
+      "old_sales": "$ref:1.price_version_id",
+      "new_purchase": "$ref:0.price_version_id",
+      "new_sales": "$ref:3.price_version_id"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M26",
+     "payload": {
+      "action": "simulate",
+      "item_id": "p",
+      "unit": "ml",
+      "quantity": "1",
+      "confirmed_by": "a",
+      "old_purchase": "$ref:0.price_version_id",
+      "old_sales": "$ref:2.price_version_id",
+      "new_purchase": "$ref:0.price_version_id",
+      "new_sales": "$ref:3.price_version_id"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M26",
+     "payload": {
+      "action": "simulate",
+      "item_id": "p",
+      "unit": "ml",
+      "quantity": "1",
+      "confirmed_by": "a",
+      "old_purchase": "$ref:0.price_version_id",
+      "old_sales": "$ref:3.price_version_id",
+      "new_purchase": "$ref:0.price_version_id",
+      "new_sales": "$ref:3.price_version_id"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M26",
+     "payload": {
+      "action": "simulate",
+      "item_id": "p",
+      "unit": "ml",
+      "quantity": "1",
+      "confirmed_by": null,
+      "old_purchase": "$ref:0.price_version_id",
+      "old_sales": "$ref:3.price_version_id",
+      "new_purchase": "$ref:0.price_version_id",
+      "new_sales": "$ref:3.price_version_id"
+     }
+    }
+   ]
+  },
+  {
+   "name": "seed が確認できない既存価格",
+   "steps": [
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "demo-paint",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "81",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "x",
+     "kwargs": {}
+    },
+    {
+     "op": "run",
+     "module": "M26",
+     "payload": {
+      "action": "seed_demo",
+      "item_id": "demo-paint",
+      "unit": "ml",
+      "quantity": "10",
+      "transaction_conditions": {},
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "demo-paint"
+    }
+   ]
+  },
+  {
+   "name": "不正な数量と操作",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M26",
+     "payload": {
+      "action": "list"
+     }
+    },
+    {
+     "op": "price_versions"
+    },
+    {
+     "op": "run",
+     "module": "M26",
+     "payload": {
+      "action": "seed_demo",
+      "item_id": "demo-paint",
+      "unit": "ml",
+      "quantity": "0",
+      "transaction_conditions": {},
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M26",
+     "payload": {
+      "action": "seed_demo",
+      "item_id": "demo-paint",
+      "unit": "ml",
+      "quantity": "-1",
+      "transaction_conditions": {},
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M26",
+     "payload": {
+      "action": "seed_demo",
+      "item_id": "demo-paint",
+      "unit": "ml",
+      "quantity": "NaN",
+      "transaction_conditions": {},
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M26",
+     "payload": {
+      "action": "surprise"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M26",
+     "payload": {
+      "action": "seed_demo",
+      "item_id": "demo-paint",
+      "unit": "ml",
+      "quantity": "10",
+      "transaction_conditions": {},
+      "confirmed_by": "架空デモ担当",
+      "unexpected": true
+     }
+    },
+    {
+     "op": "run",
+     "module": "M26",
+     "payload": {
+      "action": "seed_demo",
+      "item_id": "demo-paint",
+      "unit": "ml",
+      "quantity": "10",
+      "transaction_conditions": {
+       "a": 1
+      },
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M26",
+     "payload": {
+      "action": "seed_demo",
+      "item_id": "demo-paint",
+      "unit": "ml",
+      "quantity": 0.5,
+      "transaction_conditions": {},
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M26",
+     "payload": {
+      "action": "list"
+     }
+    }
+   ]
+  }
+ ]
+}

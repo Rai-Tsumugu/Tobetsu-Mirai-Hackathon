@@ -1,0 +1,496 @@
+{
+ "source": "scenarios/m18.json",
+ "scenarios": [
+  {
+   "name": "既定値で架空の条件付き価格を返す",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "item_id": "demo-m18-paint",
+      "price_type": "仕入",
+      "as_of": "2026-10-11",
+      "conditional_prices": [
+       {
+        "conditional_price_id": "7c286ae80d254aebbe309f2f0d74f837",
+        "item_id": "demo-m18-paint",
+        "unit_price": "6800",
+        "min_qty": "5",
+        "unit": "缶",
+        "valid_from": "2026-10-01",
+        "valid_until": "2026-10-31",
+        "price_type": "仕入",
+        "source": "simulator:架空仕入条件",
+        "confirmed_by": "架空デモ担当",
+        "as_of": "2026-10-11",
+        "requested_quantity": "5",
+        "requested_unit": "缶",
+        "status": "条件一致"
+       }
+      ],
+      "simulator": true,
+      "quote_candidate": {
+       "conditional_price_id": "7c286ae80d254aebbe309f2f0d74f837",
+       "item_id": "demo-m18-paint",
+       "unit_price": "6800",
+       "min_qty": "5",
+       "unit": "缶",
+       "valid_from": "2026-10-01",
+       "valid_until": "2026-10-31",
+       "price_type": "仕入",
+       "source": "simulator:架空仕入条件",
+       "confirmed_by": "架空デモ担当",
+       "as_of": "2026-10-11",
+       "requested_quantity": "5",
+       "requested_unit": "缶",
+       "status": "条件一致"
+      }
+     }
+    },
+    {
+     "ok": [
+      {
+       "price_version_id": "748156d5619a49d6b3cfa3373c58e887",
+       "item": {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "80",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空デモ担当",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "初回登録",
+       "metadata": {}
+      },
+      {
+       "price_version_id": "50a902f7ed4d4af6ad6236d8915ce2bd",
+       "item": {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "120",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空デモ担当",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "初回登録",
+       "metadata": {}
+      }
+     ]
+    },
+    {
+     "ok": [
+      {
+       "item_id": "demo-m18-paint",
+       "unit_price": "6800",
+       "min_qty": "5",
+       "unit": "缶",
+       "valid_from": "2026-10-01",
+       "valid_until": "2026-10-31",
+       "price_type": "仕入",
+       "source": "simulator:架空仕入条件",
+       "confirmed_by": "架空デモ担当",
+       "record_id": "7c286ae80d254aebbe309f2f0d74f837"
+      }
+     ]
+    },
+    {
+     "ok": {
+      "item_id": "demo-m18-paint",
+      "price_type": "仕入",
+      "as_of": "2026-10-11",
+      "conditional_prices": [
+       {
+        "conditional_price_id": "7c286ae80d254aebbe309f2f0d74f837",
+        "item_id": "demo-m18-paint",
+        "unit_price": "6800",
+        "min_qty": "5",
+        "unit": "缶",
+        "valid_from": "2026-10-01",
+        "valid_until": "2026-10-31",
+        "price_type": "仕入",
+        "source": "simulator:架空仕入条件",
+        "confirmed_by": "架空デモ担当",
+        "as_of": "2026-10-11",
+        "requested_quantity": "5",
+        "requested_unit": "缶",
+        "status": "条件一致"
+       }
+      ],
+      "simulator": true,
+      "quote_candidate": {
+       "conditional_price_id": "7c286ae80d254aebbe309f2f0d74f837",
+       "item_id": "demo-m18-paint",
+       "unit_price": "6800",
+       "min_qty": "5",
+       "unit": "缶",
+       "valid_from": "2026-10-01",
+       "valid_until": "2026-10-31",
+       "price_type": "仕入",
+       "source": "simulator:架空仕入条件",
+       "confirmed_by": "架空デモ担当",
+       "as_of": "2026-10-11",
+       "requested_quantity": "5",
+       "requested_unit": "缶",
+       "status": "条件一致"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "name": "条件を別 namespace に記録",
+   "expected": [
+    {
+     "ok": {
+      "status": "saved",
+      "conditional_price_id": "b5a070beff114720b5bd45c358c575f3",
+      "conditional_price": {
+       "item_id": "part-1",
+       "unit_price": "4321.50",
+       "min_qty": "4",
+       "unit": "個",
+       "valid_from": "2026-10-01",
+       "valid_until": "2026-10-31",
+       "price_type": "仕入",
+       "source": "仕入先見積書",
+       "confirmed_by": "担当A"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "item_id": "part-1",
+      "unit_price": "4321.50",
+      "min_qty": "4",
+      "unit": "個",
+      "valid_from": "2026-10-01",
+      "valid_until": "2026-10-31",
+      "price_type": "仕入",
+      "source": "仕入先見積書",
+      "confirmed_by": "担当A",
+      "record_id": "b5a070beff114720b5bd45c358c575f3"
+     }
+    },
+    {
+     "ok": []
+    }
+   ]
+  },
+  {
+   "name": "各条件の一致と一覧",
+   "expected": [
+    {
+     "ok": {
+      "status": "saved",
+      "conditional_price_id": "0d18183459104465a338d6d5b22abe91",
+      "conditional_price": {
+       "item_id": "part-1",
+       "unit_price": "4321.50",
+       "min_qty": "4",
+       "unit": "個",
+       "valid_from": "2026-10-01",
+       "valid_until": "2026-10-31",
+       "price_type": "仕入",
+       "source": "見積書",
+       "confirmed_by": "担当A"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "条件不一致: 数量・期間・単位を確認してください。通常価格を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "条件不一致: 数量・期間・単位を確認してください。通常価格を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "条件不一致: 数量・期間・単位を確認してください。通常価格を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "price_type: 条件付き特価は仕入価格のみ対象です"
+    },
+    {
+     "ok": {
+      "item_id": "part-1",
+      "price_type": "仕入",
+      "as_of": "2026-10-15",
+      "conditional_prices": [
+       {
+        "conditional_price_id": "0d18183459104465a338d6d5b22abe91",
+        "item_id": "part-1",
+        "unit_price": "4321.50",
+        "min_qty": "4",
+        "unit": "個",
+        "valid_from": "2026-10-01",
+        "valid_until": "2026-10-31",
+        "price_type": "仕入",
+        "source": "見積書",
+        "confirmed_by": "担当A",
+        "as_of": "2026-10-15",
+        "requested_quantity": "5",
+        "requested_unit": "個",
+        "status": "条件一致"
+       }
+      ],
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "item_id": "part-1",
+      "price_type": "仕入",
+      "as_of": "2026-10-15",
+      "conditional_prices": [
+       {
+        "conditional_price_id": "0d18183459104465a338d6d5b22abe91",
+        "item_id": "part-1",
+        "unit_price": "4321.50",
+        "min_qty": "4",
+        "unit": "個",
+        "valid_from": "2026-10-01",
+        "valid_until": "2026-10-31",
+        "price_type": "仕入",
+        "source": "見積書",
+        "confirmed_by": "担当A",
+        "as_of": "2026-10-15",
+        "requested_quantity": "1",
+        "requested_unit": "個",
+        "status": "条件不一致"
+       }
+      ],
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "item_id": "part-1",
+      "price_type": "仕入",
+      "as_of": "2026-10-15",
+      "conditional_prices": [
+       {
+        "conditional_price_id": "0d18183459104465a338d6d5b22abe91",
+        "item_id": "part-1",
+        "unit_price": "4321.50",
+        "min_qty": "4",
+        "unit": "個",
+        "valid_from": "2026-10-01",
+        "valid_until": "2026-10-31",
+        "price_type": "仕入",
+        "source": "見積書",
+        "confirmed_by": "担当A",
+        "as_of": "2026-10-15",
+        "requested_quantity": "5",
+        "requested_unit": "個",
+        "status": "条件一致"
+       }
+      ],
+      "simulator": false,
+      "quote_candidate": {
+       "conditional_price_id": "0d18183459104465a338d6d5b22abe91",
+       "item_id": "part-1",
+       "unit_price": "4321.50",
+       "min_qty": "4",
+       "unit": "個",
+       "valid_from": "2026-10-01",
+       "valid_until": "2026-10-31",
+       "price_type": "仕入",
+       "source": "見積書",
+       "confirmed_by": "担当A",
+       "as_of": "2026-10-15",
+       "requested_quantity": "5",
+       "requested_unit": "個",
+       "status": "条件一致"
+      }
+     }
+    },
+    {
+     "ok": {
+      "item_id": "part-1",
+      "price_type": "仕入",
+      "as_of": "2026-10-31",
+      "conditional_prices": [
+       {
+        "conditional_price_id": "0d18183459104465a338d6d5b22abe91",
+        "item_id": "part-1",
+        "unit_price": "4321.50",
+        "min_qty": "4",
+        "unit": "個",
+        "valid_from": "2026-10-01",
+        "valid_until": "2026-10-31",
+        "price_type": "仕入",
+        "source": "見積書",
+        "confirmed_by": "担当A",
+        "as_of": "2026-10-31",
+        "requested_quantity": "4.0",
+        "requested_unit": "個",
+        "status": "条件一致"
+       }
+      ],
+      "simulator": false,
+      "quote_candidate": {
+       "conditional_price_id": "0d18183459104465a338d6d5b22abe91",
+       "item_id": "part-1",
+       "unit_price": "4321.50",
+       "min_qty": "4",
+       "unit": "個",
+       "valid_from": "2026-10-01",
+       "valid_until": "2026-10-31",
+       "price_type": "仕入",
+       "source": "見積書",
+       "confirmed_by": "担当A",
+       "as_of": "2026-10-31",
+       "requested_quantity": "4.0",
+       "requested_unit": "個",
+       "status": "条件一致"
+      }
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "conditional_price_id": "d80c5840f4db47bfbbaedc226b2266eb",
+      "conditional_price": {
+       "item_id": "part-1",
+       "unit_price": "4000",
+       "min_qty": "10",
+       "unit": "個",
+       "valid_from": "2026-10-01",
+       "valid_until": "2026-10-31",
+       "price_type": "仕入",
+       "source": "見積書",
+       "confirmed_by": "担当A"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "item_id": "part-1",
+      "price_type": "仕入",
+      "as_of": "2026-10-15",
+      "conditional_prices": [
+       {
+        "conditional_price_id": "0d18183459104465a338d6d5b22abe91",
+        "item_id": "part-1",
+        "unit_price": "4321.50",
+        "min_qty": "4",
+        "unit": "個",
+        "valid_from": "2026-10-01",
+        "valid_until": "2026-10-31",
+        "price_type": "仕入",
+        "source": "見積書",
+        "confirmed_by": "担当A",
+        "as_of": "2026-10-15",
+        "requested_quantity": "12",
+        "requested_unit": "個",
+        "status": "条件一致"
+       },
+       {
+        "conditional_price_id": "d80c5840f4db47bfbbaedc226b2266eb",
+        "item_id": "part-1",
+        "unit_price": "4000",
+        "min_qty": "10",
+        "unit": "個",
+        "valid_from": "2026-10-01",
+        "valid_until": "2026-10-31",
+        "price_type": "仕入",
+        "source": "見積書",
+        "confirmed_by": "担当A",
+        "as_of": "2026-10-15",
+        "requested_quantity": "12",
+        "requested_unit": "個",
+        "status": "条件一致"
+       }
+      ],
+      "simulator": false,
+      "quote_candidate": {
+       "conditional_price_id": "d80c5840f4db47bfbbaedc226b2266eb",
+       "item_id": "part-1",
+       "unit_price": "4000",
+       "min_qty": "10",
+       "unit": "個",
+       "valid_from": "2026-10-01",
+       "valid_until": "2026-10-31",
+       "price_type": "仕入",
+       "source": "見積書",
+       "confirmed_by": "担当A",
+       "as_of": "2026-10-15",
+       "requested_quantity": "12",
+       "requested_unit": "個",
+       "status": "条件一致"
+      }
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "条件付き価格未確認: 対象価格がありません"
+    }
+   ]
+  },
+  {
+   "name": "不備・範囲・仕入以外は止める",
+   "expected": [
+    {
+     "error": "ValidationError",
+     "message": "valid_until: 開始日より前です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "price_type: 条件付き特価は仕入価格のみ登録できます"
+    },
+    {
+     "error": "ValidationError",
+     "message": "source: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "min_qty: 有限の正数/非負数を入力してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "unit_price: 有限の正数/非負数を入力してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "payload: 指定できない項目があります"
+    },
+    {
+     "error": "ValidationError",
+     "message": "confirmed_by: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "action: record / list / apply を選択してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "条件付き価格未確認: 対象価格がありません"
+    },
+    {
+     "ok": []
+    }
+   ]
+  }
+ ]
+}

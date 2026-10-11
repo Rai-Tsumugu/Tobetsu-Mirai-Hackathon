@@ -1,0 +1,80 @@
+{
+  "scenarios": [
+    {
+      "name": "SPEC defaults",
+      "steps": [
+        {"op": "seed_demo"},
+        {"op": "run", "module": "M02", "payload": {"item_id": "demo-paint", "source_unit": "ml", "base_unit": "ml", "factor": "1", "evidence": "simulator:架空値、同一単位のデモ換算", "quantity": "1", "price_type": "仕入", "confirmed_by": "架空デモ担当", "as_of": "2026-10-11"}},
+        {"op": "run", "module": "M02", "payload": {"item_id": "demo-paint", "source_unit": "ml", "base_unit": "ml", "factor": "1", "evidence": "simulator:架空値、同一単位のデモ換算", "quantity": "1", "price_type": "仕入", "confirmed_by": "架空デモ担当", "as_of": "2026-10-11"}},
+        {"op": "records", "namespace": "unit_conversion"}
+      ]
+    },
+    {
+      "name": "箱 → 本 と小数の換算",
+      "steps": [
+        {"op": "seed_demo"},
+        {"op": "add_price", "item": {"item_id": "demo-bolts", "name": "架空サンプル塗料", "category": "塗料", "unit": "箱", "unit_price": "100", "price_type": "仕入", "source": "simulator:架空値", "updated_at": "2026-10-11"}, "confirmed_by": "架空デモ担当"},
+        {"op": "run", "module": "M02", "payload": {"item_id": "demo-bolts", "source_unit": "箱", "base_unit": "本", "factor": "4", "evidence": "simulator:架空値、納品書で1箱4本と確認", "quantity": "2", "price_type": "仕入", "confirmed_by": "架空デモ担当", "as_of": "2026-10-11"}},
+        {"op": "run", "module": "M02", "payload": {"item_id": "demo-bolts", "source_unit": "箱", "base_unit": "本", "factor": "5", "evidence": "simulator:架空値、納品書で1箱4本と確認", "quantity": "2", "price_type": "仕入", "confirmed_by": "架空デモ担当", "as_of": "2026-10-11"}},
+        {"op": "run", "module": "M02", "payload": {"item_id": "demo-bolts", "source_unit": "箱", "base_unit": "本", "factor": "4.0", "evidence": "simulator:架空値、納品書で1箱4本と確認", "quantity": "2", "price_type": "仕入", "confirmed_by": "架空デモ担当", "as_of": "2026-10-11"}},
+        {"op": "add_price", "item": {"item_id": "demo-powder", "name": "架空サンプル塗料", "category": "塗料", "unit": "kg", "unit_price": "12.5", "price_type": "仕入", "source": "simulator:架空値", "updated_at": "2026-10-11"}, "confirmed_by": "架空デモ担当"},
+        {"op": "run", "module": "M02", "payload": {"item_id": "demo-powder", "source_unit": "kg", "base_unit": "g", "factor": "1000", "evidence": "simulator:架空値、1kg=1000g", "quantity": "0.25", "price_type": "仕入", "confirmed_by": "架空デモ担当", "as_of": "2026-10-11"}},
+        {"op": "add_price", "item": {"item_id": "demo-can", "name": "架空サンプル塗料", "category": "塗料", "unit": "L", "unit_price": "3", "price_type": "仕入", "source": "simulator:架空値", "updated_at": "2026-10-11"}, "confirmed_by": "架空デモ担当"},
+        {"op": "run", "module": "M02", "payload": {"item_id": "demo-can", "source_unit": "L", "base_unit": "ml", "factor": 1E+3, "evidence": "e", "quantity": 0.50, "price_type": "仕入", "confirmed_by": "架空デモ担当"}},
+        {"op": "run", "module": "M02", "payload": {"item_id": "demo-bolts", "source_unit": "箱", "base_unit": "個", "factor": "8", "evidence": "e", "quantity": "0", "price_type": "仕入", "confirmed_by": "架空デモ担当"}},
+        {"op": "records", "namespace": "unit_conversion"}
+      ]
+    },
+    {
+      "name": "割り切れない単価は丸めずに拒否",
+      "steps": [
+        {"op": "seed_demo"},
+        {"op": "add_price", "item": {"item_id": "demo-three", "name": "架空サンプル塗料", "category": "塗料", "unit": "箱", "unit_price": "100", "price_type": "仕入", "source": "simulator:架空値", "updated_at": "2026-10-11"}, "confirmed_by": "架空デモ担当"},
+        {"op": "run", "module": "M02", "payload": {"item_id": "demo-three", "source_unit": "箱", "base_unit": "本", "factor": "3", "evidence": "simulator:架空値、1箱3本", "quantity": "1", "price_type": "仕入", "confirmed_by": "架空デモ担当", "as_of": "2026-10-11"}},
+        {"op": "records", "namespace": "unit_conversion", "record_id": "demo-three|箱|本"}
+      ]
+    },
+    {
+      "name": "係数・数量・単位・根拠の検査",
+      "steps": [
+        {"op": "seed_demo"},
+        {"op": "add_price", "item": {"item_id": "demo-bolts", "name": "架空サンプル塗料", "category": "塗料", "unit": "箱", "unit_price": "100", "price_type": "仕入", "source": "simulator:架空値", "updated_at": "2026-10-11"}, "confirmed_by": "架空デモ担当"},
+        {"op": "run", "module": "M02", "payload": {"item_id": "demo-bolts", "source_unit": "箱", "base_unit": "本", "factor": "0", "evidence": "simulator:架空値", "quantity": "1", "price_type": "仕入", "confirmed_by": "架空デモ担当"}},
+        {"op": "run", "module": "M02", "payload": {"item_id": "demo-bolts", "source_unit": "箱", "base_unit": "本", "factor": "-1", "evidence": "simulator:架空値", "quantity": "1", "price_type": "仕入", "confirmed_by": "架空デモ担当"}},
+        {"op": "run", "module": "M02", "payload": {"item_id": "demo-bolts", "source_unit": "箱", "base_unit": "本", "factor": "NaN", "evidence": "simulator:架空値", "quantity": "1", "price_type": "仕入", "confirmed_by": "架空デモ担当"}},
+        {"op": "run", "module": "M02", "payload": {"item_id": "demo-bolts", "source_unit": "箱", "base_unit": "本", "factor": "Infinity", "evidence": "simulator:架空値", "quantity": "1", "price_type": "仕入", "confirmed_by": "架空デモ担当"}},
+        {"op": "run", "module": "M02", "payload": {"item_id": "demo-bolts", "source_unit": "箱", "base_unit": "本", "factor": "4", "evidence": "simulator:架空値", "quantity": "-1", "price_type": "仕入", "confirmed_by": "架空デモ担当"}},
+        {"op": "run", "module": "M02", "payload": {"item_id": "demo-paint", "source_unit": "L", "base_unit": "kg", "factor": "1", "evidence": "e", "quantity": "1", "price_type": "仕入", "confirmed_by": "架空デモ担当"}},
+        {"op": "run", "module": "M02", "payload": {"item_id": "demo-paint", "source_unit": "ml", "base_unit": "ml", "factor": "2", "evidence": "e", "quantity": "1", "price_type": "仕入", "confirmed_by": "架空デモ担当"}},
+        {"op": "run", "module": "M02", "payload": {"item_id": "demo-paint", "source_unit": "cup", "base_unit": "ml", "factor": "1", "evidence": "e", "quantity": "1", "price_type": "仕入", "confirmed_by": "架空デモ担当"}},
+        {"op": "run", "module": "M02", "payload": {"item_id": "demo-paint", "source_unit": "ml", "base_unit": "ml", "factor": "1", "evidence": "  ", "quantity": "1", "price_type": "仕入", "confirmed_by": "架空デモ担当"}},
+        {"op": "run", "module": "M02", "payload": {"item_id": "demo-paint", "source_unit": "ml", "base_unit": "ml", "factor": null, "evidence": "e", "quantity": "1", "price_type": "仕入", "confirmed_by": "架空デモ担当"}},
+        {"op": "run", "module": "M02", "payload": {"item_id": "demo-paint", "source_unit": "L", "base_unit": "ml", "factor": "1000", "evidence": "e", "quantity": "1", "price_type": "仕入", "confirmed_by": "架空デモ担当"}},
+        {"op": "run", "module": "M02", "payload": {"item_id": "demo-paint", "source_unit": "ml", "base_unit": "ml", "factor": "1", "evidence": "e", "quantity": "1", "price_type": "仕入"}},
+        {"op": "run", "module": "M02", "payload": {"item_id": "demo-paint", "source_unit": "ml", "base_unit": "ml", "factor": "1", "evidence": "e", "quantity": "1", "confirmed_by": "x"}},
+        {"op": "run", "module": "M02", "payload": {"item_id": "demo-paint", "source_unit": "ml", "base_unit": "ml", "factor": "1", "evidence": "e", "quantity": "1", "price_type": "仕入", "confirmed_by": "x", "as_of": "not-a-date"}},
+        {"op": "run", "module": "M02", "payload": "x"}
+      ]
+    },
+    {
+      "name": "未承認・未登録・期限切れ",
+      "steps": [
+        {"op": "seed_demo"},
+        {"op": "add_price", "item": {"item_id": "pending-box", "name": "架空サンプル塗料", "category": "塗料", "unit": "箱", "unit_price": "120", "price_type": "仕入", "source": "simulator:架空値", "updated_at": "2026-10-11"}, "confirmed_by": "架空デモ担当", "kwargs": {"status": "pending"}},
+        {"op": "run", "module": "M02", "payload": {"item_id": "missing-item", "source_unit": "箱", "base_unit": "本", "factor": "4", "evidence": "simulator:架空値", "quantity": "1", "price_type": "仕入", "confirmed_by": "架空デモ担当"}},
+        {"op": "run", "module": "M02", "payload": {"item_id": "pending-box", "source_unit": "箱", "base_unit": "本", "factor": "4", "evidence": "simulator:架空値", "quantity": "1", "price_type": "仕入", "confirmed_by": "架空デモ担当"}},
+        {"op": "add_price", "item": {"item_id": "expired-box", "name": "架空サンプル塗料", "category": "塗料", "unit": "箱", "unit_price": "120", "price_type": "仕入", "source": "simulator:架空値", "updated_at": "2026-10-11"}, "confirmed_by": "架空デモ担当", "kwargs": {"valid_from": "2026-10-01", "valid_until": "2026-10-10"}},
+        {"op": "run", "module": "M02", "payload": {"item_id": "expired-box", "source_unit": "箱", "base_unit": "本", "factor": "4", "evidence": "simulator:架空値", "quantity": "1", "price_type": "仕入", "confirmed_by": "架空デモ担当", "as_of": "2026-10-11"}}
+      ]
+    },
+    {
+      "name": "根拠と係数の表記を保存",
+      "steps": [
+        {"op": "seed_demo"},
+        {"op": "add_price", "item": {"item_id": "demo-bolts", "name": "架空サンプル塗料", "category": "塗料", "unit": "箱", "unit_price": "100", "price_type": "仕入", "source": "simulator:架空値", "updated_at": "2026-10-11"}, "confirmed_by": "架空デモ担当"},
+        {"op": "run", "module": "M02", "payload": {"item_id": "demo-bolts", "source_unit": "箱", "base_unit": "本", "factor": "4.00", "evidence": "simulator:架空値、1箱4本", "quantity": "1", "price_type": "仕入", "confirmed_by": "架空デモ担当"}},
+        {"op": "latest", "namespace": "unit_conversion", "record_id": "demo-bolts|箱|本"}
+      ]
+    }
+  ]
+}

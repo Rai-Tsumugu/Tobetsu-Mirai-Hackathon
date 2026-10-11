@@ -1,0 +1,556 @@
+{
+ "scenarios": [
+  {
+   "name": "既定値は架空の記録で価格を作らない",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M20",
+     "payload": {
+      "action": "record",
+      "item_id": "demo-m20-paint",
+      "area_band": "架空の小面積",
+      "low_qty": "10",
+      "typical_qty": "15",
+      "high_qty": "20",
+      "unit": "ml",
+      "evidence": "simulator:架空デモ用の仮定値",
+      "approved_by": "架空デモ担当",
+      "reason": "架空デモデータ"
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "demo-m20-paint",
+     "price_type": null,
+     "supplier_id": null
+    },
+    {
+     "op": "run",
+     "module": "M20",
+     "payload": {
+      "action": "estimate",
+      "item_id": "demo-m20-paint",
+      "area_band": "架空の小面積"
+     }
+    }
+   ]
+  },
+  {
+   "name": "数量の順序・根拠・承認者の検査",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M20",
+     "payload": {
+      "action": "record",
+      "item_id": "paint-a",
+      "area_band": "small",
+      "low_qty": "1.2",
+      "typical_qty": "2.5",
+      "high_qty": "4",
+      "unit": "ml",
+      "evidence": "架空の工場記録に基づくテスト根拠",
+      "approved_by": "整備士A",
+      "reason": "確認済みの目安"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M20",
+     "payload": {
+      "action": "record",
+      "item_id": "paint-a",
+      "area_band": "small",
+      "low_qty": "3",
+      "typical_qty": "2",
+      "high_qty": "4",
+      "unit": "ml",
+      "evidence": "架空の工場記録に基づくテスト根拠",
+      "approved_by": "整備士A",
+      "reason": "確認済みの目安"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M20",
+     "payload": {
+      "action": "record",
+      "item_id": "paint-a",
+      "area_band": "small",
+      "low_qty": "1.2",
+      "typical_qty": "5",
+      "high_qty": "4",
+      "unit": "ml",
+      "evidence": "架空の工場記録に基づくテスト根拠",
+      "approved_by": "整備士A",
+      "reason": "確認済みの目安"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M20",
+     "payload": {
+      "action": "record",
+      "item_id": "paint-a",
+      "area_band": "small",
+      "low_qty": "1.2",
+      "typical_qty": "2.5",
+      "high_qty": "4",
+      "unit": "ml",
+      "evidence": " ",
+      "approved_by": "整備士A",
+      "reason": "確認済みの目安"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M20",
+     "payload": {
+      "action": "record",
+      "item_id": "paint-a",
+      "area_band": "small",
+      "low_qty": "1.2",
+      "typical_qty": "2.5",
+      "high_qty": "4",
+      "unit": "ml",
+      "evidence": "架空の工場記録に基づくテスト根拠",
+      "approved_by": "",
+      "reason": "確認済みの目安"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M20",
+     "payload": {
+      "action": "record",
+      "item_id": "paint-a",
+      "area_band": "small",
+      "low_qty": "-1",
+      "typical_qty": "2.5",
+      "high_qty": "4",
+      "unit": "ml",
+      "evidence": "架空の工場記録に基づくテスト根拠",
+      "approved_by": "整備士A",
+      "reason": "確認済みの目安"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M20",
+     "payload": {
+      "action": "record",
+      "item_id": "paint-a",
+      "area_band": "small",
+      "low_qty": "1.2",
+      "typical_qty": "2.5",
+      "high_qty": "4",
+      "unit": "ml",
+      "evidence": "架空の工場記録に基づくテスト根拠",
+      "approved_by": "整備士A",
+      "reason": "確認済みの目安",
+      "extra": 1
+     }
+    },
+    {
+     "op": "records",
+     "namespace": "usage_band"
+    }
+   ]
+  },
+  {
+   "name": "十進の数量と同単位の価格から幅を出す",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M20",
+     "payload": {
+      "action": "record",
+      "item_id": "paint-a",
+      "area_band": "small",
+      "low_qty": "1.2",
+      "typical_qty": "2.5",
+      "high_qty": "4",
+      "unit": "ml",
+      "evidence": "架空の工場記録に基づくテスト根拠",
+      "approved_by": "整備士A",
+      "reason": "確認済みの目安"
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "paint-a",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "10",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "価格確認者",
+     "kwargs": {}
+    },
+    {
+     "op": "run",
+     "module": "M20",
+     "payload": {
+      "action": "estimate",
+      "item_id": "paint-a",
+      "area_band": "small",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "paint-a",
+     "price_type": null,
+     "supplier_id": null
+    },
+    {
+     "op": "run",
+     "module": "M20",
+     "payload": {
+      "action": "estimate",
+      "item_id": "paint-a",
+      "area_band": "small",
+      "price_type": "仕入"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M20",
+     "payload": {
+      "action": "estimate",
+      "item_id": "paint-a",
+      "area_band": "small",
+      "price_type": "定価"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M20",
+     "payload": {
+      "action": "estimate",
+      "item_id": "paint-a",
+      "area_band": "small",
+      "as_of": "bad"
+     }
+    }
+   ]
+  },
+  {
+   "name": "未登録・未承認の帯は数量なし",
+   "steps": [
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "paint-a",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "10",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "価格確認者",
+     "kwargs": {}
+    },
+    {
+     "op": "run",
+     "module": "M20",
+     "payload": {
+      "action": "estimate",
+      "item_id": "paint-a",
+      "area_band": "small"
+     }
+    },
+    {
+     "op": "put",
+     "namespace": "usage_band",
+     "record": {
+      "item_id": "paint-a",
+      "area_band": "small",
+      "low_qty": "1",
+      "typical_qty": "2",
+      "high_qty": "3",
+      "unit": "ml",
+      "evidence": "架空根拠",
+      "approved_by": "",
+      "status": "pending"
+     },
+     "record_id": "paint-a:small"
+    },
+    {
+     "op": "run",
+     "module": "M20",
+     "payload": {
+      "action": "estimate",
+      "item_id": "paint-a",
+      "area_band": "small"
+     }
+    },
+    {
+     "op": "put",
+     "namespace": "usage_band",
+     "record": {
+      "item_id": "paint-a",
+      "area_band": "small",
+      "low_qty": "3",
+      "typical_qty": "2",
+      "high_qty": "3",
+      "unit": "ml",
+      "evidence": "架空根拠",
+      "approved_by": "x",
+      "status": "approved"
+     },
+     "record_id": "paint-a:small"
+    },
+    {
+     "op": "run",
+     "module": "M20",
+     "payload": {
+      "action": "estimate",
+      "item_id": "paint-a",
+      "area_band": "small"
+     }
+    },
+    {
+     "op": "put",
+     "namespace": "usage_band",
+     "record": {
+      "item_id": "paint-a",
+      "area_band": "small",
+      "low_qty": "1",
+      "typical_qty": "2",
+      "high_qty": "3",
+      "unit": "",
+      "evidence": "架空根拠",
+      "approved_by": "x",
+      "status": "approved"
+     },
+     "record_id": "paint-a:small"
+    },
+    {
+     "op": "run",
+     "module": "M20",
+     "payload": {
+      "action": "estimate",
+      "item_id": "paint-a",
+      "area_band": "small"
+     }
+    }
+   ]
+  },
+  {
+   "name": "価格なし・単位違いは0円にしない",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M20",
+     "payload": {
+      "action": "record",
+      "item_id": "paint-a",
+      "area_band": "small",
+      "low_qty": "1.2",
+      "typical_qty": "2.5",
+      "high_qty": "4",
+      "unit": "ml",
+      "evidence": "架空の工場記録に基づくテスト根拠",
+      "approved_by": "整備士A",
+      "reason": "確認済みの目安"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M20",
+     "payload": {
+      "action": "estimate",
+      "item_id": "paint-a",
+      "area_band": "small"
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "paint-a",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "L",
+      "unit_price": "10",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "価格確認者",
+     "kwargs": {}
+    },
+    {
+     "op": "run",
+     "module": "M20",
+     "payload": {
+      "action": "estimate",
+      "item_id": "paint-a",
+      "area_band": "small"
+     }
+    }
+   ]
+  },
+  {
+   "name": "一覧は帯ごとの最新だけ",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M20",
+     "payload": {
+      "action": "record",
+      "item_id": "paint-a",
+      "area_band": "small",
+      "low_qty": "1.2",
+      "typical_qty": "2.5",
+      "high_qty": "4",
+      "unit": "ml",
+      "evidence": "架空の工場記録に基づくテスト根拠",
+      "approved_by": "整備士A",
+      "reason": "確認済みの目安"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M20",
+     "payload": {
+      "action": "record",
+      "item_id": "paint-a",
+      "area_band": "small",
+      "low_qty": "1.2",
+      "typical_qty": "3",
+      "high_qty": "4",
+      "unit": "ml",
+      "evidence": "架空の工場記録に基づくテスト根拠",
+      "approved_by": "整備士A",
+      "reason": "改訂した架空目安"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M20",
+     "payload": {
+      "action": "record",
+      "item_id": "paint-0",
+      "area_band": "z",
+      "low_qty": "1.2",
+      "typical_qty": "2.5",
+      "high_qty": "4",
+      "unit": "ml",
+      "evidence": "simulator:x",
+      "approved_by": "整備士A",
+      "reason": "確認済みの目安"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M20",
+     "payload": {
+      "action": "record",
+      "item_id": "paint-a",
+      "area_band": "large",
+      "low_qty": "1.2",
+      "typical_qty": "2.5",
+      "high_qty": "4",
+      "unit": "ml",
+      "evidence": "架空の工場記録に基づくテスト根拠",
+      "approved_by": "整備士A",
+      "reason": "確認済みの目安"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M20",
+     "payload": {
+      "action": "list",
+      "item_id": "paint-a"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M20",
+     "payload": {
+      "action": "list"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M20",
+     "payload": {
+      "action": "list",
+      "area_band": "small"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M20",
+     "payload": {
+      "action": "list",
+      "item_id": ""
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": null,
+     "price_type": null,
+     "supplier_id": null
+    }
+   ]
+  },
+  {
+   "name": "割り切れない単価との積（prec 60）",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M20",
+     "payload": {
+      "action": "record",
+      "item_id": "paint-a",
+      "area_band": "small",
+      "low_qty": "0.333333333333",
+      "typical_qty": "1.000000000001",
+      "high_qty": "99999999999999",
+      "unit": "ml",
+      "evidence": "架空の工場記録に基づくテスト根拠",
+      "approved_by": "整備士A",
+      "reason": "確認済みの目安"
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "paint-a",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "123456789012345.678901234567",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "価格確認者",
+     "kwargs": {}
+    },
+    {
+     "op": "run",
+     "module": "M20",
+     "payload": {
+      "action": "estimate",
+      "item_id": "paint-a",
+      "area_band": "small"
+     }
+    }
+   ]
+  }
+ ]
+}

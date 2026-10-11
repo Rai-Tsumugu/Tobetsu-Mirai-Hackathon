@@ -1,0 +1,621 @@
+{
+ "source": "scenarios/m01.json",
+ "scenarios": [
+  {
+   "name": "SPEC defaults（register → lookup）",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "status": "approved",
+      "paint_code": {
+       "maker": "架空メーカー",
+       "raw_code": "DEMO-001",
+       "normalized_code": "DEMO-001",
+       "finish": "メタリック",
+       "item_id": "demo-paint",
+       "status": "approved",
+       "confirmed_by": "架空デモ担当",
+       "reason": "正規化コードの対応を人が確認"
+      },
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "120",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "items": [
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "120",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "price_version_id": "cc762cf4ed78433fa739bd0d7062e351"
+     }
+    },
+    {
+     "ok": {
+      "status": "approved",
+      "paint_code": {
+       "maker": "架空メーカー",
+       "raw_code": "DEMO-001",
+       "normalized_code": "DEMO-001",
+       "finish": "メタリック",
+       "item_id": "demo-paint",
+       "status": "approved",
+       "confirmed_by": "架空デモ担当",
+       "reason": "正規化コードの対応を人が確認"
+      },
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "120",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "items": [
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "120",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "price_version_id": "cc762cf4ed78433fa739bd0d7062e351"
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "paint_code: 原表記または対応が未確認です"
+    },
+    {
+     "ok": {
+      "status": "approved",
+      "paint_code": {
+       "maker": "架空メーカー",
+       "raw_code": "DEMO-001",
+       "normalized_code": "DEMO-001",
+       "finish": "メタリック",
+       "item_id": "demo-paint",
+       "status": "approved",
+       "confirmed_by": "架空デモ担当",
+       "reason": "正規化コードの対応を人が確認"
+      },
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "120",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "items": [
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "120",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "price_version_id": "cc762cf4ed78433fa739bd0d7062e351"
+     }
+    },
+    {
+     "ok": [
+      {
+       "maker": "架空メーカー",
+       "raw_code": "DEMO-001",
+       "normalized_code": "DEMO-001",
+       "finish": "メタリック",
+       "item_id": "demo-paint",
+       "status": "approved",
+       "confirmed_by": "架空デモ担当",
+       "reason": "正規化コードの対応を人が確認",
+       "record_id": "[\"架空メーカー\",\"DEMO-001\",\"メタリック\"]"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "NFKC と大文字化・原表記は保持",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "status": "approved",
+      "paint_code": {
+       "maker": "架空メーカー",
+       "raw_code": "  ａｂ-１２  ",
+       "normalized_code": "AB-12",
+       "finish": "メタリック",
+       "item_id": "demo-paint",
+       "status": "approved",
+       "confirmed_by": "架空デモ担当",
+       "reason": "正規化コードの対応を人が確認"
+      },
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "120",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "items": [
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "120",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "price_version_id": "04df6d902870435e906c62f76686bc6c"
+     }
+    },
+    {
+     "ok": {
+      "status": "approved",
+      "paint_code": {
+       "maker": "架空メーカー",
+       "raw_code": "  ａｂ-１２  ",
+       "normalized_code": "AB-12",
+       "finish": "メタリック",
+       "item_id": "demo-paint",
+       "status": "approved",
+       "confirmed_by": "架空デモ担当",
+       "reason": "正規化コードの対応を人が確認"
+      },
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "120",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "items": [
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "120",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "price_version_id": "04df6d902870435e906c62f76686bc6c"
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "paint_code: 原表記または対応が未確認です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "paint_code: 登録済みの対応がありません"
+    }
+   ]
+  },
+  {
+   "name": "正規化後の衝突は保留",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "price_version_id": "dcdb9f2e9216455bb2fd928ccc8025cf",
+      "item": {
+       "item_id": "paint-upper",
+       "name": "架空塗料 paint-upper",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "100",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空デモ担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {}
+     }
+    },
+    {
+     "ok": {
+      "price_version_id": "a66e72edabc24e8197d25c10a378295d",
+      "item": {
+       "item_id": "paint-lower",
+       "name": "架空塗料 paint-lower",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "100",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空デモ担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {}
+     }
+    },
+    {
+     "ok": {
+      "status": "approved",
+      "paint_code": {
+       "maker": "架空メーカー",
+       "raw_code": "AB-9",
+       "normalized_code": "AB-9",
+       "finish": "メタリック",
+       "item_id": "paint-upper",
+       "status": "approved",
+       "confirmed_by": "架空デモ担当",
+       "reason": "正規化コードの対応を人が確認"
+      },
+      "item": {
+       "item_id": "paint-upper",
+       "name": "架空塗料 paint-upper",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "100",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "items": [
+       {
+        "item_id": "paint-upper",
+        "name": "架空塗料 paint-upper",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "100",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "price_version_id": "dcdb9f2e9216455bb2fd928ccc8025cf"
+     }
+    },
+    {
+     "ok": {
+      "status": "pending",
+      "paint_code": {
+       "maker": "架空メーカー",
+       "raw_code": "ab-9",
+       "normalized_code": "AB-9",
+       "finish": "メタリック",
+       "item_id": "paint-lower",
+       "status": "pending",
+       "confirmed_by": "架空デモ担当",
+       "reason": "正規化後の対応が曖昧なため要確認"
+      },
+      "items": [],
+      "reason": "正規化後の対応が曖昧なため要確認"
+     }
+    },
+    {
+     "ok": {
+      "status": "pending",
+      "paint_code": {
+       "maker": "架空メーカー",
+       "raw_code": "ab-9",
+       "normalized_code": "AB-9",
+       "finish": "メタリック",
+       "item_id": "paint-lower",
+       "status": "pending",
+       "confirmed_by": "架空デモ担当",
+       "reason": "正規化後の対応が曖昧なため要確認"
+      },
+      "items": [],
+      "reason": "正規化後の対応が曖昧なため要確認"
+     }
+    },
+    {
+     "ok": {
+      "status": "pending",
+      "paint_code": {
+       "maker": "架空メーカー",
+       "raw_code": "AB-9",
+       "normalized_code": "AB-9",
+       "finish": "メタリック",
+       "item_id": "paint-upper",
+       "status": "pending",
+       "confirmed_by": "架空デモ担当",
+       "reason": "正規化後の対応が曖昧なため要確認"
+      },
+      "items": [],
+      "reason": "正規化後の対応が曖昧なため要確認"
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "paint_code: 原表記または対応が未確認です"
+    },
+    {
+     "ok": [
+      {
+       "maker": "架空メーカー",
+       "raw_code": "AB-9",
+       "normalized_code": "AB-9",
+       "finish": "メタリック",
+       "item_id": "paint-upper",
+       "status": "approved",
+       "confirmed_by": "架空デモ担当",
+       "reason": "正規化コードの対応を人が確認",
+       "record_id": "[\"架空メーカー\",\"AB-9\",\"メタリック\"]"
+      },
+      {
+       "maker": "架空メーカー",
+       "raw_code": "ab-9",
+       "normalized_code": "AB-9",
+       "finish": "メタリック",
+       "item_id": "paint-lower",
+       "status": "pending",
+       "confirmed_by": "架空デモ担当",
+       "reason": "正規化後の対応が曖昧なため要確認",
+       "record_id": "[\"架空メーカー\",\"AB-9\",\"メタリック\"]"
+      },
+      {
+       "maker": "架空メーカー",
+       "raw_code": "ab-9",
+       "normalized_code": "AB-9",
+       "finish": "メタリック",
+       "item_id": "paint-lower",
+       "status": "pending",
+       "confirmed_by": "架空デモ担当",
+       "reason": "正規化後の対応が曖昧なため要確認",
+       "record_id": "[\"架空メーカー\",\"AB-9\",\"メタリック\"]"
+      },
+      {
+       "maker": "架空メーカー",
+       "raw_code": "AB-9",
+       "normalized_code": "AB-9",
+       "finish": "メタリック",
+       "item_id": "paint-upper",
+       "status": "pending",
+       "confirmed_by": "架空デモ担当",
+       "reason": "正規化後の対応が曖昧なため要確認",
+       "record_id": "[\"架空メーカー\",\"AB-9\",\"メタリック\"]"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "曖昧なコード・制御文字は拒否",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "error": "ValidationError",
+     "message": "raw_code: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "raw_code: 英数字を含むコードが必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "raw_code: コード内の空白は曖昧なため確認が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "raw_code: コード内の空白は曖昧なため確認が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "raw_code: 制御文字を含むコードは使用できません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "maker / finish: 制御文字は使用できません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "raw_code: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "finish: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "confirmed_by: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "as_of: ISO形式の日付が必要です"
+    },
+    {
+     "ok": []
+    }
+   ]
+  },
+  {
+   "name": "承認済みの塗料価格が必要",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "error": "ValidationError",
+     "message": "価格未確認: 承認済みの対象価格がありません"
+    },
+    {
+     "ok": {
+      "price_version_id": "220a3b1800204783a6de7775c6e9a73a",
+      "item": {
+       "item_id": "part-1",
+       "name": "架空部品",
+       "category": "部品",
+       "unit": "ml",
+       "unit_price": "50",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空デモ担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {}
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "category: 塗料の品目を選択してください"
+    },
+    {
+     "ok": []
+    }
+   ]
+  },
+  {
+   "name": "価格区分を区別（仕入）",
+   "expected": [
+    {
+     "ok": {
+      "price_version_id": "57d05a75d5d54183a479a988e29eef99",
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "80",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空デモ担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {}
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "価格未確認: 承認済みの対象価格がありません"
+    },
+    {
+     "ok": {
+      "status": "approved",
+      "paint_code": {
+       "maker": "架空メーカー",
+       "raw_code": "DEMO-001",
+       "normalized_code": "DEMO-001",
+       "finish": "メタリック",
+       "item_id": "demo-paint",
+       "status": "approved",
+       "confirmed_by": "架空デモ担当",
+       "reason": "正規化コードの対応を人が確認"
+      },
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "80",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "items": [
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "80",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "price_version_id": "57d05a75d5d54183a479a988e29eef99"
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "価格未確認: 承認済みの対象価格がありません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "price_type: 選択値を確認してください"
+    }
+   ]
+  },
+  {
+   "name": "不正な action / payload",
+   "expected": [
+    {
+     "error": "ValidationError",
+     "message": "payload: 入力を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "payload: 入力を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "action: register または lookup を選択してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "価格未確認: 承認済みの対象価格がありません"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,425 @@
+{
+ "scenarios": [
+  {
+   "name": "既定値は架空の見積に記録し価格を作らない",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M23",
+     "payload": {
+      "action": "record_demo",
+      "quote_id": "demo-m23-quote",
+      "quote_line_id": "demo-m23-line",
+      "actual_qty": "12.5",
+      "reason": "simulator:架空デモ作業で一部を使い切らなかった",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "demo-m23-material",
+     "price_type": null,
+     "supplier_id": null
+    },
+    {
+     "op": "latest",
+     "namespace": "quote_snapshot",
+     "record_id": "demo-m23-quote"
+    },
+    {
+     "op": "run",
+     "module": "M23",
+     "payload": {
+      "action": "record_demo",
+      "quote_id": "demo-m23-quote",
+      "quote_line_id": "demo-m23-line",
+      "actual_qty": "12.5",
+      "reason": "simulator:架空デモ作業で一部を使い切らなかった",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "records",
+     "namespace": "quote_snapshot"
+    }
+   ]
+  },
+  {
+   "name": "十進の数量を比べ見積を変えない",
+   "steps": [
+    {
+     "op": "put",
+     "namespace": "quote_snapshot",
+     "record": {
+      "quote_id": "quote-a",
+      "confirmed_by": "見積担当",
+      "created_at": "2026-10-11T09:00:00+09:00",
+      "lines": [
+       {
+        "quote_line_id": "line-a",
+        "item_id": "paint-a",
+        "name": "塗料",
+        "category": "塗料",
+        "quantity": "1.250",
+        "unit": "ml",
+        "unit_price_snapshot": "120",
+        "price_type": "販売",
+        "price_version_id": "price-v1",
+        "source_snapshot": "manual:見積入力",
+        "updated_at": "2026-10-11",
+        "supplier_id": "",
+        "conditions": {},
+        "line_total": "1200"
+       }
+      ]
+     },
+     "record_id": "quote-a"
+    },
+    {
+     "op": "run",
+     "module": "M23",
+     "payload": {
+      "action": "record",
+      "quote_id": "quote-a",
+      "quote_line_id": "line-a",
+      "actual_qty": "2.75",
+      "reason": "余分に塗布した",
+      "confirmed_by": "整備士A"
+     }
+    },
+    {
+     "op": "latest",
+     "namespace": "quote_snapshot",
+     "record_id": "quote-a"
+    },
+    {
+     "op": "records",
+     "namespace": "item_usage"
+    }
+   ]
+  },
+  {
+   "name": "見積・行がない・不正値は記録しない",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M23",
+     "payload": {
+      "action": "record",
+      "quote_id": "quote-a",
+      "quote_line_id": "line-a",
+      "actual_qty": "2",
+      "reason": "確認済み",
+      "confirmed_by": "担当"
+     }
+    },
+    {
+     "op": "put",
+     "namespace": "quote_snapshot",
+     "record": {
+      "quote_id": "quote-a",
+      "confirmed_by": "見積担当",
+      "created_at": "2026-10-11T09:00:00+09:00",
+      "lines": [
+       {
+        "quote_line_id": "line-a",
+        "item_id": "paint-a",
+        "name": "塗料",
+        "category": "塗料",
+        "quantity": "10",
+        "unit": "ml",
+        "unit_price_snapshot": "120",
+        "price_type": "販売",
+        "price_version_id": "price-v1",
+        "source_snapshot": "manual:見積入力",
+        "updated_at": "2026-10-11",
+        "supplier_id": "",
+        "conditions": {},
+        "line_total": "1200"
+       }
+      ]
+     },
+     "record_id": "quote-a"
+    },
+    {
+     "op": "run",
+     "module": "M23",
+     "payload": {
+      "action": "record",
+      "quote_id": "quote-a",
+      "quote_line_id": "missing",
+      "actual_qty": "2",
+      "reason": "確認済み",
+      "confirmed_by": "担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M23",
+     "payload": {
+      "action": "record",
+      "quote_id": "quote-a",
+      "quote_line_id": "line-a",
+      "actual_qty": "-1",
+      "reason": "確認済み",
+      "confirmed_by": "担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M23",
+     "payload": {
+      "action": "record",
+      "quote_id": "quote-a",
+      "quote_line_id": "line-a",
+      "actual_qty": "2",
+      "reason": "",
+      "confirmed_by": "担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M23",
+     "payload": {
+      "action": "record",
+      "quote_id": "quote-a",
+      "quote_line_id": "line-a",
+      "actual_qty": "2",
+      "reason": "確認済み",
+      "confirmed_by": ""
+     }
+    },
+    {
+     "op": "run",
+     "module": "M23",
+     "payload": {
+      "action": "record",
+      "quote_id": "quote-a",
+      "quote_line_id": "line-a",
+      "actual_qty": "abc",
+      "reason": "確認済み",
+      "confirmed_by": "担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M23",
+     "payload": {
+      "action": "delete"
+     }
+    },
+    {
+     "op": "records",
+     "namespace": "item_usage"
+    }
+   ]
+  },
+  {
+   "name": "一覧の絞り込み",
+   "steps": [
+    {
+     "op": "put",
+     "namespace": "quote_snapshot",
+     "record": {
+      "quote_id": "quote-a",
+      "confirmed_by": "見積担当",
+      "created_at": "2026-10-11T09:00:00+09:00",
+      "lines": [
+       {
+        "quote_line_id": "line-a",
+        "item_id": "paint-a",
+        "name": "塗料",
+        "category": "塗料",
+        "quantity": "10",
+        "unit": "ml",
+        "unit_price_snapshot": "120",
+        "price_type": "販売",
+        "price_version_id": "price-v1",
+        "source_snapshot": "manual:見積入力",
+        "updated_at": "2026-10-11",
+        "supplier_id": "",
+        "conditions": {},
+        "line_total": "1200"
+       }
+      ]
+     },
+     "record_id": "quote-a"
+    },
+    {
+     "op": "put",
+     "namespace": "quote_snapshot",
+     "record": {
+      "quote_id": "quote-b",
+      "confirmed_by": "見積担当",
+      "created_at": "2026-10-11T09:00:00+09:00",
+      "lines": [
+       {
+        "quote_line_id": "line-b",
+        "item_id": "paint-a",
+        "name": "塗料",
+        "category": "塗料",
+        "quantity": "10",
+        "unit": "ml",
+        "unit_price_snapshot": "120",
+        "price_type": "販売",
+        "price_version_id": "price-v1",
+        "source_snapshot": "manual:見積入力",
+        "updated_at": "2026-10-11",
+        "supplier_id": "",
+        "conditions": {},
+        "line_total": "1200"
+       }
+      ],
+      "source": "simulator:x"
+     },
+     "record_id": "quote-b"
+    },
+    {
+     "op": "run",
+     "module": "M23",
+     "payload": {
+      "action": "record",
+      "quote_id": "quote-a",
+      "quote_line_id": "line-a",
+      "actual_qty": "8",
+      "reason": "記録",
+      "confirmed_by": "担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M23",
+     "payload": {
+      "action": "record",
+      "quote_id": "quote-b",
+      "quote_line_id": "line-b",
+      "actual_qty": "8",
+      "reason": "記録",
+      "confirmed_by": "担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M23",
+     "payload": {
+      "action": "list",
+      "quote_id": "quote-a"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M23",
+     "payload": {
+      "action": "list",
+      "quote_line_id": "line-b"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M23",
+     "payload": {
+      "action": "list"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M23",
+     "payload": {
+      "action": "list",
+      "quote_id": ""
+     }
+    }
+   ]
+  },
+  {
+   "name": "壊れた見積スナップショット",
+   "steps": [
+    {
+     "op": "put",
+     "namespace": "quote_snapshot",
+     "record": {
+      "quote_id": "q",
+      "lines": "x"
+     },
+     "record_id": "q"
+    },
+    {
+     "op": "run",
+     "module": "M23",
+     "payload": {
+      "action": "record",
+      "quote_id": "q",
+      "quote_line_id": "line-a",
+      "actual_qty": "2",
+      "reason": "確認済み",
+      "confirmed_by": "担当"
+     }
+    },
+    {
+     "op": "put",
+     "namespace": "quote_snapshot",
+     "record": {
+      "quote_id": "q2",
+      "lines": [
+       {
+        "quote_line_id": "l",
+        "quantity": "1",
+        "unit": "ml",
+        "item_id": "a"
+       },
+       {
+        "quote_line_id": "l",
+        "quantity": "2",
+        "unit": "ml",
+        "item_id": "a"
+       }
+      ]
+     },
+     "record_id": "q2"
+    },
+    {
+     "op": "run",
+     "module": "M23",
+     "payload": {
+      "action": "record",
+      "quote_id": "q2",
+      "quote_line_id": "l",
+      "actual_qty": "2",
+      "reason": "確認済み",
+      "confirmed_by": "担当"
+     }
+    },
+    {
+     "op": "put",
+     "namespace": "quote_snapshot",
+     "record": {
+      "quote_id": "q3",
+      "lines": [
+       {
+        "quote_line_id": "l",
+        "quantity": "1",
+        "unit": "ml"
+       }
+      ]
+     },
+     "record_id": "q3"
+    },
+    {
+     "op": "run",
+     "module": "M23",
+     "payload": {
+      "action": "record",
+      "quote_id": "q3",
+      "quote_line_id": "l",
+      "actual_qty": "2",
+      "reason": "確認済み",
+      "confirmed_by": "担当"
+     }
+    }
+   ]
+  }
+ ]
+}

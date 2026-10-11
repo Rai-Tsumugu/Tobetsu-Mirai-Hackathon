@@ -1,0 +1,533 @@
+{
+ "source": "scenarios/m03.json",
+ "scenarios": [
+  {
+   "name": "SPEC defaults",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "120",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "price_version_id": "10fec8f3f209488ba065b2e0fd5228d7",
+      "confirmed_by": "架空デモ担当",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "currency": "JPY"
+     }
+    },
+    {
+     "ok": {
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "80",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "price_version_id": "67a3fa8d57f24e9cae2ea513d295586a",
+      "confirmed_by": "架空デモ担当",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "currency": "JPY"
+     }
+    }
+   ]
+  },
+  {
+   "name": "仕入と販売は独立",
+   "expected": [
+    {
+     "ok": {
+      "item": {
+       "item_id": "paint-1",
+       "name": "架空塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "80.25",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "price_version_id": "3d0486b57b6f49d4a49abf8629ef9f6d",
+      "confirmed_by": "架空デモ担当",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "価格登録",
+      "currency": "JPY"
+     }
+    },
+    {
+     "ok": {
+      "item": {
+       "item_id": "paint-1",
+       "name": "架空塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "123.40",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "price_version_id": "b898ac2423844040bdc18084efe6a24f",
+      "confirmed_by": "架空デモ担当",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "価格登録",
+      "currency": "JPY"
+     }
+    },
+    {
+     "ok": {
+      "item": {
+       "item_id": "paint-1",
+       "name": "架空塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "80.25",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "price_version_id": "3d0486b57b6f49d4a49abf8629ef9f6d",
+      "confirmed_by": "架空デモ担当",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "価格登録",
+      "currency": "JPY"
+     }
+    },
+    {
+     "ok": {
+      "item": {
+       "item_id": "paint-1",
+       "name": "架空塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "123.40",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "price_version_id": "b898ac2423844040bdc18084efe6a24f",
+      "confirmed_by": "架空デモ担当",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "価格登録",
+      "currency": "JPY"
+     }
+    },
+    {
+     "ok": [
+      {
+       "price_version_id": "3d0486b57b6f49d4a49abf8629ef9f6d",
+       "item": {
+        "item_id": "paint-1",
+        "name": "架空塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "80.25",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空デモ担当",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "価格登録",
+       "metadata": {
+        "currency": "JPY"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "販売の更新は仕入を変えない",
+   "expected": [
+    {
+     "ok": {
+      "item": {
+       "item_id": "paint-1",
+       "name": "架空塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "80",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "price_version_id": "4a773ed4340f4e9fbd4c780ed97e7b4a",
+      "confirmed_by": "架空デモ担当",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "価格登録",
+      "currency": "JPY"
+     }
+    },
+    {
+     "ok": {
+      "item": {
+       "item_id": "paint-1",
+       "name": "架空塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "125",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "price_version_id": "9ee57f81215d4c8caee30dbb11bcf7a3",
+      "confirmed_by": "架空デモ担当",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "価格登録",
+      "currency": "JPY"
+     }
+    },
+    {
+     "ok": {
+      "item": {
+       "item_id": "paint-1",
+       "name": "架空塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "130",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-12"
+      },
+      "price_version_id": "13e58ec25a06402ca70d1fdf9a319c69",
+      "confirmed_by": "架空デモ担当",
+      "valid_from": "2026-10-12",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "価格登録",
+      "currency": "JPY"
+     }
+    },
+    {
+     "ok": {
+      "item": {
+       "item_id": "paint-1",
+       "name": "架空塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "80",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "price_version_id": "4a773ed4340f4e9fbd4c780ed97e7b4a",
+      "confirmed_by": "架空デモ担当",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "価格登録",
+      "currency": "JPY"
+     }
+    },
+    {
+     "ok": {
+      "item": {
+       "item_id": "paint-1",
+       "name": "架空塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "130",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-12"
+      },
+      "price_version_id": "13e58ec25a06402ca70d1fdf9a319c69",
+      "confirmed_by": "架空デモ担当",
+      "valid_from": "2026-10-12",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "価格登録",
+      "currency": "JPY"
+     }
+    },
+    {
+     "ok": {
+      "item": {
+       "item_id": "paint-1",
+       "name": "架空塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "125",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "price_version_id": "9ee57f81215d4c8caee30dbb11bcf7a3",
+      "confirmed_by": "架空デモ担当",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "価格登録",
+      "currency": "JPY"
+     }
+    }
+   ]
+  },
+  {
+   "name": "販売価格がなければ止める",
+   "expected": [
+    {
+     "ok": {
+      "item": {
+       "item_id": "paint-1",
+       "name": "架空塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "80",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "price_version_id": "411aebd2f2ae4552ab74f39adc22581b",
+      "confirmed_by": "架空デモ担当",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "価格登録",
+      "currency": "JPY"
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "価格未確認: 承認済みの対象価格がありません"
+    }
+   ]
+  },
+  {
+   "name": "取得時の区分・単位・日付",
+   "expected": [
+    {
+     "ok": {
+      "item": {
+       "item_id": "paint-1",
+       "name": "架空塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "123.45",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "price_version_id": "76c209529aca48d5a5dc358c3650eb4b",
+      "confirmed_by": "架空デモ担当",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "価格登録",
+      "currency": "JPY"
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "price_type: 選択値を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "単位不一致: 換算根拠を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "価格未確認: 承認済みの対象価格がありません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "supplier_id: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "価格未確認: 承認済みの対象価格がありません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "price_type: 選択値を確認してください"
+    }
+   ]
+  },
+  {
+   "name": "保存時の検査",
+   "expected": [
+    {
+     "error": "ValidationError",
+     "message": "confirmed_by: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "unit_price: 有限の正数/非負数を入力してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "category / price_type: 選択値を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "source: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "valid_until: 開始日より前です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "currency: 3文字の通貨コードを入力してください"
+    },
+    {
+     "ok": {
+      "item": {
+       "item_id": "paint-1",
+       "name": "架空塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "1",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "price_version_id": "be6cd8d80a55437d81c429eb324f2ee4",
+      "confirmed_by": "架空デモ担当",
+      "valid_from": "2026-10-11",
+      "valid_until": "2026-12-31",
+      "status": "approved",
+      "reason": "通貨確認",
+      "currency": "USD"
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "supplier_id: 文字列を入力してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "status: 承認状態を確認してください"
+    },
+    {
+     "ok": {
+      "item": {
+       "item_id": "paint-1",
+       "name": "架空塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "1",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "price_version_id": "f99cb23ef11241698b4c14db41806bf0",
+      "confirmed_by": "架空デモ担当",
+      "valid_from": "2026-10-01",
+      "valid_until": null,
+      "status": "pending",
+      "reason": "価格登録",
+      "currency": "JPY"
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "currency: 3文字の通貨コードを入力してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "currency: 3文字の通貨コードを入力してください"
+    },
+    {
+     "ok": [
+      {
+       "price_version_id": "be6cd8d80a55437d81c429eb324f2ee4",
+       "item": {
+        "item_id": "paint-1",
+        "name": "架空塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "1",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空デモ担当",
+       "supplier_id": "sup",
+       "valid_from": "2026-10-11",
+       "valid_until": "2026-12-31",
+       "status": "approved",
+       "reason": "通貨確認",
+       "metadata": {
+        "currency": "USD"
+       }
+      },
+      {
+       "price_version_id": "f99cb23ef11241698b4c14db41806bf0",
+       "item": {
+        "item_id": "paint-1",
+        "name": "架空塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "1",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空デモ担当",
+       "supplier_id": "",
+       "valid_from": "2026-10-01",
+       "valid_until": null,
+       "status": "pending",
+       "reason": "価格登録",
+       "metadata": {
+        "currency": "JPY"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "不正な action / payload",
+   "expected": [
+    {
+     "error": "ValidationError",
+     "message": "action: save_price または get_price を選択してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "payload: 入力を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "payload: 入力を確認してください"
+    }
+   ]
+  }
+ ]
+}

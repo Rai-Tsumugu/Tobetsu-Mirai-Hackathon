@@ -1,0 +1,544 @@
+{
+ "source": "scenarios/m22.json",
+ "scenarios": [
+  {
+   "name": "既定値は架空の対応だけ登録",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "rule_id": "1d07b31398924be798a72d9f30415a28",
+      "rule": {
+       "operation_id": "rust-treatment",
+       "item_id": "demo-m22-paint",
+       "required_when": "架空: 塗装工程を選択した場合",
+       "quantity_rule": "架空: 人が数量を入力",
+       "evidence": "simulator:架空デモ用の仮定",
+       "confirmed_by": "架空デモ担当",
+       "status": "approved"
+      },
+      "simulator": true
+     }
+    },
+    {
+     "ok": [
+      {
+       "price_version_id": "3a9f2a15e5ef40528c03e278e1fc73ae",
+       "item": {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "80",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空デモ担当",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "初回登録",
+       "metadata": {}
+      },
+      {
+       "price_version_id": "415719105a3b46d78400b389c204db40",
+       "item": {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "120",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空デモ担当",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "初回登録",
+       "metadata": {}
+      }
+     ]
+    },
+    {
+     "ok": [
+      {
+       "operation_id": "rust-treatment",
+       "item_id": "demo-m22-paint",
+       "required_when": "架空: 塗装工程を選択した場合",
+       "quantity_rule": "架空: 人が数量を入力",
+       "evidence": "simulator:架空デモ用の仮定",
+       "confirmed_by": "架空デモ担当",
+       "status": "approved",
+       "record_id": "1d07b31398924be798a72d9f30415a28"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "承認済みの対応から候補を出し品目を追加しない",
+   "expected": [
+    {
+     "ok": {
+      "status": "saved",
+      "rule_id": "247d19abbd1a430d9ee187b47abd084b",
+      "rule": {
+       "operation_id": "paint",
+       "item_id": "paint-a",
+       "required_when": "塗装を行う場合",
+       "quantity_rule": "数量は人が入力",
+       "evidence": "整備士確認の架空辞書",
+       "confirmed_by": "整備士A",
+       "status": "approved"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "suggestion": {
+       "suggestion_id": "51b5f8c3121e4c46aa40f4e7e6570b9f",
+       "candidates": [
+        {
+         "operation_id": "paint",
+         "operation_status": "conditional",
+         "item_id": "paint-a",
+         "required_when": "塗装を行う場合",
+         "quantity_rule": "数量は人が入力",
+         "evidence": "整備士確認の架空辞書",
+         "mapping_status": "approved",
+         "mapping_confirmed_by": "整備士A"
+        }
+       ],
+       "unknowns": [
+        {
+         "operation_id": "mask",
+         "question": "この工程の実施有無・状態を人が確認してください。材料候補は追加していません。"
+        }
+       ],
+       "labor_operation_count": 2
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": [
+      {
+       "operation_id": "paint",
+       "item_id": "paint-a",
+       "required_when": "塗装を行う場合",
+       "quantity_rule": "数量は人が入力",
+       "evidence": "整備士確認の架空辞書",
+       "confirmed_by": "整備士A",
+       "status": "approved",
+       "record_id": "247d19abbd1a430d9ee187b47abd084b"
+      }
+     ]
+    },
+    {
+     "ok": []
+    }
+   ]
+  },
+  {
+   "name": "提案は保存しない・未知の工程は質問",
+   "expected": [
+    {
+     "ok": {
+      "suggestion": {
+       "suggestion_id": "640a3f49336c47138b4bbecc7e5cb71d",
+       "candidates": [
+        {
+         "operation_id": "paint",
+         "operation_status": "confirmed",
+         "item_id": "fictional-item",
+         "required_when": "架空条件",
+         "quantity_rule": "数量は人が選択",
+         "evidence": "simulator:fixture",
+         "mapping_status": "proposed",
+         "mapping_confirmed_by": "架空デモ担当"
+        }
+       ],
+       "unknowns": [
+        {
+         "operation_id": "unknown-op",
+         "question": "この工程の実施有無・状態を人が確認してください。材料候補は追加していません。"
+        },
+        {
+         "operation_id": "dry",
+         "question": "この工程で使う材料候補と根拠を登録・確認してください。"
+        }
+       ],
+       "labor_operation_count": 3
+      },
+      "simulator": true
+     }
+    },
+    {
+     "ok": []
+    }
+   ]
+  },
+  {
+   "name": "確定は人の数量と同単位の承認済み価格が必要",
+   "expected": [
+    {
+     "ok": {
+      "status": "saved",
+      "rule_id": "f56001d877714141935649ab92c9481a",
+      "rule": {
+       "operation_id": "paint",
+       "item_id": "paint-a",
+       "required_when": "塗装を行う場合",
+       "quantity_rule": "数量は人が入力",
+       "evidence": "整備士確認の架空辞書",
+       "confirmed_by": "整備士A",
+       "status": "approved"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "suggestion": {
+       "suggestion_id": "71edea1e3eec44fa96bce53dc62e7879",
+       "candidates": [
+        {
+         "operation_id": "paint",
+         "operation_status": "confirmed",
+         "item_id": "paint-a",
+         "required_when": "塗装を行う場合",
+         "quantity_rule": "数量は人が入力",
+         "evidence": "整備士確認の架空辞書",
+         "mapping_status": "approved",
+         "mapping_confirmed_by": "整備士A"
+        }
+       ],
+       "unknowns": [],
+       "labor_operation_count": 1
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "price_version_id": "ff71e0c903c4486ea89709879878c59b",
+      "item": {
+       "item_id": "paint-a",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "12.50",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "価格担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {}
+     }
+    },
+    {
+     "ok": {
+      "status": "confirmed_for_quote_review",
+      "snapshot_id": "aad4e2cf65434fa4a0edd8ea54de03bb",
+      "material_snapshot": {
+       "snapshot_id": "aad4e2cf65434fa4a0edd8ea54de03bb",
+       "idea_id": "M22",
+       "operation_id": "paint",
+       "operation_status": "confirmed",
+       "item": {
+        "item_id": "paint-a",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "12.50",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "quantity": "2.4",
+       "unit": "ml",
+       "price_version_id": "ff71e0c903c4486ea89709879878c59b",
+       "candidate_rule": {
+        "operation_id": "paint",
+        "operation_status": "confirmed",
+        "item_id": "paint-a",
+        "required_when": "塗装を行う場合",
+        "quantity_rule": "数量は人が入力",
+        "evidence": "整備士確認の架空辞書",
+        "mapping_status": "approved",
+        "mapping_confirmed_by": "整備士A"
+       },
+       "confirmed_by": "整備士A",
+       "as_of": "2026-10-11",
+       "candidate_amount": "30.000",
+       "currency": "JPY",
+       "status": "confirmed_for_quote_review",
+       "labor_cost_included": false
+      },
+      "items": [
+       {
+        "item_id": "paint-a",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "12.50",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "quantity_snapshot_ref": "aad4e2cf65434fa4a0edd8ea54de03bb",
+      "simulator": true
+     }
+    },
+    {
+     "ok": {
+      "snapshot": {
+       "snapshot_id": "aad4e2cf65434fa4a0edd8ea54de03bb",
+       "idea_id": "M22",
+       "operation_id": "paint",
+       "operation_status": "confirmed",
+       "item": {
+        "item_id": "paint-a",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "12.50",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "quantity": "2.4",
+       "unit": "ml",
+       "price_version_id": "ff71e0c903c4486ea89709879878c59b",
+       "candidate_rule": {
+        "operation_id": "paint",
+        "operation_status": "confirmed",
+        "item_id": "paint-a",
+        "required_when": "塗装を行う場合",
+        "quantity_rule": "数量は人が入力",
+        "evidence": "整備士確認の架空辞書",
+        "mapping_status": "approved",
+        "mapping_confirmed_by": "整備士A"
+       },
+       "confirmed_by": "整備士A",
+       "as_of": "2026-10-11",
+       "candidate_amount": "30.000",
+       "currency": "JPY",
+       "status": "confirmed_for_quote_review",
+       "labor_cost_included": false,
+       "record_id": "aad4e2cf65434fa4a0edd8ea54de03bb"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "name": "提示外の品目・価格なし・単位違い",
+   "expected": [
+    {
+     "ok": {
+      "status": "saved",
+      "rule_id": "e8bea41d5d734d19aecefc3dd8bec865",
+      "rule": {
+       "operation_id": "paint",
+       "item_id": "paint-a",
+       "required_when": "塗装を行う場合",
+       "quantity_rule": "数量は人が入力",
+       "evidence": "整備士確認の架空辞書",
+       "confirmed_by": "整備士A",
+       "status": "approved"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "suggestion": {
+       "suggestion_id": "685da7a43cb14b25ac9e44a63b7b332d",
+       "candidates": [
+        {
+         "operation_id": "paint",
+         "operation_status": "confirmed",
+         "item_id": "paint-a",
+         "required_when": "塗装を行う場合",
+         "quantity_rule": "数量は人が入力",
+         "evidence": "整備士確認の架空辞書",
+         "mapping_status": "approved",
+         "mapping_confirmed_by": "整備士A"
+        }
+       ],
+       "unknowns": [],
+       "labor_operation_count": 1
+      },
+      "simulator": false
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "候補未確認: 提示された工程・品目から選択してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "価格未確認: 承認済みの対象価格がありません"
+    },
+    {
+     "ok": {
+      "price_version_id": "3c7a6c47550d4e2f8d560d0b0f61217e",
+      "item": {
+       "item_id": "paint-a",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "L",
+       "unit_price": "12",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "価格担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {}
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "単位不一致: 換算根拠を確認してください"
+    },
+    {
+     "ok": []
+    }
+   ]
+  },
+  {
+   "name": "数量は正・単位は必須・その他の入力検査",
+   "expected": [
+    {
+     "ok": {
+      "status": "saved",
+      "rule_id": "9b713cea99f34d91864be6f3255bf16b",
+      "rule": {
+       "operation_id": "paint",
+       "item_id": "paint-a",
+       "required_when": "塗装を行う場合",
+       "quantity_rule": "数量は人が入力",
+       "evidence": "整備士確認の架空辞書",
+       "confirmed_by": "整備士A",
+       "status": "approved"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "suggestion": {
+       "suggestion_id": "fbd47febb5c8442c9001697063c597ab",
+       "candidates": [
+        {
+         "operation_id": "paint",
+         "operation_status": "confirmed",
+         "item_id": "paint-a",
+         "required_when": "塗装を行う場合",
+         "quantity_rule": "数量は人が入力",
+         "evidence": "整備士確認の架空辞書",
+         "mapping_status": "approved",
+         "mapping_confirmed_by": "整備士A"
+        }
+       ],
+       "unknowns": [],
+       "labor_operation_count": 1
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "price_version_id": "a57cc6dc45ce43e7b46f0723710cb885",
+      "item": {
+       "item_id": "paint-a",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "12",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "価格担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {}
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "quantity: 有限の正数/非負数を入力してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "unit: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "価格未確認: 承認済みの対象価格がありません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "payload: 指定できない項目があります"
+    },
+    {
+     "error": "ValidationError",
+     "message": "labor.breakdown: 工程一覧を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "labor.breakdown[0]: 工程を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "labor.breakdown[0].status: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "proposed_rules: 候補辞書を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "proposed_rules[0].item_id: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "evidence: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "action: register_rule / suggest / confirm_selection / get_snapshot を選択してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "operation_material_quantity_snapshot: 指定した記録がありません"
+    }
+   ]
+  }
+ ]
+}

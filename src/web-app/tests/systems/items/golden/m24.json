@@ -1,0 +1,958 @@
+{
+ "source": "scenarios/m24.json",
+ "scenarios": [
+  {
+   "name": "HTTP 既定値（seed_demo 後）",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "item_id": "demo-paint",
+      "unit": "ml",
+      "price_type": "販売",
+      "supplier_id": "",
+      "transaction_conditions": {},
+      "versions": [
+       {
+        "price_version_id": "8c77e1a5c6a44c539f1d5ff356b0ea5f",
+        "item_id": "demo-paint",
+        "unit": "ml",
+        "price_type": "販売",
+        "amount": "120",
+        "supplier_id": "",
+        "transaction_conditions": {},
+        "source": "simulator:架空値",
+        "confirmed_by": "架空デモ担当",
+        "checked_at": "2026-10-11",
+        "valid_from": "2026-10-11",
+        "valid_until": null,
+        "status": "approved"
+       }
+      ],
+      "comparison": "同一条件の履歴表示。相場を代表する値ではありません。",
+      "simulator": true,
+      "incomparable_groups": [
+       {
+        "unit": "ml",
+        "price_type": "仕入",
+        "supplier_id": "",
+        "transaction_conditions": {},
+        "reason": "単位・価格区分・仕入先・取引条件の不一致により比較対象外",
+        "versions": [
+         {
+          "price_version_id": "5c706193635649de98e1a59e4ba406f8",
+          "item_id": "demo-paint",
+          "unit": "ml",
+          "price_type": "仕入",
+          "amount": "80",
+          "supplier_id": "",
+          "transaction_conditions": {},
+          "source": "simulator:架空値",
+          "confirmed_by": "架空デモ担当",
+          "checked_at": "2026-10-11",
+          "valid_from": "2026-10-11",
+          "valid_until": null,
+          "status": "approved"
+         }
+        ]
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "既定値は暗黙に seed しない",
+   "expected": [
+    {
+     "ok": {
+      "item_id": "demo-paint",
+      "unit": "ml",
+      "price_type": "販売",
+      "supplier_id": "",
+      "transaction_conditions": {},
+      "versions": [],
+      "comparison": "同一条件の履歴表示。相場を代表する値ではありません。",
+      "simulator": false,
+      "unknowns": [
+       "指定条件に一致する承認済み価格履歴がありません"
+      ]
+     }
+    },
+    {
+     "ok": []
+    },
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "item_id": "demo-paint",
+      "unit": "ml",
+      "price_type": "販売",
+      "supplier_id": "",
+      "transaction_conditions": {},
+      "versions": [
+       {
+        "price_version_id": "91d3ee0b7d51450fa0b3fd2d7a4f72ed",
+        "item_id": "demo-paint",
+        "unit": "ml",
+        "price_type": "販売",
+        "amount": "120",
+        "supplier_id": "",
+        "transaction_conditions": {},
+        "source": "simulator:架空値",
+        "confirmed_by": "架空デモ担当",
+        "checked_at": "2026-10-11",
+        "valid_from": "2026-10-11",
+        "valid_until": null,
+        "status": "approved"
+       }
+      ],
+      "comparison": "同一条件の履歴表示。相場を代表する値ではありません。",
+      "simulator": true,
+      "incomparable_groups": [
+       {
+        "unit": "ml",
+        "price_type": "仕入",
+        "supplier_id": "",
+        "transaction_conditions": {},
+        "reason": "単位・価格区分・仕入先・取引条件の不一致により比較対象外",
+        "versions": [
+         {
+          "price_version_id": "7fa7a5c8dab7432388a0726e89546d29",
+          "item_id": "demo-paint",
+          "unit": "ml",
+          "price_type": "仕入",
+          "amount": "80",
+          "supplier_id": "",
+          "transaction_conditions": {},
+          "source": "simulator:架空値",
+          "confirmed_by": "架空デモ担当",
+          "checked_at": "2026-10-11",
+          "valid_from": "2026-10-11",
+          "valid_until": null,
+          "status": "approved"
+         }
+        ]
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "明示 seed_demo は冪等",
+   "expected": [
+    {
+     "ok": {
+      "item_id": "demo-paint",
+      "unit": "ml",
+      "price_type": "販売",
+      "supplier_id": "",
+      "transaction_conditions": {},
+      "versions": [
+       {
+        "price_version_id": "829529f15fba49fb9f5a73037fdbaf04",
+        "item_id": "demo-paint",
+        "unit": "ml",
+        "price_type": "販売",
+        "amount": "110",
+        "supplier_id": "",
+        "transaction_conditions": {},
+        "source": "simulator:架空価格履歴",
+        "confirmed_by": "架空デモ担当",
+        "checked_at": "2026-08-02",
+        "valid_from": "2026-08-01",
+        "valid_until": null,
+        "status": "approved"
+       },
+       {
+        "price_version_id": "ec04aa3bf4324d408795bb75c5a57e99",
+        "item_id": "demo-paint",
+        "unit": "ml",
+        "price_type": "販売",
+        "amount": "120",
+        "supplier_id": "",
+        "transaction_conditions": {},
+        "source": "simulator:架空価格履歴",
+        "confirmed_by": "架空デモ担当",
+        "checked_at": "2026-10-11",
+        "valid_from": "2026-10-11",
+        "valid_until": null,
+        "status": "approved"
+       }
+      ],
+      "comparison": "同一条件の履歴表示。相場を代表する値ではありません。",
+      "simulator": true
+     }
+    },
+    {
+     "ok": [
+      {
+       "price_version_id": "829529f15fba49fb9f5a73037fdbaf04",
+       "item": {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "110",
+        "price_type": "販売",
+        "source": "simulator:架空価格履歴",
+        "updated_at": "2026-08-01"
+       },
+       "confirmed_by": "架空デモ担当",
+       "supplier_id": "",
+       "valid_from": "2026-08-01",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "初回登録",
+       "metadata": {
+        "checked_at": "2026-08-02",
+        "transaction_conditions": {}
+       }
+      },
+      {
+       "price_version_id": "ec04aa3bf4324d408795bb75c5a57e99",
+       "item": {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "120",
+        "price_type": "販売",
+        "source": "simulator:架空価格履歴",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空デモ担当",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "初回登録",
+       "metadata": {
+        "checked_at": "2026-10-11",
+        "transaction_conditions": {}
+       }
+      }
+     ]
+    },
+    {
+     "ok": {
+      "item_id": "demo-paint",
+      "unit": "ml",
+      "price_type": "販売",
+      "supplier_id": "",
+      "transaction_conditions": {},
+      "versions": [
+       {
+        "price_version_id": "829529f15fba49fb9f5a73037fdbaf04",
+        "item_id": "demo-paint",
+        "unit": "ml",
+        "price_type": "販売",
+        "amount": "110",
+        "supplier_id": "",
+        "transaction_conditions": {},
+        "source": "simulator:架空価格履歴",
+        "confirmed_by": "架空デモ担当",
+        "checked_at": "2026-08-02",
+        "valid_from": "2026-08-01",
+        "valid_until": null,
+        "status": "approved"
+       },
+       {
+        "price_version_id": "ec04aa3bf4324d408795bb75c5a57e99",
+        "item_id": "demo-paint",
+        "unit": "ml",
+        "price_type": "販売",
+        "amount": "120",
+        "supplier_id": "",
+        "transaction_conditions": {},
+        "source": "simulator:架空価格履歴",
+        "confirmed_by": "架空デモ担当",
+        "checked_at": "2026-10-11",
+        "valid_from": "2026-10-11",
+        "valid_until": null,
+        "status": "approved"
+       }
+      ],
+      "comparison": "同一条件の履歴表示。相場を代表する値ではありません。",
+      "simulator": true
+     }
+    },
+    {
+     "ok": [
+      {
+       "price_version_id": "829529f15fba49fb9f5a73037fdbaf04",
+       "item": {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "110",
+        "price_type": "販売",
+        "source": "simulator:架空価格履歴",
+        "updated_at": "2026-08-01"
+       },
+       "confirmed_by": "架空デモ担当",
+       "supplier_id": "",
+       "valid_from": "2026-08-01",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "初回登録",
+       "metadata": {
+        "checked_at": "2026-08-02",
+        "transaction_conditions": {}
+       }
+      },
+      {
+       "price_version_id": "ec04aa3bf4324d408795bb75c5a57e99",
+       "item": {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "120",
+        "price_type": "販売",
+        "source": "simulator:架空価格履歴",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空デモ担当",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "初回登録",
+       "metadata": {
+        "checked_at": "2026-10-11",
+        "transaction_conditions": {}
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "読み取りは seed せず期限を保つ",
+   "expected": [
+    {
+     "ok": {
+      "item_id": "demo-paint",
+      "unit": "ml",
+      "price_type": "販売",
+      "supplier_id": "",
+      "transaction_conditions": {},
+      "versions": [],
+      "comparison": "同一条件の履歴表示。相場を代表する値ではありません。",
+      "simulator": false,
+      "unknowns": [
+       "指定条件に一致する承認済み価格履歴がありません"
+      ]
+     }
+    },
+    {
+     "ok": []
+    },
+    {
+     "ok": {
+      "price_version_id": "65c210c202054b2e85409decc86556e4",
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "105",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "担当A",
+      "supplier_id": "",
+      "valid_from": "2026-01-01",
+      "valid_until": "2026-03-01",
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {
+       "source": "納品書A",
+       "checked_at": "2026-01-02"
+      }
+     }
+    },
+    {
+     "ok": {
+      "item_id": "demo-paint",
+      "unit": "ml",
+      "price_type": "販売",
+      "supplier_id": "",
+      "transaction_conditions": {},
+      "versions": [
+       {
+        "price_version_id": "65c210c202054b2e85409decc86556e4",
+        "item_id": "demo-paint",
+        "unit": "ml",
+        "price_type": "販売",
+        "amount": "105",
+        "supplier_id": "",
+        "transaction_conditions": {},
+        "source": "simulator:架空値",
+        "confirmed_by": "担当A",
+        "checked_at": "2026-01-02",
+        "valid_from": "2026-01-01",
+        "valid_until": "2026-03-01",
+        "status": "approved"
+       }
+      ],
+      "comparison": "同一条件の履歴表示。相場を代表する値ではありません。",
+      "simulator": true
+     }
+    }
+   ]
+  },
+  {
+   "name": "単位・区分・仕入先・条件の違いは別グループ",
+   "expected": [
+    {
+     "ok": {
+      "price_version_id": "fac20174320b435b974315646a5a587e",
+      "item": {
+       "item_id": "paint-x",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "80",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "担当A",
+      "supplier_id": "supplier-a",
+      "valid_from": "2026-01-01",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {
+       "source": "仕入先A",
+       "transaction_conditions": {
+        "freight_basis": "included"
+       }
+      }
+     }
+    },
+    {
+     "ok": {
+      "price_version_id": "2b6d89ded2a445afaf2a6c3bc15107f0",
+      "item": {
+       "item_id": "paint-x",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "90",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "担当A",
+      "supplier_id": "supplier-b",
+      "valid_from": "2026-01-02",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {
+       "source": "仕入先B",
+       "transaction_conditions": {
+        "freight_basis": "included"
+       }
+      }
+     }
+    },
+    {
+     "ok": {
+      "price_version_id": "3fad8478959443e983f24cd9e0ec0503",
+      "item": {
+       "item_id": "paint-x",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "95",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "担当A",
+      "supplier_id": "supplier-a",
+      "valid_from": "2026-01-03",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {
+       "source": "別送料",
+       "transaction_conditions": {
+        "freight_basis": "excluded"
+       }
+      }
+     }
+    },
+    {
+     "ok": {
+      "price_version_id": "1ec50a6a567d476987dbd37350da2398",
+      "item": {
+       "item_id": "paint-x",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "99",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "担当A",
+      "supplier_id": "supplier-a",
+      "valid_from": "2026-01-04",
+      "valid_until": null,
+      "status": "pending",
+      "reason": "初回登録",
+      "metadata": {
+       "transaction_conditions": {
+        "freight_basis": "included"
+       }
+      }
+     }
+    },
+    {
+     "ok": {
+      "price_version_id": "6030b5a5395f4abbb7b41887399b13dd",
+      "item": {
+       "item_id": "paint-x",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "70",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "担当A",
+      "supplier_id": "supplier-a",
+      "valid_from": "2026-01-01",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {
+       "transaction_conditions": {
+        "freight_basis": "included"
+       }
+      }
+     }
+    },
+    {
+     "ok": {
+      "item_id": "paint-x",
+      "unit": "ml",
+      "price_type": "仕入",
+      "supplier_id": "supplier-a",
+      "transaction_conditions": {
+       "freight_basis": "included"
+      },
+      "versions": [
+       {
+        "price_version_id": "fac20174320b435b974315646a5a587e",
+        "item_id": "paint-x",
+        "unit": "ml",
+        "price_type": "仕入",
+        "amount": "80",
+        "supplier_id": "supplier-a",
+        "transaction_conditions": {
+         "freight_basis": "included"
+        },
+        "source": "simulator:架空値",
+        "confirmed_by": "担当A",
+        "checked_at": "2026-10-11",
+        "valid_from": "2026-01-01",
+        "valid_until": null,
+        "status": "approved"
+       }
+      ],
+      "comparison": "同一条件の履歴表示。相場を代表する値ではありません。",
+      "simulator": true,
+      "incomparable_groups": [
+       {
+        "unit": "ml",
+        "price_type": "仕入",
+        "supplier_id": "supplier-b",
+        "transaction_conditions": {
+         "freight_basis": "included"
+        },
+        "reason": "単位・価格区分・仕入先・取引条件の不一致により比較対象外",
+        "versions": [
+         {
+          "price_version_id": "2b6d89ded2a445afaf2a6c3bc15107f0",
+          "item_id": "paint-x",
+          "unit": "ml",
+          "price_type": "仕入",
+          "amount": "90",
+          "supplier_id": "supplier-b",
+          "transaction_conditions": {
+           "freight_basis": "included"
+          },
+          "source": "simulator:架空値",
+          "confirmed_by": "担当A",
+          "checked_at": "2026-10-11",
+          "valid_from": "2026-01-02",
+          "valid_until": null,
+          "status": "approved"
+         }
+        ]
+       },
+       {
+        "unit": "ml",
+        "price_type": "仕入",
+        "supplier_id": "supplier-a",
+        "transaction_conditions": {
+         "freight_basis": "excluded"
+        },
+        "reason": "単位・価格区分・仕入先・取引条件の不一致により比較対象外",
+        "versions": [
+         {
+          "price_version_id": "3fad8478959443e983f24cd9e0ec0503",
+          "item_id": "paint-x",
+          "unit": "ml",
+          "price_type": "仕入",
+          "amount": "95",
+          "supplier_id": "supplier-a",
+          "transaction_conditions": {
+           "freight_basis": "excluded"
+          },
+          "source": "simulator:架空値",
+          "confirmed_by": "担当A",
+          "checked_at": "2026-10-11",
+          "valid_from": "2026-01-03",
+          "valid_until": null,
+          "status": "approved"
+         }
+        ]
+       },
+       {
+        "unit": "ml",
+        "price_type": "販売",
+        "supplier_id": "supplier-a",
+        "transaction_conditions": {
+         "freight_basis": "included"
+        },
+        "reason": "単位・価格区分・仕入先・取引条件の不一致により比較対象外",
+        "versions": [
+         {
+          "price_version_id": "6030b5a5395f4abbb7b41887399b13dd",
+          "item_id": "paint-x",
+          "unit": "ml",
+          "price_type": "販売",
+          "amount": "70",
+          "supplier_id": "supplier-a",
+          "transaction_conditions": {
+           "freight_basis": "included"
+          },
+          "source": "simulator:架空値",
+          "confirmed_by": "担当A",
+          "checked_at": "2026-10-11",
+          "valid_from": "2026-01-01",
+          "valid_until": null,
+          "status": "approved"
+         }
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "品目の名称・分類・基準単位は価格更新で変更できません"
+    },
+    {
+     "ok": {
+      "item_id": "paint-x",
+      "unit": "ml",
+      "price_type": "仕入",
+      "supplier_id": "supplier-b",
+      "transaction_conditions": {
+       "freight_basis": "included"
+      },
+      "versions": [
+       {
+        "price_version_id": "2b6d89ded2a445afaf2a6c3bc15107f0",
+        "item_id": "paint-x",
+        "unit": "ml",
+        "price_type": "仕入",
+        "amount": "90",
+        "supplier_id": "supplier-b",
+        "transaction_conditions": {
+         "freight_basis": "included"
+        },
+        "source": "simulator:架空値",
+        "confirmed_by": "担当A",
+        "checked_at": "2026-10-11",
+        "valid_from": "2026-01-02",
+        "valid_until": null,
+        "status": "approved"
+       }
+      ],
+      "comparison": "同一条件の履歴表示。相場を代表する値ではありません。",
+      "simulator": true,
+      "incomparable_groups": [
+       {
+        "unit": "ml",
+        "price_type": "仕入",
+        "supplier_id": "supplier-a",
+        "transaction_conditions": {
+         "freight_basis": "included"
+        },
+        "reason": "単位・価格区分・仕入先・取引条件の不一致により比較対象外",
+        "versions": [
+         {
+          "price_version_id": "fac20174320b435b974315646a5a587e",
+          "item_id": "paint-x",
+          "unit": "ml",
+          "price_type": "仕入",
+          "amount": "80",
+          "supplier_id": "supplier-a",
+          "transaction_conditions": {
+           "freight_basis": "included"
+          },
+          "source": "simulator:架空値",
+          "confirmed_by": "担当A",
+          "checked_at": "2026-10-11",
+          "valid_from": "2026-01-01",
+          "valid_until": null,
+          "status": "approved"
+         }
+        ]
+       },
+       {
+        "unit": "ml",
+        "price_type": "仕入",
+        "supplier_id": "supplier-a",
+        "transaction_conditions": {
+         "freight_basis": "excluded"
+        },
+        "reason": "単位・価格区分・仕入先・取引条件の不一致により比較対象外",
+        "versions": [
+         {
+          "price_version_id": "3fad8478959443e983f24cd9e0ec0503",
+          "item_id": "paint-x",
+          "unit": "ml",
+          "price_type": "仕入",
+          "amount": "95",
+          "supplier_id": "supplier-a",
+          "transaction_conditions": {
+           "freight_basis": "excluded"
+          },
+          "source": "simulator:架空値",
+          "confirmed_by": "担当A",
+          "checked_at": "2026-10-11",
+          "valid_from": "2026-01-03",
+          "valid_until": null,
+          "status": "approved"
+         }
+        ]
+       },
+       {
+        "unit": "ml",
+        "price_type": "販売",
+        "supplier_id": "supplier-a",
+        "transaction_conditions": {
+         "freight_basis": "included"
+        },
+        "reason": "単位・価格区分・仕入先・取引条件の不一致により比較対象外",
+        "versions": [
+         {
+          "price_version_id": "6030b5a5395f4abbb7b41887399b13dd",
+          "item_id": "paint-x",
+          "unit": "ml",
+          "price_type": "販売",
+          "amount": "70",
+          "supplier_id": "supplier-a",
+          "transaction_conditions": {
+           "freight_basis": "included"
+          },
+          "source": "simulator:架空値",
+          "confirmed_by": "担当A",
+          "checked_at": "2026-10-11",
+          "valid_from": "2026-01-01",
+          "valid_until": null,
+          "status": "approved"
+         }
+        ]
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "同日の版は追記順",
+   "expected": [
+    {
+     "ok": {
+      "price_version_id": "44e7bbb472c149c38eb634d145cb8619",
+      "item": {
+       "item_id": "paint-x",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "80",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "担当A",
+      "supplier_id": "",
+      "valid_from": "2026-02-01",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {}
+     }
+    },
+    {
+     "ok": {
+      "price_version_id": "03e429b2521d4c4abeb358317a661062",
+      "item": {
+       "item_id": "paint-x",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "81",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "担当A",
+      "supplier_id": "",
+      "valid_from": "2026-01-01",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {}
+     }
+    },
+    {
+     "ok": {
+      "price_version_id": "21a904e0d46b4d64b41fb0765d5a36b1",
+      "item": {
+       "item_id": "paint-x",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "82",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "担当A",
+      "supplier_id": "",
+      "valid_from": "2026-02-01",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {}
+     }
+    },
+    {
+     "ok": {
+      "item_id": "paint-x",
+      "unit": "ml",
+      "price_type": "仕入",
+      "supplier_id": "",
+      "transaction_conditions": {},
+      "versions": [
+       {
+        "price_version_id": "03e429b2521d4c4abeb358317a661062",
+        "item_id": "paint-x",
+        "unit": "ml",
+        "price_type": "仕入",
+        "amount": "81",
+        "supplier_id": "",
+        "transaction_conditions": {},
+        "source": "simulator:架空値",
+        "confirmed_by": "担当A",
+        "checked_at": "2026-10-11",
+        "valid_from": "2026-01-01",
+        "valid_until": null,
+        "status": "approved"
+       },
+       {
+        "price_version_id": "44e7bbb472c149c38eb634d145cb8619",
+        "item_id": "paint-x",
+        "unit": "ml",
+        "price_type": "仕入",
+        "amount": "80",
+        "supplier_id": "",
+        "transaction_conditions": {},
+        "source": "simulator:架空値",
+        "confirmed_by": "担当A",
+        "checked_at": "2026-10-11",
+        "valid_from": "2026-02-01",
+        "valid_until": null,
+        "status": "approved"
+       },
+       {
+        "price_version_id": "21a904e0d46b4d64b41fb0765d5a36b1",
+        "item_id": "paint-x",
+        "unit": "ml",
+        "price_type": "仕入",
+        "amount": "82",
+        "supplier_id": "",
+        "transaction_conditions": {},
+        "source": "simulator:架空値",
+        "confirmed_by": "担当A",
+        "checked_at": "2026-10-11",
+        "valid_from": "2026-02-01",
+        "valid_until": null,
+        "status": "approved"
+       }
+      ],
+      "comparison": "同一条件の履歴表示。相場を代表する値ではありません。",
+      "simulator": true
+     }
+    }
+   ]
+  },
+  {
+   "name": "不正な条件と未対応操作",
+   "expected": [
+    {
+     "error": "ValidationError",
+     "message": "price_type: 仕入 / 販売を選択してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "payload: 指定できない項目があります"
+    },
+    {
+     "error": "ValidationError",
+     "message": "action: timeline / seed_demo を選択してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "supplier_id: 文字列を指定してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "transaction_conditions: 条件の集合を指定してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "seed_demo: 架空デモ条件を指定してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "confirmed_by: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "payload: 入力を確認してください"
+    }
+   ]
+  }
+ ]
+}

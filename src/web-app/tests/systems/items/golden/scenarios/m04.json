@@ -1,0 +1,961 @@
+{
+ "scenarios": [
+  {
+   "name": "SPEC defaults",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "save_offer",
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "80",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "supplier_id": "demo-supplier-a",
+      "freight_basis": "送料込み",
+      "freight_amount": "0",
+      "tax_basis": "税別",
+      "delivery_days": 2,
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "compare_and_select",
+      "item_id": "demo-paint",
+      "unit": "ml",
+      "supplier_ids": [
+       "demo-supplier-a"
+      ],
+      "selected_supplier_id": "demo-supplier-a",
+      "confirmed_by": "架空デモ担当",
+      "as_of": "2026-10-11"
+     }
+    }
+   ]
+  },
+  {
+   "name": "同条件の比較と選択の記録",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "save_offer",
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "78.25",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "supplier_id": "supplier-a",
+      "freight_basis": "送料込み",
+      "freight_amount": "0",
+      "tax_basis": "税別",
+      "delivery_days": 2,
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "save_offer",
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "82.50",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "supplier_id": "supplier-b",
+      "freight_basis": "送料込み",
+      "freight_amount": "0",
+      "tax_basis": "税別",
+      "delivery_days": 2,
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "compare_and_select",
+      "item_id": "demo-paint",
+      "unit": "ml",
+      "supplier_ids": [
+       "supplier-b",
+       "supplier-a"
+      ],
+      "selected_supplier_id": "supplier-b",
+      "confirmed_by": "架空デモ担当",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "latest",
+     "namespace": "supplier_price_selection",
+     "record_id": "$ref:3.selection_record_id"
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "save_offer",
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "78.250",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "supplier_id": "supplier-c",
+      "freight_basis": "送料込み",
+      "freight_amount": "0",
+      "tax_basis": "税別",
+      "delivery_days": 2,
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "compare_and_select",
+      "item_id": "demo-paint",
+      "unit": "ml",
+      "supplier_ids": [
+       "supplier-c",
+       "supplier-a",
+       "supplier-b"
+      ],
+      "selected_supplier_id": "supplier-a",
+      "confirmed_by": "架空デモ担当",
+      "as_of": "2026-10-11",
+      "reason": "同額の比較"
+     }
+    }
+   ]
+  },
+  {
+   "name": "送料条件が違えば比較しない",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "save_offer",
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "78",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "supplier_id": "supplier-a",
+      "freight_basis": "送料込み",
+      "freight_amount": "0",
+      "tax_basis": "税別",
+      "delivery_days": 2,
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "save_offer",
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "82",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "supplier_id": "supplier-b",
+      "freight_basis": "送料別",
+      "freight_amount": "0",
+      "tax_basis": "税別",
+      "delivery_days": 2,
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "compare_and_select",
+      "item_id": "demo-paint",
+      "unit": "ml",
+      "supplier_ids": [
+       "supplier-a",
+       "supplier-b"
+      ],
+      "selected_supplier_id": "supplier-a",
+      "confirmed_by": "架空デモ担当",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "records",
+     "namespace": "supplier_price_selection"
+    }
+   ]
+  },
+  {
+   "name": "税条件が違えば比較しない",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "save_offer",
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "78",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "supplier_id": "supplier-a",
+      "freight_basis": "送料込み",
+      "freight_amount": "0",
+      "tax_basis": "税別",
+      "delivery_days": 2,
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "save_offer",
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "82",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "supplier_id": "supplier-b",
+      "freight_basis": "送料込み",
+      "freight_amount": "0",
+      "tax_basis": "税込",
+      "delivery_days": 2,
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "compare_and_select",
+      "item_id": "demo-paint",
+      "unit": "ml",
+      "supplier_ids": [
+       "supplier-a",
+       "supplier-b"
+      ],
+      "selected_supplier_id": "supplier-a",
+      "confirmed_by": "架空デモ担当",
+      "as_of": "2026-10-11"
+     }
+    }
+   ]
+  },
+  {
+   "name": "納期が違えば比較しない",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "save_offer",
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "78",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "supplier_id": "supplier-a",
+      "freight_basis": "送料込み",
+      "freight_amount": "0",
+      "tax_basis": "税別",
+      "delivery_days": 2,
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "save_offer",
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "82",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "supplier_id": "supplier-b",
+      "freight_basis": "送料込み",
+      "freight_amount": "0",
+      "tax_basis": "税別",
+      "delivery_days": 3,
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "compare_and_select",
+      "item_id": "demo-paint",
+      "unit": "ml",
+      "supplier_ids": [
+       "supplier-a",
+       "supplier-b"
+      ],
+      "selected_supplier_id": "supplier-a",
+      "confirmed_by": "架空デモ担当",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "save_offer",
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "82",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "supplier_id": "supplier-c",
+      "freight_basis": "送料込み",
+      "freight_amount": "0.0",
+      "tax_basis": "税別",
+      "delivery_days": "2",
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "compare_and_select",
+      "item_id": "demo-paint",
+      "unit": "ml",
+      "supplier_ids": [
+       "supplier-a",
+       "supplier-c"
+      ],
+      "selected_supplier_id": "supplier-c",
+      "confirmed_by": "架空デモ担当",
+      "as_of": "2026-10-11"
+     }
+    }
+   ]
+  },
+  {
+   "name": "別品目・単位・通貨は混ぜない",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "save_offer",
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "78",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "supplier_id": "supplier-a",
+      "freight_basis": "送料込み",
+      "freight_amount": "0",
+      "tax_basis": "税別",
+      "delivery_days": 2,
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "save_offer",
+      "item": {
+       "item_id": "other-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "120",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "supplier_id": "supplier-b",
+      "freight_basis": "送料込み",
+      "freight_amount": "0",
+      "tax_basis": "税別",
+      "delivery_days": 2,
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "compare_and_select",
+      "item_id": "demo-paint",
+      "unit": "ml",
+      "supplier_ids": [
+       "supplier-a",
+       "supplier-b"
+      ],
+      "selected_supplier_id": "supplier-a",
+      "confirmed_by": "架空デモ担当",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "save_offer",
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "75",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "supplier_id": "supplier-c",
+      "freight_basis": "送料込み",
+      "freight_amount": "0",
+      "tax_basis": "税別",
+      "delivery_days": 2,
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当",
+      "currency": "USD"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "compare_and_select",
+      "item_id": "demo-paint",
+      "unit": "ml",
+      "supplier_ids": [
+       "supplier-a",
+       "supplier-c"
+      ],
+      "selected_supplier_id": "supplier-a",
+      "confirmed_by": "架空デモ担当",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "compare_and_select",
+      "item_id": "demo-paint",
+      "unit": "本",
+      "supplier_ids": [
+       "supplier-a"
+      ],
+      "selected_supplier_id": "supplier-a",
+      "confirmed_by": "架空デモ担当",
+      "as_of": "2026-10-11"
+     }
+    }
+   ]
+  },
+  {
+   "name": "仕入価格・承認済みだけ",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "save_offer",
+      "item": {
+       "item_id": "sale-item",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "120",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "supplier_id": "demo-supplier-a",
+      "freight_basis": "送料込み",
+      "freight_amount": "0",
+      "tax_basis": "税別",
+      "delivery_days": 2,
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "save_offer",
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "90",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "supplier_id": "pending-supplier",
+      "freight_basis": "送料込み",
+      "freight_amount": "0",
+      "tax_basis": "税別",
+      "delivery_days": 2,
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当",
+      "status": "pending"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "compare_and_select",
+      "item_id": "demo-paint",
+      "unit": "ml",
+      "supplier_ids": [
+       "pending-supplier"
+      ],
+      "selected_supplier_id": "pending-supplier",
+      "confirmed_by": "架空デモ担当",
+      "as_of": "2026-10-11"
+     }
+    }
+   ]
+  },
+  {
+   "name": "入力の検査",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "save_offer",
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "80",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "supplier_id": "",
+      "freight_basis": "送料込み",
+      "freight_amount": "0",
+      "tax_basis": "税別",
+      "delivery_days": 2,
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "save_offer",
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "80",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "supplier_id": "supplier-a",
+      "freight_basis": " ",
+      "freight_amount": "0",
+      "tax_basis": "税別",
+      "delivery_days": 2,
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "save_offer",
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "80",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "supplier_id": "supplier-a",
+      "freight_basis": "送料込み",
+      "freight_amount": "0",
+      "tax_basis": null,
+      "delivery_days": 2,
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "save_offer",
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "80",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "supplier_id": "supplier-a",
+      "freight_basis": "送料込み",
+      "freight_amount": "-1",
+      "tax_basis": "税別",
+      "delivery_days": 2,
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "save_offer",
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "80",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "supplier_id": "supplier-a",
+      "freight_basis": "送料込み",
+      "freight_amount": "0",
+      "tax_basis": "税別",
+      "delivery_days": "1.5",
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "save_offer",
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "80",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "supplier_id": "supplier-a",
+      "freight_basis": "送料込み",
+      "freight_amount": "0",
+      "tax_basis": "税別",
+      "delivery_days": 2,
+      "checked_at": "unknown",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "save_offer",
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "80",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "supplier_id": "supplier-a",
+      "freight_basis": "送料込み",
+      "freight_amount": "0",
+      "tax_basis": "税別",
+      "delivery_days": true,
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "save_offer",
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "80",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "supplier_id": "supplier-a",
+      "freight_basis": "送料込み",
+      "freight_amount": "0",
+      "tax_basis": "税別",
+      "delivery_days": 2,
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当",
+      "currency": "JPYY"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "save_offer",
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "80",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "supplier_id": "supplier-a",
+      "freight_basis": "送料込み",
+      "freight_amount": "0",
+      "tax_basis": "税別",
+      "delivery_days": 2,
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当",
+      "valid_until": "2026-10-01"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "save_offer",
+      "item": {
+       "item_id": "demo-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "80",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "supplier_id": "supplier-a",
+      "freight_basis": "送料込み",
+      "freight_amount": "0",
+      "tax_basis": "税別",
+      "delivery_days": 2,
+      "checked_at": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "compare_and_select",
+      "item_id": "demo-paint",
+      "unit": "ml",
+      "supplier_ids": [
+       "supplier-a"
+      ],
+      "selected_supplier_id": "supplier-b",
+      "confirmed_by": "架空デモ担当",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "compare_and_select",
+      "item_id": "demo-paint",
+      "unit": "ml",
+      "supplier_ids": [
+       "supplier-a",
+       "supplier-a"
+      ],
+      "selected_supplier_id": "supplier-a",
+      "confirmed_by": "架空デモ担当",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "compare_and_select",
+      "item_id": "demo-paint",
+      "unit": "ml",
+      "supplier_ids": [],
+      "selected_supplier_id": "supplier-a",
+      "confirmed_by": "架空デモ担当",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "compare_and_select",
+      "item_id": "demo-paint",
+      "unit": "ml",
+      "supplier_ids": "supplier-a",
+      "selected_supplier_id": "supplier-a",
+      "confirmed_by": "架空デモ担当",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "save_price"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {
+      "action": "save_offer"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": {}
+    },
+    {
+     "op": "run",
+     "module": "M04",
+     "payload": null
+    }
+   ]
+  }
+ ]
+}

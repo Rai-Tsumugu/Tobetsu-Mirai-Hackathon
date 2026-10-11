@@ -1,0 +1,488 @@
+{
+ "source": "scenarios/m25.json",
+ "scenarios": [
+  {
+   "name": "HTTP 既定値（seed_demo）",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "observations": [
+       {
+        "source": "simulator:架空データ出典",
+        "series": "架空ナフサ指数",
+        "value": "123.4",
+        "unit": "指数ポイント",
+        "published_at": "2026-10-01",
+        "fetched_at": "2026-10-11T09:00:00+09:00",
+        "terms_status": "未確認",
+        "simulator": true,
+        "notice": "参考情報のみ。利用規約・再利用条件は未確認。品目の個別価格へ自動反映しません。"
+       }
+      ],
+      "simulator": true,
+      "notice": "参考情報のみ。指数を個別品目価格・見積価格へ自動反映しません。"
+     }
+    },
+    {
+     "ok": [
+      {
+       "price_version_id": "0287cd19187448e8920f7353a87a270b",
+       "item": {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "80",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空デモ担当",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "初回登録",
+       "metadata": {}
+      },
+      {
+       "price_version_id": "9b392b8bc163492db715d0e9839c777c",
+       "item": {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "120",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空デモ担当",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "初回登録",
+       "metadata": {}
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "手入力の記録は価格を変えない",
+   "expected": [
+    {
+     "ok": {
+      "price_version_id": "c40e1a7eb68f4b6d9402b2530a47c138",
+      "item": {
+       "item_id": "m25-price",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "80",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {}
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "observation_id": "924e3a3349f443c9b57b57a5ba7c7d95",
+      "observation": {
+       "source": "手入力fixture:架空",
+       "series": "架空原料指標",
+       "value": "123.4",
+       "unit": "指数ポイント",
+       "published_at": "2026-10-01",
+       "fetched_at": "2026-10-11T09:00:00+09:00",
+       "terms_status": "未確認",
+       "simulator": false,
+       "notice": "参考情報のみ。利用規約・再利用条件は未確認。品目の個別価格へ自動反映しません。"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "observations": [
+       {
+        "source": "手入力fixture:架空",
+        "series": "架空原料指標",
+        "value": "123.4",
+        "unit": "指数ポイント",
+        "published_at": "2026-10-01",
+        "fetched_at": "2026-10-11T09:00:00+09:00",
+        "terms_status": "未確認",
+        "simulator": false,
+        "notice": "参考情報のみ。利用規約・再利用条件は未確認。品目の個別価格へ自動反映しません。"
+       }
+      ],
+      "simulator": false,
+      "notice": "参考情報のみ。指数を個別品目価格・見積価格へ自動反映しません。"
+     }
+    },
+    {
+     "ok": [
+      {
+       "price_version_id": "c40e1a7eb68f4b6d9402b2530a47c138",
+       "item": {
+        "item_id": "m25-price",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "80",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空担当",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "初回登録",
+       "metadata": {}
+      }
+     ]
+    },
+    {
+     "ok": {
+      "price_version_id": "c40e1a7eb68f4b6d9402b2530a47c138",
+      "item": {
+       "item_id": "m25-price",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "80",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {}
+     }
+    }
+   ]
+  },
+  {
+   "name": "空一覧は seed しない・seed は明示の追記",
+   "expected": [
+    {
+     "ok": {
+      "observations": [],
+      "simulator": false,
+      "notice": "参考情報のみ。指数を個別品目価格・見積価格へ自動反映しません。"
+     }
+    },
+    {
+     "ok": []
+    },
+    {
+     "ok": {
+      "observations": [
+       {
+        "source": "simulator:架空データ出典",
+        "series": "架空ナフサ指数",
+        "value": "123.4",
+        "unit": "指数ポイント",
+        "published_at": "2026-10-01",
+        "fetched_at": "2026-10-11T09:00:00+09:00",
+        "terms_status": "未確認",
+        "simulator": true,
+        "notice": "参考情報のみ。利用規約・再利用条件は未確認。品目の個別価格へ自動反映しません。"
+       }
+      ],
+      "simulator": true,
+      "notice": "参考情報のみ。指数を個別品目価格・見積価格へ自動反映しません。"
+     }
+    },
+    {
+     "ok": {
+      "observations": [
+       {
+        "source": "simulator:架空データ出典",
+        "series": "架空ナフサ指数",
+        "value": "123.4",
+        "unit": "指数ポイント",
+        "published_at": "2026-10-01",
+        "fetched_at": "2026-10-11T09:00:00+09:00",
+        "terms_status": "未確認",
+        "simulator": true,
+        "notice": "参考情報のみ。利用規約・再利用条件は未確認。品目の個別価格へ自動反映しません。"
+       },
+       {
+        "source": "simulator:架空データ出典",
+        "series": "架空ナフサ指数",
+        "value": "123.4",
+        "unit": "指数ポイント",
+        "published_at": "2026-10-01",
+        "fetched_at": "2026-10-11T09:00:00+09:00",
+        "terms_status": "未確認",
+        "simulator": true,
+        "notice": "参考情報のみ。利用規約・再利用条件は未確認。品目の個別価格へ自動反映しません。"
+       }
+      ],
+      "simulator": true,
+      "notice": "参考情報のみ。指数を個別品目価格・見積価格へ自動反映しません。"
+     }
+    },
+    {
+     "ok": [
+      {
+       "source": "simulator:架空データ出典",
+       "series": "架空ナフサ指数",
+       "value": "123.4",
+       "unit": "指数ポイント",
+       "published_at": "2026-10-01",
+       "fetched_at": "2026-10-11T09:00:00+09:00",
+       "terms_status": "未確認",
+       "simulator": true,
+       "notice": "参考情報のみ。利用規約・再利用条件は未確認。品目の個別価格へ自動反映しません。",
+       "record_id": "f63069794704469da0a0a0fdfe5d1c43"
+      },
+      {
+       "source": "simulator:架空データ出典",
+       "series": "架空ナフサ指数",
+       "value": "123.4",
+       "unit": "指数ポイント",
+       "published_at": "2026-10-01",
+       "fetched_at": "2026-10-11T09:00:00+09:00",
+       "terms_status": "未確認",
+       "simulator": true,
+       "notice": "参考情報のみ。利用規約・再利用条件は未確認。品目の個別価格へ自動反映しません。",
+       "record_id": "54cd59fcbffc4d3a8d54f0178c439a56"
+      }
+     ]
+    },
+    {
+     "ok": []
+    }
+   ]
+  },
+  {
+   "name": "不正な値と日時",
+   "expected": [
+    {
+     "error": "ValidationError",
+     "message": "value: 有限の正数/非負数を入力してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "value: 有限の正数/非負数を入力してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "source: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "published_at: ISO形式の日付または日時が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "fetched_at: タイムゾーン付き日時が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "published_at: ISO形式の日付または日時が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "published_at: ISO形式の日付または日時が必要です"
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "observation_id": "4faafad56bdf44ddaf372860a76110a3",
+      "observation": {
+       "source": "simulator:架空データ出典",
+       "series": "架空ナフサ指数",
+       "value": "123.4",
+       "unit": "指数ポイント",
+       "published_at": "2026-10-01",
+       "fetched_at": "2026-10-11T09:00:00+09:00",
+       "terms_status": "未確認",
+       "simulator": false,
+       "notice": "参考情報のみ。利用規約・再利用条件は未確認。品目の個別価格へ自動反映しません。"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "observation_id": "4d6b4cd2625b44bd83cc7c6640e2e068",
+      "observation": {
+       "source": "simulator:架空データ出典",
+       "series": "架空ナフサ指数",
+       "value": "123.4",
+       "unit": "指数ポイント",
+       "published_at": "2026-10-01T00:00:00Z",
+       "fetched_at": "2026-10-11T09:00:00+09:00",
+       "terms_status": "未確認",
+       "simulator": false,
+       "notice": "参考情報のみ。利用規約・再利用条件は未確認。品目の個別価格へ自動反映しません。"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "observation_id": "577f81f824644df898ff3b0703378e20",
+      "observation": {
+       "source": "simulator:架空データ出典",
+       "series": "架空ナフサ指数",
+       "value": "123.4",
+       "unit": "指数ポイント",
+       "published_at": "2026-10-01",
+       "fetched_at": "2026-10-11T09:00:00Z",
+       "terms_status": "未確認",
+       "simulator": false,
+       "notice": "参考情報のみ。利用規約・再利用条件は未確認。品目の個別価格へ自動反映しません。"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "observation_id": "fa41707fe3f04ffeb31340e26933aacd",
+      "observation": {
+       "source": "simulator:架空データ出典",
+       "series": "架空ナフサ指数",
+       "value": "123.4",
+       "unit": "指数ポイント",
+       "published_at": "2026-10-01",
+       "fetched_at": "2026-10-11 09:00+0900",
+       "terms_status": "未確認",
+       "simulator": false,
+       "notice": "参考情報のみ。利用規約・再利用条件は未確認。品目の個別価格へ自動反映しません。"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "saved",
+      "observation_id": "fab300d2d6c443538fe096604e9528fd",
+      "observation": {
+       "source": "simulator:架空データ出典",
+       "series": "架空ナフサ指数",
+       "value": "1E+3",
+       "unit": "指数ポイント",
+       "published_at": "2026-10-01",
+       "fetched_at": "2026-10-11T09:00:00+09:00",
+       "terms_status": "未確認",
+       "simulator": false,
+       "notice": "参考情報のみ。利用規約・再利用条件は未確認。品目の個別価格へ自動反映しません。"
+      },
+      "simulator": false
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "published_at: ISO形式の日付または日時が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "payload: 指定できない項目があります"
+    },
+    {
+     "error": "ValidationError",
+     "message": "action: record / list / seed_demo を選択してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "seed_demo: 架空デモ値を指定してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "seed_demo: 架空デモ値を指定してください"
+    },
+    {
+     "ok": [
+      {
+       "source": "simulator:架空データ出典",
+       "series": "架空ナフサ指数",
+       "value": "123.4",
+       "unit": "指数ポイント",
+       "published_at": "2026-10-01",
+       "fetched_at": "2026-10-11T09:00:00+09:00",
+       "terms_status": "未確認",
+       "simulator": false,
+       "notice": "参考情報のみ。利用規約・再利用条件は未確認。品目の個別価格へ自動反映しません。",
+       "record_id": "4faafad56bdf44ddaf372860a76110a3"
+      },
+      {
+       "source": "simulator:架空データ出典",
+       "series": "架空ナフサ指数",
+       "value": "123.4",
+       "unit": "指数ポイント",
+       "published_at": "2026-10-01T00:00:00Z",
+       "fetched_at": "2026-10-11T09:00:00+09:00",
+       "terms_status": "未確認",
+       "simulator": false,
+       "notice": "参考情報のみ。利用規約・再利用条件は未確認。品目の個別価格へ自動反映しません。",
+       "record_id": "4d6b4cd2625b44bd83cc7c6640e2e068"
+      },
+      {
+       "source": "simulator:架空データ出典",
+       "series": "架空ナフサ指数",
+       "value": "123.4",
+       "unit": "指数ポイント",
+       "published_at": "2026-10-01",
+       "fetched_at": "2026-10-11T09:00:00Z",
+       "terms_status": "未確認",
+       "simulator": false,
+       "notice": "参考情報のみ。利用規約・再利用条件は未確認。品目の個別価格へ自動反映しません。",
+       "record_id": "577f81f824644df898ff3b0703378e20"
+      },
+      {
+       "source": "simulator:架空データ出典",
+       "series": "架空ナフサ指数",
+       "value": "123.4",
+       "unit": "指数ポイント",
+       "published_at": "2026-10-01",
+       "fetched_at": "2026-10-11 09:00+0900",
+       "terms_status": "未確認",
+       "simulator": false,
+       "notice": "参考情報のみ。利用規約・再利用条件は未確認。品目の個別価格へ自動反映しません。",
+       "record_id": "fa41707fe3f04ffeb31340e26933aacd"
+      },
+      {
+       "source": "simulator:架空データ出典",
+       "series": "架空ナフサ指数",
+       "value": "1E+3",
+       "unit": "指数ポイント",
+       "published_at": "2026-10-01",
+       "fetched_at": "2026-10-11T09:00:00+09:00",
+       "terms_status": "未確認",
+       "simulator": false,
+       "notice": "参考情報のみ。利用規約・再利用条件は未確認。品目の個別価格へ自動反映しません。",
+       "record_id": "fab300d2d6c443538fe096604e9528fd"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

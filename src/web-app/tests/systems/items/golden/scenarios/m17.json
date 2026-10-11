@@ -1,0 +1,974 @@
+{
+ "scenarios": [
+  {
+   "name": "既定値（HTTP と同じく seed 後）",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M17",
+     "payload": {
+      "action": "review",
+      "item_id": "demo-m17-paint",
+      "candidate": {
+       "item": {
+        "item_id": "demo-m17-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "88",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "supplier_id": "demo-supplier",
+       "transaction_conditions": "月末締め翌月末払い",
+       "valid_from": "2026-10-11",
+       "simulator": true
+      }
+     }
+    },
+    {
+     "op": "records",
+     "namespace": "m17_update_reviews"
+    },
+    {
+     "op": "run",
+     "module": "M17",
+     "payload": {
+      "action": "review",
+      "item_id": "demo-m17-paint",
+      "candidate": {
+       "item": {
+        "item_id": "demo-m17-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "88",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "supplier_id": "demo-supplier",
+       "transaction_conditions": "月末締め翌月末払い",
+       "valid_from": "2026-10-11",
+       "simulator": true
+      }
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "demo-m17-paint",
+     "price_type": null,
+     "supplier_id": null
+    }
+   ]
+  },
+  {
+   "name": "既定の品目は candidate 省略で既定候補",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M17",
+     "payload": {
+      "item_id": "demo-m17-paint"
+     }
+    }
+   ]
+  },
+  {
+   "name": "条件不一致: unit",
+   "steps": [
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "m17-paint",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "80",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "旧価格確認者",
+     "kwargs": {
+      "supplier_id": "supplier-a",
+      "transaction_conditions": "月末締め翌月末払い",
+      "currency": "JPY",
+      "reason": "旧価格確認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M17",
+     "payload": {
+      "item_id": "m17-paint",
+      "candidate": {
+       "item": {
+        "item_id": "m17-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "個",
+        "unit_price": "88",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "supplier_id": "supplier-a",
+       "transaction_conditions": "月末締め翌月末払い",
+       "valid_from": "2026-10-11",
+       "simulator": true
+      }
+     }
+    }
+   ]
+  },
+  {
+   "name": "条件不一致: price_type",
+   "steps": [
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "m17-paint",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "80",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "旧価格確認者",
+     "kwargs": {
+      "supplier_id": "supplier-a",
+      "transaction_conditions": "月末締め翌月末払い",
+      "currency": "JPY",
+      "reason": "旧価格確認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M17",
+     "payload": {
+      "item_id": "m17-paint",
+      "candidate": {
+       "item": {
+        "item_id": "m17-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "88",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "supplier_id": "supplier-a",
+       "transaction_conditions": "月末締め翌月末払い",
+       "valid_from": "2026-10-11",
+       "simulator": true
+      }
+     }
+    }
+   ]
+  },
+  {
+   "name": "条件不一致: supplier_id",
+   "steps": [
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "m17-paint",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "80",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "旧価格確認者",
+     "kwargs": {
+      "supplier_id": "supplier-a",
+      "transaction_conditions": "月末締め翌月末払い",
+      "currency": "JPY",
+      "reason": "旧価格確認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M17",
+     "payload": {
+      "item_id": "m17-paint",
+      "candidate": {
+       "item": {
+        "item_id": "m17-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "88",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "supplier_id": "supplier-b",
+       "transaction_conditions": "月末締め翌月末払い",
+       "valid_from": "2026-10-11",
+       "simulator": true
+      }
+     }
+    }
+   ]
+  },
+  {
+   "name": "条件不一致: transaction_conditions",
+   "steps": [
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "m17-paint",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "80",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "旧価格確認者",
+     "kwargs": {
+      "supplier_id": "supplier-a",
+      "transaction_conditions": "月末締め翌月末払い",
+      "currency": "JPY",
+      "reason": "旧価格確認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M17",
+     "payload": {
+      "item_id": "m17-paint",
+      "candidate": {
+       "item": {
+        "item_id": "m17-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "88",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "supplier_id": "supplier-a",
+       "transaction_conditions": "現金払い",
+       "valid_from": "2026-10-11",
+       "simulator": true
+      }
+     }
+    }
+   ]
+  },
+  {
+   "name": "条件不一致: name",
+   "steps": [
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "m17-paint",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "80",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "旧価格確認者",
+     "kwargs": {
+      "supplier_id": "supplier-a",
+      "transaction_conditions": "月末締め翌月末払い",
+      "currency": "JPY",
+      "reason": "旧価格確認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M17",
+     "payload": {
+      "item_id": "m17-paint",
+      "candidate": {
+       "item": {
+        "item_id": "m17-paint",
+        "name": "別品目",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "88",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "supplier_id": "supplier-a",
+       "transaction_conditions": "月末締め翌月末払い",
+       "valid_from": "2026-10-11",
+       "simulator": true
+      }
+     }
+    }
+   ]
+  },
+  {
+   "name": "条件不一致: currency",
+   "steps": [
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "m17-paint",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "80",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "旧価格確認者",
+     "kwargs": {
+      "supplier_id": "supplier-a",
+      "transaction_conditions": "月末締め翌月末払い",
+      "currency": "JPY",
+      "reason": "旧価格確認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M17",
+     "payload": {
+      "item_id": "m17-paint",
+      "candidate": {
+       "item": {
+        "item_id": "m17-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "88",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "supplier_id": "supplier-a",
+       "transaction_conditions": "月末締め翌月末払い",
+       "valid_from": "2026-10-11",
+       "simulator": true,
+       "currency": "USD"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "name": "採用で新しい承認済み版を追記",
+   "steps": [
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "m17-paint",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "80",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "旧価格確認者",
+     "kwargs": {
+      "supplier_id": "supplier-a",
+      "transaction_conditions": "月末締め翌月末払い",
+      "currency": "JPY",
+      "reason": "旧価格確認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M17",
+     "payload": {
+      "item_id": "m17-paint",
+      "candidate": {
+       "item": {
+        "item_id": "m17-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "88",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "supplier_id": "supplier-a",
+       "transaction_conditions": "月末締め翌月末払い",
+       "valid_from": "2026-10-11",
+       "simulator": true
+      },
+      "decision": "採用",
+      "confirmed_by": "担当A",
+      "reason": "仕入先の新価格表を確認"
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "m17-paint",
+     "price_type": "仕入",
+     "supplier_id": "supplier-a"
+    },
+    {
+     "op": "records",
+     "namespace": "m17_update_reviews"
+    }
+   ]
+  },
+  {
+   "name": "保留は価格を変えない",
+   "steps": [
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "m17-paint",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "80",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "旧価格確認者",
+     "kwargs": {
+      "supplier_id": "supplier-a",
+      "transaction_conditions": "月末締め翌月末払い",
+      "currency": "JPY",
+      "reason": "旧価格確認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M17",
+     "payload": {
+      "item_id": "m17-paint",
+      "candidate": {
+       "item": {
+        "item_id": "m17-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "88",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "supplier_id": "supplier-a",
+       "transaction_conditions": "月末締め翌月末払い",
+       "valid_from": "2026-10-11",
+       "simulator": true
+      },
+      "decision": "保留",
+      "confirmed_by": "担当B",
+      "reason": "再確認待ち"
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "m17-paint",
+     "price_type": null,
+     "supplier_id": null
+    },
+    {
+     "op": "records",
+     "namespace": "m17_update_reviews"
+    }
+   ]
+  },
+  {
+   "name": "条件不一致は採用できない",
+   "steps": [
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "m17-paint",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "80",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "旧価格確認者",
+     "kwargs": {
+      "supplier_id": "supplier-a",
+      "transaction_conditions": "月末締め翌月末払い",
+      "currency": "JPY",
+      "reason": "旧価格確認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M17",
+     "payload": {
+      "item_id": "m17-paint",
+      "candidate": {
+       "item": {
+        "item_id": "m17-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "88",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "supplier_id": "other",
+       "transaction_conditions": "月末締め翌月末払い",
+       "valid_from": "2026-10-11",
+       "simulator": true
+      },
+      "decision": "採用",
+      "confirmed_by": "担当",
+      "reason": "条件不一致"
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "m17-paint",
+     "price_type": null,
+     "supplier_id": null
+    },
+    {
+     "op": "records",
+     "namespace": "m17_update_reviews"
+    }
+   ]
+  },
+  {
+   "name": "確認者・理由・候補項目の検査",
+   "steps": [
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "m17-paint",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "80",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "旧価格確認者",
+     "kwargs": {
+      "supplier_id": "supplier-a",
+      "transaction_conditions": "月末締め翌月末払い",
+      "currency": "JPY",
+      "reason": "旧価格確認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M17",
+     "payload": {
+      "item_id": "m17-paint",
+      "candidate": {
+       "item": {
+        "item_id": "m17-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "88",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "supplier_id": "supplier-a",
+       "transaction_conditions": "月末締め翌月末払い",
+       "valid_from": "2026-10-11",
+       "simulator": true
+      },
+      "decision": "採用",
+      "reason": "確認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M17",
+     "payload": {
+      "item_id": "m17-paint",
+      "candidate": {
+       "item": {
+        "item_id": "m17-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "88",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "supplier_id": "supplier-a",
+       "transaction_conditions": "月末締め翌月末払い",
+       "valid_from": "2026-10-11",
+       "simulator": true
+      },
+      "decision": "採用",
+      "confirmed_by": "担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M17",
+     "payload": {
+      "item_id": "m17-paint",
+      "candidate": {
+       "item": {
+        "item_id": "m17-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "88",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "supplier_id": "supplier-a",
+       "valid_from": "2026-10-11",
+       "simulator": true
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M17",
+     "payload": {
+      "item_id": "m17-paint",
+      "candidate": {
+       "item": {
+        "item_id": "m17-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "88",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "supplier_id": "supplier-a",
+       "transaction_conditions": "月末締め翌月末払い",
+       "valid_from": "2026-10-11",
+       "simulator": true
+      },
+      "decision": "却下",
+      "confirmed_by": "担当",
+      "reason": "x"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M17",
+     "payload": {
+      "item_id": "m17-paint",
+      "candidate": {
+       "item": {
+        "item_id": "m17-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "88",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "supplier_id": "supplier-a",
+       "transaction_conditions": "月末締め翌月末払い",
+       "valid_from": "2026-10-11",
+       "simulator": true
+      },
+      "extra": 1
+     }
+    },
+    {
+     "op": "run",
+     "module": "M17",
+     "payload": {
+      "action": "adopt",
+      "item_id": "m17-paint"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M17",
+     "payload": {
+      "item_id": "other",
+      "candidate": {
+       "item": {
+        "item_id": "m17-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "88",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "supplier_id": "supplier-a",
+       "transaction_conditions": "月末締め翌月末払い",
+       "valid_from": "2026-10-11",
+       "simulator": true
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M17",
+     "payload": {
+      "item_id": "m17-paint",
+      "candidate": "x"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M17",
+     "payload": {
+      "item_id": "m17-paint"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M17",
+     "payload": {
+      "item_id": "m17-paint",
+      "candidate": {
+       "item": {
+        "item_id": "m17-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "88",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "supplier_id": "",
+       "transaction_conditions": "月末締め翌月末払い",
+       "valid_from": "2026-10-11",
+       "simulator": true
+      }
+     }
+    },
+    {
+     "op": "records",
+     "namespace": "m17_update_reviews"
+    }
+   ]
+  },
+  {
+   "name": "現行価格なし",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M17",
+     "payload": {
+      "item_id": "m17-paint",
+      "candidate": {
+       "item": {
+        "item_id": "m17-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "88",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "supplier_id": "supplier-a",
+       "transaction_conditions": "月末締め翌月末払い",
+       "valid_from": "2026-10-11",
+       "simulator": true
+      }
+     }
+    }
+   ]
+  },
+  {
+   "name": "割り切れない差額率と0円の現行価格",
+   "steps": [
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "m17-paint",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "3",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "旧価格確認者",
+     "kwargs": {
+      "supplier_id": "supplier-a",
+      "transaction_conditions": "月末締め翌月末払い",
+      "currency": "JPY",
+      "reason": "旧価格確認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M17",
+     "payload": {
+      "item_id": "m17-paint",
+      "candidate": {
+       "item": {
+        "item_id": "m17-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "4",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "supplier_id": "supplier-a",
+       "transaction_conditions": "月末締め翌月末払い",
+       "valid_from": "2026-10-11",
+       "simulator": true
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M17",
+     "payload": {
+      "item_id": "m17-paint",
+      "candidate": {
+       "item": {
+        "item_id": "m17-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "2.50",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "supplier_id": "supplier-a",
+       "transaction_conditions": "月末締め翌月末払い",
+       "valid_from": "2026-10-11",
+       "simulator": true
+      }
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "m17-paint",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "0",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "旧価格確認者",
+     "kwargs": {
+      "supplier_id": "supplier-a",
+      "transaction_conditions": "月末締め翌月末払い",
+      "currency": "JPY",
+      "reason": "旧価格確認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M17",
+     "payload": {
+      "item_id": "m17-paint",
+      "candidate": {
+       "item": {
+        "item_id": "m17-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "5",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "supplier_id": "supplier-a",
+       "transaction_conditions": "月末締め翌月末払い",
+       "valid_from": "2026-10-11",
+       "simulator": true
+      }
+     }
+    }
+   ]
+  },
+  {
+   "name": "採用時の有効期間と通貨",
+   "steps": [
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "m17-paint",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "80",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "旧価格確認者",
+     "kwargs": {
+      "supplier_id": "supplier-a",
+      "transaction_conditions": "月末締め翌月末払い",
+      "currency": "JPY",
+      "reason": "旧価格確認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M17",
+     "payload": {
+      "item_id": "m17-paint",
+      "candidate": {
+       "item": {
+        "item_id": "m17-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "88",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "supplier_id": "supplier-a",
+       "transaction_conditions": "月末締め翌月末払い",
+       "valid_from": "2026-10-20",
+       "simulator": true,
+       "valid_until": "2026-12-31"
+      },
+      "decision": "採用",
+      "confirmed_by": "担当A",
+      "reason": "新価格"
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "m17-paint",
+     "price_type": null,
+     "supplier_id": null
+    }
+   ]
+  }
+ ]
+}

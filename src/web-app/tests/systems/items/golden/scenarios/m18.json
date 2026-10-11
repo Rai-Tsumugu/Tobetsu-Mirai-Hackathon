@@ -1,0 +1,373 @@
+{
+ "scenarios": [
+  {
+   "name": "既定値で架空の条件付き価格を返す",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M18",
+     "payload": {
+      "action": "apply",
+      "item_id": "demo-m18-paint",
+      "quantity": "5",
+      "unit": "缶",
+      "price_type": "仕入",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": null,
+     "price_type": null,
+     "supplier_id": null
+    },
+    {
+     "op": "records",
+     "namespace": "conditional_price"
+    },
+    {
+     "op": "run",
+     "module": "M18",
+     "payload": {
+      "action": "apply",
+      "item_id": "demo-m18-paint",
+      "quantity": "5",
+      "unit": "缶",
+      "price_type": "仕入",
+      "as_of": "2026-10-11"
+     }
+    }
+   ]
+  },
+  {
+   "name": "条件を別 namespace に記録",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M18",
+     "payload": {
+      "action": "record",
+      "item_id": "part-1",
+      "unit_price": "4321.50",
+      "min_qty": "4",
+      "unit": "個",
+      "valid_from": "2026-10-01",
+      "valid_until": "2026-10-31",
+      "price_type": "仕入",
+      "source": "仕入先見積書",
+      "confirmed_by": "担当A"
+     }
+    },
+    {
+     "op": "latest",
+     "namespace": "conditional_price",
+     "record_id": "$ref:0.conditional_price_id"
+    },
+    {
+     "op": "price_versions",
+     "item_id": null,
+     "price_type": null,
+     "supplier_id": null
+    }
+   ]
+  },
+  {
+   "name": "各条件の一致と一覧",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M18",
+     "payload": {
+      "action": "record",
+      "item_id": "part-1",
+      "unit_price": "4321.50",
+      "min_qty": "4",
+      "unit": "個",
+      "valid_from": "2026-10-01",
+      "valid_until": "2026-10-31",
+      "price_type": "仕入",
+      "source": "見積書",
+      "confirmed_by": "担当A"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M18",
+     "payload": {
+      "action": "apply",
+      "item_id": "part-1",
+      "quantity": "2",
+      "unit": "個",
+      "price_type": "仕入",
+      "as_of": "2026-10-15"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M18",
+     "payload": {
+      "action": "apply",
+      "item_id": "part-1",
+      "quantity": "5",
+      "unit": "箱",
+      "price_type": "仕入",
+      "as_of": "2026-10-15"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M18",
+     "payload": {
+      "action": "apply",
+      "item_id": "part-1",
+      "quantity": "5",
+      "unit": "個",
+      "price_type": "仕入",
+      "as_of": "2026-11-01"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M18",
+     "payload": {
+      "action": "apply",
+      "item_id": "part-1",
+      "quantity": "5",
+      "unit": "個",
+      "price_type": "販売",
+      "as_of": "2026-10-15"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M18",
+     "payload": {
+      "action": "list",
+      "item_id": "part-1",
+      "quantity": "5",
+      "unit": "個",
+      "price_type": "仕入",
+      "as_of": "2026-10-15"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M18",
+     "payload": {
+      "action": "list",
+      "item_id": "part-1",
+      "quantity": "1",
+      "unit": "個",
+      "price_type": "仕入",
+      "as_of": "2026-10-15"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M18",
+     "payload": {
+      "action": "apply",
+      "item_id": "part-1",
+      "quantity": "5",
+      "unit": "個",
+      "price_type": "仕入",
+      "as_of": "2026-10-15"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M18",
+     "payload": {
+      "action": "apply",
+      "item_id": "part-1",
+      "quantity": "4.0",
+      "unit": "個",
+      "price_type": "仕入",
+      "as_of": "2026-10-31"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M18",
+     "payload": {
+      "action": "record",
+      "item_id": "part-1",
+      "unit_price": "4000",
+      "min_qty": "10",
+      "unit": "個",
+      "valid_from": "2026-10-01",
+      "valid_until": "2026-10-31",
+      "price_type": "仕入",
+      "source": "見積書",
+      "confirmed_by": "担当A"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M18",
+     "payload": {
+      "action": "apply",
+      "item_id": "part-1",
+      "quantity": "12",
+      "unit": "個",
+      "price_type": "仕入",
+      "as_of": "2026-10-15"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M18",
+     "payload": {
+      "action": "apply",
+      "item_id": "none",
+      "quantity": "5",
+      "unit": "個",
+      "price_type": "仕入",
+      "as_of": "2026-10-15"
+     }
+    }
+   ]
+  },
+  {
+   "name": "不備・範囲・仕入以外は止める",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M18",
+     "payload": {
+      "action": "record",
+      "item_id": "part-2",
+      "unit_price": "100",
+      "min_qty": "2",
+      "unit": "個",
+      "valid_from": "2026-10-10",
+      "valid_until": "2026-10-01",
+      "price_type": "仕入",
+      "source": "見積書",
+      "confirmed_by": "担当A"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M18",
+     "payload": {
+      "action": "record",
+      "item_id": "part-2",
+      "unit_price": "100",
+      "min_qty": "2",
+      "unit": "個",
+      "valid_from": "2026-10-10",
+      "valid_until": "2026-10-31",
+      "price_type": "販売",
+      "source": "見積書",
+      "confirmed_by": "担当A"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M18",
+     "payload": {
+      "action": "record",
+      "item_id": "part-2",
+      "unit_price": "100",
+      "min_qty": "2",
+      "unit": "個",
+      "valid_from": "2026-10-10",
+      "valid_until": "2026-10-31",
+      "price_type": "仕入",
+      "source": "",
+      "confirmed_by": "担当A"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M18",
+     "payload": {
+      "action": "record",
+      "item_id": "part-2",
+      "unit_price": "100",
+      "min_qty": "0",
+      "unit": "個",
+      "valid_from": "2026-10-10",
+      "valid_until": "2026-10-31",
+      "price_type": "仕入",
+      "source": "見積書",
+      "confirmed_by": "担当A"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M18",
+     "payload": {
+      "action": "record",
+      "item_id": "part-2",
+      "unit_price": "-1",
+      "min_qty": "2",
+      "unit": "個",
+      "valid_from": "2026-10-10",
+      "valid_until": "2026-10-31",
+      "price_type": "仕入",
+      "source": "見積書",
+      "confirmed_by": "担当A"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M18",
+     "payload": {
+      "action": "record",
+      "item_id": "part-2",
+      "unit_price": "100",
+      "min_qty": "2",
+      "unit": "個",
+      "valid_from": "2026-10-10",
+      "valid_until": "2026-10-31",
+      "price_type": "仕入",
+      "source": "見積書",
+      "confirmed_by": "担当A",
+      "extra": "x"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M18",
+     "payload": {
+      "action": "record",
+      "item_id": "part-2",
+      "unit_price": "100",
+      "min_qty": "2",
+      "unit": "個",
+      "valid_from": "2026-10-10",
+      "valid_until": "2026-10-31",
+      "price_type": "仕入",
+      "source": "見積書",
+      "confirmed_by": " "
+     }
+    },
+    {
+     "op": "run",
+     "module": "M18",
+     "payload": {
+      "action": "delete"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M18",
+     "payload": {
+      "item_id": "part-2",
+      "quantity": "1",
+      "unit": "個"
+     }
+    },
+    {
+     "op": "records",
+     "namespace": "conditional_price"
+    }
+   ]
+  }
+ ]
+}

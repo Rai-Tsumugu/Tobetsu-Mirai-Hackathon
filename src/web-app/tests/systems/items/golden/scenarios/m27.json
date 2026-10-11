@@ -1,0 +1,696 @@
+{
+ "scenarios": [
+  {
+   "name": "HTTP 既定値（compare_demo）",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M27",
+     "payload": {
+      "action": "compare_demo",
+      "quote_id": "demo-m27-quote",
+      "basket": [
+       {
+        "item_id": "demo-m27-paint",
+        "unit": "ml",
+        "price_type": "販売",
+        "supplier_id": "supplier-demo",
+        "conditions": {
+         "freight_basis": "included",
+         "currency": "JPY"
+        }
+       }
+      ],
+      "as_of": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "demo-m27-paint"
+    },
+    {
+     "op": "records",
+     "namespace": "quote_snapshot",
+     "record_id": "demo-m27-quote"
+    },
+    {
+     "op": "run",
+     "module": "M27",
+     "payload": {
+      "action": "compare_demo",
+      "quote_id": "demo-m27-quote",
+      "basket": [
+       {
+        "item_id": "demo-m27-paint",
+        "unit": "ml",
+        "price_type": "販売",
+        "supplier_id": "supplier-demo",
+        "conditions": {
+         "freight_basis": "included",
+         "currency": "JPY"
+        }
+       }
+      ],
+      "as_of": "2026-10-11",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "records",
+     "namespace": "quote_snapshot"
+    }
+   ]
+  },
+  {
+   "name": "差額を返し見積・価格を変えない",
+   "steps": [
+    {
+     "op": "put",
+     "namespace": "quote_snapshot",
+     "record_id": "quote-a",
+     "record": {
+      "quote_id": "quote-a",
+      "confirmed_by": "見積担当",
+      "created_at": "2026-08-01T09:00:00+09:00",
+      "lines": [
+       {
+        "quote_line_id": "line-a",
+        "item_id": "paint-a",
+        "name": "塗料",
+        "category": "塗料",
+        "quantity": "2",
+        "unit": "ml",
+        "unit_price_snapshot": "100.25",
+        "price_type": "販売",
+        "price_version_id": "old-price-v1",
+        "source_snapshot": "manual:見積入力",
+        "updated_at": "2026-08-01",
+        "supplier_id": "supplier-a",
+        "conditions": {
+         "freight_basis": "included"
+        },
+        "line_total": "200.5"
+       }
+      ]
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "paint-a",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "125.5",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "価格確認者",
+     "kwargs": {
+      "supplier_id": "supplier-a",
+      "valid_from": "2026-10-11",
+      "transaction_conditions": {
+       "freight_basis": "included"
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M27",
+     "payload": {
+      "action": "compare",
+      "quote_id": "quote-a",
+      "basket": [
+       {
+        "item_id": "paint-a",
+        "unit": "ml",
+        "price_type": "販売",
+        "supplier_id": "supplier-a",
+        "conditions": {
+         "freight_basis": "included"
+        }
+       }
+      ],
+      "as_of": "2026-10-11",
+      "confirmed_by": "見積担当"
+     }
+    },
+    {
+     "op": "latest",
+     "namespace": "quote_snapshot",
+     "record_id": "quote-a"
+    },
+    {
+     "op": "price_versions"
+    },
+    {
+     "op": "records",
+     "namespace": "m27_price_comparison"
+    }
+   ]
+  },
+  {
+   "name": "条件不一致",
+   "steps": [
+    {
+     "op": "put",
+     "namespace": "quote_snapshot",
+     "record_id": "quote-a",
+     "record": {
+      "quote_id": "quote-a",
+      "confirmed_by": "見積担当",
+      "created_at": "2026-08-01T09:00:00+09:00",
+      "lines": [
+       {
+        "quote_line_id": "line-a",
+        "item_id": "paint-a",
+        "name": "塗料",
+        "category": "塗料",
+        "quantity": "2",
+        "unit": "ml",
+        "unit_price_snapshot": "100.25",
+        "price_type": "販売",
+        "price_version_id": "old-price-v1",
+        "source_snapshot": "manual:見積入力",
+        "updated_at": "2026-08-01",
+        "supplier_id": "supplier-a",
+        "conditions": {
+         "freight_basis": "included"
+        },
+        "line_total": "200.5"
+       }
+      ]
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "paint-a",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "125.5",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "価格確認者",
+     "kwargs": {
+      "supplier_id": "supplier-a",
+      "valid_from": "2026-10-11",
+      "transaction_conditions": {
+       "freight_basis": "excluded"
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M27",
+     "payload": {
+      "action": "compare",
+      "quote_id": "quote-a",
+      "basket": [
+       {
+        "item_id": "paint-a",
+        "unit": "ml",
+        "price_type": "販売",
+        "supplier_id": "supplier-a",
+        "conditions": {
+         "freight_basis": "included"
+        }
+       }
+      ],
+      "as_of": "2026-10-11",
+      "confirmed_by": "見積担当"
+     }
+    }
+   ]
+  },
+  {
+   "name": "現行価格なし",
+   "steps": [
+    {
+     "op": "put",
+     "namespace": "quote_snapshot",
+     "record_id": "quote-a",
+     "record": {
+      "quote_id": "quote-a",
+      "confirmed_by": "見積担当",
+      "created_at": "2026-08-01T09:00:00+09:00",
+      "lines": [
+       {
+        "quote_line_id": "line-a",
+        "item_id": "paint-a",
+        "name": "塗料",
+        "category": "塗料",
+        "quantity": "2",
+        "unit": "ml",
+        "unit_price_snapshot": "100.25",
+        "price_type": "販売",
+        "price_version_id": "old-price-v1",
+        "source_snapshot": "manual:見積入力",
+        "updated_at": "2026-08-01",
+        "supplier_id": "supplier-a",
+        "conditions": {
+         "freight_basis": "included"
+        },
+        "line_total": "200.5"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M27",
+     "payload": {
+      "action": "compare",
+      "quote_id": "quote-a",
+      "basket": [
+       {
+        "item_id": "paint-a",
+        "unit": "ml",
+        "price_type": "販売",
+        "supplier_id": "supplier-a",
+        "conditions": {
+         "freight_basis": "included"
+        }
+       }
+      ],
+      "as_of": "2026-10-11",
+      "confirmed_by": "見積担当"
+     }
+    }
+   ]
+  },
+  {
+   "name": "単位・区分・仕入先・条件の不一致",
+   "steps": [
+    {
+     "op": "put",
+     "namespace": "quote_snapshot",
+     "record_id": "quote-a",
+     "record": {
+      "quote_id": "quote-a",
+      "confirmed_by": "見積担当",
+      "created_at": "2026-08-01T09:00:00+09:00",
+      "lines": [
+       {
+        "quote_line_id": "line-a",
+        "item_id": "paint-a",
+        "name": "塗料",
+        "category": "塗料",
+        "quantity": "2",
+        "unit": "ml",
+        "unit_price_snapshot": "100.25",
+        "price_type": "販売",
+        "price_version_id": "old-price-v1",
+        "source_snapshot": "manual:見積入力",
+        "updated_at": "2026-08-01",
+        "supplier_id": "supplier-a",
+        "conditions": {
+         "freight_basis": "included"
+        },
+        "line_total": "200.5"
+       }
+      ]
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "paint-a",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "125.5",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "価格確認者",
+     "kwargs": {
+      "supplier_id": "supplier-a",
+      "valid_from": "2026-10-11",
+      "transaction_conditions": {
+       "freight_basis": "included"
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M27",
+     "payload": {
+      "action": "compare",
+      "quote_id": "quote-a",
+      "basket": [
+       {
+        "item_id": "paint-a",
+        "unit": "g",
+        "price_type": "販売",
+        "supplier_id": "supplier-a",
+        "conditions": {
+         "freight_basis": "included"
+        }
+       }
+      ],
+      "as_of": "2026-10-11",
+      "confirmed_by": "見積担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M27",
+     "payload": {
+      "action": "compare",
+      "quote_id": "quote-a",
+      "basket": [
+       {
+        "item_id": "paint-a",
+        "unit": "ml",
+        "price_type": "仕入",
+        "supplier_id": "supplier-a",
+        "conditions": {
+         "freight_basis": "included"
+        }
+       }
+      ],
+      "as_of": "2026-10-11",
+      "confirmed_by": "見積担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M27",
+     "payload": {
+      "action": "compare",
+      "quote_id": "quote-a",
+      "basket": [
+       {
+        "item_id": "paint-a",
+        "unit": "ml",
+        "price_type": "販売",
+        "supplier_id": "supplier-b",
+        "conditions": {
+         "freight_basis": "included"
+        }
+       }
+      ],
+      "as_of": "2026-10-11",
+      "confirmed_by": "見積担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M27",
+     "payload": {
+      "action": "compare",
+      "quote_id": "quote-a",
+      "basket": [
+       {
+        "item_id": "paint-a",
+        "unit": "ml",
+        "price_type": "販売",
+        "supplier_id": "supplier-a",
+        "conditions": {
+         "freight_basis": "excluded"
+        }
+       }
+      ],
+      "as_of": "2026-10-11",
+      "confirmed_by": "見積担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M27",
+     "payload": {
+      "action": "compare",
+      "quote_id": "quote-a",
+      "basket": [
+       {
+        "item_id": "other",
+        "unit": "ml",
+        "price_type": "販売",
+        "supplier_id": "supplier-a",
+        "conditions": {
+         "freight_basis": "included"
+        }
+       }
+      ],
+      "as_of": "2026-10-11",
+      "confirmed_by": "見積担当"
+     }
+    }
+   ]
+  },
+  {
+   "name": "仕入先なし・複数品目のバスケット",
+   "steps": [
+    {
+     "op": "put",
+     "namespace": "quote_snapshot",
+     "record_id": "quote-a",
+     "record": {
+      "quote_id": "quote-a",
+      "confirmed_by": "見積担当",
+      "created_at": "2026-08-01T09:00:00+09:00",
+      "lines": [
+       {
+        "quote_line_id": "line-a",
+        "item_id": "paint-a",
+        "name": "塗料",
+        "category": "塗料",
+        "quantity": "2",
+        "unit": "ml",
+        "unit_price_snapshot": "100.25",
+        "price_type": "販売",
+        "price_version_id": "old-price-v1",
+        "source_snapshot": "manual:見積入力",
+        "updated_at": "2026-08-01",
+        "supplier_id": "",
+        "conditions": {
+         "freight_basis": "included"
+        },
+        "line_total": "200.5"
+       }
+      ]
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "paint-a",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "125.5",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "価格確認者",
+     "kwargs": {
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "transaction_conditions": {
+       "freight_basis": "included"
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M27",
+     "payload": {
+      "action": "compare",
+      "quote_id": "quote-a",
+      "confirmed_by": "x",
+      "basket": [
+       {
+        "item_id": "paint-a",
+        "unit": "ml",
+        "price_type": "販売",
+        "conditions": {
+         "freight_basis": "included"
+        }
+       },
+       {
+        "item_id": "paint-a",
+        "unit": "ml",
+        "price_type": "販売",
+        "supplier_id": null,
+        "conditions": {
+         "freight_basis": "included"
+        }
+       },
+       {
+        "item_id": "zzz",
+        "unit": "ml",
+        "price_type": "販売"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "不正な入力",
+   "steps": [
+    {
+     "op": "put",
+     "namespace": "quote_snapshot",
+     "record_id": "quote-a",
+     "record": {
+      "quote_id": "quote-a",
+      "confirmed_by": "見積担当",
+      "created_at": "2026-08-01T09:00:00+09:00",
+      "lines": [
+       {
+        "quote_line_id": "line-a",
+        "item_id": "paint-a",
+        "name": "塗料",
+        "category": "塗料",
+        "quantity": "2",
+        "unit": "ml",
+        "unit_price_snapshot": "100.25",
+        "price_type": "販売",
+        "price_version_id": "old-price-v1",
+        "source_snapshot": "manual:見積入力",
+        "updated_at": "2026-08-01",
+        "supplier_id": "supplier-a",
+        "conditions": {
+         "freight_basis": "included"
+        },
+        "line_total": "200.5"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M27",
+     "payload": {
+      "action": "compare",
+      "quote_id": "quote-a",
+      "basket": [],
+      "as_of": "2026-10-11",
+      "confirmed_by": "見積担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M27",
+     "payload": {
+      "action": "compare",
+      "quote_id": "quote-a",
+      "basket": [
+       {
+        "item_id": "paint-a",
+        "unit": "ml",
+        "price_type": "販売",
+        "supplier_id": "supplier-a",
+        "conditions": {
+         "freight_basis": "included"
+        }
+       }
+      ],
+      "as_of": "2026-10-11",
+      "confirmed_by": ""
+     }
+    },
+    {
+     "op": "run",
+     "module": "M27",
+     "payload": {
+      "action": "compare",
+      "quote_id": "quote-a",
+      "basket": [
+       {
+        "item_id": "paint-a",
+        "unit": "ml",
+        "price_type": "販売",
+        "supplier_id": "supplier-a",
+        "conditions": {
+         "freight_basis": "included"
+        }
+       }
+      ],
+      "as_of": "not-a-date",
+      "confirmed_by": "見積担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M27",
+     "payload": {
+      "action": "compare",
+      "quote_id": "none",
+      "basket": [
+       {
+        "item_id": "paint-a",
+        "unit": "ml",
+        "price_type": "販売",
+        "supplier_id": "supplier-a",
+        "conditions": {
+         "freight_basis": "included"
+        }
+       }
+      ],
+      "as_of": "2026-10-11",
+      "confirmed_by": "見積担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M27",
+     "payload": {
+      "action": "compare",
+      "quote_id": "quote-a",
+      "basket": [
+       "x"
+      ],
+      "as_of": "2026-10-11",
+      "confirmed_by": "見積担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M27",
+     "payload": {
+      "action": "compare",
+      "quote_id": "quote-a",
+      "basket": [
+       {
+        "item_id": "paint-a",
+        "unit": "ml",
+        "price_type": "販売",
+        "conditions": []
+       }
+      ],
+      "as_of": "2026-10-11",
+      "confirmed_by": "見積担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M27",
+     "payload": {
+      "action": "compare_demo",
+      "quote_id": "other"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M27",
+     "payload": {
+      "action": "x"
+     }
+    }
+   ]
+  }
+ ]
+}

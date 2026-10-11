@@ -1,0 +1,694 @@
+{
+ "scenarios": [
+  {
+   "name": "HTTP 既定値（record_rule）",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "record_rule",
+      "rule_id": "demo-markup",
+      "category": "塗料",
+      "supplier_id": "demo-supplier",
+      "effective_from": "2026-10-11",
+      "multiplier": "1.5",
+      "confirmed_by": "架空デモ担当",
+      "reason": "架空デモ用のルール登録"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "record_rule",
+      "rule_id": "demo-markup",
+      "category": "塗料",
+      "supplier_id": "demo-supplier",
+      "effective_from": "2026-10-11",
+      "multiplier": "1.5",
+      "confirmed_by": "架空デモ担当",
+      "reason": "架空デモ用のルール登録"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "list_rules"
+     }
+    }
+   ]
+  },
+  {
+   "name": "ルールは追記で版が増える",
+   "steps": [
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "paint-x",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "80.25",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "仕入確認者",
+     "kwargs": {
+      "supplier_id": "supplier-x",
+      "valid_from": "2026-09-01"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "record_rule",
+      "rule_id": "rule-x",
+      "category": "塗料",
+      "supplier_id": "supplier-x",
+      "effective_from": "2026-09-01",
+      "multiplier": "1.25",
+      "confirmed_by": "社長",
+      "reason": "人が決めた架空ルール"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "record_rule",
+      "rule_id": "rule-x",
+      "category": "塗料",
+      "supplier_id": "supplier-x",
+      "effective_from": "2026-10-01",
+      "multiplier": "1.5",
+      "confirmed_by": "社長",
+      "reason": "価格方針更新"
+     }
+    },
+    {
+     "op": "records",
+     "namespace": "markup_rule",
+     "record_id": "rule-x"
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "list_rules",
+      "rule_id": "rule-x"
+     }
+    }
+   ]
+  },
+  {
+   "name": "有効なルールで候補を出し保存しない",
+   "steps": [
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "paint-x",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "80.25",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "仕入確認者",
+     "kwargs": {
+      "supplier_id": "supplier-x",
+      "valid_from": "2026-09-01"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "record_rule",
+      "rule_id": "rule-x",
+      "category": "塗料",
+      "supplier_id": "supplier-x",
+      "effective_from": "2026-09-01",
+      "multiplier": "1.25",
+      "confirmed_by": "社長",
+      "reason": "人が決めた架空ルール"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "record_rule",
+      "rule_id": "rule-x",
+      "category": "塗料",
+      "supplier_id": "supplier-x",
+      "effective_from": "2026-10-01",
+      "multiplier": "1.5",
+      "confirmed_by": "社長",
+      "reason": "人が決めた架空ルール"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "propose",
+      "item_id": "paint-x",
+      "purchase_price_version_id": "$ref:0.price_version_id",
+      "rule_id": "rule-x",
+      "as_of": "2026-10-01",
+      "reason": "候補提示の理由"
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "paint-x",
+     "price_type": "販売"
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "list_proposals"
+     }
+    }
+   ]
+  },
+  {
+   "name": "承認で販売価格を1回だけ保存",
+   "steps": [
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "paint-x",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "80.25",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "仕入確認者",
+     "kwargs": {
+      "supplier_id": "supplier-x",
+      "valid_from": "2026-09-01"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "record_rule",
+      "rule_id": "rule-x",
+      "category": "塗料",
+      "supplier_id": "supplier-x",
+      "effective_from": "2026-09-01",
+      "multiplier": "1.25",
+      "confirmed_by": "社長",
+      "reason": "人が決めた架空ルール"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "propose",
+      "item_id": "paint-x",
+      "purchase_price_version_id": "$ref:0.price_version_id",
+      "rule_id": "rule-x",
+      "as_of": "2026-10-01",
+      "reason": "候補提示の理由"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "approve",
+      "proposal_id": "$ref:2.proposal.proposal_id",
+      "confirmed_by": "社長",
+      "reason": "候補を確認して承認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "approve",
+      "proposal_id": "$ref:2.proposal.proposal_id",
+      "confirmed_by": "社長",
+      "reason": "二重承認"
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "paint-x",
+     "price_type": "販売"
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "list_proposals"
+     }
+    }
+   ]
+  },
+  {
+   "name": "既存の販売価格は候補も承認も止める",
+   "steps": [
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "paint-x",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "80.25",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "仕入確認者",
+     "kwargs": {
+      "supplier_id": "supplier-x",
+      "valid_from": "2026-09-01"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "record_rule",
+      "rule_id": "rule-x",
+      "category": "塗料",
+      "supplier_id": "supplier-x",
+      "effective_from": "2026-09-01",
+      "multiplier": "1.25",
+      "confirmed_by": "社長",
+      "reason": "人が決めた架空ルール"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "propose",
+      "item_id": "paint-x",
+      "purchase_price_version_id": "$ref:0.price_version_id",
+      "rule_id": "rule-x",
+      "as_of": "2026-10-01",
+      "reason": "候補提示の理由"
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "paint-x",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "90",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-09-15"
+     },
+     "confirmed_by": "社長",
+     "kwargs": {
+      "supplier_id": "other-supplier",
+      "valid_from": "2026-09-15"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "propose",
+      "item_id": "paint-x",
+      "purchase_price_version_id": "$ref:0.price_version_id",
+      "rule_id": "rule-x",
+      "as_of": "2026-10-01",
+      "reason": "候補提示の理由"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "approve",
+      "proposal_id": "$ref:2.proposal.proposal_id",
+      "confirmed_by": "社長",
+      "reason": "r"
+     }
+    }
+   ]
+  },
+  {
+   "name": "ルールなし・不一致・明示項目",
+   "steps": [
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "paint-x",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "80.25",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "仕入確認者",
+     "kwargs": {
+      "supplier_id": "supplier-x",
+      "valid_from": "2026-09-01"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "propose",
+      "item_id": "paint-x",
+      "purchase_price_version_id": "$ref:0.price_version_id",
+      "rule_id": "rule-x",
+      "as_of": "2026-10-01",
+      "reason": "候補提示の理由"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "record_rule",
+      "rule_id": "rule-x",
+      "category": "塗料",
+      "supplier_id": "supplier-x",
+      "effective_from": "2026-09-01",
+      "multiplier": "1.25",
+      "confirmed_by": "社長",
+      "reason": "人が決めた架空ルール"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "propose",
+      "item_id": "paint-x",
+      "purchase_price_version_id": "$ref:0.price_version_id",
+      "rule_id": "missing-rule",
+      "as_of": "2026-10-01",
+      "reason": "候補提示の理由"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "record_rule",
+      "rule_id": "rule-x",
+      "category": "塗料",
+      "supplier_id": "supplier-x",
+      "effective_from": "2026-08-01",
+      "multiplier": "1.25",
+      "confirmed_by": "社長",
+      "reason": "人が決めた架空ルール"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "record_rule",
+      "rule_id": "demo-markup",
+      "category": "塗料",
+      "supplier_id": "demo-supplier",
+      "effective_from": "2026-10-11",
+      "multiplier": "0",
+      "confirmed_by": "架空デモ担当",
+      "reason": "架空デモ用のルール登録"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "record_rule",
+      "rule_id": "demo-markup",
+      "category": "塗料",
+      "supplier_id": "demo-supplier",
+      "effective_from": "2026-10-11",
+      "multiplier": "1.5",
+      "confirmed_by": "架空デモ担当",
+      "reason": "架空デモ用のルール登録",
+      "unapproved_multiplier": "2"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "record_rule",
+      "rule_id": "rule-x",
+      "category": "塗料",
+      "supplier_id": "other",
+      "effective_from": "2026-09-01",
+      "multiplier": "1.25",
+      "confirmed_by": "社長",
+      "reason": "人が決めた架空ルール"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "propose",
+      "item_id": "paint-x",
+      "purchase_price_version_id": "$ref:0.price_version_id",
+      "rule_id": "rule-x",
+      "as_of": "2026-08-01",
+      "reason": "候補提示の理由"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "propose",
+      "item_id": "paint-x",
+      "purchase_price_version_id": "missing",
+      "rule_id": "rule-x",
+      "as_of": "2026-10-01",
+      "reason": "候補提示の理由"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "propose",
+      "item_id": "paint-x",
+      "purchase_price_version_id": "$ref:0.price_version_id",
+      "rule_id": "rule-x",
+      "as_of": "2026-10-01",
+      "reason": ""
+     }
+    }
+   ]
+  },
+  {
+   "name": "仕入先・分類違いと未対応操作",
+   "steps": [
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "paint-x",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "80.25",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "仕入確認者",
+     "kwargs": {
+      "supplier_id": "supplier-x",
+      "valid_from": "2026-09-01"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "record_rule",
+      "rule_id": "rule-x",
+      "category": "塗料",
+      "supplier_id": "supplier-x",
+      "effective_from": "2026-09-01",
+      "multiplier": "1.25",
+      "confirmed_by": "社長",
+      "reason": "人が決めた架空ルール"
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "paint-y",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "20",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "仕入確認者",
+     "kwargs": {
+      "supplier_id": "supplier-y"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "propose",
+      "item_id": "paint-y",
+      "purchase_price_version_id": "$ref:2.price_version_id",
+      "rule_id": "rule-x",
+      "as_of": "2026-10-01",
+      "reason": "候補提示の理由"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "record_rule",
+      "rule_id": "rule-x",
+      "category": "部品",
+      "supplier_id": "supplier-x",
+      "effective_from": "2026-09-01",
+      "multiplier": "1.25",
+      "confirmed_by": "社長",
+      "reason": "人が決めた架空ルール"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "automatic_markup"
+     }
+    },
+    {
+     "op": "records",
+     "namespace": "markup_proposal"
+    }
+   ]
+  },
+  {
+   "name": "期限切れ・未承認の仕入価格",
+   "steps": [
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "paint-z",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "10",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "a",
+     "kwargs": {
+      "supplier_id": "s",
+      "valid_from": "2026-09-01",
+      "valid_until": "2026-09-10"
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "paint-z",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "11",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "a",
+     "kwargs": {
+      "supplier_id": "s",
+      "valid_from": "2026-09-01",
+      "status": "pending"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "record_rule",
+      "rule_id": "r",
+      "category": "塗料",
+      "supplier_id": "s",
+      "effective_from": "2026-09-01",
+      "multiplier": "1.1",
+      "confirmed_by": "a",
+      "reason": "r"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "propose",
+      "item_id": "paint-z",
+      "purchase_price_version_id": "$ref:0.price_version_id",
+      "rule_id": "r",
+      "as_of": "2026-10-01",
+      "reason": "r"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "propose",
+      "item_id": "paint-z",
+      "purchase_price_version_id": "$ref:1.price_version_id",
+      "rule_id": "r",
+      "as_of": "2026-10-01",
+      "reason": "r"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M28",
+     "payload": {
+      "action": "propose",
+      "item_id": "paint-z",
+      "purchase_price_version_id": "$ref:0.price_version_id",
+      "rule_id": "r",
+      "as_of": "2026-09-05",
+      "reason": "r"
+     }
+    }
+   ]
+  }
+ ]
+}
