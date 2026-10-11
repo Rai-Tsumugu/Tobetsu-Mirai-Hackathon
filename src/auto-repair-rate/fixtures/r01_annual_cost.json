@@ -1,0 +1,18 @@
+{
+  "fictional": true,
+  "period_label": "2025年度（架空デモ）",
+  "period_start": "2025-01-01",
+  "period_end": "2025-12-31",
+  "effective_from": "2026-01-01",
+  "annual_allocable_cost_yen": 7200000,
+  "H_period_total": 1600,
+  "u_period": 0.75,
+  "hours_basis": "total_person_hours",
+  "job_billable_ratio": 0.8,
+  "costs": [
+    {"id":"wages","category":"labor","label":"人件費","amount_yen":5200000,"included_in_rate":true,"status":"confirmed","source":"架空デモ入力","evidence":"給与・会社負担分を含む年間集計の例","payroll_overlap":false},
+    {"id":"rent","category":"facility","label":"工場の家賃","amount_yen":1200000,"included_in_rate":true,"status":"confirmed","source":"架空デモ入力","evidence":"年間賃料の例","payroll_overlap":false},
+    {"id":"heating","category":"utilities","label":"暖房費","amount_yen":800000,"included_in_rate":true,"status":"estimated","source":"架空デモ入力","evidence":"年間暖房費の仮置き","payroll_overlap":false},
+    {"id":"materials","category":"materials","label":"塗料・消耗材料","amount_yen":350000,"included_in_rate":false,"status":"provided","source":"架空デモ入力","evidence":"工賃と別に請求する材料費の例","payroll_overlap":false}
+  ]
+}

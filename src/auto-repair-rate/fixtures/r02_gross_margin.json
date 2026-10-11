@@ -1,0 +1,47 @@
+{
+  "fictional_fixture": true,
+  "period_label": "架空デモ期間",
+  "allocable_cost_yen": 7200000,
+  "period_total_person_hours": 1600,
+  "u_period": 0.75,
+  "gross_margin": 0.2,
+  "hours_basis": "total_person_hours",
+  "job_person_hours": {"low": 1, "typical": 1.5, "high": 2.5},
+  "job_billable_ratio": 0.8,
+  "costs": [
+    {
+      "cost_id": "fictional_labor_cost",
+      "label": "架空の配賦労務費",
+      "amount_yen": 7200000,
+      "period": "架空デモ期間",
+      "source": "fictional_fixture",
+      "evidence_status": "assumed",
+      "billing_class": "labor_pool",
+      "included_in_labor_pool": true,
+      "excluded_reason": null
+    },
+    {
+      "cost_id": "fictional_materials",
+      "label": "架空の別請求材料費",
+      "amount_yen": 300000,
+      "period": "架空デモ期間",
+      "source": "fictional_fixture",
+      "evidence_status": "assumed",
+      "billing_class": "separately_billed_item",
+      "included_in_labor_pool": false,
+      "excluded_reason": "別請求のため除外"
+    }
+  ],
+  "evidence": [
+    {
+      "label": "架空デモ値",
+      "value": "架空値",
+      "unit": "fixture",
+      "status": "assumed",
+      "source": "fictional_fixture",
+      "evidence_ref": null,
+      "recorded_at": "2026-10-11T00:00:00Z",
+      "notes": "実工場の実績・相場ではありません"
+    }
+  ]
+}

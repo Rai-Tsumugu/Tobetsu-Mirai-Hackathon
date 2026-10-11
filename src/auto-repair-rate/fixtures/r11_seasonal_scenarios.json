@@ -1,0 +1,11 @@
+{
+  "fictional_fixture": true,
+  "scenarios": [
+    {"name":"annual","period":"2026年度","fixed_cost_yen":7200000,"variable_cost_yen":0,"H_period_bill":1200,"assumptions":"架空の通年基準"},
+    {"name":"winter","period":"2026年冬季","fixed_cost_yen":6000000,"variable_cost_yen":300000,"H_period_bill":240,"assumptions":"架空の暖房費を含む"},
+    {"name":"smoothed","period":"直近12か月","fixed_cost_yen":7200000,"variable_cost_yen":180000,"H_period_bill":1250,"assumptions":"架空の平準化費用"}
+  ],
+  "selected_scenario":"annual","period_start":"2026-01-01","effective_from":"2026-11-01",
+  "source":"架空シミュレータ","source_date":"2026-10-31","evidence_ref":"架空例 R11-2026-01",
+  "evidence_notes":"すべて説明用の架空値です。","materials_yen":50000
+}

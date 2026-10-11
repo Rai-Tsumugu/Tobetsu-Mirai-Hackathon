@@ -1,0 +1,21 @@
+{
+  "fictional_fixture": true,
+  "period_start": "2026-01-01",
+  "effective_from": "2026-11-01",
+  "allocable_cost_yen": 7200000,
+  "period_total_person_hours": 1600,
+  "u_period_low": 0.65,
+  "u_period_mid": 0.75,
+  "u_period_high": 0.85,
+  "selected_scenario": "typical",
+  "source": "架空シミュレータ入力",
+  "scenario_source": "架空シミュレータ入力",
+  "scenario_status": "assumed",
+  "cost_evidence": "説明用の架空費用例",
+  "scenario_evidence": "説明用の架空稼働率。実工場の測定値ではありません。",
+  "hours_basis": "total_person_hours",
+  "job_person_hours": {"low": 1, "typical": 1.5, "high": 2.5},
+  "job_billable_ratio": 0.8,
+  "materials_yen": 300000,
+  "period_label": "架空の年間期間"
+}

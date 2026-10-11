@@ -1,0 +1,14 @@
+{
+  "fictional_fixture": true,
+  "annual_period_start": "2026-01-01",
+  "annual_period_end": "2026-12-31",
+  "source_date": "2026-10-01",
+  "effective_from": "2026-11-01",
+  "annual_heating_cost_yen": 600000,
+  "other_allocable_cost_yen": 6600000,
+  "annual_billable_hours": 1200,
+  "materials_yen": 50000,
+  "source": "架空シミュレータ",
+  "evidence_ref": "架空例 R08-2026-01",
+  "evidence_notes": "すべて説明用の架空値です。"
+}

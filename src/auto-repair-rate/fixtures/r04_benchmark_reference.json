@@ -1,0 +1,13 @@
+{
+  "fictional_fixture": true,
+  "amount": 18000,
+  "currency": "JPY",
+  "amount_type": "labor_only",
+  "hours_basis": "documented_person_hours",
+  "documented_person_hours": 3,
+  "conditions": "架空例: 架空の作業内容、税区分・地域条件は未検証",
+  "source_url": "https://example.invalid/fictional-reference",
+  "source_text": "架空の比較資料（実在情報ではありません）",
+  "retrieved_at": "2026-10-11",
+  "permission_status": "verified"
+}
