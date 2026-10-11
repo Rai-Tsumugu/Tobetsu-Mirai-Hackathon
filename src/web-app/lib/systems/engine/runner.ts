@@ -1,0 +1,48 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// 30 案の共通アダプタ。元: runner.py
+import { type Dict, PyTypeError, PyValueError, deepcopy, get, isDict } from "./py";
+import * as e01 from "./e01";
+import * as e02 from "./e02";
+import * as e03 from "./e03";
+import * as e04 from "./e04";
+import * as e05 from "./e05";
+import * as e06 from "./e06";
+
+export const ENGINE_IDS: string[] = Array.from({ length: 30 }, (_, i) => `e${String(i + 1).padStart(2, "0")}`);
+
+type EngineModule = { run: (scenario: Dict, rulePack: Dict | null) => Dict };
+const MODULES: Record<string, EngineModule> = {
+  e01, e02, e03, e04, e05, e06,
+};
+
+/** Python の ModuleNotFoundError（API では 503）。 */
+export class EngineNotInstalled extends Error {}
+
+export function runEngine(engineId: string, scenarioInput: any, rulePack: Dict | null = null): Dict {
+  if (!ENGINE_IDS.includes(engineId) && engineId !== "integrated") throw new PyValueError(`unknown engine_id: ${engineId}`);
+  if (!isDict(scenarioInput)) throw new PyTypeError("scenario_input must be an object");
+  const mod = MODULES[engineId];
+  if (!mod) throw new EngineNotInstalled(engineId);
+  const result = mod.run(deepcopy(scenarioInput), deepcopy(rulePack));
+  if (!isDict(result)) throw new PyTypeError(`${engineId} must return an engine_result object`);
+  if (!("scenario_id" in result)) result.scenario_id = get(scenarioInput, "scenario_id");
+  for (const key of ["engine_id", "rule_version", "status", "labor", "trace", "operation_keys", "approvals"]) {
+    if (!(key in result)) throw new PyValueError(`${engineId} engine_result is missing ${key}`);
+  }
+  return result;
+}
+
+export function compareEngines(scenarioInput: any, rulePack: Dict | null = null, engineIds: string[] = ENGINE_IDS): Dict[] {
+  return engineIds.map((engineId) => {
+    const result = runEngine(engineId, deepcopy(scenarioInput), deepcopy(rulePack));
+    return { engine_id: engineId, labor: get(result, "labor"), status: get(result, "status"), rule_version: get(result, "rule_version"), trace: get(result, "trace", []) };
+  });
+}
+
+export const registeredEngineIds = (): string[] => Object.keys(MODULES);
+
+/** プロセス内で保持される公開済みルールの登録（E05/E06）を空にする。テスト用。 */
+export function resetEngineState(): void {
+  e05.resetPublished();
+  e06.resetPublished();
+}
