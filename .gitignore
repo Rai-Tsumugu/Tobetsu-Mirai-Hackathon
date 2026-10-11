@@ -1,0 +1,24 @@
+# macOS のメタデータ
+.DS_Store
+._*
+
+# ローカルの環境変数・認証情報（共有用サンプルは含める）
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+
+# Node.js の依存関係・デバッグログ
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Python の仮想環境・キャッシュ
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
