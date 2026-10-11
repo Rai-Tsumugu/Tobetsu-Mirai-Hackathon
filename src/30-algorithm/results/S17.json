@@ -1,0 +1,163 @@
+{
+  "id": "S17",
+  "name": "同時作業での共通工程の重複排除",
+  "base_method": "A/C",
+  "factors": [
+    "HK02",
+    "HK05"
+  ],
+  "algorithm": [
+    "手順1: 各作業の基準人時を合計して重複控除前の総和を出す（S17 は 2.0 から開始）",
+    "手順2: 各作業の included_operations の合計が基準人時と一致するか検算する",
+    "手順3: op ID ごとに出現する作業を集め、shared=true で2作業以上に現れる op（リフトアップ・前2輪の脱着）を共通工程とする",
+    "手順4: 共通工程を最初の作業に1回だけ残し、2回目以降の作業から hours を控除して控除後（1.7）を出し、scenario の deduplicated_base と検算する",
+    "手順5: shared=false の op は控除しない。控除の可否は整備士が確認する",
+    "手順6: 雪下ろし（PRE-SNOW）と下回り洗浄（PRE-WASH）も入庫1回の共通工程として、見積もり全体で1回だけ加える。手順3の検出対象はリフトアップ・前2輪脱着だけで、前処理は included_operations から検出せず mechanic_provisional_add_ops の暫定値を固定で加える",
+    "手順7: typical = 控除後 + PRE-SNOW typical + PRE-WASH typical。low は控除後 + 各 low、high は控除なし（控除を整備士が認めない場合）+ 各 high",
+    "手順8: 作業ごとに重ねた場合との差を intermediates に出す（前処理分は typical から引かず、仮想の差として示す）。下回り洗浄は実作業人時として入れ、請求人時は別に示す"
+  ],
+  "inputs": [
+    {
+      "key": "jobs.J1.base_labor_hours",
+      "value": 0.6,
+      "status": "仮定"
+    },
+    {
+      "key": "jobs.J2.base_labor_hours",
+      "value": 1.4,
+      "status": "仮定"
+    },
+    {
+      "key": "jobs.included_operations(shared)",
+      "value": [
+        "OP-LIFT 0.1",
+        "OP-WHEEL-F2 0.2"
+      ],
+      "status": "仮定"
+    },
+    {
+      "key": "mechanic_provisional_add_ops.PRE-SNOW（low/typical/high）",
+      "value": [
+        0.1,
+        0.15,
+        0.25
+      ],
+      "status": "仮定"
+    },
+    {
+      "key": "mechanic_provisional_add_ops.PRE-WASH（low/typical/high・請求しない方針）",
+      "value": [
+        0.15,
+        0.2,
+        0.3
+      ],
+      "status": "仮定"
+    }
+  ],
+  "intermediates": [
+    {
+      "label": "重複控除前の総和",
+      "value": 2.0,
+      "unit": "人時",
+      "formula": "J1 0.6 + J2 1.4 = 2.0"
+    },
+    {
+      "label": "共通工程の控除額（OP-LIFT・OP-WHEEL-F2）",
+      "value": 0.3,
+      "unit": "人時",
+      "formula": "J2のOP-LIFT 0.1 + J2のOP-WHEEL-F2 0.2 = 0.3（J1に1回残す）"
+    },
+    {
+      "label": "重複控除後",
+      "value": 1.7,
+      "unit": "人時",
+      "formula": "2.0 - 0.3 = 1.7（scenario の deduplicated_base と一致: True）"
+    },
+    {
+      "label": "前処理（雪下ろし＋下回り洗浄）を1回だけ計上",
+      "value": 0.35,
+      "unit": "人時",
+      "formula": "PRE-SNOW 0.15 + PRE-WASH 0.2 = 0.35（入庫1回）"
+    },
+    {
+      "label": "前処理を作業ごとに重ねた場合との差（typical からは引かない仮想の差）",
+      "value": 0.35,
+      "unit": "人時",
+      "formula": "(0.15 + 0.2) × 2作業 - (0.15 + 0.2) × 1回 = 0.35"
+    },
+    {
+      "label": "重ねた場合との差の合計（リフト等の控除＋前処理の仮想の差）",
+      "value": 0.65,
+      "unit": "人時",
+      "formula": "0.3 + 0.35 = 0.65（作業ごとに積むと 2.7、共通化すると 2.05）"
+    },
+    {
+      "label": "typical",
+      "value": 2.05,
+      "unit": "人時",
+      "formula": "2.0 - 0.3 + 0.15 + 0.2 = 2.05"
+    },
+    {
+      "label": "low / high",
+      "value": [
+        1.95,
+        2.55
+      ],
+      "unit": "人時",
+      "formula": "low = 1.7 + 0.1 + 0.15 = 1.95；high = 2.0（控除なし）+ 0.25 + 0.3 = 2.55"
+    }
+  ],
+  "result": {
+    "labor_hours": {
+      "low": 1.95,
+      "typical": 2.05,
+      "high": 2.55
+    },
+    "elapsed_hours": null,
+    "other_outputs": [
+      {
+        "label": "控除の内訳",
+        "value": [
+          "J2からOP-LIFT 0.1人時を控除（J1に計上）",
+          "J2からOP-WHEEL-F2 0.2人時を控除（J1に計上）"
+        ],
+        "unit": ""
+      },
+      {
+        "label": "J1/J2 の控除後の配分",
+        "value": {
+          "J1": 0.6,
+          "J2": 1.1
+        },
+        "unit": "人時"
+      },
+      {
+        "label": "請求人時（下回り洗浄は請求しない方針）",
+        "value": 1.85,
+        "unit": "人時（実作業人時 labor_hours.typical から PRE-WASH typical を除く）"
+      },
+      {
+        "label": "作業ごとに重ねた場合との差（前処理分は typical からは引かない仮想の差）",
+        "value": {
+          "リフト等の共通工程": 0.3,
+          "前処理（雪下ろし・下回り洗浄）": 0.35,
+          "合計": 0.65
+        },
+        "unit": "人時"
+      }
+    ],
+    "note": "この案は、リフトアップ・前2輪脱着に加え、雪下ろし（PRE-SNOW）と下回り洗浄（PRE-WASH）も入庫1回の共通工程として、見積もり全体で1回だけ計上する。typical は 2.0 から控除 0.3 を引き、前処理 typical を足した値。low は各 low、high は控除を整備士が認めない場合（控除なし 2.0）と各 high を採り、この案の範囲での上限とする。下回り洗浄は請求しないが実作業なので labor_hours には入れ、請求人時は other_outputs に別に示す。共通工程の自動検出はリフトアップ・前2輪脱着だけで、雪下ろし・下回り洗浄は暫定値の固定加算（観察条件とは結びつけていない）。J1・J2 が別入庫になり前処理が2回分かかる場合は範囲外とし、unknowns に記す。固着・錆・折れ込みなどの追加工程やタイヤ重量による差は、この案では扱わない。"
+  },
+  "assumptions": [
+    "仮定: 共通工程は最初の作業（J1）に残し、後の作業（J2）から控除する。どちらに残すかで作業別の配分は変わるが合計は変わらない",
+    "仮定: 雪下ろし・下回り洗浄は J1・J2 を同じ入庫で行う限り1回で足りる（作業ごとに繰り返さない）",
+    "仮定: 控除後 1.7（scenario の deduplicated_base）は整備士の確認前。確認が取れない場合に備え high は控除なし 2.0 を基にする",
+    "仮定: PRE-SNOW・PRE-WASH は mechanic_provisional_add_ops の暫定値（整備士の仮の値）を使う"
+  ],
+  "unknowns": [
+    "J1 と J2 を同じ入庫・同じリフト状態で続けて作業できるか（整備士の確認が必要）",
+    "J1 の _note は OP-WHEEL-F2 と OP-WHEEL-R2 の両方にタイヤ運搬が含まれると読め、控除する OP-WHEEL-F2 の 0.2 人時に運搬分がどれだけ含まれるか未確認（HK05）",
+    "J2 で前輪を外す際に J1 の脱着と完全に兼ねられるかの実測は未確認",
+    "範囲外: 雪下ろし・下回り洗浄を1回で足りるとする前提が、実際の入庫の流れ（J1・J2 が別入庫になる等）で成り立つか未確認。別入庫なら前処理2回分（2.0 + 2×0.55 = 3.10 程度）になりうるが、high には含めない"
+  ]
+}

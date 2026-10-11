@@ -1,0 +1,507 @@
+{
+  "id": "S15",
+  "name": "状態に応じて分岐する工程テンプレート",
+  "base_method": "C",
+  "factors": [
+    "HK01",
+    "AG01",
+    "AG03",
+    "AG04"
+  ],
+  "algorithm": [
+    "手順1: scenario.json を読む",
+    "手順2: J1・J2 の included_operations をテンプレートにし、op ID が同じ共通工程は1回だけ数える（合計 1.7 人時）",
+    "手順3: condition の各状態を分岐条件 B1〜B8 に当てて 発火 / 未発火 / 判定不能 を判定",
+    "手順4: 発火した分岐は追加工程を全範囲に、判定不能（未確認）は high にだけ展開（数量 x 単価）",
+    "手順5: 人時 = 1.7 + 追加工程の合計（他案の要因・地域・年式・走行距離は加えない）",
+    "手順6: 経過時間に待機を足す（FX-SEIZE を含む範囲に浸透待ち 0.25、FX-HUBCLEAN を含む範囲に防錆乾燥 0.3。人時には入れない）",
+    "手順7: SPEC の形で出力"
+  ],
+  "inputs": [
+    {
+      "key": "jobs[J1,J2].included_operations",
+      "value": [
+        "OP-LIFT",
+        "OP-WHEEL-F2",
+        "OP-WHEEL-R2",
+        "OP-CHECK-TIRE",
+        "OP-CALIPER",
+        "OP-ROTOR",
+        "OP-PAD",
+        "OP-TEST"
+      ],
+      "status": "仮定"
+    },
+    {
+      "key": "base_totals.deduplicated_base",
+      "value": 1.7,
+      "status": "確認済み"
+    },
+    {
+      "key": "condition.underbody_rust_grade.wheel_hub",
+      "value": 2,
+      "status": "確認済み"
+    },
+    {
+      "key": "condition.fasteners (J2)",
+      "value": {
+        "F-L-BRK-1": "重（頭部腐食）",
+        "F-L-BRK-2": "重（頭部腐食）",
+        "F-R-BRK-1": "中",
+        "F-R-BRK-2": "中",
+        "F-L-SLD-1": "未確認（ブーツに隠れて見えない）",
+        "F-L-SLD-2": "未確認（ブーツに隠れて見えない）",
+        "F-R-SLD-1": "未確認（ブーツに隠れて見えない）",
+        "F-R-SLD-2": "未確認（ブーツに隠れて見えない）"
+      },
+      "status": "確認済み（スライドボルトは不明）"
+    },
+    {
+      "key": "condition.slide_pin_boots",
+      "value": {
+        "left": "問題あり（硬化）",
+        "right": "未確認"
+      },
+      "status": "確認済み（右は不明）"
+    },
+    {
+      "key": "condition.rotor_hub_seizure",
+      "value": "未確認",
+      "status": "不明"
+    },
+    {
+      "key": "condition.underbody_rust_grade.subframe",
+      "value": null,
+      "status": "不明"
+    },
+    {
+      "key": "mechanic_provisional_add_ops",
+      "value": {
+        "FX-HUBCLEAN": {
+          "low": 0.05,
+          "typical": 0.1,
+          "high": 0.15
+        },
+        "FX-SEIZE": {
+          "low": 0.05,
+          "typical": 0.15,
+          "high": 0.3
+        },
+        "FX-BROKEN": {
+          "low": 0.5,
+          "typical": 0.8,
+          "high": 1.5
+        },
+        "FX-THREAD": {
+          "low": 0.2,
+          "typical": 0.3,
+          "high": 0.5
+        },
+        "AG-BOOT": {
+          "low": 0.1,
+          "typical": 0.15,
+          "high": 0.2
+        },
+        "FX-ROTOR": {
+          "low": 0.1,
+          "typical": 0.2,
+          "high": 0.4
+        }
+      },
+      "status": "仮定"
+    }
+  ],
+  "intermediates": [
+    {
+      "label": "テンプレート基本工程の合計（共通工程は1回）",
+      "value": 1.7,
+      "unit": "人時",
+      "formula": "J1・J2 の op を op ID で重複排除して合計 = 0.1+0.2+0.2+0.1+0.3+0.2+0.4+0.2"
+    },
+    {
+      "label": "発火した分岐 / 判定不能の分岐",
+      "value": [
+        4,
+        4
+      ],
+      "unit": "件",
+      "formula": "B1〜B8 のうち 発火 / 判定不能（未確認）の件数"
+    },
+    {
+      "label": "待機時間（浸透待ち+防錆乾燥、low/typical/high）",
+      "value": [
+        0.55,
+        0.55,
+        0.55
+      ],
+      "unit": "時間",
+      "formula": "FX-SEIZE を含む範囲に 0.25 + FX-HUBCLEAN を含む範囲に 0.30（人時に入れない）"
+    },
+    {
+      "label": "FX-SEIZE の人時（low/typical/high）",
+      "value": [
+        0.1,
+        0.6,
+        2.4
+      ],
+      "unit": "人時",
+      "formula": "B2 重2本 x 単価(全範囲) + B3 中2本 x 単価(typical・high) + B4 未確認4本 x 単価(high のみ)"
+    },
+    {
+      "label": "折れ込み候補 FX-BROKEN+FX-THREAD（high のみ）",
+      "value": 4.0,
+      "unit": "人時",
+      "formula": "2本 x (1.50 + 0.50)"
+    },
+    {
+      "label": "FX-HUBCLEAN + AG-BOOT + FX-ROTOR の人時（low/typical/high）",
+      "value": [
+        0.4,
+        0.75,
+        1.5
+      ],
+      "unit": "人時",
+      "formula": "ハブ2側 x HUBCLEAN + ブーツ(左 / high は左右) x BOOT + ローター2側(B1、全範囲) x ROTOR"
+    },
+    {
+      "label": "追加工程の人時合計（low/typical/high）",
+      "value": [
+        0.5,
+        1.35,
+        7.9
+      ],
+      "unit": "人時",
+      "formula": "展開した追加工程の 数量 x 単価 の合計"
+    },
+    {
+      "label": "展開後の工程合計（low/typical/high）",
+      "value": [
+        2.2,
+        3.05,
+        9.6
+      ],
+      "unit": "人時",
+      "formula": "テンプレート 1.7 + 追加工程の合計"
+    }
+  ],
+  "result": {
+    "labor_hours": {
+      "low": 2.2,
+      "typical": 3.05,
+      "high": 9.6
+    },
+    "elapsed_hours": {
+      "low": 2.75,
+      "typical": 3.6,
+      "high": 10.15
+    },
+    "other_outputs": [
+      {
+        "label": "分岐判定",
+        "value": [
+          {
+            "id": "B1",
+            "condition": "ハブ錆グレード >= 2 -> FX-ROTOR + FX-HUBCLEAN",
+            "status": "発火",
+            "detail": "wheel_hub=2、左右2側"
+          },
+          {
+            "id": "B2",
+            "condition": "ブラケットボルト錆「重」 -> FX-SEIZE + 折れ込み候補",
+            "status": "発火",
+            "detail": "2本: F-L-BRK-1, F-L-BRK-2"
+          },
+          {
+            "id": "B3",
+            "condition": "ブラケットボルト錆「中」 -> FX-SEIZE",
+            "status": "発火",
+            "detail": "2本: F-R-BRK-1, F-R-BRK-2"
+          },
+          {
+            "id": "B4",
+            "condition": "スライドボルト錆「未確認」 -> high のみ FX-SEIZE",
+            "status": "判定不能",
+            "detail": "4本: ブーツに隠れて見えない"
+          },
+          {
+            "id": "B5",
+            "condition": "ブーツ硬化 -> AG-BOOT",
+            "status": "発火",
+            "detail": "1側（左）"
+          },
+          {
+            "id": "B6",
+            "condition": "ブーツ未確認 -> high のみ AG-BOOT",
+            "status": "判定不能",
+            "detail": "1側（右）"
+          },
+          {
+            "id": "B7",
+            "condition": "ローター固着「未確認」 -> FX-ROTOR（B1 で展開済み）",
+            "status": "判定不能",
+            "detail": "FX-ROTOR は B1（ハブ錆）が全範囲に展開済みのため二重に足さない"
+          },
+          {
+            "id": "B8",
+            "condition": "サブフレーム錆 null -> 工程は展開せず記録",
+            "status": "判定不能",
+            "detail": "アンダーカバーで見えず撮影なし"
+          }
+        ],
+        "unit": ""
+      },
+      {
+        "label": "展開後の工程一覧",
+        "value": [
+          {
+            "branch": "template",
+            "op": "OP-LIFT",
+            "name": "リフトアップ",
+            "qty": 1,
+            "per": "テンプレート",
+            "hours": {
+              "low": 0.1,
+              "typical": 0.1,
+              "high": 0.1
+            },
+            "note": "J1・J2: J1/J2"
+          },
+          {
+            "branch": "template",
+            "op": "OP-WHEEL-F2",
+            "name": "前2輪の脱着",
+            "qty": 1,
+            "per": "テンプレート",
+            "hours": {
+              "low": 0.2,
+              "typical": 0.2,
+              "high": 0.2
+            },
+            "note": "J1・J2: J1/J2"
+          },
+          {
+            "branch": "template",
+            "op": "OP-WHEEL-R2",
+            "name": "後2輪の脱着",
+            "qty": 1,
+            "per": "テンプレート",
+            "hours": {
+              "low": 0.2,
+              "typical": 0.2,
+              "high": 0.2
+            },
+            "note": "J1・J2: J1"
+          },
+          {
+            "branch": "template",
+            "op": "OP-CHECK-TIRE",
+            "name": "空気圧調整・トルク確認",
+            "qty": 1,
+            "per": "テンプレート",
+            "hours": {
+              "low": 0.1,
+              "typical": 0.1,
+              "high": 0.1
+            },
+            "note": "J1・J2: J1"
+          },
+          {
+            "branch": "template",
+            "op": "OP-CALIPER",
+            "name": "キャリパー・ブラケット脱着（左右、締結部計8本）",
+            "qty": 1,
+            "per": "テンプレート",
+            "hours": {
+              "low": 0.3,
+              "typical": 0.3,
+              "high": 0.3
+            },
+            "note": "J1・J2: J2"
+          },
+          {
+            "branch": "template",
+            "op": "OP-ROTOR",
+            "name": "ローター脱着（左右）",
+            "qty": 1,
+            "per": "テンプレート",
+            "hours": {
+              "low": 0.2,
+              "typical": 0.2,
+              "high": 0.2
+            },
+            "note": "J1・J2: J2"
+          },
+          {
+            "branch": "template",
+            "op": "OP-PAD",
+            "name": "パッド交換・清掃・グリスアップ",
+            "qty": 1,
+            "per": "テンプレート",
+            "hours": {
+              "low": 0.4,
+              "typical": 0.4,
+              "high": 0.4
+            },
+            "note": "J1・J2: J2"
+          },
+          {
+            "branch": "template",
+            "op": "OP-TEST",
+            "name": "試運転・確認",
+            "qty": 1,
+            "per": "テンプレート",
+            "hours": {
+              "low": 0.2,
+              "typical": 0.2,
+              "high": 0.2
+            },
+            "note": "J1・J2: J2"
+          },
+          {
+            "branch": "B1",
+            "op": "FX-ROTOR",
+            "name": "ローターの固着除去",
+            "qty": 2,
+            "per": "片側",
+            "hours": {
+              "low": 0.2,
+              "typical": 0.4,
+              "high": 0.8
+            },
+            "note": "ハブ錆グレード2 >= 2（問題あり）-> ローターの固着除去（docs §4.3）、左右"
+          },
+          {
+            "branch": "B1",
+            "op": "FX-HUBCLEAN",
+            "name": "ハブ当たり面の錆落とし・防錆",
+            "qty": 2,
+            "per": "片側",
+            "hours": {
+              "low": 0.1,
+              "typical": 0.2,
+              "high": 0.3
+            },
+            "note": "ハブ錆グレード2 >= 2 -> 当たり面の錆落とし、左右"
+          },
+          {
+            "branch": "B2",
+            "op": "FX-SEIZE",
+            "name": "固着した締結部の対応（浸透剤＋加熱）",
+            "qty": 2,
+            "per": "締結部1本",
+            "hours": {
+              "low": 0.1,
+              "typical": 0.3,
+              "high": 0.6
+            },
+            "note": "頭部腐食（重）のため固着対応は要る（U3: 全範囲）"
+          },
+          {
+            "branch": "B2",
+            "op": "FX-BROKEN",
+            "name": "折れ込みボルトの抜き取り",
+            "qty": 2,
+            "per": "1本",
+            "hours": {
+              "low": 0.0,
+              "typical": 0.0,
+              "high": 3.0
+            },
+            "note": "折れ込み候補（可能性のため high のみ）"
+          },
+          {
+            "branch": "B2",
+            "op": "FX-THREAD",
+            "name": "ねじ山の修正",
+            "qty": 2,
+            "per": "1か所",
+            "hours": {
+              "low": 0.0,
+              "typical": 0.0,
+              "high": 1.0
+            },
+            "note": "折れ込み1本につきねじ山1か所（仮定、high のみ）"
+          },
+          {
+            "branch": "B3",
+            "op": "FX-SEIZE",
+            "name": "固着した締結部の対応（浸透剤＋加熱）",
+            "qty": 2,
+            "per": "締結部1本",
+            "hours": {
+              "low": 0.0,
+              "typical": 0.3,
+              "high": 0.6
+            },
+            "note": "錆「中」-> 固着対応の可能性（U3: low は 0）"
+          },
+          {
+            "branch": "B4",
+            "op": "FX-SEIZE",
+            "name": "固着した締結部の対応（浸透剤＋加熱）",
+            "qty": 4,
+            "per": "締結部1本",
+            "hours": {
+              "low": 0.0,
+              "typical": 0.0,
+              "high": 1.2
+            },
+            "note": "未確認のため上限にのみ固着対応を含める"
+          },
+          {
+            "branch": "B5",
+            "op": "AG-BOOT",
+            "name": "スライドピンブーツ交換",
+            "qty": 1,
+            "per": "片側",
+            "hours": {
+              "low": 0.1,
+              "typical": 0.15,
+              "high": 0.2
+            },
+            "note": "硬化を観察した側"
+          },
+          {
+            "branch": "B6",
+            "op": "AG-BOOT",
+            "name": "スライドピンブーツ交換",
+            "qty": 1,
+            "per": "片側",
+            "hours": {
+              "low": 0.0,
+              "typical": 0.0,
+              "high": 0.2
+            },
+            "note": "未確認のため上限にのみ"
+          }
+        ],
+        "unit": ""
+      },
+      {
+        "label": "展開後の工程数",
+        "value": 17,
+        "unit": "行"
+      }
+    ],
+    "note": "テンプレートは重複排除後 1.7 人時。この案の範囲での上限として、未確認の分岐は high にだけ入れ、typical に確定しない。錆「中」は low=0、「重」は low から固着対応、折れ込みは観察がないため high のみ（SPEC U3）。サブフレームは作業範囲外（U4）。経過時間は人時 + 待機（浸透待ち 0.25、防錆乾燥 0.3 を含む範囲に加算、U5）。"
+  },
+  "assumptions": [
+    "仮定: テンプレートは J1・J2 の included_operations を整備士が確認済みのものとして扱う。",
+    "仮定: ハブ錆グレード2（進行錆=問題あり）のため、docs §4.3 の例どおり FX-ROTOR（ローターの固着除去）と FX-HUBCLEAN を左右2側に全範囲で展開する（グレードは左右共通の値として扱う）。",
+    "仮定: docs の条件は「ボルト折れ」（観察された折れ）だが、scenario に折れの観察はなく、あるのは錆「重」=折れ込みの可能性（fastener_risk_rule）だけ。そのため FX-BROKEN と FX-THREAD は発生を観察していない可能性として high のみに入れ、typical には入れない（発生確率の根拠データがなく、期待値を作れない）。折れ込み1本につきねじ山1か所。",
+    "仮定: high の折れ込み候補（2本分）は発生確率ではなく上限の見込みである。折れを観察したら B2 を「折れ観察」に切り替えて typical に入れる。",
+    "仮定: SPEC U3 の表に従う。錆「中」は low=0・typical/high で FX-SEIZE、錆「重」は全範囲で FX-SEIZE、折れ込み（FX-BROKEN+FX-THREAD）は high のみ、未確認は high のみ FX-SEIZE。折れの観察がない限り「ボルト折れ」分岐は発火しない。",
+    "仮定: ローター固着・右ブーツ・スライドボルトは未確認のため high のみ。low・typical には入れない。",
+    "仮定: 経過時間は1人作業の直列で、待機（浸透待ち 0.25・防錆乾燥 0.3 の冬季仮説値）は該当工程を含む範囲ごとに1回だけ加える。",
+    "仮定: 雪下ろし・氷塊・洗浄・タイヤ重量・過去実績などの他案の要因は、S15 の対象外のため含めない。"
+  ],
+  "unknowns": [
+    "スライドボルト4本の錆は未確認（ブーツに隠れる）。high にのみ固着対応を含めた。",
+    "右スライドピンブーツ・ローター固着は未確認。high にのみ含めた。",
+    "サブフレームは J1・J2 では外さないため作業範囲外（U4）。腐食があれば作業範囲の拡大（AG04）として見積もりを変更し、顧客の了承を得る。high には入れていない。",
+    "折れ込みの実際の発生は分解前のため不明。high の折れ込み分（FX-BROKEN+FX-THREAD）は確率ではなく上限の見込み。",
+    "ねじ山修正（FX-THREAD）用の部材の在庫は scenario に記載がなく、parts_wait_hours=0.0 は high 側には根拠がない。high の経過時間は部品待ちを含まない下限の可能性。",
+    "ブレーキ周り錆グレード3（重度）に対応する分岐は docs・SPEC に定義がなく追加していない。過去実績（brake_rust 3 の追加工程）との整合は S15 の範囲外。",
+    "AG02（付随部品の破損・部品待ち）に対応する分岐は定義がなく、反映していない。AG03 はブーツ（B5/B6）のみ。"
+  ]
+}

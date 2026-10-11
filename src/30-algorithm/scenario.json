@@ -1,0 +1,287 @@
+{
+  "_meta": {
+    "title": "30案比較用の共通シナリオ",
+    "note": "すべて架空値。補正率・人時の実測ではない。docs/man-hours/system-ideas-30.md の30案を同一条件で比較するために作成した。",
+    "units": "人時は作業者ごとの実作業時間の合計。経過時間(elapsed)は人時と別に持つ。人時の範囲は low / typical / high の3値。",
+    "created": "2026-10-11"
+  },
+
+  "vehicle": {
+    "maker": "架空メーカーA",
+    "model": "架空SUV-X",
+    "katashiki": "ABC-XYZ10",
+    "engine": "1AB",
+    "first_registration": "2014-01",
+    "drive": "4WD",
+    "body_class": "普通車SUV",
+    "vehicle_weight_kg": 1600,
+    "cold_climate_spec": {"value": true, "status": "現車で確認済み（車検証では不明）"},
+    "aftermarket_engine_starter": {"value": true, "status": "現車で確認済み。今回の作業範囲には配線が関係しない"},
+    "tire_size": "225/65R17",
+    "tire_with_wheel_weight_kg": {"value": 23, "status": "仮定（資料値の確認なし）"},
+    "wheels": "社外アルミホイール（ハブ径リングあり、顧客申告）",
+    "repair_history": "なし（顧客申告）",
+    "odometer_km": 128000
+  },
+
+  "intake": {
+    "date": "2027-01-20",
+    "season": "冬季（11〜3月）",
+    "outside_temp_c": -8,
+    "shop_temp_c": 12,
+    "elapsed_years_from_first_registration": {"value": null, "note": "各アルゴリズムで first_registration と intake.date から計算する（2014-01 → 2027-01）"}
+  },
+
+  "e_shakensho_sample": {
+    "_note": "電子車検証の取込を模した架空JSON。実在の様式ではない",
+    "車名": "架空メーカーA",
+    "型式": "ABC-XYZ10",
+    "原動機の型式": "1AB",
+    "初度登録年月": "平成26年1月",
+    "車両重量": "1600kg",
+    "使用者": "（工数入力には取り込まない）"
+  },
+
+  "weather_forecast_for_intake_day": {
+    "min_temp_c": -12,
+    "max_temp_c": -4,
+    "snowfall_forecast_cm": 15,
+    "snowfall_previous_day_cm": 10,
+    "source": "架空の予報値（取得先は未調査）"
+  },
+
+  "jobs": [
+    {
+      "id": "J1",
+      "name": "冬タイヤへの季節交換（ホイール付き4本の脱着、組替なし）",
+      "base_labor_hours": 0.6,
+      "basis_unit": "人時",
+      "basis_source": "架空の基準値（1本18kg以下のタイヤを1人で扱う前提）",
+      "included_operations": [
+        {"op": "OP-LIFT", "name": "リフトアップ", "hours": 0.1, "shared": true},
+        {"op": "OP-WHEEL-F2", "name": "前2輪の脱着", "hours": 0.2, "shared": true},
+        {"op": "OP-WHEEL-R2", "name": "後2輪の脱着", "hours": 0.2, "shared": false},
+        {"op": "OP-CHECK-TIRE", "name": "空気圧調整・トルク確認", "hours": 0.1, "shared": false}
+      ],
+      "_note": "OP-WHEEL-F2 と OP-WHEEL-R2 にはタイヤ運搬（OP-TIRE-CARRY 0.12人時、1人・18kg以下前提）が含まれる"
+    },
+    {
+      "id": "J2",
+      "name": "フロントブレーキパッド＋ローター交換（左右）",
+      "base_labor_hours": 1.4,
+      "basis_unit": "人時",
+      "basis_source": "架空の基準値（固着なしの前提）",
+      "included_operations": [
+        {"op": "OP-LIFT", "name": "リフトアップ", "hours": 0.1, "shared": true},
+        {"op": "OP-WHEEL-F2", "name": "前2輪の脱着", "hours": 0.2, "shared": true},
+        {"op": "OP-CALIPER", "name": "キャリパー・ブラケット脱着（左右、締結部計8本）", "hours": 0.3, "shared": false},
+        {"op": "OP-ROTOR", "name": "ローター脱着（左右）", "hours": 0.2, "shared": false},
+        {"op": "OP-PAD", "name": "パッド交換・清掃・グリスアップ", "hours": 0.4, "shared": false},
+        {"op": "OP-TEST", "name": "試運転・確認", "hours": 0.2, "shared": false}
+      ]
+    }
+  ],
+  "base_totals": {
+    "gross_sum": 2.0,
+    "shared_operations_counted_twice": ["OP-LIFT 0.1", "OP-WHEEL-F2 0.2"],
+    "deduplicated_base": 1.7,
+    "_rule": "S17 以外の案は、重複控除後の 1.7 人時を共通の出発点として使う。S17 は 2.0 から控除を自ら計算する。"
+  },
+
+  "condition": {
+    "_states": "未確認 / 問題を観察していない / 問題あり。未確認を問題なしに置き換えない",
+    "snow_on_body": {"state": "問題あり", "detail": "屋根・ボンネットに約15cm"},
+    "ice_in_wheel_house": {"state": "問題あり", "locations": 2, "detail": "前輪ホイールハウス2か所。後輪は少量で除去不要"},
+    "underbody_rust_grade": {
+      "_scale": "0=問題を観察していない, 1=表面錆, 2=進行錆（浮き錆）, 3=重度（層状剥離・欠損）, null=未確認",
+      "front_suspension": 2,
+      "brake_area": 3,
+      "wheel_hub": 2,
+      "muffler": 2,
+      "subframe": null,
+      "rear_suspension": 1,
+      "_unconfirmed_reason": {"subframe": "アンダーカバーで見えず、撮影なし"}
+    },
+    "fasteners": [
+      {"id": "F-L-BRK-1", "name": "左キャリパーブラケットボルト1", "job": "J2", "rust": "重（頭部腐食）"},
+      {"id": "F-L-BRK-2", "name": "左キャリパーブラケットボルト2", "job": "J2", "rust": "重（頭部腐食）"},
+      {"id": "F-R-BRK-1", "name": "右キャリパーブラケットボルト1", "job": "J2", "rust": "中"},
+      {"id": "F-R-BRK-2", "name": "右キャリパーブラケットボルト2", "job": "J2", "rust": "中"},
+      {"id": "F-L-SLD-1", "name": "左スライドボルト1", "job": "J2", "rust": "未確認（ブーツに隠れて見えない）"},
+      {"id": "F-L-SLD-2", "name": "左スライドボルト2", "job": "J2", "rust": "未確認（ブーツに隠れて見えない）"},
+      {"id": "F-R-SLD-1", "name": "右スライドボルト1", "job": "J2", "rust": "未確認（ブーツに隠れて見えない）"},
+      {"id": "F-R-SLD-2", "name": "右スライドボルト2", "job": "J2", "rust": "未確認（ブーツに隠れて見えない）"},
+      {"id": "F-WHEELNUT-x20", "name": "ホイールナット20本", "job": "J1", "rust": "軽", "count": 20}
+    ],
+    "fastener_risk_rule": {
+      "_source": "整備士の暫定ルール（架空）",
+      "重": "折れ込みの可能性",
+      "中": "固着対応の可能性",
+      "軽": "通常",
+      "未確認": "不明（上限に固着対応を含める）"
+    },
+    "rotor_hub_seizure": {"state": "未確認", "detail": "分解前のため不明。ハブ錆グレード2"},
+    "slide_pin_boots": {"left": "問題あり（硬化）", "right": "未確認"},
+    "rustproof_undercoat": {"value": true, "status": "申告", "detail": "2022年に下回り全体へ施工（顧客申告）。コートの上から腐食が見えにくい可能性"},
+    "modification": "社外アルミホイール（ハブ径リングあり）",
+    "electrical": "対象外"
+  },
+
+  "previous_visit_same_vehicle": {
+    "record_id": "R11",
+    "date": "2025-01-15",
+    "odometer_km": 112000,
+    "jobs": ["J1", "J2"],
+    "estimate_labor_hours": 1.5,
+    "actual_labor_hours": 1.9,
+    "observations": "左前キャリパーブラケットボルト1本が固着（浸透剤＋加熱で対応 0.25人時）。ハブ錆は軽度（グレード1）。雪下ろし 0.15人時"
+  },
+
+  "mechanic_provisional_add_ops": {
+    "_note": "整備士の暫定値（架空）。low / typical / high は人時。per は数える単位",
+    "PRE-SNOW":   {"name": "雪下ろし", "per": "入庫1回", "low": 0.10, "typical": 0.15, "high": 0.25},
+    "PRE-ICE":    {"name": "氷塊除去", "per": "ホイールハウス1か所", "low": 0.05, "typical": 0.08, "high": 0.15},
+    "PRE-WASH":   {"name": "下回り洗浄", "per": "入庫1回", "low": 0.15, "typical": 0.20, "high": 0.30, "policy": "工場方針で請求しない（前処理として実施はする）"},
+    "FX-SEIZE":   {"name": "固着した締結部の対応（浸透剤＋加熱）", "per": "締結部1本", "low": 0.05, "typical": 0.15, "high": 0.30},
+    "FX-BROKEN":  {"name": "折れ込みボルトの抜き取り", "per": "1本", "low": 0.50, "typical": 0.80, "high": 1.50},
+    "FX-THREAD":  {"name": "ねじ山の修正", "per": "1か所", "low": 0.20, "typical": 0.30, "high": 0.50},
+    "FX-ROTOR":   {"name": "ローターの固着除去", "per": "片側", "low": 0.10, "typical": 0.20, "high": 0.40},
+    "FX-HUBCLEAN":{"name": "ハブ当たり面の錆落とし・防錆", "per": "片側", "low": 0.05, "typical": 0.10, "high": 0.15},
+    "AG-BOOT":    {"name": "スライドピンブーツ交換", "per": "片側", "low": 0.10, "typical": 0.15, "high": 0.20},
+    "AG-CLIP":    {"name": "樹脂クリップ破損交換", "per": "1個", "low": 0.02, "typical": 0.03, "high": 0.05},
+    "AG-HOSE":    {"name": "ブレーキホース交換（左右）", "per": "左右一式", "low": 0.60, "typical": 0.80, "high": 1.00}
+  },
+
+  "elapsed_waits": {
+    "_note": "作業者を拘束しない待機（人時に含めない）。架空値",
+    "thaw_wait_hours": 0.5,
+    "penetrant_soak_wait_hours": 0.25,
+    "rustproof_dry_wait_hours": {"normal": 0.2, "winter_hypothesis": 0.3},
+    "parts_wait_hours": 0.0,
+    "_parts_stock": "ブーツ・ボルト在庫あり。ブレーキホースは取り寄せ1日"
+  },
+
+  "tire_handling": {
+    "rule": "ホイール付き1本20kg超は2人作業または機材（工場の暫定ルール、架空）",
+    "shop_has_tire_lifter": false,
+    "OP-TIRE-CARRY_1person_le18kg": {"persons": 1, "hours_each": 0.12, "labor_hours": 0.12},
+    "OP-TIRE-CARRY_2persons_gt20kg": {"persons": 2, "hours_each": 0.10, "labor_hours": 0.20},
+    "_note": "J1 の基準 0.6 人時は 1人運搬 0.12 人時を含む"
+  },
+
+  "historical_records": [
+    {"id": "R01", "date": "2025-12", "body": "SUV", "drive": "4WD", "age_years": 11, "km": 98000,  "brake_rust": 2, "jobs": ["J2"],       "estimate": 1.4, "actual": 1.7, "tags": {"固着対応": {"hours": 0.30, "count": 2}}},
+    {"id": "R02", "date": "2026-01", "body": "SUV", "drive": "4WD", "age_years": 14, "km": 140000, "brake_rust": 3, "jobs": ["J2"],       "estimate": 1.4, "actual": 2.6, "tags": {"固着対応": {"hours": 0.35, "count": 3}, "ボルト折れ": {"hours": 0.85, "count": 1}}},
+    {"id": "R03", "date": "2026-02", "body": "軽", "drive": "FF",  "age_years": 9,  "km": 70000,  "brake_rust": 1, "jobs": ["J2"],       "estimate": 1.4, "actual": 1.3, "tags": {}},
+    {"id": "R04", "date": "2026-02", "body": "SUV", "drive": "4WD", "age_years": 12, "km": 121000, "brake_rust": 3, "jobs": ["J2"],       "estimate": 1.4, "actual": 2.1, "tags": {"固着対応": {"hours": 0.30, "count": 2}, "ローター固着": {"hours": 0.40, "count": 2}}},
+    {"id": "R05", "date": "2026-03", "body": "セダン", "drive": "4WD", "age_years": 15, "km": 150000, "brake_rust": 2, "jobs": ["J2"],    "estimate": 1.4, "actual": 1.8, "tags": {"固着対応": {"hours": 0.15, "count": 1}, "ローター固着": {"hours": 0.25, "count": 1}}},
+    {"id": "R06", "date": "2026-06", "body": "SUV", "drive": "4WD", "age_years": 13, "km": 132000, "brake_rust": 3, "jobs": ["J2"],       "estimate": 1.4, "actual": 1.9, "tags": {"固着対応": {"hours": 0.30, "count": 2}, "ブーツ交換": {"hours": 0.15, "count": 1}, "その他": {"hours": 0.05}}},
+    {"id": "R07", "date": "2026-07", "body": "ミニバン", "drive": "FF", "age_years": 6, "km": 52000, "brake_rust": 1, "jobs": ["J2"],    "estimate": 1.4, "actual": 1.4, "tags": {}},
+    {"id": "R08", "date": "2025-11", "body": "SUV", "drive": "4WD", "age_years": 10, "km": 105000, "brake_rust": 2, "jobs": ["J1", "J2"], "estimate": 1.7, "actual": 2.3, "tags": {"雪下ろし": {"hours": 0.15}, "固着対応": {"hours": 0.20, "count": 1}, "その他": {"hours": 0.25}}},
+    {"id": "R09", "date": "2026-01", "body": "SUV", "drive": "4WD", "age_years": 13, "km": 126000, "brake_rust": 3, "jobs": ["J1", "J2"], "estimate": 1.7, "actual": 3.0, "tags": {"雪下ろし": {"hours": 0.20}, "氷塊除去": {"hours": 0.15, "count": 2}, "固着対応": {"hours": 0.55, "count": 3}, "ローター固着": {"hours": 0.30, "count": 1}, "その他": {"hours": 0.10}}},
+    {"id": "R10", "date": "2026-12", "body": "SUV", "drive": "4WD", "age_years": 12, "km": 118000, "brake_rust": null, "jobs": ["J1", "J2"], "estimate": 1.7, "actual": 2.4, "tags": {"雪下ろし": {"hours": 0.15}, "その他": {"hours": 0.55, "note": "原因の記録なし"}}},
+    {"id": "R11", "date": "2025-01", "body": "SUV", "drive": "4WD", "age_years": 11, "km": 112000, "brake_rust": 2, "jobs": ["J1", "J2"], "estimate": 1.5, "actual": 1.9, "tags": {"固着対応": {"hours": 0.25, "count": 1}, "雪下ろし": {"hours": 0.15}}, "same_vehicle": true},
+    {"id": "R12", "date": "2026-02", "body": "軽", "drive": "FF",  "age_years": 8,  "km": 64000,  "brake_rust": 1, "jobs": ["J1"],       "estimate": 0.6, "actual": 0.6, "tags": {}}
+  ],
+
+  "tap_log_R09": {
+    "_note": "S14 の作業時間計測アプリで記録した R09 の工程ログ（架空）。hours は経過時間、persons は人数。wait は作業者を拘束しない待機",
+    "steps": [
+      {"step": "雪下ろし", "persons": 1, "hours": 0.20},
+      {"step": "氷塊除去（2か所）", "persons": 1, "hours": 0.15},
+      {"step": "融解待ち", "persons": 0, "hours": 0.50, "wait": true},
+      {"step": "リフトアップ", "persons": 1, "hours": 0.10},
+      {"step": "4輪取り外し", "persons": 1, "hours": 0.20},
+      {"step": "タイヤ運搬・積み替え", "persons": 2, "hours": 0.10},
+      {"step": "前ブレーキ分解（キャリパー・ブラケット）", "persons": 1, "hours": 0.30},
+      {"step": "固着対応（3本、浸透剤＋加熱）", "persons": 1, "hours": 0.55},
+      {"step": "浸透待ち", "persons": 0, "hours": 0.25, "wait": true},
+      {"step": "ローター脱着（通常分）", "persons": 1, "hours": 0.20},
+      {"step": "ローター固着除去（1側）", "persons": 1, "hours": 0.30},
+      {"step": "パッド・ローター組付け・清掃・グリスアップ", "persons": 1, "hours": 0.30},
+      {"step": "4輪取り付け・トルク", "persons": 1, "hours": 0.15},
+      {"step": "空気圧・最終確認", "persons": 1, "hours": 0.05},
+      {"step": "試運転", "persons": 1, "hours": 0.20},
+      {"step": "その他（工具準備・清掃）", "persons": 1, "hours": 0.10}
+    ]
+  },
+
+  "other_shops_anonymized": {
+    "_note": "S13 用。道内の他工場の匿名化実績（架空）。他工場の値を自工場の値として使わない",
+    "shop_X": {"固着対応_per_bolt": {"median": 0.18, "n": 25}, "ボルト折れ_per_bolt": {"median": 0.90, "n": 6}, "ローター固着_per_side": {"median": 0.22, "n": 14}},
+    "shop_Y": {"固着対応_per_bolt": {"median": 0.12, "n": 40}, "ボルト折れ_per_bolt": {"median": 0.70, "n": 9}, "ローター固着_per_side": {"median": 0.18, "n": 20}}
+  },
+
+  "shop_policy": {
+    "check_intensity_threshold": {"age_years": 10, "odometer_km": 100000, "_note": "どちらかを満たせば確認強度「強」（S04、仮置き）"},
+    "weather_prompt_threshold": {"min_temp_c_le": -5, "snowfall_cm_ge": 5, "_note": "どちらかを満たせば前処理の確認を促す（S06、仮置き）"},
+    "contact_threshold": {"labor_hours_gt": 0.5, "yen_gt": 5000, "_note": "追加がどちらかを超えるなら作業前に顧客へ連絡（S20、仮置き）"},
+    "min_records_for_reference": 3,
+    "pre_processing_billing": "雪下ろし・氷塊除去は入庫1回分を請求。下回り洗浄は請求しない（仮置き）",
+    "workers_available": 2,
+    "priority_score_table_S21": {
+      "_note": "工場が承認した加点表という想定（架空）",
+      "age_years_ge_10": 2, "age_years_ge_15": 3,
+      "odometer_ge_100000": 1, "odometer_ge_150000": 2,
+      "work_area_rust_grade_2": 2, "work_area_rust_grade_3": 3,
+      "unconfirmed_area_exists": 1,
+      "rustproof_coat_history": 1,
+      "previous_seizure_record": 2,
+      "bands": {"低": "0-3", "中": "4-7", "高": "8以上"}
+    },
+    "companion_parts_catalog_S22": {
+      "_note": "J2 で外すと劣化が見つかりやすい付随部品と発生頻度の整備士見込み（架空）",
+      "スライドピンブーツ": {"op": "AG-BOOT", "freq": 0.30, "unit": "片側"},
+      "キャリパーブラケットボルト交換": {"op": null, "freq": 0.20, "labor_hours_each": 0.0, "note": "工数は固着対応に含む。部品のみ"},
+      "パッド摩耗センサー": {"op": null, "freq": 0.10, "labor_hours_each": 0.05},
+      "ブレーキホース": {"op": "AG-HOSE", "freq": 0.05, "unit": "左右一式"},
+      "display_threshold_freq": 0.15
+    }
+  },
+
+  "photo_ai_S23": {
+    "_note": "AIの一次分類（架空）と整備士の確定値",
+    "items": [
+      {"area": "brake_area", "ai_grade": 3, "ai_confidence": 0.72, "mechanic_grade": 3},
+      {"area": "wheel_hub", "ai_grade": 1, "ai_confidence": 0.55, "mechanic_grade": 2},
+      {"area": "front_suspension", "ai_grade": 2, "ai_confidence": 0.81, "mechanic_grade": 2},
+      {"area": "subframe", "ai_grade": null, "ai_confidence": null, "mechanic_grade": null, "note": "写真なし"}
+    ]
+  },
+
+  "photo_guide_S24": {
+    "required_shots_for_J2": ["左ブラケット", "右ブラケット", "左ハブ", "右ハブ", "左スライドピンブーツ", "右スライドピンブーツ", "サブフレーム前部", "左ローター裏"],
+    "taken": ["左ブラケット", "右ブラケット", "左ハブ", "右ハブ", "左スライドピンブーツ", "左ローター裏"],
+    "missing_reason": {"右スライドピンブーツ": "泥と氷で撮影不可", "サブフレーム前部": "アンダーカバーで見えない"}
+  },
+
+  "voice_memo_S25": {
+    "_note": "今回の作業で分解した後の音声メモ（架空の文字起こし）",
+    "text": "左前、ブラケットボルト2本とも固着。1本は加熱で外れた、もう1本も外れた。左ローター固着、叩いて外した。右前は普通に外れた。右ブーツも硬化してる、交換。サブフレームは見てない。"
+  },
+
+  "cost_data_S27": {
+    "_note": "工場の年間経費（架空）",
+    "labor_cost_yen": 18000000,
+    "rent_yen": 2400000,
+    "heating_yen": 1800000,
+    "heating_winter_months_yen": 1700000,
+    "equipment_yen": 3000000,
+    "utilities_excl_heating_yen": 600000,
+    "target_profit_yen": 3000000,
+    "annual_billable_hours": 3600,
+    "winter_billable_hours": 1450,
+    "non_winter_billable_hours": 2150,
+    "winter_months": "11〜3月"
+  },
+
+  "materials_S28": {
+    "_note": "材料単価（架空）",
+    "penetrant": {"price_yen": 980, "uses": 10, "per": "締結部"},
+    "heating_gas": {"price_yen": 600, "uses": 20, "per": "締結部"},
+    "rustproof_hub": {"price_yen": 1650, "uses": 8, "per": "片側"},
+    "bracket_bolt": {"price_yen": 450, "per": "1本"},
+    "boot": {"price_yen": 1200, "per": "1個"},
+    "thread_insert_kit": {"price_yen": 2200, "per": "1か所"}
+  }
+}

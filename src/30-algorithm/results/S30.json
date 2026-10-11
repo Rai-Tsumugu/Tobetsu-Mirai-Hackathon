@@ -1,0 +1,264 @@
+{
+  "id": "S30",
+  "name": "3方式の根拠を並べる比較画面",
+  "base_method": "A/B/C 併記",
+  "factors": [
+    "HK01",
+    "HK02",
+    "HK03",
+    "AG01",
+    "AG03"
+  ],
+  "algorithm": [
+    "手順1: scenario.json を読み、基準 1.7 人時を出発点にする。",
+    "手順2: 案A = 1.7 + 締結部の補正（U3 の typical / high）。未確認の締結部は high のみ。",
+    "手順3: 案B = S08 と同じ規則。J1+J2 の類似実績（R08〜R11 の4件、同一車両を含む）の actual の中央値・最小・最大。",
+    "手順4: 案C = 重複控除後の工程 1.7 + 前処理 + 締結部（U3）+ ハブ錆落とし + ブーツ。待機（U5）は経過時間のみ。",
+    "手順5: 3方式を平均しない。提示範囲 = 3方式の low の最小〜high の最大、typical は案A。",
+    "手順6: 各列に根拠・不足情報・錆と固着の反映状態を付けて並べる。担当者が選び理由を残す。"
+  ],
+  "inputs": [
+    {
+      "key": "base_totals.deduplicated_base",
+      "value": 1.7,
+      "status": "仮定"
+    },
+    {
+      "key": "condition.fasteners (J2)",
+      "value": "重2 / 中2 / 未確認4",
+      "status": "確認済み"
+    },
+    {
+      "key": "condition.ice_in_wheel_house.locations",
+      "value": 2,
+      "status": "確認済み"
+    },
+    {
+      "key": "condition.snow_on_body",
+      "value": "屋根・ボンネットに約15cm",
+      "status": "確認済み"
+    },
+    {
+      "key": "condition.slide_pin_boots",
+      "value": "左: 問題あり（硬化） / 右: 未確認",
+      "status": "確認済み"
+    },
+    {
+      "key": "condition.rotor_hub_seizure",
+      "value": "未確認",
+      "status": "不明"
+    },
+    {
+      "key": "condition.underbody_rust_grade.wheel_hub",
+      "value": 2,
+      "status": "確認済み"
+    },
+    {
+      "key": "condition.underbody_rust_grade.subframe",
+      "value": null,
+      "status": "不明"
+    },
+    {
+      "key": "historical_records (J1+J2)",
+      "value": [
+        "R08",
+        "R09",
+        "R10",
+        "R11"
+      ],
+      "status": "申告"
+    },
+    {
+      "key": "vehicle.first_registration",
+      "value": "2014-01",
+      "status": "確認済み（この案では未使用: 年式だけで工数を増やさない）"
+    },
+    {
+      "key": "vehicle.odometer_km",
+      "value": 128000,
+      "status": "確認済み（この案では未使用: 走行距離だけで工数を増やさない）"
+    }
+  ],
+  "intermediates": [
+    {
+      "label": "案A 締結部の補正（typical）",
+      "value": 0.6,
+      "unit": "人時",
+      "formula": "FX-SEIZE typical 0.15 x (重2 + 中2)本"
+    },
+    {
+      "label": "案A 人時",
+      "value": 2.3,
+      "unit": "人時",
+      "formula": "typical = 1.7 + 補正。low 1.8 = 1.7 + FX-SEIZE low 0.05x2。high 8.1 = 1.7 + FX-SEIZE high 0.3x8(重＋中＋未確認) + FX-BROKEN high 1.5x2 + FX-THREAD high 0.5x2"
+    },
+    {
+      "label": "案B 類似実績の件数",
+      "value": 4,
+      "unit": "件",
+      "formula": "作業範囲が J1+J2 と一致する historical_records の数（S08 と同じ。同一車両を含む）"
+    },
+    {
+      "label": "案B 実績 actual の中央値",
+      "value": 2.35,
+      "unit": "人時",
+      "formula": "median([2.3, 3.0, 2.4, 1.9]) 範囲 1.9〜3.0"
+    },
+    {
+      "label": "案C 共有工程の重複控除後の工程合計",
+      "value": 1.7,
+      "unit": "人時",
+      "formula": "J1 + J2 の工程合計 2.0 - 重複(OP-LIFT 0.1 + OP-WHEEL-F2 0.2)"
+    },
+    {
+      "label": "案C 人時",
+      "value": 3.16,
+      "unit": "人時",
+      "formula": "typical = 1.7 + 雪下ろし0.15x1 + 氷塊0.08x2 + 下回り洗浄0.2 + 固着0.15x4 + ハブ錆落とし0.1x2 + 左ブーツ0.15x1。low 2.35 / high 10.45（high は U3 の high に FX-ROTOR high x2、右ブーツ high x1 を追加）"
+    },
+    {
+      "label": "案C 経過時間の待機（typical）",
+      "value": 1.05,
+      "unit": "時間",
+      "formula": "融解待ち0.5 + 浸透待ち0.25 + 防錆乾燥0.3（U5。人時に入れない）"
+    },
+    {
+      "label": "提示範囲（3方式の low の最小〜high の最大）",
+      "value": "1.8〜10.45",
+      "unit": "人時",
+      "formula": "min(A,B,C の low) = 1.8、max(A,B,C の high) = 10.45。3方式の typical の幅は 2.3〜3.16。平均は取らない"
+    }
+  ],
+  "result": {
+    "labor_hours": {
+      "low": 1.8,
+      "typical": 2.3,
+      "high": 10.45
+    },
+    "elapsed_hours": {
+      "low": 2.05,
+      "typical": 2.55,
+      "high": 11.5
+    },
+    "other_outputs": [
+      {
+        "label": "3方式の比較（根拠・不足情報・錆と固着の反映）",
+        "value": [
+          {
+            "column": "案A 基準＋締結部の補正",
+            "labor_hours": {
+              "low": 1.8,
+              "typical": 2.3,
+              "high": 8.1
+            },
+            "elapsed_hours": {
+              "low": 2.05,
+              "typical": 2.55,
+              "high": 8.35
+            },
+            "basis": "基準 1.7 人時 + 締結部の補正（SPEC U3）。typical は重2本＋中2本の固着対応 4本 = +0.6",
+            "missing": [
+              "スライドボルト4本の錆が未確認（high のみ）",
+              "前処理・ブーツ・ハブ錆落とし・ローター固着は案Aの範囲外（案Cで扱う）",
+              "サブフレーム腐食が未確認（範囲外。腐食があれば作業範囲の拡大として見積もりを変更し、顧客の了承を得る）"
+            ],
+            "rust_fastener_reflection": "重2本は low で FX-SEIZE low、typical で固着対応、high で折れ込み＋ねじ山修正まで反映。中2本は typical から、未確認4本は high のみ（0 と確定していない）"
+          },
+          {
+            "column": "案B J1+J2 の類似実績",
+            "labor_hours": {
+              "low": 1.9,
+              "typical": 2.35,
+              "high": 3.0
+            },
+            "elapsed_hours": null,
+            "basis": "J1+J2 実績 4件（R08, R09, R10, R11。同一車両の R11 を含む）の actual 中央値。範囲は最小〜最大",
+            "missing": [
+              "同一車両の前回(R11)は錆グレードなど状態が今回と異なる",
+              "R10 は錆グレード不明",
+              "錆グレードが今回と同じの実績は 1件（R09）のみ",
+              "実績に含まれた要因の内訳を分解していない"
+            ],
+            "rust_fastener_reflection": "実績の合計に混ざる形での間接的な反映のみ。今回の個別の固着本数・未確認箇所は反映できない"
+          },
+          {
+            "column": "案C 工程積み上げ",
+            "labor_hours": {
+              "low": 2.35,
+              "typical": 3.16,
+              "high": 10.45
+            },
+            "elapsed_hours": {
+              "low": 3.4,
+              "typical": 4.21,
+              "high": 11.5
+            },
+            "basis": "共有工程の重複を控除した工程合計 1.7 人時 + 追加工程 +1.46（前処理・締結部・ハブ錆落とし・ブーツ）",
+            "missing": [
+              "スライドボルト4本・右ブーツ・ローター固着が未確認（high のみ）",
+              "サブフレーム腐食が未確認（範囲外。腐食があれば作業範囲の拡大として見積もりを変更し、顧客の了承を得る）",
+              "工程ごとの実測人時は無く、暫定値を使用"
+            ],
+            "rust_fastener_reflection": "締結部は案Aと同じ U3 の表。ハブ錆グレード2（2側の錆落とし）を工程として反映。未確認は high のみ"
+          }
+        ],
+        "unit": "A/B/C の3列"
+      },
+      {
+        "label": "3方式の typical の幅（比較用）",
+        "value": [
+          2.3,
+          3.16
+        ],
+        "unit": "人時"
+      },
+      {
+        "label": "感度: 重の2本を折れ込みとして typical に入れた場合の typical",
+        "value": {
+          "案A": 3.9,
+          "案C": 4.76
+        },
+        "unit": "人時"
+      },
+      {
+        "label": "案C 請求人時（下回り洗浄を除く）",
+        "value": {
+          "low": 2.2,
+          "typical": 2.96,
+          "high": 10.15
+        },
+        "unit": "人時"
+      },
+      {
+        "label": "下回り洗浄（請求しない）",
+        "value": "工場方針で請求しない（前処理として実施はする）",
+        "unit": ""
+      },
+      {
+        "label": "担当者の選択と理由",
+        "value": "未選択（担当者が A/B/C のいずれか、または手入力を選び、理由を残す）",
+        "unit": ""
+      }
+    ],
+    "note": "担当者が方式を選ぶ前の「提示範囲」。low は3方式の low の最小、high は3方式の high の最大（この3方式の範囲での上限）で、typical には案Aを置いた（3方式を平均していない）。案Aは基準＋締結部（U3）、案Bは S08 と同じ類似実績、案Cは前処理を含む工程積み上げで、扱う範囲が違うため各列の根拠と不足情報を並べて見比べる。3方式の typical の幅は other_outputs に別に出す。経過時間の範囲は案Aと案Cから取り、案Bは経過時間を持たない。"
+  },
+  "assumptions": [
+    "仮定: 締結部は SPEC U3 の表に従う（重は low で FX-SEIZE low、typical で固着対応、high で FX-SEIZE high＋折れ込み＋ねじ山修正。中は typical から、未確認は high のみ）。折れ込みは固着対応のあとの別工程で二重計上ではない。",
+    "仮定: 案Aは個別指示どおり 1.7＋U3 だけとし、前処理・ブーツ・ハブ錆落とし・ローター固着は加えない（案Cの範囲）。",
+    "仮定: 案Bは S08 と同じ規則で、作業範囲が J1+J2 の事例をすべて採用する（同一車両の前回 R11 を含む）。",
+    "仮定: ハブ錆落としはグレード2以上、前ブレーキは2側とした。",
+    "仮定: 案Cの追加工程の単価は整備士暫定値（mechanic_provisional_add_ops）を使う。",
+    "仮定: 案Cは前処理（雪下ろし・氷塊除去・下回り洗浄）を工程に含める。下回り洗浄は請求しないが実作業なので labor_hours に入れ、請求人時は other_outputs に別に出す（U7）。",
+    "仮定: タイヤ重量による運搬人数の差は S07 の範囲（U6）。本画面では共通基準 1.7 のまま扱う。",
+    "仮定: factors の HK01・HK02・HK03・AG01・AG03 は、案A（基準・締結部）・案B（類似実績）・案C（工程積み上げ）が使う要因の合併。S30 の docs 上の対象は「全般」。",
+    "仮定: 経過時間 = 人時 + 待機（U5）。浸透待ち・融解待ち・防錆乾燥待ちは、その範囲で該当工程を含めたときだけ足す。1人作業で直列とした簡易値。",
+    "仮定: 案Bは経過時間を持たない。"
+  ],
+  "unknowns": [
+    "スライドボルト4本の錆が未確認（案A・案Cの high にのみ含めた）。",
+    "ローター固着は分解前で不明（案Cの high のみ。案Aの範囲外）。",
+    "右スライドピンブーツの状態は未確認（案Cの high のみ）。",
+    "サブフレームの腐食があれば作業範囲の拡大（AG04）として見積もりを変更し、顧客の了承を得る（範囲外。どの方式の high にも入れない）。",
+    "案Bの類似実績 4件のうち、錆グレードが一致するのは 1件、不明は 1件。"
+  ]
+}

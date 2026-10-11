@@ -1,0 +1,214 @@
+{
+  "id": "S03",
+  "name": "締結部ごとの固着リスク表",
+  "base_method": "A/C",
+  "factors": [
+    "HK01",
+    "AG01"
+  ],
+  "algorithm": [
+    "手順1: 基準 1.7 人時を出発点にする",
+    "手順2: condition.fasteners を1本ずつ列挙（ホイールナットは count 分）",
+    "手順3: fastener_risk_rule で 通常/固着対応の可能性/折れ込みの可能性/不明 に判定",
+    "手順4: 区分ごとの本数を数える",
+    "手順5: SPEC U3 の表で当てる（中: 0/typ/high、重: low/typ/high＋high のみ折れ込み・ねじ山、未確認: high のみ FX-SEIZE）",
+    "手順6: 本数 x 単価を積み上げて追加人時（作業全体の倍率は使わない）",
+    "手順7: 人時 = 1.7 + 追加人時",
+    "手順8: FX-SEIZE を含む範囲の経過時間にだけ浸透待ちを足す（U5）"
+  ],
+  "inputs": [
+    {
+      "key": "base_totals.deduplicated_base",
+      "value": 1.7,
+      "status": "確認済み"
+    },
+    {
+      "key": "condition.fasteners",
+      "value": [
+        {
+          "id": "F-L-BRK-1",
+          "rust": "重（頭部腐食）",
+          "risk": "折れ込みの可能性",
+          "count": 1
+        },
+        {
+          "id": "F-L-BRK-2",
+          "rust": "重（頭部腐食）",
+          "risk": "折れ込みの可能性",
+          "count": 1
+        },
+        {
+          "id": "F-R-BRK-1",
+          "rust": "中",
+          "risk": "固着対応の可能性",
+          "count": 1
+        },
+        {
+          "id": "F-R-BRK-2",
+          "rust": "中",
+          "risk": "固着対応の可能性",
+          "count": 1
+        },
+        {
+          "id": "F-L-SLD-1",
+          "rust": "未確認（ブーツに隠れて見えない）",
+          "risk": "不明（上限に固着対応を含める）",
+          "count": 1
+        },
+        {
+          "id": "F-L-SLD-2",
+          "rust": "未確認（ブーツに隠れて見えない）",
+          "risk": "不明（上限に固着対応を含める）",
+          "count": 1
+        },
+        {
+          "id": "F-R-SLD-1",
+          "rust": "未確認（ブーツに隠れて見えない）",
+          "risk": "不明（上限に固着対応を含める）",
+          "count": 1
+        },
+        {
+          "id": "F-R-SLD-2",
+          "rust": "未確認（ブーツに隠れて見えない）",
+          "risk": "不明（上限に固着対応を含める）",
+          "count": 1
+        },
+        {
+          "id": "F-WHEELNUT-x20",
+          "rust": "軽",
+          "risk": "通常",
+          "count": 20
+        }
+      ],
+      "status": "申告"
+    },
+    {
+      "key": "condition.fastener_risk_rule",
+      "value": {
+        "_source": "整備士の暫定ルール（架空）",
+        "重": "折れ込みの可能性",
+        "中": "固着対応の可能性",
+        "軽": "通常",
+        "未確認": "不明（上限に固着対応を含める）"
+      },
+      "status": "仮定"
+    },
+    {
+      "key": "mechanic_provisional_add_ops.FX-SEIZE/FX-BROKEN/FX-THREAD",
+      "value": {
+        "FX-SEIZE": {
+          "low": 0.05,
+          "typical": 0.15,
+          "high": 0.3
+        },
+        "FX-BROKEN": {
+          "low": 0.5,
+          "typical": 0.8,
+          "high": 1.5
+        },
+        "FX-THREAD": {
+          "low": 0.2,
+          "typical": 0.3,
+          "high": 0.5
+        }
+      },
+      "status": "仮定"
+    },
+    {
+      "key": "elapsed_waits.penetrant_soak_wait_hours",
+      "value": 0.25,
+      "status": "仮定"
+    }
+  ],
+  "intermediates": [
+    {
+      "label": "リスク区分別本数（通常/固着対応/折れ込み/不明）",
+      "value": {
+        "通常": 20,
+        "固着対応の可能性": 2,
+        "折れ込みの可能性": 2,
+        "不明": 4
+      },
+      "unit": "本",
+      "formula": "rule で判定: 軽->通常（F-WHEELNUT-x20 20本）、中->固着対応の可能性（F-R-BRK-1 1本、F-R-BRK-2 1本）、重->折れ込みの可能性（F-L-BRK-1 1本、F-L-BRK-2 1本）、未確認->不明（F-L-SLD-1 1本、F-L-SLD-2 1本、F-R-SLD-1 1本、F-R-SLD-2 1本）"
+    },
+    {
+      "label": "固着対応(FX-SEIZE)の人時（low/typical/high）",
+      "value": {
+        "low": 0.1,
+        "typical": 0.6,
+        "high": 2.4
+      },
+      "unit": "人時",
+      "formula": "U3: 中本数 x FX-SEIZE（lowは0、typical・high）+ 重本数 x FX-SEIZE（low・typical・high）+ 未確認本数 x FX-SEIZE high（highのみ）"
+    },
+    {
+      "label": "FX-BROKEN の人時（high のみ）",
+      "value": 3.0,
+      "unit": "人時",
+      "formula": "2本 x 1.5"
+    },
+    {
+      "label": "FX-THREAD の人時（high のみ）",
+      "value": 1.0,
+      "unit": "人時",
+      "formula": "2か所（折れ込み1本につき1か所） x 0.5"
+    },
+    {
+      "label": "追加人時合計（low/typical/high）",
+      "value": {
+        "low": 0.1,
+        "typical": 0.6,
+        "high": 6.4
+      },
+      "unit": "人時",
+      "formula": "FX-SEIZE + FX-BROKEN + FX-THREAD"
+    },
+    {
+      "label": "浸透待ち（経過時間のみ）",
+      "value": {
+        "low": 0.25,
+        "typical": 0.25,
+        "high": 0.25
+      },
+      "unit": "時間",
+      "formula": "U5: その範囲に FX-SEIZE を含めたら penetrant_soak_wait_hours を足す（人時に入れない）"
+    }
+  ],
+  "result": {
+    "labor_hours": {
+      "low": 1.8,
+      "typical": 2.3,
+      "high": 8.1
+    },
+    "elapsed_hours": {
+      "low": 2.05,
+      "typical": 2.55,
+      "high": 8.35
+    },
+    "other_outputs": [
+      {
+        "label": "リスク区分別本数",
+        "value": {
+          "通常": 20,
+          "固着対応の可能性": 2,
+          "折れ込みの可能性": 2,
+          "不明": 4
+        },
+        "unit": "本"
+      }
+    ],
+    "note": "この案の範囲での上限を high とする。SPEC U3 の表どおり、中は low 0・typical/high で FX-SEIZE、重は全範囲で FX-SEIZE（high のみ FX-BROKEN と FX-THREAD を上乗せ）、未確認は high のみ FX-SEIZE。経過時間は人時 + 浸透待ち（FX-SEIZE を含む範囲ごと）。"
+  },
+  "assumptions": [
+    "仮定: SPEC.md 解釈の統一 U3 の表に従う（中: 0/typical/high、重: low/typical/high＋折れ込み＋ねじ山、未確認: high のみ）。",
+    "仮定: 折れ込みは固着対応のあとの別工程であり二重計上ではない。折れ込み1本につきねじ山修正1か所。",
+    "仮定: 浸透待ちは U5 に従い、FX-SEIZE を含む low/typical/high それぞれの経過時間に1回足す。",
+    "仮定: 地域・年式・走行距離・前回実績からは加算しない。他案の要因（雪下ろし・氷塊・ローター固着等）は含めない。"
+  ],
+  "unknowns": [
+    "スライドボルト4本は錆が未確認（ブーツに隠れる）。low・typical には入れず、high にのみ FX-SEIZE を含めた。",
+    "分解前のため、折れ込みの実際の発生は不明。折れ込みボルトの抜き取り・ねじ山修正は high のみに入れており、typical には含まない。",
+    "サブフレームの腐食があれば作業範囲の拡大（AG04）として見積もりを変更し、顧客の了承を得る（U4。high には入れない）。"
+  ]
+}

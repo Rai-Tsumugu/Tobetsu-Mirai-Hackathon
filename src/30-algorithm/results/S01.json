@@ -1,0 +1,337 @@
+{
+  "id": "S01",
+  "name": "状態チェックリスト加算型",
+  "base_method": "A",
+  "factors": [
+    "HK01",
+    "AG01",
+    "AG02",
+    "AG03",
+    "AG06"
+  ],
+  "algorithm": [
+    "手順1: 重複控除後の基準 1.7 人時を出発点にする",
+    "手順2: J1/J2 の錆・固着・損傷・改造のチェック項目を現車状態から作る",
+    "手順3: 各項目を 未確認／問題を観察していない／問題あり に分ける",
+    "手順4: 問題あり → 追加工程の人時を加算。締結部は U3 の表（中: low 0・typical FX-SEIZE typical・high FX-SEIZE high、重: low FX-SEIZE low・typical FX-SEIZE typical・high FX-SEIZE high + FX-BROKEN high + FX-THREAD high）",
+    "手順5: 未確認（スライドボルト4本・ローター左右・右ブーツ）は typical に入れず、high にだけ追加工程の high を加算する。「追加の可能性あり」の別表示と unknowns も残す",
+    "手順6: 浸透待ち 0.25 を FX-SEIZE を含む区分、防錆乾燥 0.3（冬季仮説値）を FX-HUBCLEAN を含む区分の経過時間にだけ足す。融解待ち・冬季前処理は S05 の領分のため扱わない"
+  ],
+  "inputs": [
+    {
+      "key": "base_totals.deduplicated_base",
+      "value": 1.7,
+      "status": "確認済み"
+    },
+    {
+      "key": "condition.fasteners(J2)",
+      "value": "重2・中2・未確認4",
+      "status": "確認済み/未確認混在"
+    },
+    {
+      "key": "condition.underbody_rust_grade.wheel_hub",
+      "value": 2,
+      "status": "確認済み"
+    },
+    {
+      "key": "condition.rotor_hub_seizure",
+      "value": "未確認",
+      "status": "不明"
+    },
+    {
+      "key": "condition.slide_pin_boots",
+      "value": "左: 問題あり（硬化） / 右: 未確認",
+      "status": "左 確認済み・右 不明"
+    },
+    {
+      "key": "condition.modification",
+      "value": "社外アルミホイール（ハブ径リングあり）",
+      "status": "申告"
+    }
+  ],
+  "intermediates": [
+    {
+      "label": "チェック項目の数（問題あり／未確認／観察せず）",
+      "value": "6／6／3",
+      "unit": "項目",
+      "formula": "項目を3状態に分類して数える"
+    },
+    {
+      "label": "問題あり項目の追加 low / typical / high",
+      "value": "0.30 / 0.95 / 5.70",
+      "unit": "人時",
+      "formula": "重2・中2の締結部（U3 の表）+ ハブ2×FX-HUBCLEAN + 左ブーツ×AG-BOOT。high には重の折れ込み・ねじ山修正を含む"
+    },
+    {
+      "label": "重2本の折れ込み・ねじ山修正（high のみ）",
+      "value": 4.0,
+      "unit": "人時",
+      "formula": "重2本×(FX-BROKEN high 1.50 + FX-THREAD high 0.50)"
+    },
+    {
+      "label": "未確認項目の上限（high のみ）",
+      "value": 2.2,
+      "unit": "人時",
+      "formula": "スライドボルト4×FX-SEIZE high + ローター2×FX-ROTOR high + 右ブーツ×AG-BOOT high"
+    },
+    {
+      "label": "追加合計 low / typical / high",
+      "value": "0.30 / 0.95 / 7.90",
+      "unit": "人時",
+      "formula": "全項目の追加の合計（未確認は high のみ）"
+    },
+    {
+      "label": "待機（浸透＋防錆乾燥）low / typical / high",
+      "value": "0.55 / 0.55 / 0.55",
+      "unit": "時間（人時に含めない）",
+      "formula": "FX-SEIZE を含む区分に 0.25 + FX-HUBCLEAN を含む区分に 0.30"
+    }
+  ],
+  "result": {
+    "labor_hours": {
+      "low": 2.0,
+      "typical": 2.65,
+      "high": 9.6
+    },
+    "elapsed_hours": {
+      "low": 2.55,
+      "typical": 3.2,
+      "high": 10.15
+    },
+    "other_outputs": [
+      {
+        "label": "追加の可能性あり（未確認項目・high にのみ含む）",
+        "value": {
+          "max_additional_labor_hours": 2.2,
+          "items": [
+            "左スライドボルト1（未確認）",
+            "左スライドボルト2（未確認）",
+            "右スライドボルト1（未確認）",
+            "右スライドボルト2（未確認）",
+            "ローター固着（左右）",
+            "スライドピンブーツ右（未確認）"
+          ]
+        },
+        "unit": "人時"
+      },
+      {
+        "label": "チェック項目の内訳",
+        "value": [
+          {
+            "job": "J1",
+            "cat": "固着",
+            "factor": "AG01",
+            "name": "ホイールナット20本（錆: 軽=通常）",
+            "state": "問題を観察していない",
+            "ops": [],
+            "low": 0.0,
+            "typical": 0.0,
+            "high": 0.0
+          },
+          {
+            "job": "J1",
+            "cat": "改造",
+            "factor": "AG06",
+            "name": "社外アルミホイール（ハブ径リング）: 承認済み追加工程なし",
+            "state": "問題を観察していない",
+            "ops": [],
+            "low": 0.0,
+            "typical": 0.0,
+            "high": 0.0
+          },
+          {
+            "job": "J2",
+            "cat": "固着",
+            "factor": "AG01",
+            "name": "左キャリパーブラケットボルト1（重）",
+            "state": "問題あり",
+            "ops": [
+              "FX-SEIZE",
+              "FX-BROKEN",
+              "FX-THREAD"
+            ],
+            "low": 0.05,
+            "typical": 0.15,
+            "high": 2.3
+          },
+          {
+            "job": "J2",
+            "cat": "固着",
+            "factor": "AG01",
+            "name": "左キャリパーブラケットボルト2（重）",
+            "state": "問題あり",
+            "ops": [
+              "FX-SEIZE",
+              "FX-BROKEN",
+              "FX-THREAD"
+            ],
+            "low": 0.05,
+            "typical": 0.15,
+            "high": 2.3
+          },
+          {
+            "job": "J2",
+            "cat": "固着",
+            "factor": "AG01",
+            "name": "右キャリパーブラケットボルト1（中）",
+            "state": "問題あり",
+            "ops": [
+              "FX-SEIZE"
+            ],
+            "low": 0.0,
+            "typical": 0.15,
+            "high": 0.3
+          },
+          {
+            "job": "J2",
+            "cat": "固着",
+            "factor": "AG01",
+            "name": "右キャリパーブラケットボルト2（中）",
+            "state": "問題あり",
+            "ops": [
+              "FX-SEIZE"
+            ],
+            "low": 0.0,
+            "typical": 0.15,
+            "high": 0.3
+          },
+          {
+            "job": "J2",
+            "cat": "固着",
+            "factor": "AG01",
+            "name": "左スライドボルト1（未確認）",
+            "state": "未確認",
+            "ops": [
+              "FX-SEIZE"
+            ],
+            "low": 0.0,
+            "typical": 0.0,
+            "high": 0.3
+          },
+          {
+            "job": "J2",
+            "cat": "固着",
+            "factor": "AG01",
+            "name": "左スライドボルト2（未確認）",
+            "state": "未確認",
+            "ops": [
+              "FX-SEIZE"
+            ],
+            "low": 0.0,
+            "typical": 0.0,
+            "high": 0.3
+          },
+          {
+            "job": "J2",
+            "cat": "固着",
+            "factor": "AG01",
+            "name": "右スライドボルト1（未確認）",
+            "state": "未確認",
+            "ops": [
+              "FX-SEIZE"
+            ],
+            "low": 0.0,
+            "typical": 0.0,
+            "high": 0.3
+          },
+          {
+            "job": "J2",
+            "cat": "固着",
+            "factor": "AG01",
+            "name": "右スライドボルト2（未確認）",
+            "state": "未確認",
+            "ops": [
+              "FX-SEIZE"
+            ],
+            "low": 0.0,
+            "typical": 0.0,
+            "high": 0.3
+          },
+          {
+            "job": "J2",
+            "cat": "錆",
+            "factor": "HK01",
+            "name": "ハブ当たり面の錆 グレード2（左右）",
+            "state": "問題あり",
+            "ops": [
+              "FX-HUBCLEAN"
+            ],
+            "low": 0.1,
+            "typical": 0.2,
+            "high": 0.3
+          },
+          {
+            "job": "J2",
+            "cat": "固着",
+            "factor": "AG01",
+            "name": "ローター固着（左右）",
+            "state": "未確認",
+            "ops": [
+              "FX-ROTOR"
+            ],
+            "low": 0.0,
+            "typical": 0.0,
+            "high": 0.8
+          },
+          {
+            "job": "J2",
+            "cat": "損傷",
+            "factor": "AG03",
+            "name": "スライドピンブーツ左（硬化）",
+            "state": "問題あり",
+            "ops": [
+              "AG-BOOT"
+            ],
+            "low": 0.1,
+            "typical": 0.15,
+            "high": 0.2
+          },
+          {
+            "job": "J2",
+            "cat": "損傷",
+            "factor": "AG03",
+            "name": "スライドピンブーツ右（未確認）",
+            "state": "未確認",
+            "ops": [
+              "AG-BOOT"
+            ],
+            "low": 0.0,
+            "typical": 0.0,
+            "high": 0.2
+          },
+          {
+            "job": "J2",
+            "cat": "改造",
+            "factor": "AG06",
+            "name": "改造（J2 の作業範囲に影響なし）",
+            "state": "問題を観察していない",
+            "ops": [],
+            "low": 0.0,
+            "typical": 0.0,
+            "high": 0.0
+          }
+        ],
+        "unit": "一覧"
+      }
+    ],
+    "note": "基準 1.7 に、問題ありの項目の追加工程を加算。未確認 6 項目（スライドボルト4本・ローター左右・右ブーツ）は typical に入れず、この案の範囲での上限である high にだけ入れた（最大 +2.20 人時、「追加の可能性あり」として別表示も残す）。high には重2本の折れ込み・ねじ山修正（+4.00 人時）も含む。typical 2.65 人時は観察済みの状態からの見込みで、未確認項目が問題ありだった場合は typical より増える。冬季前処理（雪下ろし・氷塊除去・下回り洗浄）は本案の範囲外で人時に含めない。サブフレームは作業範囲外。"
+  },
+  "assumptions": [
+    "仮定: 締結部は SPEC U3 の表のとおり。重は折れ込みの可能性があるため high に FX-BROKEN high と FX-THREAD high を各1本分加える（折れ込み確率はシナリオにない）",
+    "仮定: 未確認項目は typical に入れず、追加工程の high を high にだけ加算する（U2）",
+    "仮定: 経過時間は1人で直列に作業するとして、人時＋待機とする。待機は FX-SEIZE を含む区分に浸透 0.25、FX-HUBCLEAN を含む区分に防錆乾燥 0.3（冬季仮説値）。融解待ちは含めない",
+    "仮定: ハブ錆グレード2以上を「問題あり」とし、左右に FX-HUBCLEAN を適用する",
+    "仮定: 社外ホイールの改造は承認済み追加工程がなく、加算0とする",
+    "仮定: 共通基準 1.7 は1人運搬前提で、タイヤ重量差は本案で扱わない（U6）"
+  ],
+  "unknowns": [
+    "スライドボルト4本の錆（ブーツに隠れて未確認）。high にのみ含めた",
+    "ローター・ハブの固着（分解前で未確認）。high にのみ含めた",
+    "右スライドピンブーツの状態。high にのみ含めた",
+    "サブフレームの腐食（アンダーカバーで見えず未確認）: J2 では外さないため作業範囲外。腐食があれば作業範囲の拡大（AG04）として見積もりを変更し、顧客の了承を得る",
+    "下回り錆グレードのブレーキ周り=3（重度）・フロントサスペンション=2: S01 のチェック項目に対応する承認済み追加工程がなく、加算していない（整備士に追加工程の確認が必要）",
+    "AG02（外したときの付随部品破損）: scenario に観察状態がなく、表示しきい値未満の候補（パッドセンサー、ブレーキホース）も含め人時に加算しない（S22 の領分）",
+    "冬季前処理（HK02/HK03）は S05 の領分のため本案では扱わない",
+    "防錆アンダーコート（HK07）の影響は本案で扱わない"
+  ]
+}

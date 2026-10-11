@@ -1,0 +1,223 @@
+{
+  "id": "S23",
+  "name": "写真記録とAIによる一次分類",
+  "base_method": "共",
+  "factors": [
+    "HK01",
+    "AG04"
+  ],
+  "algorithm": [
+    "手順1: 基準 1.7 人時(重複控除後)から始める",
+    "手順2: 部位ごとに AI候補・信頼度・整備士確定値を取り、写真なしは未確認として扱う",
+    "手順3: AI候補と確定値の一致率と不一致の部位を出して記録する(工数には入れない)",
+    "手順4: 確定値だけで、J1/J2 に関係する部位のグレード→追加工程(仮定の対応表×整備士暫定値)から追加人時を出す",
+    "手順5: 関係部位と J2 の未確認の締結部(スライドボルト4本)は typical に入れず high に固着対応(FX-SEIZE high)だけを入れる(U3)。subframe は範囲外(U4)で入れない",
+    "手順6: AI候補のまま計算した場合の人時を参考に出し、確定値との差を示す",
+    "手順7: 固着対応があれば浸透待ち0.25、ハブ錆落としがあれば防錆乾燥0.3を経過時間にだけ足す(人時に入れない)。AIの分類そのものは計算せず scenario の ai_grade を入力として読む。グレード3は AG04 として顧客連絡を促す"
+  ],
+  "inputs": [
+    {
+      "key": "photo_ai_S23.brake_area.mechanic_grade",
+      "value": 3,
+      "status": "確認済み"
+    },
+    {
+      "key": "photo_ai_S23.brake_area.ai_grade(信頼度)",
+      "value": "3(0.72)",
+      "status": "仮定(AIは未検証。工数には使わない)"
+    },
+    {
+      "key": "photo_ai_S23.wheel_hub.mechanic_grade",
+      "value": 2,
+      "status": "確認済み"
+    },
+    {
+      "key": "photo_ai_S23.wheel_hub.ai_grade(信頼度)",
+      "value": "1(0.55)",
+      "status": "仮定(AIは未検証。工数には使わない)"
+    },
+    {
+      "key": "photo_ai_S23.front_suspension.mechanic_grade",
+      "value": 2,
+      "status": "確認済み"
+    },
+    {
+      "key": "photo_ai_S23.front_suspension.ai_grade(信頼度)",
+      "value": "2(0.81)",
+      "status": "仮定(AIは未検証。工数には使わない)"
+    },
+    {
+      "key": "photo_ai_S23.subframe.mechanic_grade",
+      "value": "未確認(写真なし)",
+      "status": "不明"
+    },
+    {
+      "key": "photo_ai_S23.subframe.ai_grade(信頼度)",
+      "value": "なし",
+      "status": "不明"
+    },
+    {
+      "key": "condition.underbody_rust_grade.rear_suspension",
+      "value": 1,
+      "status": "確認済み(写真なし・目視値)"
+    },
+    {
+      "key": "condition.fasteners(J2, 錆=未確認)",
+      "value": [
+        "F-L-SLD-1",
+        "F-L-SLD-2",
+        "F-R-SLD-1",
+        "F-R-SLD-2"
+      ],
+      "status": "不明(ブーツに隠れて見えない)"
+    },
+    {
+      "key": "condition.rotor_hub_seizure",
+      "value": "未確認",
+      "status": "不明"
+    },
+    {
+      "key": "base_totals.deduplicated_base",
+      "value": 1.7,
+      "status": "確認済み"
+    }
+  ],
+  "intermediates": [
+    {
+      "label": "未確認の締結部(J2)の本数",
+      "value": 4,
+      "unit": "本",
+      "formula": "condition.fasteners のうち job=J2 かつ rust=未確認。U3 により high に FX-SEIZE high × 本数を足す(typical・low は 0)。固着合計は上限8本"
+    },
+    {
+      "label": "固着対応の本数(low/typical/high)",
+      "value": [
+        1,
+        2,
+        7
+      ],
+      "unit": "本",
+      "formula": "brake_area の対応表の本数 + 未確認締結部(highのみ)。上限8本"
+    },
+    {
+      "label": "AI候補と整備士確定値の一致率",
+      "value": 0.67,
+      "unit": "比",
+      "formula": "一致 2 部位 / 両方に値がある 3 部位(写真なしは分母に入れない)"
+    },
+    {
+      "label": "不一致の部位",
+      "value": [
+        {
+          "area": "wheel_hub",
+          "ai": 1,
+          "mechanic": 2,
+          "diff": -1,
+          "ai_confidence": 0.55
+        }
+      ],
+      "unit": "部位",
+      "formula": "ai_grade != mechanic_grade の部位。diff = ai - mechanic(負ならAIが過小)"
+    },
+    {
+      "label": "写真なし(未確認)の部位",
+      "value": [
+        "subframe"
+      ],
+      "unit": "部位",
+      "formula": "mechanic_grade == null。0 とは置かず、J1/J2 に関係しない subframe は加算せず unknowns に残す(U4)"
+    },
+    {
+      "label": "確定値での追加人時(low/typical/high)",
+      "value": [
+        0.1,
+        0.7,
+        5.2
+      ],
+      "unit": "人時",
+      "formula": "Σ 工程の数量 × 暫定値。brake g3 → 固着1/2/3本+ローター0/1/2片側(+折れ込み・ねじ山修正はhighのみ)、hub g2 → 錆落とし1/2/2片側(ローター固着highのみ1片側は部位間の最大値で数えるため brake と二重に足さない)、未確認の締結部4本 → high のみ固着+4本(U3)。固着は合計で上限8本"
+    },
+    {
+      "label": "AI候補のままの追加人時(low/typical/high)",
+      "value": [
+        0.05,
+        0.5,
+        4.9
+      ],
+      "unit": "人時",
+      "formula": "確定値の代わりに ai_grade で同じ計算(採用しない参考値)。wheel_hub を 1 とみなすためハブ錆落とし等が消える"
+    },
+    {
+      "label": "AI候補採用との差(typical, 確定 - AI)",
+      "value": 0.2,
+      "unit": "人時",
+      "formula": "確定値の typical 追加 - AI候補の typical 追加。差の工程(確定-AIの数量): {'FX-HUBCLEAN': 2}"
+    },
+    {
+      "label": "AI信頼度が0.6未満の不一致部位",
+      "value": [
+        "wheel_hub"
+      ],
+      "unit": "部位",
+      "formula": "ai_confidence < 0.6 かつ両方に値がある部位。低信頼で外れた例としてAI値を確定に使わない理由に使う"
+    }
+  ],
+  "result": {
+    "labor_hours": {
+      "low": 1.8,
+      "typical": 2.4,
+      "high": 6.9
+    },
+    "elapsed_hours": {
+      "low": 2.35,
+      "typical": 2.95,
+      "high": 7.45
+    },
+    "other_outputs": [
+      {
+        "label": "AG04(穴あき等)の可能性がある部位",
+        "value": [
+          "brake_area"
+        ],
+        "unit": "部位"
+      },
+      {
+        "label": "顧客連絡の目安(追加typicalが連絡しきい値を超える)",
+        "value": true,
+        "unit": "真偽"
+      },
+      {
+        "label": "AI候補のまま計算した場合の labor_hours(参考、採用しない)",
+        "value": {
+          "low": 1.75,
+          "typical": 2.2,
+          "high": 6.6
+        },
+        "unit": "人時"
+      }
+    ],
+    "note": "工数は整備士の確定値だけで計算した。AIは wheel_hub を 1(確定は 2)と低く出し、信頼度も 0.55 と低かったため、AI値のままだとハブ錆落としが抜けて過小になる。AI候補は一次分類と写真の記録に使う。J2 のスライドボルト4本は未確認(ブーツに隠れて見えない)で、HK01(締結部の腐食)の範囲内のため high に FX-SEIZE high × 4 を入れた(U2・U3)。ローター・ハブの固着も未確認で、ローター固着の high はこの未確認の上限。subframe は写真なしの未確認だが、J1/J2 では外さない作業範囲外(U4)のため high にも入れず unknowns に残した。high はこの案の範囲での上限。経過時間には浸透待ちと防錆乾燥(冬季仮説値)を足した。"
+  },
+  "assumptions": [
+    "仮定: 関係部位は brake_area, wheel_hub, rear_suspension。front_suspension は J2 の included_operations にサスペンション側の脱着が無く、キャリパー・ブラケットの締結部は brake_area と condition.fasteners で数えているため工数に入れない(写真の記録と一致率には含める)。muffler と subframe は使わない",
+    "仮定: グレード→追加工程の対応は S02 と同じ表(brake g3: 固着1/2/3本+ローター固着0/1/2片側+折れ込み・ねじ山修正highのみ各1、hub g2: 錆落とし1/2/2片側+ローター固着highのみ1片側(ローター固着は部位間の最大値で数えるため brake と二重に足さない)、rear_suspension: 追加なし)",
+    "仮定: 各工程の人時は scenario の整備士暫定値を使う",
+    "仮定: 写真に無い関係部位(rear_suspension)は condition の目視値を使う",
+    "仮定: 一致率は部位数が4(うち比較可能3)と少なく、AIの精度の評価にはならない",
+    "仮定: 浸透待ち 0.25 と防錆乾燥 0.3(冬季仮説値)を、固着対応・ハブ錆落としがあるときだけ low/typical/high それぞれの経過時間に加える(U5)。待機は人時に入れない",
+    "仮定: キャリパー関連の締結部は最大8本(OP-CALIPER の締結部計8本)",
+    "仮定: 部位グレードから固着本数を決める対応表は写真の分類(部位単位)に合わせた概算で、個別の締結部の錆区分(重2・中2)は使わない。個別の区分で数えるのは S03 の領域。ただし錆が未確認の締結部は scenario から本数を数えて high に入れる(U3)",
+    "仮定: AIの一次分類(グレード候補)は計算で実装せず、scenario の photo_ai_S23 の ai_grade・ai_confidence を入力として読む",
+    "仮定: AI信頼度の低信頼しきい値は 0.6(仮置き)",
+    "仮定: 関係部位が未確認のときの上限は FX-SEIZE high × 1本(U3)。今回のシナリオでは関係部位はすべて確認済みなので発動しない",
+    "仮定: 顧客連絡の目安は労働時間(contact_threshold.labor_hours_gt)だけで判定する。金額のしきい値(yen_gt)は費用の入力が無いため判定しない"
+  ],
+  "unknowns": [
+    "subframe は写真なし(アンダーカバーで見えない)で未確認。J1/J2 では外さないので作業範囲外。腐食があれば作業範囲の拡大(AG04)として見積もりを変更し、顧客の了承を得る",
+    "ハブ・ローターの固着は分解前で不明。グレード2からの推定",
+    "AIの判定精度は未検証(3部位中1部位が不一致)。照明・汚れ・雪の影響も未評価",
+    "防錆アンダーコート(申告)の上から腐食が見えにくく、写真でも過小になる恐れ",
+    "スライドボルト4本とスライドピンブーツ(右)は未確認。個別の締結部の錆の評価は S03 の領域で、この案では未確認本数だけを high に入れた",
+    "顧客連絡の金額しきい値(yen_gt 5000)は費用の入力が無く判定していない"
+  ]
+}

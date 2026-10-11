@@ -1,0 +1,181 @@
+{
+  "id": "S02",
+  "name": "部位別の腐食グレード入力",
+  "base_method": "A",
+  "factors": [
+    "HK01",
+    "AG04"
+  ],
+  "algorithm": [
+    "手順1: 基準 1.7 人時(重複控除後)から始める",
+    "手順2: J1/J2 に関係する部位(brake_area, wheel_hub, front_suspension, rear_suspension)だけグレードを読む。subframe は外さないので作業範囲外",
+    "手順3: グレード→追加工程・数量の対応表(仮定)と整備士暫定値で low/typical/high の追加人時を出す",
+    "手順4: ローター固着は部位間の最大、ハブ錆落としは前2輪1回で二重加算を避ける",
+    "手順5: 範囲内の関係部位が未確認なら typical に入れず high にグレード3相当を入れる(現在は該当なし)。subframe は high に入れず unknowns に記録する",
+    "手順6: グレード3または範囲内で未確認の関係部位は AG04 の可能性として見積変更の要否確認を促す(工数には足さない)。固着対応(FX-SEIZE)・浸透待ちは S03 の領域のため扱わない",
+    "手順7: 経過時間 = 人時 + (FX-HUBCLEAN を含む case のみ)防錆乾燥の待機。待機は人時に入れない"
+  ],
+  "inputs": [
+    {
+      "key": "condition.underbody_rust_grade.front_suspension",
+      "value": 2,
+      "status": "確認済み"
+    },
+    {
+      "key": "condition.underbody_rust_grade.brake_area",
+      "value": 3,
+      "status": "確認済み"
+    },
+    {
+      "key": "condition.underbody_rust_grade.wheel_hub",
+      "value": 2,
+      "status": "確認済み"
+    },
+    {
+      "key": "condition.underbody_rust_grade.rear_suspension",
+      "value": 1,
+      "status": "確認済み"
+    },
+    {
+      "key": "condition.underbody_rust_grade.subframe",
+      "value": "未確認(null)",
+      "status": "不明(J1/J2に関係しないため未使用)"
+    },
+    {
+      "key": "condition.underbody_rust_grade.muffler",
+      "value": 2,
+      "status": "確認済み(J1/J2に関係しないため未使用)"
+    },
+    {
+      "key": "base_totals.deduplicated_base",
+      "value": 1.7,
+      "status": "確認済み"
+    }
+  ],
+  "intermediates": [
+    {
+      "label": "作業に関係する部位のグレード",
+      "value": {
+        "wheel_hub": 2,
+        "rear_suspension": 1,
+        "brake_area": 3,
+        "front_suspension": 2
+      },
+      "unit": "グレード",
+      "formula": "J1/J2 に関係する部位(brake_area, wheel_hub, front_suspension, rear_suspension)のみ。muffler・subframe は作業範囲外"
+    },
+    {
+      "label": "ローター固着の片側数(typical)",
+      "value": 1,
+      "unit": "片側",
+      "formula": "max(brake_area g3 → 1, wheel_hub g2 → 0)。部位間は最大値を採り二重加算しない"
+    },
+    {
+      "label": "ハブ錆落としの片側数(typical)",
+      "value": 2,
+      "unit": "片側",
+      "formula": "wheel_hub g2 → 前2輪を1回だけ数える(J1・J2共通)"
+    },
+    {
+      "label": "部位別の追加人時(typical)",
+      "value": {
+        "wheel_hub": 0.2,
+        "rear_suspension": 0.0,
+        "brake_area": 0.2,
+        "front_suspension": 0.0
+      },
+      "unit": "人時",
+      "formula": "Σ 数量 × 暫定値(typical)。ローター固着の重複控除前の参考値"
+    },
+    {
+      "label": "追加人時合計(low/typical/high)",
+      "value": [
+        0.05,
+        0.4,
+        1.1
+      ],
+      "unit": "人時",
+      "formula": "Σ 工程の数量 × 工程の人時(case別)。固着対応(浸透剤・加熱)・折れ込み抜き取りは S03(AG01)の領域のため扱わない"
+    },
+    {
+      "label": "グレード3の部位数",
+      "value": 1,
+      "unit": "部位",
+      "formula": "count(関係部位の grade == 3)。1以上なら AG04 の可能性として見積変更の要否確認を促す"
+    },
+    {
+      "label": "未確認の関係部位",
+      "value": [],
+      "unit": "部位",
+      "formula": "grade == null の関係部位(範囲内の未確認)。あれば high にグレード3相当を入れる。subframe は作業範囲外(U4)のため含めない"
+    },
+    {
+      "label": "防錆乾燥の待機(low/typical/high)",
+      "value": [
+        0.3,
+        0.3,
+        0.3
+      ],
+      "unit": "時間",
+      "formula": "FX-HUBCLEAN の数量 > 0 の case に elapsed_waits.rustproof_dry_wait_hours.winter_hypothesis を足す。人時には入れない"
+    }
+  ],
+  "result": {
+    "labor_hours": {
+      "low": 1.75,
+      "typical": 2.1,
+      "high": 2.8
+    },
+    "elapsed_hours": {
+      "low": 2.05,
+      "typical": 2.4,
+      "high": 3.1
+    },
+    "other_outputs": [
+      {
+        "label": "グレード3の部位(層状剥離・欠損。穴あき等AG04の有無は現物確認)",
+        "value": [
+          "brake_area"
+        ],
+        "unit": "部位"
+      },
+      {
+        "label": "AG04の可能性の確認が要る関係部位(グレード3または範囲内の未確認)",
+        "value": [
+          "brake_area"
+        ],
+        "unit": "部位"
+      },
+      {
+        "label": "顧客連絡の目安(AG04: 見積もりを変えて了承を得る必要がありうる)",
+        "value": true,
+        "unit": "真偽"
+      },
+      {
+        "label": "顧客連絡の目安(追加typicalが連絡しきい値を超える)",
+        "value": false,
+        "unit": "真偽"
+      }
+    ],
+    "note": "関係部位のグレードだけから、錆落とし(HK01)とローター固着除去の追加工程を出した。high はこの案の範囲での上限で、範囲内に未確認の部位は無い。固着対応(浸透剤・加熱。AG01)は S03 の領域なので扱わない。サブフレームは J1・J2 では外さないため作業範囲外とし、high に入れず unknowns に記録した。経過時間は、錆落とし(FX-HUBCLEAN)を含む case に防錆乾燥の待機 0.3 時間(冬季仮説値)を足した。待機は人時に入れない。"
+  },
+  "assumptions": [
+    "仮定: 関係部位は J2=brake_area/wheel_hub/front_suspension、J1=wheel_hub/rear_suspension。muffler は使わない。subframe は J1・J2 では外さないので作業範囲外とする(SPEC U4)",
+    "仮定: S02 が持つ工程は HK01 の錆落とし(FX-HUBCLEAN)とローター固着除去(FX-ROTOR)だけ。浸透剤・加熱による固着対応(FX-SEIZE。AG01)は S03 が持つ。docs §2.2 の AG01、§4.1 の S03 に合わせ、併用時の二重計上を避ける",
+    "仮定: グレード→追加工程の対応(brake_area g3: ローター固着0/1/2片側、wheel_hub g2: 錆落とし1/2/2片側+ローター固着highのみ1片側、g3: 錆落とし2片側+ローター固着1/1/2片側、front_suspension・rear_suspension: 追加工程なし)",
+    "仮定: scenario の wheel_hub は単一グレードで、ローター固着の記述(rotor_hub_seizure)から前輪ハブと読む。FX-HUBCLEAN は J2 のローター交換で当たり面を露出する前2輪を数える。J1 の後輪ハブは scenario に評価が無く、タイヤ交換では当たり面を清掃しない前提で数えない",
+    "仮定: FX-HUBCLEAN の名称は「錆落とし・防錆」だが、S02 では錆落としの人時としてだけ使う。防錆コートの再施工(HK07)は S28 などの領域で、ここでは足さない。暫定値に防錆の手間が含まれる可能性は残る",
+    "仮定: 各工程の人時は scenario の整備士暫定値(mechanic_provisional_add_ops)を使う",
+    "仮定: 経過時間は人時(1人作業)に、FX-HUBCLEAN を含む case の防錆乾燥の待機(冬季仮説値)を足す(U5)。浸透待ち(FX-SEIZE)は S03 側、氷塊の融解待ちは前処理の案側で、S02 には足さない",
+    "仮定: 段階の数と判定基準は暫定(0〜3)。docs では未定で、写真見本も未整備。範囲内の未確認(null)の関係部位は typical に入れず high にグレード3相当を置く(ルール4、U2)。現在の scenario では該当なし",
+    "仮定: AG04 の顧客連絡は、グレード3または範囲内で未確認の関係部位があるときに促す。追加人時が連絡しきい値を超えるかとは別に出す"
+  ],
+  "unknowns": [
+    "subframe は未確認(アンダーカバーで見えず撮影なし)。J1・J2 では外さないので作業範囲外とし high には入れない。腐食があれば作業範囲の拡大(AG04)として見積もりを変更し、顧客の了承を得る",
+    "ハブ・ローターの固着は分解前で不明。グレード2からの推定にすぎない",
+    "後輪ハブの状態は scenario に無く評価していない",
+    "グレードの判定のばらつき(写真見本なし)",
+    "防錆アンダーコート(申告)の上から腐食が見えにくい可能性があり、グレードが過小の恐れ",
+    "個別ボルトの錆・スライドボルトの状態・固着対応の本数はこの案では見ていない(S03 の領域)"
+  ]
+}
