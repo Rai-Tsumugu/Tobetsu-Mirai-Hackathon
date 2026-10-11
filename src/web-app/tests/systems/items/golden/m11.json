@@ -1,0 +1,301 @@
+{
+ "source": "scenarios/m11.json",
+ "scenarios": [
+  {
+   "name": "既定サンプル",
+   "expected": [
+    {
+     "ok": {
+      "status": "人の確認待ち",
+      "source_document_id": "demo-m11-pdf",
+      "page": 1,
+      "region": {
+       "x": "36",
+       "y": "120",
+       "width": "540",
+       "height": "240"
+      },
+      "import_batch_id": "289b07365ce743f8b1bcbbccc9d67dbd",
+      "staged_rows": [
+       {
+        "row_number": 1,
+        "item": {
+         "item_id": "demo-m11-paint",
+         "name": "架空サンプル塗料",
+         "category": "塗料",
+         "unit": "ml",
+         "unit_price": "95",
+         "price_type": "仕入",
+         "source": "simulator:未接続のPDF抽出、架空値",
+         "updated_at": "2026-10-11"
+        },
+        "source": "simulator:未接続のPDF抽出、架空値",
+        "status": "pending",
+        "errors": [],
+        "record_id": "853d40ab74e641899643f3202f05802d"
+       }
+      ],
+      "items": [],
+      "simulator": true,
+      "extraction_connected": false
+     }
+    },
+    {
+     "ok": {
+      "source_document_id": "demo-m11-pdf",
+      "document_type": "pdf",
+      "page": 1,
+      "page_width": "612",
+      "page_height": "792",
+      "region": {
+       "x": "36",
+       "y": "120",
+       "width": "540",
+       "height": "240"
+      },
+      "candidate_ids": [
+       "853d40ab74e641899643f3202f05802d"
+      ],
+      "imported_at": "2026-10-11T08:21:01.101201+00:00",
+      "simulator": true,
+      "extraction_connected": false,
+      "record_id": "289b07365ce743f8b1bcbbccc9d67dbd"
+     }
+    },
+    {
+     "ok": []
+    }
+   ]
+  },
+  {
+   "name": "領域指定と人の選択承認",
+   "expected": [
+    {
+     "ok": {
+      "status": "人の確認待ち",
+      "source_document_id": "opaque-doc-42",
+      "page": 2,
+      "region": {
+       "x": "20",
+       "y": "40",
+       "width": "300",
+       "height": "120"
+      },
+      "import_batch_id": "961674324be5465fbc7aedd68897c5ab",
+      "staged_rows": [
+       {
+        "row_number": 1,
+        "item": {
+         "item_id": "demo-m11-paint",
+         "name": "架空サンプル塗料",
+         "category": "塗料",
+         "unit": "ml",
+         "unit_price": "95",
+         "price_type": "仕入",
+         "source": "simulator:未接続のPDF抽出、架空値",
+         "updated_at": "2026-10-11"
+        },
+        "source": "simulator:未接続のPDF抽出、架空値",
+        "status": "pending",
+        "errors": [],
+        "record_id": "c267d07402454117a5b164dbf6f2359e"
+       }
+      ],
+      "items": [],
+      "simulator": true,
+      "extraction_connected": false
+     }
+    },
+    {
+     "ok": {
+      "row_number": 1,
+      "item": {
+       "item_id": "demo-m11-paint",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "95",
+       "price_type": "仕入",
+       "source": "simulator:未接続のPDF抽出、架空値",
+       "updated_at": "2026-10-11"
+      },
+      "source": "simulator:未接続のPDF抽出、架空値",
+      "status": "pending",
+      "errors": [],
+      "record_id": "c267d07402454117a5b164dbf6f2359e"
+     }
+    },
+    {
+     "ok": {
+      "items": [
+       {
+        "item_id": "demo-m11-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "95",
+        "price_type": "仕入",
+        "source": "simulator:未接続のPDF抽出、架空値",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "price_version_ids": [
+       "d0de6d9a68984ba4b48b4426706d2c94"
+      ],
+      "status": "承認済み",
+      "import_batch_id": "961674324be5465fbc7aedd68897c5ab",
+      "simulator": true
+     }
+    },
+    {
+     "ok": [
+      {
+       "price_version_id": "d0de6d9a68984ba4b48b4426706d2c94",
+       "item": {
+        "item_id": "demo-m11-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "95",
+        "price_type": "仕入",
+        "source": "simulator:未接続のPDF抽出、架空値",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "担当者",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "取込候補を人が確認",
+       "metadata": {}
+      }
+     ]
+    },
+    {
+     "error": "ValidationError",
+     "message": "この候補はすでに承認されています"
+    }
+   ]
+  },
+  {
+   "name": "不正なページ・領域・候補",
+   "expected": [
+    {
+     "error": "ValidationError",
+     "message": "page: 1〜10000の整数を指定してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "page: 1〜10000の整数を指定してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "page: 1〜10000の整数を指定してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "page: 1〜10000の整数を指定してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "region: ページ範囲内の領域を指定してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "region.width: 有限の正数/非負数を入力してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "region: x / y / width / height を指定してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "region: x / y / width / height を指定してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "region.x: 有限の正数/非負数を入力してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "source_document_id: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "source_document_id: 参照IDは128文字以下で指定してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "source_document_id: 参照IDは128文字以下で指定してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "page_width: 有限の正数/非負数を入力してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "action: stage / sample / approve を指定してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "payload: 入力を確認してください"
+    },
+    {
+     "ok": {
+      "status": "人の確認待ち",
+      "source_document_id": "opaque-doc-42",
+      "page": 1,
+      "region": {
+       "x": "20",
+       "y": "40",
+       "width": "300",
+       "height": "120"
+      },
+      "import_batch_id": "5ce48efa5698480e81735c4426f9bf08",
+      "staged_rows": [
+       {
+        "row_number": 1,
+        "item": {
+         "item_id": "demo-m11-paint",
+         "name": "架空サンプル塗料",
+         "category": "塗料",
+         "unit": "ml",
+         "unit_price": "95",
+         "price_type": "仕入",
+         "source": "simulator:未接続のPDF抽出、架空値",
+         "updated_at": "2026-10-11"
+        },
+        "source": "simulator:未接続のPDF抽出、架空値",
+        "status": "pending",
+        "errors": [],
+        "record_id": "fbc594b3f46d40b9886af348ba9107bd"
+       }
+      ],
+      "items": [],
+      "simulator": true,
+      "extraction_connected": false
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "candidate_ids: このPDF候補から承認対象を選択してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "candidate_ids: このPDF候補から承認対象を選択してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "candidate_ids: 候補IDを選択してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "import_batch: 指定した記録がありません"
+    },
+    {
+     "ok": []
+    }
+   ]
+  }
+ ]
+}

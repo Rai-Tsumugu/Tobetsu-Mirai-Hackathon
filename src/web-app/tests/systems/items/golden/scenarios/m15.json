@@ -1,0 +1,346 @@
+{
+ "scenarios": [
+  {
+   "name": "既定は期限なしを区別",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M15",
+     "payload": {
+      "action": "list",
+      "item_id": "demo-m15-paint",
+      "price_type": "仕入",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "demo-m15-paint",
+     "price_type": "仕入"
+    },
+    {
+     "op": "run",
+     "module": "M15",
+     "payload": {
+      "action": "list",
+      "item_id": "demo-m15-paint",
+      "price_type": "販売"
+     }
+    }
+   ]
+  },
+  {
+   "name": "未確認・未開始・期限切れ",
+   "steps": [
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "m15-pending",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "500",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "架空確認者",
+     "kwargs": {
+      "status": "pending",
+      "valid_until": "2026-10-15"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M15",
+     "payload": {
+      "item_id": "m15-pending",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "m15-expired",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "450",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "架空担当",
+     "kwargs": {
+      "valid_from": "2026-10-01",
+      "valid_until": "2026-10-10"
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "m15-expired",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "470",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "架空担当",
+     "kwargs": {
+      "valid_from": "2026-10-20",
+      "supplier_id": "S1",
+      "simulator": true
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "m15-expired",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "480",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "架空担当",
+     "kwargs": {
+      "valid_from": "2026-10-01",
+      "valid_until": "2026-10-31"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M15",
+     "payload": {
+      "item_id": "m15-expired",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M15",
+     "payload": {
+      "action": "list",
+      "item_id": "m15-expired",
+      "as_of": "2026-10-11",
+      "supplier_id": "S1"
+     }
+    },
+    {
+     "op": "get_price",
+     "item_id": "m15-expired",
+     "price_type": "仕入",
+     "kwargs": {
+      "as_of": "2026-10-11",
+      "supplier_id": ""
+     }
+    }
+   ]
+  },
+  {
+   "name": "期限の追記",
+   "steps": [
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "m15-versioned",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "731",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "初回担当",
+     "kwargs": {
+      "valid_from": "2026-10-01",
+      "valid_until": null,
+      "reason": "初回価格",
+      "freight_basis": "included",
+      "simulator": true
+     }
+    },
+    {
+     "op": "run",
+     "module": "M15",
+     "payload": {
+      "action": "set_validity",
+      "item_id": "m15-versioned",
+      "price_type": "仕入",
+      "valid_from": "2026-10-01",
+      "valid_until": "2026-10-20",
+      "reason": "仕入先の回答に基づき期限を設定",
+      "confirmed_by": "担当A"
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "m15-versioned",
+     "price_type": "仕入"
+    },
+    {
+     "op": "run",
+     "module": "M15",
+     "payload": {
+      "action": "set_validity",
+      "item_id": "m15-versioned",
+      "reason": "期限解除",
+      "confirmed_by": "担当B"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M15",
+     "payload": {
+      "action": "set_validity",
+      "item_id": "m15-versioned",
+      "reason": "確認",
+      "confirmed_by": "担当B",
+      "supplier_id": "none"
+     }
+    }
+   ]
+  },
+  {
+   "name": "未承認の昇格と不正な入力の拒否",
+   "steps": [
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "m15-pending-edit",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "450",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "架空担当",
+     "kwargs": {
+      "status": "pending"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M15",
+     "payload": {
+      "action": "set_validity",
+      "item_id": "m15-pending-edit",
+      "reason": "確認",
+      "confirmed_by": "担当A"
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "m15-invalid",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "450",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "架空担当"
+    },
+    {
+     "op": "run",
+     "module": "M15",
+     "payload": {
+      "action": "set_validity",
+      "item_id": "m15-invalid",
+      "confirmed_by": "担当A"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M15",
+     "payload": {
+      "action": "set_validity",
+      "item_id": "m15-invalid",
+      "reason": "期限設定"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M15",
+     "payload": {
+      "action": "set_validity",
+      "item_id": "m15-invalid",
+      "valid_from": "2026-10-12",
+      "valid_until": "2026-10-11",
+      "reason": "誤入力テスト",
+      "confirmed_by": "担当A"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M15",
+     "payload": {
+      "action": "set_validity",
+      "item_id": "m15-invalid",
+      "valid_from": null,
+      "reason": "x",
+      "confirmed_by": "担当A"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M15",
+     "payload": {
+      "action": "list",
+      "item_id": "m15-invalid",
+      "extra": 1
+     }
+    },
+    {
+     "op": "run",
+     "module": "M15",
+     "payload": {
+      "action": "list",
+      "item_id": "m15-invalid",
+      "price_type": "x"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M15",
+     "payload": {
+      "action": "list",
+      "item_id": "nothing"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M15",
+     "payload": {
+      "action": "guess"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M15",
+     "payload": {
+      "action": "set_validity",
+      "item_id": "m15-invalid",
+      "reason": "x",
+      "confirmed_by": "担当A",
+      "supplier_id": "  "
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "m15-invalid"
+    }
+   ]
+  }
+ ]
+}

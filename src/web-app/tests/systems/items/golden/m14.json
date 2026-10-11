@@ -1,0 +1,319 @@
+{
+ "source": "scenarios/m14.json",
+ "scenarios": [
+  {
+   "name": "既定は架空価格を作り人の確認日を表示",
+   "expected": [
+    {
+     "ok": {
+      "status": "確認済み",
+      "item_id": "demo-m14-paint",
+      "price_type": "仕入",
+      "human_checked_at": "2026-10-11",
+      "elapsed_days": 0,
+      "source_updated_at": "2026-10-11",
+      "as_of": "2026-10-11",
+      "message": "最終人確認から0日経過",
+      "simulator": true
+     }
+    },
+    {
+     "ok": [
+      {
+       "price_version_id": "a2ad3c7309264648b5b91f7f68075e11",
+       "item": {
+        "item_id": "demo-m14-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "80",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空デモ担当",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "初回登録",
+       "metadata": {
+        "checked_at": "2026-10-11",
+        "source_updated_at": "2026-10-11",
+        "simulator": true
+       }
+      }
+     ]
+    },
+    {
+     "ok": {
+      "status": "確認済み",
+      "item_id": "demo-m14-paint",
+      "price_type": "仕入",
+      "human_checked_at": "2026-10-11",
+      "elapsed_days": 10,
+      "source_updated_at": "2026-10-11",
+      "as_of": "2026-10-21",
+      "message": "最終人確認から10日経過",
+      "simulator": true
+     }
+    }
+   ]
+  },
+  {
+   "name": "確認日と出所日を区別",
+   "expected": [
+    {
+     "ok": {
+      "price_version_id": "ac1d27583d5844108dfe2196ce306c4d",
+      "item": {
+       "item_id": "m14-example",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "個",
+       "unit_price": "731",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {
+       "checked_at": "2026-10-01",
+       "source_updated_at": "2026-10-09"
+      }
+     }
+    },
+    {
+     "ok": {
+      "status": "確認済み",
+      "item_id": "m14-example",
+      "price_type": "仕入",
+      "human_checked_at": "2026-10-01",
+      "elapsed_days": 10,
+      "source_updated_at": "2026-10-09",
+      "as_of": "2026-10-11",
+      "message": "最終人確認から10日経過",
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "price_version_id": "973aec74abb341a2b5868ae87839ce42",
+      "item": {
+       "item_id": "m14-unchecked",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "500",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {}
+     }
+    },
+    {
+     "ok": {
+      "status": "未確認",
+      "item_id": "m14-unchecked",
+      "price_type": "仕入",
+      "human_checked_at": null,
+      "elapsed_days": null,
+      "source_updated_at": "2026-10-11",
+      "as_of": "2026-10-11",
+      "message": "最終人確認日は未確認です",
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "price_version_id": "c94b7f60ab2d43a0b55569f1e61a5d9a",
+      "item": {
+       "item_id": "m14-sale",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "500",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {
+       "checked_at": "2025-10-11",
+       "simulator": "yes"
+      }
+     }
+    },
+    {
+     "ok": {
+      "status": "確認済み",
+      "item_id": "m14-sale",
+      "price_type": "販売",
+      "human_checked_at": "2025-10-11",
+      "elapsed_days": 365,
+      "source_updated_at": "2026-10-11",
+      "as_of": "2026-10-11",
+      "message": "最終人確認から365日経過",
+      "simulator": true
+     }
+    },
+    {
+     "ok": {
+      "price_version_id": "732374f3a0e14c59b6b5ecefde29be3b",
+      "item": {
+       "item_id": "m14-bad",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "500",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {
+       "checked_at": "yesterday"
+      }
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "checked_at: ISO形式の日付が必要です"
+    },
+    {
+     "ok": {
+      "price_version_id": "255c5fb5eede4b9a887af4aec5f9c611",
+      "item": {
+       "item_id": "m14-empty",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "500",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {
+       "checked_at": ""
+      }
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "checked_at: 入力が必要です"
+    }
+   ]
+  },
+  {
+   "name": "未来日・未登録・不正入力",
+   "expected": [
+    {
+     "ok": {
+      "price_version_id": "e15ef162221a4af6b69a0ae9c46cefb4",
+      "item": {
+       "item_id": "m14-future",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "500",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {
+       "checked_at": "2026-10-12",
+       "source_updated_at": "2026-10-11"
+      }
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "checked_at: 基準日より未来の日付です"
+    },
+    {
+     "ok": {
+      "price_version_id": "446aabc9fe0447d58a63792c541447e0",
+      "item": {
+       "item_id": "m14-future-source",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "500",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {
+       "checked_at": "2026-10-10",
+       "source_updated_at": "2026-10-12"
+      }
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "source_updated_at: 基準日より未来の日付です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "価格未確認: 対象価格がありません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "price_type: 選択値を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "payload: item_id、price_type、as_ofだけ指定できます"
+    },
+    {
+     "error": "ValidationError",
+     "message": "as_of: ISO形式の日付が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "payload: 入力を確認してください"
+    }
+   ]
+  }
+ ]
+}

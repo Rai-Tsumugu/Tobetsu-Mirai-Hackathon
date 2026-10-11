@@ -1,0 +1,756 @@
+{
+ "source": "scenarios/m16.json",
+ "scenarios": [
+  {
+   "name": "既定は未確認の架空価格",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "as_of": "2026-10-11",
+      "queue": [
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "price_type": "仕入",
+        "supplier_id": "",
+        "price_version_id": "6677da03ccb1427fafe69eb8794baf22",
+        "unit_price": "80",
+        "unit": "ml",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11",
+        "valid_until": null,
+        "reason": "未確認",
+        "priority": 1,
+        "status": "未対応",
+        "confirmed_by": null,
+        "review_reason": null,
+        "checked_at": null,
+        "simulator": true
+       },
+       {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "price_type": "販売",
+        "supplier_id": "",
+        "price_version_id": "784b4a8d888e4b7ca54388c896a99220",
+        "unit_price": "120",
+        "unit": "ml",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11",
+        "valid_until": null,
+        "reason": "未確認",
+        "priority": 1,
+        "status": "未対応",
+        "confirmed_by": null,
+        "review_reason": null,
+        "checked_at": null,
+        "simulator": true
+       }
+      ],
+      "priority_order": [
+       "期限切れ",
+       "未確認",
+       "差分あり"
+      ],
+      "simulator": true
+     }
+    }
+   ]
+  },
+  {
+   "name": "一覧は価格を作らない",
+   "expected": [
+    {
+     "ok": {
+      "as_of": "2026-10-11",
+      "queue": [],
+      "priority_order": [
+       "期限切れ",
+       "未確認",
+       "差分あり"
+      ],
+      "simulator": false
+     }
+    },
+    {
+     "ok": []
+    }
+   ]
+  },
+  {
+   "name": "優先順位",
+   "expected": [
+    {
+     "ok": {
+      "price_version_id": "57f3b78517af47309c5b46cf5d677ac1",
+      "item": {
+       "item_id": "z-diff",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "100",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {
+       "checked_at": "2026-10-10"
+      }
+     }
+    },
+    {
+     "ok": {
+      "price_version_id": "c27b36245fde44e7a7a1685a4626f9fd",
+      "item": {
+       "item_id": "z-diff",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "120",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {
+       "checked_at": "2026-10-10"
+      }
+     }
+    },
+    {
+     "ok": {
+      "price_version_id": "1413483a34a04500a3139934a4e6b99d",
+      "item": {
+       "item_id": "b-unconfirmed",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "50",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {}
+     }
+    },
+    {
+     "ok": {
+      "price_version_id": "b62fc7af85fc48ab837b2b56eecbb75e",
+      "item": {
+       "item_id": "a-expired",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "70",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-01"
+      },
+      "confirmed_by": "架空担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-01",
+      "valid_until": "2026-10-10",
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {
+       "checked_at": "2026-10-01"
+      }
+     }
+    },
+    {
+     "ok": {
+      "price_version_id": "1f1b92c8fba64a31a4363d3caec4041a",
+      "item": {
+       "item_id": "c-flag",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "10",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空担当",
+      "supplier_id": "S",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {
+       "checked_at": "2026-10-10",
+       "has_diff": true
+      }
+     }
+    },
+    {
+     "ok": {
+      "price_version_id": "58f05edea6854b9ea0f0409521d4fcfa",
+      "item": {
+       "item_id": "d-ok",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "10",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {
+       "checked_at": "2026-10-10"
+      }
+     }
+    },
+    {
+     "ok": {
+      "price_version_id": "9739558139b544708d78c12e89fef306",
+      "item": {
+       "item_id": "e-pending",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "10",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": "2026-12-01",
+      "status": "pending",
+      "reason": "初回登録",
+      "metadata": {
+       "checked_at": "2026-10-10"
+      }
+     }
+    },
+    {
+     "ok": {
+      "price_version_id": "57bed97e250e4925a300580120f4b8d7",
+      "item": {
+       "item_id": "d-ok",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "12",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "架空担当",
+      "supplier_id": "",
+      "valid_from": "2026-09-01",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {
+       "checked_at": "2026-10-10"
+      }
+     }
+    },
+    {
+     "ok": {
+      "as_of": "2026-10-11",
+      "queue": [
+       {
+        "item_id": "a-expired",
+        "name": "架空サンプル塗料",
+        "price_type": "仕入",
+        "supplier_id": "",
+        "price_version_id": "b62fc7af85fc48ab837b2b56eecbb75e",
+        "unit_price": "70",
+        "unit": "ml",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-01",
+        "valid_until": "2026-10-10",
+        "reason": "期限切れ",
+        "priority": 0,
+        "status": "未対応",
+        "confirmed_by": null,
+        "review_reason": null,
+        "checked_at": "2026-10-01",
+        "simulator": true
+       },
+       {
+        "item_id": "e-pending",
+        "name": "架空サンプル塗料",
+        "price_type": "販売",
+        "supplier_id": "",
+        "price_version_id": "9739558139b544708d78c12e89fef306",
+        "unit_price": "10",
+        "unit": "ml",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11",
+        "valid_until": "2026-12-01",
+        "reason": "未確認",
+        "priority": 1,
+        "status": "未対応",
+        "confirmed_by": null,
+        "review_reason": null,
+        "checked_at": "2026-10-10",
+        "simulator": true
+       },
+       {
+        "item_id": "b-unconfirmed",
+        "name": "架空サンプル塗料",
+        "price_type": "仕入",
+        "supplier_id": "",
+        "price_version_id": "1413483a34a04500a3139934a4e6b99d",
+        "unit_price": "50",
+        "unit": "ml",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11",
+        "valid_until": null,
+        "reason": "未確認",
+        "priority": 1,
+        "status": "未対応",
+        "confirmed_by": null,
+        "review_reason": null,
+        "checked_at": null,
+        "simulator": true
+       },
+       {
+        "item_id": "c-flag",
+        "name": "架空サンプル塗料",
+        "price_type": "販売",
+        "supplier_id": "S",
+        "price_version_id": "1f1b92c8fba64a31a4363d3caec4041a",
+        "unit_price": "10",
+        "unit": "ml",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11",
+        "valid_until": null,
+        "reason": "差分あり",
+        "priority": 2,
+        "status": "未対応",
+        "confirmed_by": null,
+        "review_reason": null,
+        "checked_at": "2026-10-10",
+        "simulator": true
+       },
+       {
+        "item_id": "z-diff",
+        "name": "架空サンプル塗料",
+        "price_type": "仕入",
+        "supplier_id": "",
+        "price_version_id": "c27b36245fde44e7a7a1685a4626f9fd",
+        "unit_price": "120",
+        "unit": "ml",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11",
+        "valid_until": null,
+        "reason": "差分あり",
+        "priority": 2,
+        "status": "未対応",
+        "confirmed_by": null,
+        "review_reason": null,
+        "checked_at": "2026-10-10",
+        "simulator": true
+       }
+      ],
+      "priority_order": [
+       "期限切れ",
+       "未確認",
+       "差分あり"
+      ],
+      "simulator": true
+     }
+    }
+   ]
+  },
+  {
+   "name": "確認済みにすると価格は同じまま版を追記",
+   "expected": [
+    {
+     "ok": {
+      "price_version_id": "c6c1b20f86b649659461685ca2bd5c25",
+      "item": {
+       "item_id": "part-a",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "845",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "登録者",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {}
+     }
+    },
+    {
+     "ok": {
+      "status": "確認済み",
+      "item_id": "part-a",
+      "price_type": "仕入",
+      "supplier_id": "",
+      "confirmed_by": "担当者A",
+      "reason": "納品書と照合",
+      "checked_at": "2026-10-10",
+      "price_version_id": "e6ca3a4669654e0cb9edcd7c68859ded",
+      "unit_price": "845",
+      "record_id": "part-a:仕入:",
+      "simulator": false
+     }
+    },
+    {
+     "ok": [
+      {
+       "price_version_id": "c6c1b20f86b649659461685ca2bd5c25",
+       "item": {
+        "item_id": "part-a",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "845",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "登録者",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "初回登録",
+       "metadata": {}
+      },
+      {
+       "price_version_id": "e6ca3a4669654e0cb9edcd7c68859ded",
+       "item": {
+        "item_id": "part-a",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "845",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "担当者A",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "納品書と照合",
+       "metadata": {
+        "checked_at": "2026-10-10"
+       }
+      }
+     ]
+    },
+    {
+     "ok": {
+      "as_of": "2026-10-11",
+      "queue": [],
+      "priority_order": [
+       "期限切れ",
+       "未確認",
+       "差分あり"
+      ],
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "price_version_id": "c708339585bb4072ad94d9653c35d7a7",
+      "item": {
+       "item_id": "part-a",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "900",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "別担当",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {
+       "checked_at": "2026-10-11"
+      }
+     }
+    },
+    {
+     "ok": {
+      "as_of": "2026-10-11",
+      "queue": [
+       {
+        "item_id": "part-a",
+        "name": "架空サンプル塗料",
+        "price_type": "仕入",
+        "supplier_id": "",
+        "price_version_id": "c708339585bb4072ad94d9653c35d7a7",
+        "unit_price": "900",
+        "unit": "ml",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11",
+        "valid_until": null,
+        "reason": "差分あり",
+        "priority": 2,
+        "status": "未対応",
+        "confirmed_by": null,
+        "review_reason": null,
+        "checked_at": "2026-10-11",
+        "simulator": true
+       }
+      ],
+      "priority_order": [
+       "期限切れ",
+       "未確認",
+       "差分あり"
+      ],
+      "simulator": true
+     }
+    },
+    {
+     "ok": [
+      {
+       "item_id": "part-a",
+       "price_type": "仕入",
+       "supplier_id": "",
+       "status": "確認済み",
+       "confirmed_by": "担当者A",
+       "reason": "納品書と照合",
+       "checked_at": "2026-10-10",
+       "price_version_id": "e6ca3a4669654e0cb9edcd7c68859ded",
+       "record_id": "part-a:仕入:"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "要調査は状態と理由を残す",
+   "expected": [
+    {
+     "ok": {
+      "price_version_id": "038f2c51bd664c54817de87e10d71901",
+      "item": {
+       "item_id": "part-b",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "990",
+       "price_type": "販売",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "登録者",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {
+       "simulator": true
+      }
+     }
+    },
+    {
+     "ok": {
+      "status": "要調査",
+      "item_id": "part-b",
+      "price_type": "販売",
+      "supplier_id": "",
+      "confirmed_by": "担当者B",
+      "reason": "出所へ照会中",
+      "checked_at": null,
+      "price_version_id": "038f2c51bd664c54817de87e10d71901",
+      "unit_price": "990",
+      "record_id": "part-b:販売:",
+      "simulator": true
+     }
+    },
+    {
+     "ok": {
+      "as_of": "2026-10-11",
+      "queue": [
+       {
+        "item_id": "part-b",
+        "name": "架空サンプル塗料",
+        "price_type": "販売",
+        "supplier_id": "",
+        "price_version_id": "038f2c51bd664c54817de87e10d71901",
+        "unit_price": "990",
+        "unit": "ml",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11",
+        "valid_until": null,
+        "reason": "未確認",
+        "priority": 1,
+        "status": "要調査",
+        "confirmed_by": "担当者B",
+        "review_reason": "出所へ照会中",
+        "checked_at": null,
+        "simulator": true
+       }
+      ],
+      "priority_order": [
+       "期限切れ",
+       "未確認",
+       "差分あり"
+      ],
+      "simulator": true
+     }
+    },
+    {
+     "ok": [
+      {
+       "price_version_id": "038f2c51bd664c54817de87e10d71901",
+       "item": {
+        "item_id": "part-b",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "990",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "登録者",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "初回登録",
+       "metadata": {
+        "simulator": true
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "不正な確認入力と未来日",
+   "expected": [
+    {
+     "ok": {
+      "price_version_id": "24078a46e9444dfeb6ab0bd9d029ada6",
+      "item": {
+       "item_id": "part-c",
+       "name": "架空サンプル塗料",
+       "category": "塗料",
+       "unit": "ml",
+       "unit_price": "10",
+       "price_type": "仕入",
+       "source": "simulator:架空値",
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_by": "登録者",
+      "supplier_id": "",
+      "valid_from": "2026-10-11",
+      "valid_until": null,
+      "status": "approved",
+      "reason": "初回登録",
+      "metadata": {}
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "status: 確認済みまたは要調査を選択してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "confirmed_by: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "reason: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "checked_at: 基準日より未来の日付です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "価格未確認: 対象価格がありません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "price_type: 仕入または販売を選択してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "価格未確認: 対象価格がありません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "payload: 指定できない項目があります"
+    },
+    {
+     "error": "ValidationError",
+     "message": "as_of: ISO形式の日付が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "payload: 指定できない項目があります"
+    },
+    {
+     "error": "ValidationError",
+     "message": "action: list / update_status を選択してください"
+    },
+    {
+     "ok": [
+      {
+       "price_version_id": "24078a46e9444dfeb6ab0bd9d029ada6",
+       "item": {
+        "item_id": "part-c",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "10",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "登録者",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "初回登録",
+       "metadata": {}
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

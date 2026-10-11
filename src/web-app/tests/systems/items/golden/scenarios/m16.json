@@ -1,0 +1,449 @@
+{
+ "scenarios": [
+  {
+   "name": "既定は未確認の架空価格",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M16",
+     "payload": {
+      "action": "list",
+      "as_of": "2026-10-11"
+     }
+    }
+   ]
+  },
+  {
+   "name": "一覧は価格を作らない",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M16",
+     "payload": {
+      "action": "list",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "price_versions"
+    }
+   ]
+  },
+  {
+   "name": "優先順位",
+   "steps": [
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "z-diff",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "100",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "架空担当",
+     "kwargs": {
+      "checked_at": "2026-10-10"
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "z-diff",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "120",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "架空担当",
+     "kwargs": {
+      "checked_at": "2026-10-10"
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "b-unconfirmed",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "50",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "架空担当"
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "a-expired",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "70",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-01"
+     },
+     "confirmed_by": "架空担当",
+     "kwargs": {
+      "valid_from": "2026-10-01",
+      "valid_until": "2026-10-10",
+      "checked_at": "2026-10-01"
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "c-flag",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "10",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "架空担当",
+     "kwargs": {
+      "checked_at": "2026-10-10",
+      "has_diff": true,
+      "supplier_id": "S"
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "d-ok",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "10",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "架空担当",
+     "kwargs": {
+      "checked_at": "2026-10-10"
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "e-pending",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "10",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "架空担当",
+     "kwargs": {
+      "checked_at": "2026-10-10",
+      "status": "pending",
+      "valid_until": "2026-12-01"
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "d-ok",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "12",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "架空担当",
+     "kwargs": {
+      "checked_at": "2026-10-10",
+      "valid_from": "2026-09-01"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M16",
+     "payload": {
+      "as_of": "2026-10-11"
+     }
+    }
+   ]
+  },
+  {
+   "name": "確認済みにすると価格は同じまま版を追記",
+   "steps": [
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "part-a",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "845",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "登録者"
+    },
+    {
+     "op": "run",
+     "module": "M16",
+     "payload": {
+      "action": "update_status",
+      "item_id": "part-a",
+      "price_type": "仕入",
+      "status": "確認済み",
+      "confirmed_by": "担当者A",
+      "reason": "納品書と照合",
+      "checked_at": "2026-10-10",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "part-a",
+     "price_type": "仕入"
+    },
+    {
+     "op": "run",
+     "module": "M16",
+     "payload": {
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "part-a",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "900",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "別担当",
+     "kwargs": {
+      "checked_at": "2026-10-11"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M16",
+     "payload": {
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "records",
+     "namespace": "freshness_queue"
+    }
+   ]
+  },
+  {
+   "name": "要調査は状態と理由を残す",
+   "steps": [
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "part-b",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "990",
+      "price_type": "販売",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "登録者",
+     "kwargs": {
+      "simulator": true
+     }
+    },
+    {
+     "op": "run",
+     "module": "M16",
+     "payload": {
+      "action": "update_status",
+      "item_id": "part-b",
+      "price_type": "販売",
+      "status": "要調査",
+      "confirmed_by": "担当者B",
+      "reason": "出所へ照会中"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M16",
+     "payload": {
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "part-b",
+     "price_type": "販売"
+    }
+   ]
+  },
+  {
+   "name": "不正な確認入力と未来日",
+   "steps": [
+    {
+     "op": "add_price",
+     "item": {
+      "item_id": "part-c",
+      "name": "架空サンプル塗料",
+      "category": "塗料",
+      "unit": "ml",
+      "unit_price": "10",
+      "price_type": "仕入",
+      "source": "simulator:架空値",
+      "updated_at": "2026-10-11"
+     },
+     "confirmed_by": "登録者"
+    },
+    {
+     "op": "run",
+     "module": "M16",
+     "payload": {
+      "action": "update_status",
+      "item_id": "part-c",
+      "status": "価格更新",
+      "confirmed_by": "担当者",
+      "reason": "確認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M16",
+     "payload": {
+      "action": "update_status",
+      "item_id": "part-c",
+      "status": "確認済み",
+      "confirmed_by": "",
+      "reason": "確認"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M16",
+     "payload": {
+      "action": "update_status",
+      "item_id": "part-c",
+      "status": "確認済み",
+      "confirmed_by": "担当者",
+      "reason": " "
+     }
+    },
+    {
+     "op": "run",
+     "module": "M16",
+     "payload": {
+      "action": "update_status",
+      "item_id": "part-c",
+      "status": "確認済み",
+      "confirmed_by": "担当者",
+      "reason": "確認",
+      "checked_at": "2026-10-12",
+      "as_of": "2026-10-11"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M16",
+     "payload": {
+      "action": "update_status",
+      "item_id": "part-c",
+      "status": "確認済み",
+      "confirmed_by": "担当者",
+      "reason": "確認",
+      "price_type": "販売"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M16",
+     "payload": {
+      "action": "update_status",
+      "item_id": "part-c",
+      "status": "確認済み",
+      "confirmed_by": "担当者",
+      "reason": "確認",
+      "price_type": "x"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M16",
+     "payload": {
+      "action": "update_status",
+      "item_id": "part-c",
+      "status": "確認済み",
+      "confirmed_by": "担当者",
+      "reason": "確認",
+      "supplier_id": "S9"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M16",
+     "payload": {
+      "action": "update_status",
+      "item_id": "part-c",
+      "status": "確認済み",
+      "confirmed_by": "担当者",
+      "reason": "確認",
+      "extra": 1
+     }
+    },
+    {
+     "op": "run",
+     "module": "M16",
+     "payload": {
+      "action": "list",
+      "as_of": "bad"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M16",
+     "payload": {
+      "action": "list",
+      "as_of": "2026-10-11",
+      "x": 1
+     }
+    },
+    {
+     "op": "run",
+     "module": "M16",
+     "payload": {
+      "action": "guess"
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "part-c",
+     "price_type": "仕入"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,735 @@
+{
+ "scenarios": [
+  {
+   "name": "既定は mock 候補で登録しない",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M12",
+     "payload": {
+      "action": "stage",
+      "source_key": "demo-m12-ocr",
+      "ocr_fields": {
+       "item_id": {
+        "value": "demo-m12-thinner",
+        "confidence": "0.99"
+       },
+       "name": {
+        "value": "架空デモ溶剤",
+        "confidence": "0.96"
+       },
+       "category": {
+        "value": "溶剤",
+        "confidence": "0.99"
+       },
+       "unit": {
+        "value": "L",
+        "confidence": "0.98"
+       },
+       "unit_price": {
+        "value": "480",
+        "confidence": "0.94"
+       },
+       "price_type": {
+        "value": "仕入",
+        "confidence": "0.97"
+       },
+       "source": {
+        "value": "simulator:架空OCR価格票",
+        "confidence": "0.92"
+       },
+       "updated_at": {
+        "value": "2026-10-11",
+        "confidence": "0.95"
+       }
+      },
+      "source": "simulator:架空OCR"
+     }
+    },
+    {
+     "op": "latest",
+     "namespace": "m12_ocr_queue",
+     "record_id": "$ref:0.candidate_id"
+    },
+    {
+     "op": "price_versions"
+    }
+   ]
+  },
+  {
+   "name": "低信頼度・欠落・型の違う候補",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M12",
+     "payload": {
+      "action": "stage",
+      "source_key": "demo-m12-ocr",
+      "ocr_fields": {
+       "item_id": {
+        "value": "demo-m12-thinner",
+        "confidence": "0.99"
+       },
+       "name": {
+        "value": "架空デモ溶剤",
+        "confidence": "0.96"
+       },
+       "category": {
+        "value": "溶剤",
+        "confidence": "0.99"
+       },
+       "unit_price": {
+        "value": "480",
+        "confidence": "0.4"
+       },
+       "price_type": {
+        "value": "仕入",
+        "confidence": "0.97"
+       },
+       "source": {
+        "value": "simulator:架空OCR価格票",
+        "confidence": "0.92"
+       },
+       "updated_at": {
+        "value": "2026-10-11",
+        "confidence": "0.95"
+       }
+      },
+      "source": "simulator:架空OCR"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M12",
+     "payload": {
+      "action": "stage",
+      "source_key": "demo-m12-ocr",
+      "ocr_fields": {
+       "item_id": {
+        "value": " x ",
+        "confidence": 1
+       },
+       "name": {
+        "value": "n",
+        "confidence": 1
+       },
+       "category": {
+        "value": "塗料",
+        "confidence": "nan"
+       },
+       "unit": {
+        "value": "   ",
+        "confidence": "0.99"
+       },
+       "unit_price": {
+        "value": 5,
+        "confidence": "0.99"
+       },
+       "price_type": {
+        "value": "販売",
+        "confidence": null
+       },
+       "source": {
+        "value": "s",
+        "confidence": " 8e-1 "
+       },
+       "updated_at": "not-a-dict"
+      },
+      "source": "simulator:架空OCR"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M12",
+     "payload": {
+      "action": "stage",
+      "source_key": "demo-m12-ocr",
+      "ocr_fields": {
+       "name": {
+        "value": "n",
+        "confidence": true
+       }
+      },
+      "source": "simulator:架空OCR"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M12",
+     "payload": {
+      "action": "stage",
+      "source_key": "demo-m12-ocr",
+      "ocr_fields": {
+       "name": {
+        "value": "n",
+        "confidence": "1.5"
+       }
+      },
+      "source": "simulator:架空OCR"
+     }
+    }
+   ]
+  },
+  {
+   "name": "全項目の人確認で登録",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M12",
+     "payload": {
+      "action": "stage",
+      "source_key": "demo-m12-ocr",
+      "ocr_fields": {
+       "item_id": {
+        "value": "demo-m12-thinner",
+        "confidence": "0.99"
+       },
+       "name": {
+        "value": "架空デモ溶剤",
+        "confidence": "0.96"
+       },
+       "category": {
+        "value": "溶剤",
+        "confidence": "0.99"
+       },
+       "unit": {
+        "value": "L",
+        "confidence": "0.98"
+       },
+       "unit_price": {
+        "value": "480",
+        "confidence": "0.94"
+       },
+       "price_type": {
+        "value": "仕入",
+        "confidence": "0.97"
+       },
+       "source": {
+        "value": "simulator:架空OCR価格票",
+        "confidence": "0.92"
+       },
+       "updated_at": {
+        "value": "2026-10-11",
+        "confidence": "0.95"
+       }
+      },
+      "source": "simulator:架空OCR"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M12",
+     "payload": {
+      "action": "review",
+      "candidate_id": "$ref:0.candidate_id",
+      "fields": {
+       "item_id": {
+        "corrected_value": "demo-m12-thinner",
+        "confirmed": true
+       },
+       "name": {
+        "corrected_value": "架空デモ溶剤",
+        "confirmed": true
+       },
+       "category": {
+        "corrected_value": "溶剤",
+        "confirmed": true
+       },
+       "unit": {
+        "corrected_value": "L",
+        "confirmed": true
+       },
+       "unit_price": {
+        "corrected_value": "480",
+        "confirmed": true
+       },
+       "price_type": {
+        "corrected_value": "仕入",
+        "confirmed": true
+       },
+       "source": {
+        "corrected_value": "simulator:架空OCR価格票",
+        "confirmed": true
+       }
+      },
+      "confirmed_by": "架空確認担当"
+     }
+    },
+    {
+     "op": "price_versions"
+    },
+    {
+     "op": "run",
+     "module": "M12",
+     "payload": {
+      "action": "review",
+      "candidate_id": "$ref:0.candidate_id",
+      "fields": {
+       "updated_at": {
+        "corrected_value": "2026-10-11",
+        "confirmed": true
+       }
+      },
+      "confirmed_by": "最終確認者"
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "demo-m12-thinner",
+     "price_type": "仕入"
+    },
+    {
+     "op": "run",
+     "module": "M12",
+     "payload": {
+      "action": "review",
+      "candidate_id": "$ref:0.candidate_id",
+      "fields": {
+       "name": {
+        "corrected_value": "x",
+        "confirmed": true
+       }
+      },
+      "confirmed_by": "最終確認者"
+     }
+    },
+    {
+     "op": "records",
+     "namespace": "m12_ocr_queue"
+    }
+   ]
+  },
+  {
+   "name": "訂正と確認者は追記",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M12",
+     "payload": {
+      "action": "stage",
+      "source_key": "demo-m12-ocr",
+      "ocr_fields": {
+       "item_id": {
+        "value": "demo-m12-thinner",
+        "confidence": "0.99"
+       },
+       "name": {
+        "value": "架空デモ溶剤",
+        "confidence": "0.96"
+       },
+       "category": {
+        "value": "溶剤",
+        "confidence": "0.99"
+       },
+       "unit": {
+        "value": "L",
+        "confidence": "0.98"
+       },
+       "unit_price": {
+        "value": "480",
+        "confidence": "0.94"
+       },
+       "price_type": {
+        "value": "仕入",
+        "confidence": "0.97"
+       },
+       "source": {
+        "value": "simulator:架空OCR価格票",
+        "confidence": "0.92"
+       },
+       "updated_at": {
+        "value": "2026-10-11",
+        "confidence": "0.95"
+       }
+      },
+      "source": "simulator:架空OCR"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M12",
+     "payload": {
+      "action": "review",
+      "candidate_id": "$ref:0.candidate_id",
+      "fields": {
+       "name": {
+        "corrected_value": "架空溶剤A",
+        "confirmed": true
+       }
+      },
+      "confirmed_by": "確認者A"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M12",
+     "payload": {
+      "action": "review",
+      "candidate_id": "$ref:0.candidate_id",
+      "fields": {
+       "name": {
+        "corrected_value": " 架空溶剤B ",
+        "confirmed": true
+       },
+       "category": {
+        "corrected_value": "溶剤",
+        "confirmed": true
+       }
+      },
+      "confirmed_by": "確認者B"
+     }
+    },
+    {
+     "op": "records",
+     "namespace": "m12_ocr_review",
+     "record_id": "$ref:0.candidate_id"
+    }
+   ]
+  },
+  {
+   "name": "原文・不正値・未確認の拒否",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M12",
+     "payload": {
+      "action": "stage",
+      "source_key": "demo-m12-ocr",
+      "ocr_fields": {
+       "item_id": {
+        "value": "demo-m12-thinner",
+        "confidence": "0.99"
+       },
+       "name": {
+        "value": "架空デモ溶剤",
+        "confidence": "0.96"
+       },
+       "category": {
+        "value": "溶剤",
+        "confidence": "0.99"
+       },
+       "unit": {
+        "value": "L",
+        "confidence": "0.98"
+       },
+       "unit_price": {
+        "value": "480",
+        "confidence": "0.94"
+       },
+       "price_type": {
+        "value": "仕入",
+        "confidence": "0.97"
+       },
+       "source": {
+        "value": "simulator:架空OCR価格票",
+        "confidence": "0.92"
+       },
+       "updated_at": {
+        "value": "2026-10-11",
+        "confidence": "0.95"
+       }
+      },
+      "source": "simulator:架空OCR",
+      "raw_text": "customer@example.invalid 伝票全文"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M12",
+     "payload": {
+      "action": "stage",
+      "source_key": "demo-m12-ocr",
+      "ocr_fields": {
+       "item_id": {
+        "value": "demo-m12-thinner",
+        "confidence": "0.99"
+       },
+       "name": {
+        "value": "架空デモ溶剤",
+        "confidence": "0.96"
+       },
+       "category": {
+        "value": "溶剤",
+        "confidence": "0.99"
+       },
+       "unit": {
+        "value": "L",
+        "confidence": "0.98"
+       },
+       "unit_price": {
+        "value": "480",
+        "confidence": "0.94"
+       },
+       "price_type": {
+        "value": "仕入",
+        "confidence": "0.97"
+       },
+       "source": {
+        "value": "simulator:架空OCR価格票",
+        "confidence": "0.92"
+       },
+       "updated_at": {
+        "value": "2026-10-11",
+        "confidence": "0.95"
+       }
+      },
+      "source": "simulator:架空OCR"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M12",
+     "payload": {
+      "action": "review",
+      "candidate_id": "$ref:1.candidate_id",
+      "fields": {
+       "unit_price": {
+        "corrected_value": "0",
+        "confirmed": true
+       },
+       "item_id": {
+        "corrected_value": "bad-id",
+        "confirmed": false
+       }
+      },
+      "confirmed_by": "架空確認担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M12",
+     "payload": {
+      "action": "review",
+      "candidate_id": "$ref:1.candidate_id",
+      "fields": {
+       "unit_price": {
+        "corrected_value": "-1",
+        "confirmed": true
+       }
+      },
+      "confirmed_by": "架空確認担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M12",
+     "payload": {
+      "action": "review",
+      "candidate_id": "$ref:1.candidate_id",
+      "fields": {
+       "category": {
+        "corrected_value": "工具",
+        "confirmed": true
+       }
+      },
+      "confirmed_by": "架空確認担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M12",
+     "payload": {
+      "action": "review",
+      "candidate_id": "$ref:1.candidate_id",
+      "fields": {
+       "price_type": {
+        "corrected_value": "卸",
+        "confirmed": true
+       }
+      },
+      "confirmed_by": "架空確認担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M12",
+     "payload": {
+      "action": "review",
+      "candidate_id": "$ref:1.candidate_id",
+      "fields": {
+       "updated_at": {
+        "corrected_value": "10/11",
+        "confirmed": true
+       }
+      },
+      "confirmed_by": "架空確認担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M12",
+     "payload": {
+      "action": "review",
+      "candidate_id": "$ref:1.candidate_id",
+      "fields": {
+       "name": {
+        "corrected_value": 5,
+        "confirmed": true
+       }
+      },
+      "confirmed_by": "架空確認担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M12",
+     "payload": {
+      "action": "review",
+      "candidate_id": "$ref:1.candidate_id",
+      "fields": {},
+      "confirmed_by": "架空確認担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M12",
+     "payload": {
+      "action": "review",
+      "candidate_id": "$ref:1.candidate_id",
+      "fields": {
+       "email": {}
+      },
+      "confirmed_by": "架空確認担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M12",
+     "payload": {
+      "action": "review",
+      "candidate_id": "$ref:1.candidate_id",
+      "fields": {
+       "name": {
+        "corrected_value": "n",
+        "confirmed": "yes"
+       }
+      },
+      "confirmed_by": "架空確認担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M12",
+     "payload": {
+      "action": "review",
+      "candidate_id": "$ref:1.candidate_id",
+      "fields": {
+       "name": {
+        "corrected_value": "n",
+        "confirmed": true
+       }
+      },
+      "confirmed_by": "架空確認担当",
+      "note": "x"
+     }
+    },
+    {
+     "op": "price_versions"
+    },
+    {
+     "op": "run",
+     "module": "M12",
+     "payload": null
+    },
+    {
+     "op": "run",
+     "module": "M12",
+     "payload": {
+      "action": "guess"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M12",
+     "payload": {
+      "action": "review",
+      "candidate_id": "missing"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M12",
+     "payload": {
+      "action": "review",
+      "candidate_id": "missing",
+      "fields": {
+       "name": {
+        "corrected_value": "n",
+        "confirmed": true
+       }
+      },
+      "confirmed_by": "架空確認担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M12",
+     "payload": {
+      "action": "stage",
+      "source_key": "demo-m12-ocr",
+      "ocr_fields": {
+       "customer_email": {
+        "value": "person@example.invalid",
+        "confidence": "1"
+       }
+      },
+      "source": "simulator:架空OCR"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M12",
+     "payload": {
+      "action": "stage",
+      "source_key": "kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk",
+      "ocr_fields": {
+       "item_id": {
+        "value": "demo-m12-thinner",
+        "confidence": "0.99"
+       },
+       "name": {
+        "value": "架空デモ溶剤",
+        "confidence": "0.96"
+       },
+       "category": {
+        "value": "溶剤",
+        "confidence": "0.99"
+       },
+       "unit": {
+        "value": "L",
+        "confidence": "0.98"
+       },
+       "unit_price": {
+        "value": "480",
+        "confidence": "0.94"
+       },
+       "price_type": {
+        "value": "仕入",
+        "confidence": "0.97"
+       },
+       "source": {
+        "value": "simulator:架空OCR価格票",
+        "confidence": "0.92"
+       },
+       "updated_at": {
+        "value": "2026-10-11",
+        "confidence": "0.95"
+       }
+      },
+      "source": "simulator:架空OCR"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M12",
+     "payload": {
+      "action": "stage",
+      "source_key": "demo-m12-ocr",
+      "ocr_fields": [],
+      "source": "simulator:架空OCR"
+     }
+    }
+   ]
+  }
+ ]
+}

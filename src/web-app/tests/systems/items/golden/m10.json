@@ -1,0 +1,418 @@
+{
+ "source": "scenarios/m10.json",
+ "scenarios": [
+  {
+   "name": "既定サンプルと base64 取込・承認",
+   "expected": [
+    {
+     "ok": {
+      "status": "人の確認待ち",
+      "import_batch_id": "cb437b69b9db46c7b23542e0644c5683",
+      "file_name": "架空サンプル.xlsx",
+      "row_count": 1,
+      "staged_rows": [
+       {
+        "row_number": 1,
+        "item": {
+         "item_id": "demo-m10-thinner",
+         "name": "架空サンプルシンナー",
+         "category": "溶剤",
+         "unit": "ml",
+         "unit_price": "35",
+         "price_type": "仕入",
+         "source": "simulator:架空値",
+         "updated_at": "2026-10-11"
+        },
+        "source": "simulator:架空値、架空Excelサンプル",
+        "status": "pending",
+        "errors": [],
+        "record_id": "fabb2219f3b2484c84c012dd5925575f"
+       }
+      ],
+      "items": [],
+      "simulator": true
+     }
+    },
+    {
+     "ok": {
+      "file_name": "架空サンプル.xlsx",
+      "source": "simulator:架空値、架空Excelサンプル",
+      "row_count": 1,
+      "staged_count": 1,
+      "simulator": true,
+      "record_id": "cb437b69b9db46c7b23542e0644c5683"
+     }
+    },
+    {
+     "ok": {
+      "status": "人の確認待ち",
+      "import_batch_id": "489eac30a2534d49a35344843b4c3297",
+      "file_name": "fictional.xlsx",
+      "row_count": 1,
+      "staged_rows": [
+       {
+        "row_number": 1,
+        "item": {
+         "item_id": "demo-m10-thinner",
+         "name": "架空サンプルシンナー",
+         "category": "溶剤",
+         "unit": "ml",
+         "unit_price": "35",
+         "price_type": "仕入",
+         "source": "simulator:架空値",
+         "updated_at": "2026-10-11"
+        },
+        "source": "excel:fictional.xlsx",
+        "status": "pending",
+        "errors": [],
+        "record_id": "d4bc2a75e1a54f5883351bfa009e483c"
+       }
+      ],
+      "items": [],
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "items": [
+       {
+        "item_id": "demo-m10-thinner",
+        "name": "架空サンプルシンナー",
+        "category": "溶剤",
+        "unit": "ml",
+        "unit_price": "35",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "price_version_ids": [
+       "f3e68f3be6764875aa400aeb3287d1f6"
+      ],
+      "status": "承認済み",
+      "import_batch_id": "489eac30a2534d49a35344843b4c3297"
+     }
+    },
+    {
+     "ok": [
+      {
+       "price_version_id": "f3e68f3be6764875aa400aeb3287d1f6",
+       "item": {
+        "item_id": "demo-m10-thinner",
+        "name": "架空サンプルシンナー",
+        "category": "溶剤",
+        "unit": "ml",
+        "unit_price": "35",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "人間確認者",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "取込候補を人が確認",
+       "metadata": {}
+      }
+     ]
+    },
+    {
+     "ok": {
+      "status": "人の確認待ち",
+      "import_batch_id": "0426290d71d14e66afae7d0769adc970",
+      "file_name": "fictional.xlsx",
+      "row_count": 1,
+      "staged_rows": [
+       {
+        "row_number": 1,
+        "item": null,
+        "source": "excel:fictional.xlsx",
+        "status": "quarantined",
+        "errors": [
+         "unit_price: 有限の正数/非負数を入力してください"
+        ],
+        "record_id": "d2dbc61408f74eef83a333629ad81f8a"
+       }
+      ],
+      "items": [],
+      "simulator": false
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "取込不備の行は承認できません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "import_batch_id: 入力が必要です"
+    }
+   ]
+  },
+  {
+   "name": "安全でないブック・不正な入力の拒否",
+   "expected": [
+    {
+     "error": "ValidationError",
+     "message": "XLSX: ワークシートは1枚だけにしてください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "XLSX: 数式セルは取り込めません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "XLSX: 結合セルは取り込めません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "worksheet: XLSX内のXMLを読み取れません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "XLSX: 外部リンクを含むファイルは取り込めません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "XLSX: 対象シートのパスが不正です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "XLSX: 安全でないリンク先を含んでいます"
+    },
+    {
+     "error": "ValidationError",
+     "message": "XLSX: 対象シートのパスが不正です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "XLSX: 対象シートを特定できません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "XLSX: マクロ有効形式は取り込めません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "worksheet: DTD / entity は使用できません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "worksheet: XLSX内のXMLを読み取れません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "XLSX: セル位置を読み取れません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "XLSX: 同じ行に重複セルがあります"
+    },
+    {
+     "error": "ValidationError",
+     "message": "XLSX: 1行目は共通8項目の固定ヘッダーにしてください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "XLSX: 真偽値セルは取り込めません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "XLSX: 8列を超えるデータは取り込めません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "XLSX: 1行目は共通8項目の固定ヘッダーにしてください"
+    },
+    {
+     "ok": {
+      "status": "人の確認待ち",
+      "import_batch_id": "d2429b7586114aa5b412bd42a8aaf04e",
+      "file_name": "fictional.xlsx",
+      "row_count": 1,
+      "staged_rows": [
+       {
+        "row_number": 1,
+        "item": {
+         "item_id": "demo-m10-thinner",
+         "name": "架空サンプルシンナー",
+         "category": "溶剤",
+         "unit": "ml",
+         "unit_price": "35",
+         "price_type": "仕入",
+         "source": "simulator:架空値",
+         "updated_at": "2026-10-11"
+        },
+        "source": "excel:fictional.xlsx",
+        "status": "pending",
+        "errors": [],
+        "record_id": "28ed1e0dacfd452da0ed8701af2c53ca"
+       }
+      ],
+      "items": [],
+      "simulator": false
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "XLSX: shared string index が不正です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "XLSX: 同じ行に重複セルがあります"
+    },
+    {
+     "error": "ValidationError",
+     "message": "worksheet: XLSX内のXMLを読み取れません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "XLSX: ヘッダーと1〜1000件のデータ行が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "XLSX: マクロを含むファイルは取り込めません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "XLSX: 展開サイズまたはファイル数の上限を超えています"
+    },
+    {
+     "error": "ValidationError",
+     "message": "XLSX: 必須構成が不足しています"
+    },
+    {
+     "error": "ValidationError",
+     "message": "file_name: .xlsx形式のファイル名を指定してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "file_name: .xlsx形式のファイル名を指定してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "file_base64: base64形式を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "XLSX: 正しいExcelファイルではありません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "file_base64: base64形式を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "file_base64: base64形式を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "file_base64: サイズ上限内のXLSXデータが必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "action: stage / sample / approve を指定してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "payload: 入力を確認してください"
+    },
+    {
+     "ok": []
+    }
+   ]
+  },
+  {
+   "name": "無圧縮・data URL・共有文字列",
+   "expected": [
+    {
+     "ok": {
+      "status": "人の確認待ち",
+      "import_batch_id": "144f14b2a91342829e99da1758c56619",
+      "file_name": "Stored.XLSX",
+      "row_count": 1,
+      "staged_rows": [
+       {
+        "row_number": 1,
+        "item": {
+         "item_id": "demo-m10-thinner",
+         "name": "架空サンプルシンナー",
+         "category": "溶剤",
+         "unit": "ml",
+         "unit_price": "35",
+         "price_type": "仕入",
+         "source": "simulator:架空値",
+         "updated_at": "2026-10-11"
+        },
+        "source": "excel:Stored.XLSX",
+        "status": "pending",
+        "errors": [],
+        "record_id": "24c202becbb048eca129f975e33c3caa"
+       }
+      ],
+      "items": [],
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "人の確認待ち",
+      "import_batch_id": "aa7d40d88f4e4a2e809fb003048ebc8b",
+      "file_name": "x.xlsx",
+      "row_count": 1,
+      "staged_rows": [
+       {
+        "row_number": 1,
+        "item": {
+         "item_id": "demo-m10-thinner",
+         "name": "架空サンプルシンナー",
+         "category": "溶剤",
+         "unit": "ml",
+         "unit_price": "35",
+         "price_type": "仕入",
+         "source": "simulator:架空値",
+         "updated_at": "2026-10-11"
+        },
+        "source": "excel:x.xlsx",
+        "status": "pending",
+        "errors": [],
+        "record_id": "a349525f74674d8e9d9a67def6080e14"
+       }
+      ],
+      "items": [],
+      "simulator": false
+     }
+    },
+    {
+     "ok": {
+      "status": "人の確認待ち",
+      "import_batch_id": "784996652f854832b09c4f597d942d49",
+      "file_name": "fictional.xlsx",
+      "row_count": 1,
+      "staged_rows": [
+       {
+        "row_number": 1,
+        "item": {
+         "item_id": "demo-m10-shared",
+         "name": "架空 & R",
+         "category": "溶剤",
+         "unit": "ml",
+         "unit_price": "35.5",
+         "price_type": "仕入",
+         "source": "simulator:架空値",
+         "updated_at": "2026-10-11"
+        },
+        "source": "excel:fictional.xlsx",
+        "status": "pending",
+        "errors": [],
+        "record_id": "7c71f65291d94a9f8afc6843428ea749"
+       }
+      ],
+      "items": [],
+      "simulator": false
+     }
+    }
+   ]
+  }
+ ]
+}

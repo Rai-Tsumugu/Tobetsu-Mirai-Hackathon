@@ -1,0 +1,389 @@
+{
+ "scenarios": [
+  {
+   "name": "既定サンプル",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M11",
+     "payload": {
+      "action": "sample",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "latest",
+     "namespace": "import_batch",
+     "record_id": "$ref:0.import_batch_id"
+    },
+    {
+     "op": "price_versions"
+    }
+   ]
+  },
+  {
+   "name": "領域指定と人の選択承認",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M11",
+     "payload": {
+      "action": "stage",
+      "source_document_id": "opaque-doc-42",
+      "page": 2,
+      "page_width": "612",
+      "page_height": "792",
+      "region": {
+       "x": "20",
+       "y": "40",
+       "width": "300",
+       "height": "120"
+      }
+     }
+    },
+    {
+     "op": "latest",
+     "namespace": "staging_row",
+     "record_id": "$ref:0.staged_rows.0.record_id"
+    },
+    {
+     "op": "run",
+     "module": "M11",
+     "payload": {
+      "action": "approve",
+      "import_batch_id": "$ref:0.import_batch_id",
+      "candidate_ids": [
+       "$ref:0.staged_rows.0.record_id"
+      ],
+      "confirmed_by": "担当者"
+     }
+    },
+    {
+     "op": "price_versions"
+    },
+    {
+     "op": "run",
+     "module": "M11",
+     "payload": {
+      "action": "approve",
+      "import_batch_id": "$ref:0.import_batch_id",
+      "candidate_ids": [
+       "$ref:0.staged_rows.0.record_id"
+      ],
+      "confirmed_by": "担当者"
+     }
+    }
+   ]
+  },
+  {
+   "name": "不正なページ・領域・候補",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M11",
+     "payload": {
+      "action": "stage",
+      "source_document_id": "opaque-doc-42",
+      "page": 0,
+      "page_width": "612",
+      "page_height": "792",
+      "region": {
+       "x": "20",
+       "y": "40",
+       "width": "300",
+       "height": "120"
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M11",
+     "payload": {
+      "action": "stage",
+      "source_document_id": "opaque-doc-42",
+      "page": 10001,
+      "page_width": "612",
+      "page_height": "792",
+      "region": {
+       "x": "20",
+       "y": "40",
+       "width": "300",
+       "height": "120"
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M11",
+     "payload": {
+      "action": "stage",
+      "source_document_id": "opaque-doc-42",
+      "page": true,
+      "page_width": "612",
+      "page_height": "792",
+      "region": {
+       "x": "20",
+       "y": "40",
+       "width": "300",
+       "height": "120"
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M11",
+     "payload": {
+      "action": "stage",
+      "source_document_id": "opaque-doc-42",
+      "page": "1",
+      "page_width": "612",
+      "page_height": "792",
+      "region": {
+       "x": "20",
+       "y": "40",
+       "width": "300",
+       "height": "120"
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M11",
+     "payload": {
+      "action": "stage",
+      "source_document_id": "opaque-doc-42",
+      "page": 1,
+      "page_width": "612",
+      "page_height": "792",
+      "region": {
+       "x": "600",
+       "y": "40",
+       "width": "20",
+       "height": "120"
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M11",
+     "payload": {
+      "action": "stage",
+      "source_document_id": "opaque-doc-42",
+      "page": 1,
+      "page_width": "612",
+      "page_height": "792",
+      "region": {
+       "x": "20",
+       "y": "40",
+       "width": "0",
+       "height": "120"
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M11",
+     "payload": {
+      "action": "stage",
+      "source_document_id": "opaque-doc-42",
+      "page": 1,
+      "page_width": "612",
+      "page_height": "792",
+      "region": {
+       "x": "20",
+       "y": "40",
+       "width": "1"
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M11",
+     "payload": {
+      "action": "stage",
+      "source_document_id": "opaque-doc-42",
+      "page": 1,
+      "page_width": "612",
+      "page_height": "792",
+      "region": {
+       "x": "20",
+       "y": "40",
+       "width": "1",
+       "height": "1",
+       "z": "1"
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M11",
+     "payload": {
+      "action": "stage",
+      "source_document_id": "opaque-doc-42",
+      "page": 1,
+      "page_width": "612",
+      "page_height": "792",
+      "region": {
+       "x": "-1",
+       "y": "40",
+       "width": "1",
+       "height": "1"
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M11",
+     "payload": {
+      "action": "stage",
+      "source_document_id": "   ",
+      "page": 1,
+      "page_width": "612",
+      "page_height": "792",
+      "region": {
+       "x": "20",
+       "y": "40",
+       "width": "300",
+       "height": "120"
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M11",
+     "payload": {
+      "action": "stage",
+      "source_document_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "page": 1,
+      "page_width": "612",
+      "page_height": "792",
+      "region": {
+       "x": "20",
+       "y": "40",
+       "width": "300",
+       "height": "120"
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M11",
+     "payload": {
+      "action": "stage",
+      "source_document_id": "a\tb",
+      "page": 1,
+      "page_width": "612",
+      "page_height": "792",
+      "region": {
+       "x": "20",
+       "y": "40",
+       "width": "300",
+       "height": "120"
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M11",
+     "payload": {
+      "action": "stage",
+      "source_document_id": "opaque-doc-42",
+      "page": 1,
+      "page_width": "0",
+      "page_height": "792",
+      "region": {
+       "x": "20",
+       "y": "40",
+       "width": "300",
+       "height": "120"
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M11",
+     "payload": {
+      "action": "guess",
+      "source_document_id": "opaque-doc-42",
+      "page": 1,
+      "page_width": "612",
+      "page_height": "792",
+      "region": {
+       "x": "20",
+       "y": "40",
+       "width": "300",
+       "height": "120"
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M11",
+     "payload": null
+    },
+    {
+     "op": "run",
+     "module": "M11",
+     "payload": {
+      "action": "stage",
+      "source_document_id": "opaque-doc-42",
+      "page": 1,
+      "page_width": "612",
+      "page_height": "792",
+      "region": {
+       "x": "20",
+       "y": "40",
+       "width": "300",
+       "height": "120"
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M11",
+     "payload": {
+      "action": "approve",
+      "import_batch_id": "$ref:15.import_batch_id",
+      "candidate_ids": [
+       "not-a-candidate"
+      ],
+      "confirmed_by": "担当者"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M11",
+     "payload": {
+      "action": "approve",
+      "import_batch_id": "$ref:15.import_batch_id",
+      "candidate_ids": "x",
+      "confirmed_by": "担当者"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M11",
+     "payload": {
+      "action": "approve",
+      "import_batch_id": "$ref:15.import_batch_id",
+      "candidate_ids": [],
+      "confirmed_by": "担当者"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M11",
+     "payload": {
+      "action": "approve",
+      "import_batch_id": "missing",
+      "candidate_ids": [],
+      "confirmed_by": "担当者"
+     }
+    },
+    {
+     "op": "price_versions"
+    }
+   ]
+  }
+ ]
+}

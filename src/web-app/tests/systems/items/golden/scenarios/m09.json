@@ -1,0 +1,572 @@
+{
+ "scenarios": [
+  {
+   "name": "SPEC 既定で候補を隔離",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "action": "stage",
+      "csv_text": "商品コード,品名,分類,単位,単価,価格区分,出所,確認日\ndemo-m09-paint,架空デモ塗料,塗料,ml,95,仕入,simulator:架空値,2026-10-11\ndemo-m09-thinner,架空デモ溶剤,溶剤,L,480,仕入,simulator:架空値,2026-10-11",
+      "source": "simulator:架空値",
+      "source_key": "demo-m09-csv",
+      "field_map": {
+       "item_id": "商品コード",
+       "name": "品名",
+       "category": "分類",
+       "unit": "単位",
+       "unit_price": "単価",
+       "price_type": "価格区分",
+       "source": "出所",
+       "updated_at": "確認日"
+      }
+     }
+    },
+    {
+     "op": "price_versions",
+     "item_id": "demo-m09-paint"
+    },
+    {
+     "op": "records",
+     "namespace": "staging_row"
+    }
+   ]
+  },
+  {
+   "name": "列対応と余分な列の隔離",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "action": "stage",
+      "csv_text": "商品コード,品名,分類,単位,単価,価格区分,出所,確認日\ndemo-m09-paint,架空デモ塗料,塗料,ml,95,仕入,simulator:架空値,2026-10-11,customer@example.invalid\ndemo-m09-thinner,架空デモ溶剤,溶剤,L,480,仕入,simulator:架空値,2026-10-11",
+      "source": "simulator:架空値",
+      "source_key": "demo-m09-csv",
+      "field_map": {
+       "item_id": "商品コード",
+       "name": "品名",
+       "category": "分類",
+       "unit": "単位",
+       "unit_price": "単価",
+       "price_type": "価格区分",
+       "source": "出所",
+       "updated_at": "確認日"
+      }
+     }
+    },
+    {
+     "op": "records",
+     "namespace": "staging_row"
+    }
+   ]
+  },
+  {
+   "name": "不正価格の隔離と選択承認",
+   "steps": [
+    {
+     "op": "seed_demo"
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "action": "stage",
+      "csv_text": "商品コード,品名,分類,単位,単価,価格区分,出所,確認日\ndemo-m09-paint,架空デモ塗料,塗料,ml,-95,仕入,simulator:架空値,2026-10-11\ndemo-m09-thinner,架空デモ溶剤,溶剤,L,480,仕入,simulator:架空値,2026-10-11",
+      "source": "simulator:架空値",
+      "source_key": "demo-m09-csv",
+      "field_map": {
+       "item_id": "商品コード",
+       "name": "品名",
+       "category": "分類",
+       "unit": "単位",
+       "unit_price": "単価",
+       "price_type": "価格区分",
+       "source": "出所",
+       "updated_at": "確認日"
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "action": "approve",
+      "candidate_ids": [
+       "$ref:1.staged_rows.1.record_id"
+      ],
+      "confirmed_by": "架空確認担当",
+      "source_key": "demo-m09-csv",
+      "mapping_version": 1
+     }
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "action": "approve",
+      "candidate_ids": [
+       "$ref:1.staged_rows.0.record_id"
+      ],
+      "confirmed_by": "架空確認担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "action": "approve",
+      "candidate_ids": [
+       "$ref:1.staged_rows.1.record_id"
+      ],
+      "confirmed_by": "架空確認担当"
+     }
+    },
+    {
+     "op": "price_versions"
+    }
+   ]
+  },
+  {
+   "name": "再取込で列対応の版が増える",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "action": "stage",
+      "csv_text": "商品コード,品名,分類,単位,単価,価格区分,出所,確認日\ndemo-m09-paint,架空デモ塗料,塗料,ml,95,仕入,simulator:架空値,2026-10-11\ndemo-m09-thinner,架空デモ溶剤,溶剤,L,480,仕入,simulator:架空値,2026-10-11",
+      "source": "simulator:架空値",
+      "source_key": "demo-m09-csv",
+      "field_map": {
+       "item_id": "商品コード",
+       "name": "品名",
+       "category": "分類",
+       "unit": "単位",
+       "unit_price": "単価",
+       "price_type": "価格区分",
+       "source": "出所",
+       "updated_at": "確認日"
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "action": "stage",
+      "csv_text": "商品コード,品名,分類,単位,単価,価格区分,出所,確認日\ndemo-m09-paint,架空デモ塗料,塗料,ml,95,仕入,simulator:架空値,2026-10-11\ndemo-m09-thinner,架空デモ溶剤,溶剤,L,480,仕入,simulator:架空値,2026-10-11",
+      "source": "simulator:架空値",
+      "source_key": "demo-m09-csv",
+      "field_map": {
+       "item_id": "商品コード",
+       "name": "品名",
+       "category": "分類",
+       "unit": "単位",
+       "unit_price": "単価",
+       "price_type": "価格区分",
+       "source": "出所",
+       "updated_at": "確認日"
+      }
+     }
+    },
+    {
+     "op": "records",
+     "namespace": "import_mapping",
+     "record_id": "demo-m09-csv"
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "action": "approve",
+      "candidate_ids": [
+       "$ref:0.staged_rows.0.record_id"
+      ],
+      "confirmed_by": "担当",
+      "source_key": "demo-m09-csv",
+      "mapping_version": 1
+     }
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "action": "approve",
+      "candidate_ids": [
+       "$ref:0.staged_rows.0.record_id"
+      ],
+      "confirmed_by": "担当",
+      "source_key": "demo-m09-csv",
+      "mapping_version": 99
+     }
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "action": "approve",
+      "candidate_ids": [
+       "$ref:0.staged_rows.0.record_id"
+      ],
+      "confirmed_by": "担当",
+      "source_key": "demo-m09-csv",
+      "mapping_version": true
+     }
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "action": "approve",
+      "candidate_ids": [
+       "$ref:0.staged_rows.0.record_id"
+      ],
+      "confirmed_by": "担当",
+      "source_key": "demo-m09-csv",
+      "mapping_version": 2
+     }
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "action": "approve",
+      "candidate_ids": [
+       "$ref:0.staged_rows.1.record_id",
+       "$ref:0.staged_rows.1.record_id"
+      ],
+      "confirmed_by": "担当"
+     }
+    }
+   ]
+  },
+  {
+   "name": "不正なヘッダー・列対応・CSV・入力",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": null
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "action": "stage",
+      "csv_text": "a,a\n1,2",
+      "source": "simulator:架空値",
+      "source_key": "demo-m09-csv",
+      "field_map": {}
+     }
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "action": "stage",
+      "csv_text": "a,b\n\"unterminated,b",
+      "source": "simulator:架空値",
+      "source_key": "demo-m09-csv",
+      "field_map": {}
+     }
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "action": "stage",
+      "csv_text": "商品コード,品名,分類,単位,単価,価格区分,出所,確認日\ndemo-m09-paint,架空デモ塗料,塗料,ml,95,仕入,simulator:架空値,2026-10-11\ndemo-m09-thinner,架空デモ溶剤,溶剤,L,480,仕入,simulator:架空値,2026-10-11",
+      "source": "simulator:架空値",
+      "source_key": "demo-m09-csv",
+      "field_map": {
+       "unknown": "品名"
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "action": "stage",
+      "csv_text": "商品コード,品名,分類,単位,単価,価格区分,出所,確認日\ndemo-m09-paint,架空デモ塗料,塗料,ml,95,仕入,simulator:架空値,2026-10-11\ndemo-m09-thinner,架空デモ溶剤,溶剤,L,480,仕入,simulator:架空値,2026-10-11",
+      "source": "simulator:架空値",
+      "source_key": "demo-m09-csv",
+      "field_map": {
+       "item_id": "absent"
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "action": "guess",
+      "csv_text": "商品コード,品名,分類,単位,単価,価格区分,出所,確認日\ndemo-m09-paint,架空デモ塗料,塗料,ml,95,仕入,simulator:架空値,2026-10-11\ndemo-m09-thinner,架空デモ溶剤,溶剤,L,480,仕入,simulator:架空値,2026-10-11",
+      "source": "simulator:架空値",
+      "source_key": "demo-m09-csv",
+      "field_map": {
+       "item_id": "商品コード",
+       "name": "品名",
+       "category": "分類",
+       "unit": "単位",
+       "unit_price": "単価",
+       "price_type": "価格区分",
+       "source": "出所",
+       "updated_at": "確認日"
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "action": "stage",
+      "csv_text": "   ",
+      "source": "simulator:架空値",
+      "source_key": "demo-m09-csv",
+      "field_map": {
+       "item_id": "商品コード",
+       "name": "品名",
+       "category": "分類",
+       "unit": "単位",
+       "unit_price": "単価",
+       "price_type": "価格区分",
+       "source": "出所",
+       "updated_at": "確認日"
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "action": "stage",
+      "csv_text": "\nitem_id",
+      "source": "simulator:架空値",
+      "source_key": "demo-m09-csv",
+      "field_map": {
+       "item_id": "商品コード",
+       "name": "品名",
+       "category": "分類",
+       "unit": "単位",
+       "unit_price": "単価",
+       "price_type": "価格区分",
+       "source": "出所",
+       "updated_at": "確認日"
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "action": "stage",
+      "csv_text": "a, ,c\n1,2,3",
+      "source": "simulator:架空値",
+      "source_key": "demo-m09-csv",
+      "field_map": {}
+     }
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "action": "stage",
+      "csv_text": "\"a\"b,c\n1,2",
+      "source": "simulator:架空値",
+      "source_key": "demo-m09-csv",
+      "field_map": {}
+     }
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "action": "stage",
+      "csv_text": "a,__extra_columns__\n1,2",
+      "source": "simulator:架空値",
+      "source_key": "demo-m09-csv",
+      "field_map": {}
+     }
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "action": "stage",
+      "csv_text": "商品コード,品名,分類,単位,単価,価格区分,出所,確認日\ndemo-m09-paint,架空デモ塗料,塗料,ml,95,仕入,simulator:架空値,2026-10-11\ndemo-m09-thinner,架空デモ溶剤,溶剤,L,480,仕入,simulator:架空値,2026-10-11",
+      "source": "simulator:架空値",
+      "source_key": "kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk",
+      "field_map": {
+       "item_id": "商品コード",
+       "name": "品名",
+       "category": "分類",
+       "unit": "単位",
+       "unit_price": "単価",
+       "price_type": "価格区分",
+       "source": "出所",
+       "updated_at": "確認日"
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "action": "stage",
+      "csv_text": "商品コード,品名,分類,単位,単価,価格区分,出所,確認日\ndemo-m09-paint,架空デモ塗料,塗料,ml,95,仕入,simulator:架空値,2026-10-11\ndemo-m09-thinner,架空デモ溶剤,溶剤,L,480,仕入,simulator:架空値,2026-10-11",
+      "source": "simulator:架空値",
+      "source_key": "demo-m09-csv",
+      "field_map": {
+       "item_id": "商品コード",
+       "name": "商品コード",
+       "category": "分類",
+       "unit": "単位",
+       "unit_price": "単価",
+       "price_type": "価格区分",
+       "source": "出所",
+       "updated_at": "確認日"
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "action": "stage",
+      "csv_text": "商品コード,品名,分類,単位,単価,価格区分,出所,確認日\ndemo-m09-paint,架空デモ塗料,塗料,ml,95,仕入,simulator:架空値,2026-10-11\ndemo-m09-thinner,架空デモ溶剤,溶剤,L,480,仕入,simulator:架空値,2026-10-11",
+      "source": "simulator:架空値",
+      "source_key": "demo-m09-csv",
+      "field_map": {
+       "item_id": "  "
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "action": "stage",
+      "csv_text": "商品コード,品名,分類,単位,単価,価格区分,出所,確認日\ndemo-m09-paint,架空デモ塗料,塗料,ml,95,仕入,simulator:架空値,2026-10-11\ndemo-m09-thinner,架空デモ溶剤,溶剤,L,480,仕入,simulator:架空値,2026-10-11",
+      "source": "simulator:架空値",
+      "source_key": "demo-m09-csv",
+      "field_map": [
+       "x"
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "action": "stage",
+      "csv_text": "商品コード,品名,分類,単位,単価,価格区分,出所,確認日",
+      "source": "simulator:架空値",
+      "source_key": "demo-m09-csv",
+      "field_map": {
+       "item_id": "商品コード",
+       "name": "品名",
+       "category": "分類",
+       "unit": "単位",
+       "unit_price": "単価",
+       "price_type": "価格区分",
+       "source": "出所",
+       "updated_at": "確認日"
+      }
+     }
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "action": "approve",
+      "candidate_ids": [],
+      "confirmed_by": "架空確認担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "action": "approve",
+      "candidate_ids": [
+       "missing"
+      ],
+      "confirmed_by": "架空確認担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "action": "approve",
+      "candidate_ids": [
+       "missing"
+      ],
+      "confirmed_by": " "
+     }
+    },
+    {
+     "op": "records",
+     "namespace": "import_mapping"
+    }
+   ]
+  },
+  {
+   "name": "既定の列名・引用符・空行・不足列",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "csv_text": "item_id,name,category,unit,unit_price,price_type,source,updated_at\nm9-a,架空A,塗料,ml,10,販売,s,2026-10-11\r\n\r\n\"m9-b\",\"架空\"\"B\"\"\",部品,個,\"1,000\",仕入,,2026-10-11\rm9-c,架空C,溶剤,L,1.50,仕入,s\n"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "csv_text": "item_id,name,category,unit,unit_price,price_type,source,updated_at\nm9-a,架空A,塗料,ml,10,販売,s,2026-10-11\r\n\r\n\"m9-b\",\"架空\"\"B\"\"\",部品,個,\"1,000\",仕入,,2026-10-11\rm9-c,架空C,溶剤,L,1.50,仕入,s\n",
+      "source": "架空出所",
+      "field_map": null
+     }
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "action": "approve",
+      "candidate_ids": [
+       "$ref:0.staged_rows.0.record_id",
+       "$ref:0.staged_rows.1.record_id"
+      ],
+      "confirmed_by": "担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "csv_text": "item_id,name\nx,y",
+      "field_map": {}
+     }
+    },
+    {
+     "op": "run",
+     "module": "M09",
+     "payload": {
+      "csv_text": "item_id,name,category,unit,unit_price,price_type,source,updated_at\n\"a\nb\",n,塗料,ml,1,販売,s,2026-10-11"
+     }
+    }
+   ]
+  }
+ ]
+}

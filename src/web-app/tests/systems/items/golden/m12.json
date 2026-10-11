@@ -1,0 +1,898 @@
+{
+ "source": "scenarios/m12.json",
+ "scenarios": [
+  {
+   "name": "既定は mock 候補で登録しない",
+   "expected": [
+    {
+     "ok": {
+      "status": "人の確認待ち",
+      "candidate_id": "e416b42fb26d44acb8d3610367d7189a",
+      "candidates": {
+       "item_id": {
+        "candidate_value": "demo-m12-thinner",
+        "confidence": "0.99"
+       },
+       "name": {
+        "candidate_value": "架空デモ溶剤",
+        "confidence": "0.96"
+       },
+       "category": {
+        "candidate_value": "溶剤",
+        "confidence": "0.99"
+       },
+       "unit": {
+        "candidate_value": "L",
+        "confidence": "0.98"
+       },
+       "unit_price": {
+        "candidate_value": "480",
+        "confidence": "0.94"
+       },
+       "price_type": {
+        "candidate_value": "仕入",
+        "confidence": "0.97"
+       },
+       "source": {
+        "candidate_value": "simulator:架空OCR価格票",
+        "confidence": "0.92"
+       },
+       "updated_at": {
+        "candidate_value": "2026-10-11",
+        "confidence": "0.95"
+       }
+      },
+      "confirmed_fields": [],
+      "missing_fields": [
+       "item_id",
+       "name",
+       "category",
+       "unit",
+       "unit_price",
+       "price_type",
+       "source",
+       "updated_at"
+      ],
+      "items": [],
+      "simulator": true,
+      "ocr_connected": false,
+      "message": "OCRはmock読取候補です。実画像OCRは未接続です。"
+     }
+    },
+    {
+     "ok": {
+      "source_key": "demo-m12-ocr",
+      "source": "simulator:架空OCR",
+      "candidates": {
+       "item_id": {
+        "candidate_value": "demo-m12-thinner",
+        "confidence": "0.99"
+       },
+       "name": {
+        "candidate_value": "架空デモ溶剤",
+        "confidence": "0.96"
+       },
+       "category": {
+        "candidate_value": "溶剤",
+        "confidence": "0.99"
+       },
+       "unit": {
+        "candidate_value": "L",
+        "confidence": "0.98"
+       },
+       "unit_price": {
+        "candidate_value": "480",
+        "confidence": "0.94"
+       },
+       "price_type": {
+        "candidate_value": "仕入",
+        "confidence": "0.97"
+       },
+       "source": {
+        "candidate_value": "simulator:架空OCR価格票",
+        "confidence": "0.92"
+       },
+       "updated_at": {
+        "candidate_value": "2026-10-11",
+        "confidence": "0.95"
+       }
+      },
+      "corrected_values": {},
+      "confirmed_fields": [],
+      "reviewer": null,
+      "status": "pending",
+      "ocr_connected": false,
+      "simulator": true,
+      "record_id": "e416b42fb26d44acb8d3610367d7189a"
+     }
+    },
+    {
+     "ok": []
+    }
+   ]
+  },
+  {
+   "name": "低信頼度・欠落・型の違う候補",
+   "expected": [
+    {
+     "ok": {
+      "status": "人の確認待ち",
+      "candidate_id": "615b5125d1d34ecd8555661dd5ec19e6",
+      "candidates": {
+       "item_id": {
+        "candidate_value": "demo-m12-thinner",
+        "confidence": "0.99"
+       },
+       "name": {
+        "candidate_value": "架空デモ溶剤",
+        "confidence": "0.96"
+       },
+       "category": {
+        "candidate_value": "溶剤",
+        "confidence": "0.99"
+       },
+       "unit": {
+        "candidate_value": null,
+        "confidence": null
+       },
+       "unit_price": {
+        "candidate_value": null,
+        "confidence": "0.4"
+       },
+       "price_type": {
+        "candidate_value": "仕入",
+        "confidence": "0.97"
+       },
+       "source": {
+        "candidate_value": "simulator:架空OCR価格票",
+        "confidence": "0.92"
+       },
+       "updated_at": {
+        "candidate_value": "2026-10-11",
+        "confidence": "0.95"
+       }
+      },
+      "confirmed_fields": [],
+      "missing_fields": [
+       "item_id",
+       "name",
+       "category",
+       "unit",
+       "unit_price",
+       "price_type",
+       "source",
+       "updated_at"
+      ],
+      "items": [],
+      "simulator": true,
+      "ocr_connected": false,
+      "message": "OCRはmock読取候補です。実画像OCRは未接続です。"
+     }
+    },
+    {
+     "ok": {
+      "status": "人の確認待ち",
+      "candidate_id": "19cec458b3114f5289b82dd817fb9bf7",
+      "candidates": {
+       "item_id": {
+        "candidate_value": "x",
+        "confidence": "1"
+       },
+       "name": {
+        "candidate_value": "n",
+        "confidence": "1"
+       },
+       "category": {
+        "candidate_value": null,
+        "confidence": null
+       },
+       "unit": {
+        "candidate_value": null,
+        "confidence": "0.99"
+       },
+       "unit_price": {
+        "candidate_value": null,
+        "confidence": "0.99"
+       },
+       "price_type": {
+        "candidate_value": null,
+        "confidence": null
+       },
+       "source": {
+        "candidate_value": "s",
+        "confidence": " 8e-1 "
+       },
+       "updated_at": {
+        "candidate_value": null,
+        "confidence": null
+       }
+      },
+      "confirmed_fields": [],
+      "missing_fields": [
+       "item_id",
+       "name",
+       "category",
+       "unit",
+       "unit_price",
+       "price_type",
+       "source",
+       "updated_at"
+      ],
+      "items": [],
+      "simulator": true,
+      "ocr_connected": false,
+      "message": "OCRはmock読取候補です。実画像OCRは未接続です。"
+     }
+    },
+    {
+     "error": "ValueError",
+     "message": "could not convert string to float: 'True'"
+    },
+    {
+     "ok": {
+      "status": "人の確認待ち",
+      "candidate_id": "69f4e166489b4e5fab1fe906a72ce94b",
+      "candidates": {
+       "item_id": {
+        "candidate_value": null,
+        "confidence": null
+       },
+       "name": {
+        "candidate_value": null,
+        "confidence": null
+       },
+       "category": {
+        "candidate_value": null,
+        "confidence": null
+       },
+       "unit": {
+        "candidate_value": null,
+        "confidence": null
+       },
+       "unit_price": {
+        "candidate_value": null,
+        "confidence": null
+       },
+       "price_type": {
+        "candidate_value": null,
+        "confidence": null
+       },
+       "source": {
+        "candidate_value": null,
+        "confidence": null
+       },
+       "updated_at": {
+        "candidate_value": null,
+        "confidence": null
+       }
+      },
+      "confirmed_fields": [],
+      "missing_fields": [
+       "item_id",
+       "name",
+       "category",
+       "unit",
+       "unit_price",
+       "price_type",
+       "source",
+       "updated_at"
+      ],
+      "items": [],
+      "simulator": true,
+      "ocr_connected": false,
+      "message": "OCRはmock読取候補です。実画像OCRは未接続です。"
+     }
+    }
+   ]
+  },
+  {
+   "name": "全項目の人確認で登録",
+   "expected": [
+    {
+     "ok": {
+      "status": "人の確認待ち",
+      "candidate_id": "b729c1f820984bb9bfa8cb33d8b2ddef",
+      "candidates": {
+       "item_id": {
+        "candidate_value": "demo-m12-thinner",
+        "confidence": "0.99"
+       },
+       "name": {
+        "candidate_value": "架空デモ溶剤",
+        "confidence": "0.96"
+       },
+       "category": {
+        "candidate_value": "溶剤",
+        "confidence": "0.99"
+       },
+       "unit": {
+        "candidate_value": "L",
+        "confidence": "0.98"
+       },
+       "unit_price": {
+        "candidate_value": "480",
+        "confidence": "0.94"
+       },
+       "price_type": {
+        "candidate_value": "仕入",
+        "confidence": "0.97"
+       },
+       "source": {
+        "candidate_value": "simulator:架空OCR価格票",
+        "confidence": "0.92"
+       },
+       "updated_at": {
+        "candidate_value": "2026-10-11",
+        "confidence": "0.95"
+       }
+      },
+      "confirmed_fields": [],
+      "missing_fields": [
+       "item_id",
+       "name",
+       "category",
+       "unit",
+       "unit_price",
+       "price_type",
+       "source",
+       "updated_at"
+      ],
+      "items": [],
+      "simulator": true,
+      "ocr_connected": false,
+      "message": "OCRはmock読取候補です。実画像OCRは未接続です。"
+     }
+    },
+    {
+     "ok": {
+      "status": "人の確認待ち",
+      "candidate_id": "b729c1f820984bb9bfa8cb33d8b2ddef",
+      "corrected_value": {
+       "item_id": "demo-m12-thinner",
+       "name": "架空デモ溶剤",
+       "category": "溶剤",
+       "unit": "L",
+       "unit_price": "480",
+       "price_type": "仕入",
+       "source": "simulator:架空OCR価格票"
+      },
+      "confirmed_fields": [
+       "category",
+       "item_id",
+       "name",
+       "price_type",
+       "source",
+       "unit",
+       "unit_price"
+      ],
+      "missing_fields": [
+       "updated_at"
+      ],
+      "reviewer": "架空確認担当",
+      "items": [],
+      "simulator": true,
+      "ocr_connected": false
+     }
+    },
+    {
+     "ok": []
+    },
+    {
+     "ok": {
+      "status": "approved",
+      "candidate_id": "b729c1f820984bb9bfa8cb33d8b2ddef",
+      "corrected_value": {
+       "updated_at": "2026-10-11"
+      },
+      "confirmed_fields": [
+       "category",
+       "item_id",
+       "name",
+       "price_type",
+       "source",
+       "unit",
+       "unit_price",
+       "updated_at"
+      ],
+      "missing_fields": [],
+      "reviewer": "最終確認者",
+      "items": [
+       {
+        "item_id": "demo-m12-thinner",
+        "name": "架空デモ溶剤",
+        "category": "溶剤",
+        "unit": "L",
+        "unit_price": "480",
+        "price_type": "仕入",
+        "source": "simulator:架空OCR価格票",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "simulator": true,
+      "ocr_connected": false,
+      "price_version_id": "170894b349dd46fdb89c57a4e9d2df98"
+     }
+    },
+    {
+     "ok": [
+      {
+       "price_version_id": "170894b349dd46fdb89c57a4e9d2df98",
+       "item": {
+        "item_id": "demo-m12-thinner",
+        "name": "架空デモ溶剤",
+        "category": "溶剤",
+        "unit": "L",
+        "unit_price": "480",
+        "price_type": "仕入",
+        "source": "simulator:架空OCR価格票",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "最終確認者",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "OCR候補の全必須欄を人が確認",
+       "metadata": {
+        "ocr_candidate_id": "b729c1f820984bb9bfa8cb33d8b2ddef"
+       }
+      }
+     ]
+    },
+    {
+     "error": "ValidationError",
+     "message": "この候補はすでに登録されています"
+    },
+    {
+     "ok": [
+      {
+       "source_key": "demo-m12-ocr",
+       "source": "simulator:架空OCR",
+       "candidates": {
+        "item_id": {
+         "candidate_value": "demo-m12-thinner",
+         "confidence": "0.99"
+        },
+        "name": {
+         "candidate_value": "架空デモ溶剤",
+         "confidence": "0.96"
+        },
+        "category": {
+         "candidate_value": "溶剤",
+         "confidence": "0.99"
+        },
+        "unit": {
+         "candidate_value": "L",
+         "confidence": "0.98"
+        },
+        "unit_price": {
+         "candidate_value": "480",
+         "confidence": "0.94"
+        },
+        "price_type": {
+         "candidate_value": "仕入",
+         "confidence": "0.97"
+        },
+        "source": {
+         "candidate_value": "simulator:架空OCR価格票",
+         "confidence": "0.92"
+        },
+        "updated_at": {
+         "candidate_value": "2026-10-11",
+         "confidence": "0.95"
+        }
+       },
+       "corrected_values": {},
+       "confirmed_fields": [],
+       "reviewer": null,
+       "status": "pending",
+       "ocr_connected": false,
+       "simulator": true,
+       "record_id": "b729c1f820984bb9bfa8cb33d8b2ddef"
+      },
+      {
+       "source_key": "demo-m12-ocr",
+       "source": "simulator:架空OCR",
+       "candidates": {
+        "item_id": {
+         "candidate_value": "demo-m12-thinner",
+         "confidence": "0.99"
+        },
+        "name": {
+         "candidate_value": "架空デモ溶剤",
+         "confidence": "0.96"
+        },
+        "category": {
+         "candidate_value": "溶剤",
+         "confidence": "0.99"
+        },
+        "unit": {
+         "candidate_value": "L",
+         "confidence": "0.98"
+        },
+        "unit_price": {
+         "candidate_value": "480",
+         "confidence": "0.94"
+        },
+        "price_type": {
+         "candidate_value": "仕入",
+         "confidence": "0.97"
+        },
+        "source": {
+         "candidate_value": "simulator:架空OCR価格票",
+         "confidence": "0.92"
+        },
+        "updated_at": {
+         "candidate_value": "2026-10-11",
+         "confidence": "0.95"
+        }
+       },
+       "corrected_values": {
+        "item_id": "demo-m12-thinner",
+        "name": "架空デモ溶剤",
+        "category": "溶剤",
+        "unit": "L",
+        "unit_price": "480",
+        "price_type": "仕入",
+        "source": "simulator:架空OCR価格票"
+       },
+       "confirmed_fields": [
+        "category",
+        "item_id",
+        "name",
+        "price_type",
+        "source",
+        "unit",
+        "unit_price"
+       ],
+       "reviewer": "架空確認担当",
+       "status": "pending",
+       "ocr_connected": false,
+       "simulator": true,
+       "record_id": "b729c1f820984bb9bfa8cb33d8b2ddef"
+      },
+      {
+       "source_key": "demo-m12-ocr",
+       "source": "simulator:架空OCR",
+       "candidates": {
+        "item_id": {
+         "candidate_value": "demo-m12-thinner",
+         "confidence": "0.99"
+        },
+        "name": {
+         "candidate_value": "架空デモ溶剤",
+         "confidence": "0.96"
+        },
+        "category": {
+         "candidate_value": "溶剤",
+         "confidence": "0.99"
+        },
+        "unit": {
+         "candidate_value": "L",
+         "confidence": "0.98"
+        },
+        "unit_price": {
+         "candidate_value": "480",
+         "confidence": "0.94"
+        },
+        "price_type": {
+         "candidate_value": "仕入",
+         "confidence": "0.97"
+        },
+        "source": {
+         "candidate_value": "simulator:架空OCR価格票",
+         "confidence": "0.92"
+        },
+        "updated_at": {
+         "candidate_value": "2026-10-11",
+         "confidence": "0.95"
+        }
+       },
+       "corrected_values": {
+        "item_id": "demo-m12-thinner",
+        "name": "架空デモ溶剤",
+        "category": "溶剤",
+        "unit": "L",
+        "unit_price": "480",
+        "price_type": "仕入",
+        "source": "simulator:架空OCR価格票",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_fields": [
+        "category",
+        "item_id",
+        "name",
+        "price_type",
+        "source",
+        "unit",
+        "unit_price",
+        "updated_at"
+       ],
+       "reviewer": "最終確認者",
+       "status": "approved",
+       "ocr_connected": false,
+       "simulator": true,
+       "record_id": "b729c1f820984bb9bfa8cb33d8b2ddef"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "訂正と確認者は追記",
+   "expected": [
+    {
+     "ok": {
+      "status": "人の確認待ち",
+      "candidate_id": "3ff3f2a86fa34cb597c6d9a1a853dd45",
+      "candidates": {
+       "item_id": {
+        "candidate_value": "demo-m12-thinner",
+        "confidence": "0.99"
+       },
+       "name": {
+        "candidate_value": "架空デモ溶剤",
+        "confidence": "0.96"
+       },
+       "category": {
+        "candidate_value": "溶剤",
+        "confidence": "0.99"
+       },
+       "unit": {
+        "candidate_value": "L",
+        "confidence": "0.98"
+       },
+       "unit_price": {
+        "candidate_value": "480",
+        "confidence": "0.94"
+       },
+       "price_type": {
+        "candidate_value": "仕入",
+        "confidence": "0.97"
+       },
+       "source": {
+        "candidate_value": "simulator:架空OCR価格票",
+        "confidence": "0.92"
+       },
+       "updated_at": {
+        "candidate_value": "2026-10-11",
+        "confidence": "0.95"
+       }
+      },
+      "confirmed_fields": [],
+      "missing_fields": [
+       "item_id",
+       "name",
+       "category",
+       "unit",
+       "unit_price",
+       "price_type",
+       "source",
+       "updated_at"
+      ],
+      "items": [],
+      "simulator": true,
+      "ocr_connected": false,
+      "message": "OCRはmock読取候補です。実画像OCRは未接続です。"
+     }
+    },
+    {
+     "ok": {
+      "status": "人の確認待ち",
+      "candidate_id": "3ff3f2a86fa34cb597c6d9a1a853dd45",
+      "corrected_value": {
+       "name": "架空溶剤A"
+      },
+      "confirmed_fields": [
+       "name"
+      ],
+      "missing_fields": [
+       "item_id",
+       "category",
+       "unit",
+       "unit_price",
+       "price_type",
+       "source",
+       "updated_at"
+      ],
+      "reviewer": "確認者A",
+      "items": [],
+      "simulator": true,
+      "ocr_connected": false
+     }
+    },
+    {
+     "ok": {
+      "status": "人の確認待ち",
+      "candidate_id": "3ff3f2a86fa34cb597c6d9a1a853dd45",
+      "corrected_value": {
+       "name": "架空溶剤B",
+       "category": "溶剤"
+      },
+      "confirmed_fields": [
+       "category",
+       "name"
+      ],
+      "missing_fields": [
+       "item_id",
+       "unit",
+       "unit_price",
+       "price_type",
+       "source",
+       "updated_at"
+      ],
+      "reviewer": "確認者B",
+      "items": [],
+      "simulator": true,
+      "ocr_connected": false
+     }
+    },
+    {
+     "ok": [
+      {
+       "candidate_id": "3ff3f2a86fa34cb597c6d9a1a853dd45",
+       "corrected_value": {
+        "name": "架空溶剤A"
+       },
+       "confirmed_fields": [
+        "name"
+       ],
+       "reviewer": "確認者A",
+       "status": "pending",
+       "record_id": "3ff3f2a86fa34cb597c6d9a1a853dd45"
+      },
+      {
+       "candidate_id": "3ff3f2a86fa34cb597c6d9a1a853dd45",
+       "corrected_value": {
+        "name": "架空溶剤B",
+        "category": "溶剤"
+       },
+       "confirmed_fields": [
+        "category",
+        "name"
+       ],
+       "reviewer": "確認者B",
+       "status": "pending",
+       "record_id": "3ff3f2a86fa34cb597c6d9a1a853dd45"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "原文・不正値・未確認の拒否",
+   "expected": [
+    {
+     "error": "ValidationError",
+     "message": "payload: OCR原文や未対応のデータは受け付けません"
+    },
+    {
+     "ok": {
+      "status": "人の確認待ち",
+      "candidate_id": "d454224193b04199a3010428f422e19f",
+      "candidates": {
+       "item_id": {
+        "candidate_value": "demo-m12-thinner",
+        "confidence": "0.99"
+       },
+       "name": {
+        "candidate_value": "架空デモ溶剤",
+        "confidence": "0.96"
+       },
+       "category": {
+        "candidate_value": "溶剤",
+        "confidence": "0.99"
+       },
+       "unit": {
+        "candidate_value": "L",
+        "confidence": "0.98"
+       },
+       "unit_price": {
+        "candidate_value": "480",
+        "confidence": "0.94"
+       },
+       "price_type": {
+        "candidate_value": "仕入",
+        "confidence": "0.97"
+       },
+       "source": {
+        "candidate_value": "simulator:架空OCR価格票",
+        "confidence": "0.92"
+       },
+       "updated_at": {
+        "candidate_value": "2026-10-11",
+        "confidence": "0.95"
+       }
+      },
+      "confirmed_fields": [],
+      "missing_fields": [
+       "item_id",
+       "name",
+       "category",
+       "unit",
+       "unit_price",
+       "price_type",
+       "source",
+       "updated_at"
+      ],
+      "items": [],
+      "simulator": true,
+      "ocr_connected": false,
+      "message": "OCRはmock読取候補です。実画像OCRは未接続です。"
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "item_id: 人の確認を明示してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "unit_price: 有限の正数/非負数を入力してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "category: 選択値を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "price_type: 選択値を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "updated_at: ISO形式の日付が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "name: 確認済みの値を入力してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "fields: 確認する項目を指定してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "fields: 共通品目項目だけ確認できます"
+    },
+    {
+     "error": "ValidationError",
+     "message": "name: 人の確認を明示してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "payload: OCR原文や未対応のデータは受け付けません"
+    },
+    {
+     "ok": []
+    },
+    {
+     "error": "ValidationError",
+     "message": "payload: 入力を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "action: stage または review を指定してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "confirmed_by: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "m12_ocr_queue: 指定した記録がありません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "ocr_fields: 共通品目項目の候補を指定してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "source_key: 128文字以下にしてください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "ocr_fields: 共通品目項目の候補を指定してください"
+    }
+   ]
+  }
+ ]
+}

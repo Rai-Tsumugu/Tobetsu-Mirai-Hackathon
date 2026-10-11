@@ -1,0 +1,336 @@
+{
+ "source": "scenarios/m13.json",
+ "scenarios": [
+  {
+   "name": "既定は架空の仕入候補だけ",
+   "expected": [
+    {
+     "ok": {
+      "status": "人の確認待ち",
+      "import_batch_id": "3ec975f446f4427fba79c226cd39bc5b",
+      "staged_rows": [
+       {
+        "row_number": 1,
+        "item": {
+         "item_id": "demo-m13-paint",
+         "name": "架空サンプル塗料",
+         "category": "塗料",
+         "unit": "ml",
+         "unit_price": "95",
+         "price_type": "仕入",
+         "source": "simulator:未接続fixture:simulator:架空卸fixture:schema-1:part-DEMO-PAINT-01",
+         "updated_at": "2026-10-11"
+        },
+        "source": "simulator:架空卸fixture",
+        "status": "pending",
+        "errors": [],
+        "record_id": "e60485460e1b46b29f8bdbb8efd388d0"
+       }
+      ],
+      "items": [],
+      "simulator": true,
+      "api_connected": false,
+      "source": "simulator:架空卸fixture",
+      "schema_version": "1"
+     }
+    },
+    {
+     "ok": {
+      "source": "simulator:架空卸fixture",
+      "schema_version": "1",
+      "terms_status": "approved",
+      "candidate_ids": [
+       "e60485460e1b46b29f8bdbb8efd388d0"
+      ],
+      "imported_at": "2026-10-11T08:21:01.107182+00:00",
+      "simulator": true,
+      "api_connected": false,
+      "mode": "fixture",
+      "record_id": "3ec975f446f4427fba79c226cd39bc5b"
+     }
+    },
+    {
+     "ok": []
+    }
+   ]
+  },
+  {
+   "name": "明示の対応づけと人の承認",
+   "expected": [
+    {
+     "ok": {
+      "status": "人の確認待ち",
+      "import_batch_id": "d4e02a74863142a99e26c4942f7e3c63",
+      "staged_rows": [
+       {
+        "row_number": 1,
+        "item": {
+         "item_id": "part-7",
+         "name": "架空ブレーキ部品",
+         "category": "部品",
+         "unit": "個",
+         "unit_price": "125.50",
+         "price_type": "仕入",
+         "source": "simulator:未接続fixture:架空卸A:schema-1:part-PART-7",
+         "updated_at": "2026-10-10"
+        },
+        "source": "架空卸A",
+        "status": "pending",
+        "errors": [],
+        "record_id": "241f00e0b58d45d78b088acfa4b88b20"
+       }
+      ],
+      "items": [],
+      "simulator": true,
+      "api_connected": false,
+      "source": "架空卸A",
+      "schema_version": "1"
+     }
+    },
+    {
+     "ok": {
+      "row_number": 1,
+      "item": {
+       "item_id": "part-7",
+       "name": "架空ブレーキ部品",
+       "category": "部品",
+       "unit": "個",
+       "unit_price": "125.50",
+       "price_type": "仕入",
+       "source": "simulator:未接続fixture:架空卸A:schema-1:part-PART-7",
+       "updated_at": "2026-10-10"
+      },
+      "source": "架空卸A",
+      "status": "pending",
+      "errors": [],
+      "record_id": "241f00e0b58d45d78b088acfa4b88b20"
+     }
+    },
+    {
+     "ok": {
+      "items": [
+       {
+        "item_id": "part-7",
+        "name": "架空ブレーキ部品",
+        "category": "部品",
+        "unit": "個",
+        "unit_price": "125.50",
+        "price_type": "仕入",
+        "source": "simulator:未接続fixture:架空卸A:schema-1:part-PART-7",
+        "updated_at": "2026-10-10"
+       }
+      ],
+      "price_version_ids": [
+       "e64693e518e74def9da20cf5a737a7b5"
+      ],
+      "status": "承認済み",
+      "import_batch_id": "d4e02a74863142a99e26c4942f7e3c63",
+      "simulator": true,
+      "api_connected": false
+     }
+    },
+    {
+     "ok": [
+      {
+       "price_version_id": "e64693e518e74def9da20cf5a737a7b5",
+       "item": {
+        "item_id": "part-7",
+        "name": "架空ブレーキ部品",
+        "category": "部品",
+        "unit": "個",
+        "unit_price": "125.50",
+        "price_type": "仕入",
+        "source": "simulator:未接続fixture:架空卸A:schema-1:part-PART-7",
+        "updated_at": "2026-10-10"
+       },
+       "confirmed_by": "担当者",
+       "supplier_id": "",
+       "valid_from": "2026-10-10",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "取込候補を人が確認",
+       "metadata": {}
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "未許諾・live・schema・不正な対応づけの拒否",
+   "expected": [
+    {
+     "error": "ValidationError",
+     "message": "mode: live接続は未許諾・未実装のため利用できません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "terms_status: 利用許諾の確認が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "schema_version: 対応するfixture schemaは1です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "part_number_mapping: 品番対応づけが必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "part_number_mapping[1].unit: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "offers[1].unit_price: 有限の正数/非負数を入力してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "offers[1].currency: JPY以外は自動換算できません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "offers: 仕入先品番の重複を解消してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "part_number_mapping: 全仕入先品番の対応づけが必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "part_number_mapping: 仕入先品番の重複を解消してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "part_number_mapping[1].category: 選択値を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "source: 120文字以下で指定してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "offers[1].unit_price: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "offers[1].updated_at: ISO形式の日付が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "offers[1]: fixtureの行を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "offers: 1〜1000件の候補が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "feed: 卸提供JSON fixtureが必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "action: sample / stage / approve を指定してください"
+    },
+    {
+     "ok": []
+    },
+    {
+     "ok": []
+    }
+   ]
+  },
+  {
+   "name": "別バッチの候補は承認できない",
+   "expected": [
+    {
+     "ok": {
+      "status": "人の確認待ち",
+      "import_batch_id": "bd1bbac49ba043d698a37fca90556abc",
+      "staged_rows": [
+       {
+        "row_number": 1,
+        "item": {
+         "item_id": "demo-m13-paint",
+         "name": "架空サンプル塗料",
+         "category": "塗料",
+         "unit": "ml",
+         "unit_price": "95",
+         "price_type": "仕入",
+         "source": "simulator:未接続fixture:simulator:架空卸fixture:schema-1:part-DEMO-PAINT-01",
+         "updated_at": "2026-10-11"
+        },
+        "source": "simulator:架空卸fixture",
+        "status": "pending",
+        "errors": [],
+        "record_id": "bea81bcc59f3448eb26c071d84c842cc"
+       }
+      ],
+      "items": [],
+      "simulator": true,
+      "api_connected": false,
+      "source": "simulator:架空卸fixture",
+      "schema_version": "1"
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "candidate_ids: この卸fixtureの候補から選択してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "candidate_ids: この卸fixtureの候補から選択してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "confirmed_by: 入力が必要です"
+    },
+    {
+     "ok": {
+      "items": [
+       {
+        "item_id": "demo-m13-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "95",
+        "price_type": "仕入",
+        "source": "simulator:未接続fixture:simulator:架空卸fixture:schema-1:part-DEMO-PAINT-01",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "price_version_ids": [
+       "1408e214dcf14b67a217a1223d1c6134"
+      ],
+      "status": "承認済み",
+      "import_batch_id": "bd1bbac49ba043d698a37fca90556abc",
+      "simulator": true,
+      "api_connected": false
+     }
+    },
+    {
+     "ok": [
+      {
+       "price_version_id": "1408e214dcf14b67a217a1223d1c6134",
+       "item": {
+        "item_id": "demo-m13-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "95",
+        "price_type": "仕入",
+        "source": "simulator:未接続fixture:simulator:架空卸fixture:schema-1:part-DEMO-PAINT-01",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "担当者",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "取込候補を人が確認",
+       "metadata": {}
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

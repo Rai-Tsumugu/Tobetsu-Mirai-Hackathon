@@ -1,0 +1,798 @@
+{
+ "source": "scenarios/m09.json",
+ "scenarios": [
+  {
+   "name": "SPEC 既定で候補を隔離",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "status": "人の確認待ち",
+      "source_key": "demo-m09-csv",
+      "mapping_version": 1,
+      "mapping_record_id": "demo-m09-csv",
+      "field_map": {
+       "item_id": "商品コード",
+       "name": "品名",
+       "category": "分類",
+       "unit": "単位",
+       "unit_price": "単価",
+       "price_type": "価格区分",
+       "source": "出所",
+       "updated_at": "確認日"
+      },
+      "staged_rows": [
+       {
+        "row_number": 1,
+        "item": {
+         "item_id": "demo-m09-paint",
+         "name": "架空デモ塗料",
+         "category": "塗料",
+         "unit": "ml",
+         "unit_price": "95",
+         "price_type": "仕入",
+         "source": "simulator:架空値",
+         "updated_at": "2026-10-11"
+        },
+        "source": "simulator:架空値",
+        "status": "pending",
+        "errors": [],
+        "record_id": "d31a7652b6f14b2b819aac87cdabe403"
+       },
+       {
+        "row_number": 2,
+        "item": {
+         "item_id": "demo-m09-thinner",
+         "name": "架空デモ溶剤",
+         "category": "溶剤",
+         "unit": "L",
+         "unit_price": "480",
+         "price_type": "仕入",
+         "source": "simulator:架空値",
+         "updated_at": "2026-10-11"
+        },
+        "source": "simulator:架空値",
+        "status": "pending",
+        "errors": [],
+        "record_id": "f59be0b273564523bac8c23d09b13913"
+       }
+      ],
+      "preview_count": 2,
+      "quarantined_count": 0,
+      "items": []
+     }
+    },
+    {
+     "ok": []
+    },
+    {
+     "ok": [
+      {
+       "row_number": 1,
+       "item": {
+        "item_id": "demo-m09-paint",
+        "name": "架空デモ塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "95",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "source": "simulator:架空値",
+       "status": "pending",
+       "errors": [],
+       "record_id": "d31a7652b6f14b2b819aac87cdabe403"
+      },
+      {
+       "row_number": 2,
+       "item": {
+        "item_id": "demo-m09-thinner",
+        "name": "架空デモ溶剤",
+        "category": "溶剤",
+        "unit": "L",
+        "unit_price": "480",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "source": "simulator:架空値",
+       "status": "pending",
+       "errors": [],
+       "record_id": "f59be0b273564523bac8c23d09b13913"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "列対応と余分な列の隔離",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "status": "人の確認待ち",
+      "source_key": "demo-m09-csv",
+      "mapping_version": 1,
+      "mapping_record_id": "demo-m09-csv",
+      "field_map": {
+       "item_id": "商品コード",
+       "name": "品名",
+       "category": "分類",
+       "unit": "単位",
+       "unit_price": "単価",
+       "price_type": "価格区分",
+       "source": "出所",
+       "updated_at": "確認日"
+      },
+      "staged_rows": [
+       {
+        "row_number": 1,
+        "item": null,
+        "source": "simulator:架空値",
+        "status": "quarantined",
+        "errors": [
+         "item_id: 入力が必要です"
+        ],
+        "record_id": "2d90262b294e4ac38faa32c511b78ea9"
+       },
+       {
+        "row_number": 2,
+        "item": {
+         "item_id": "demo-m09-thinner",
+         "name": "架空デモ溶剤",
+         "category": "溶剤",
+         "unit": "L",
+         "unit_price": "480",
+         "price_type": "仕入",
+         "source": "simulator:架空値",
+         "updated_at": "2026-10-11"
+        },
+        "source": "simulator:架空値",
+        "status": "pending",
+        "errors": [],
+        "record_id": "191ecd04f99243a1b4be6d9f0665e219"
+       }
+      ],
+      "preview_count": 2,
+      "quarantined_count": 1,
+      "items": []
+     }
+    },
+    {
+     "ok": [
+      {
+       "row_number": 1,
+       "item": null,
+       "source": "simulator:架空値",
+       "status": "quarantined",
+       "errors": [
+        "item_id: 入力が必要です"
+       ],
+       "record_id": "2d90262b294e4ac38faa32c511b78ea9"
+      },
+      {
+       "row_number": 2,
+       "item": {
+        "item_id": "demo-m09-thinner",
+        "name": "架空デモ溶剤",
+        "category": "溶剤",
+        "unit": "L",
+        "unit_price": "480",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "source": "simulator:架空値",
+       "status": "pending",
+       "errors": [],
+       "record_id": "191ecd04f99243a1b4be6d9f0665e219"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "不正価格の隔離と選択承認",
+   "expected": [
+    {
+     "ok": null
+    },
+    {
+     "ok": {
+      "status": "人の確認待ち",
+      "source_key": "demo-m09-csv",
+      "mapping_version": 1,
+      "mapping_record_id": "demo-m09-csv",
+      "field_map": {
+       "item_id": "商品コード",
+       "name": "品名",
+       "category": "分類",
+       "unit": "単位",
+       "unit_price": "単価",
+       "price_type": "価格区分",
+       "source": "出所",
+       "updated_at": "確認日"
+      },
+      "staged_rows": [
+       {
+        "row_number": 1,
+        "item": null,
+        "source": "simulator:架空値",
+        "status": "quarantined",
+        "errors": [
+         "unit_price: 有限の正数/非負数を入力してください"
+        ],
+        "record_id": "345b79db96ad41fcb160ef46ff5eeae3"
+       },
+       {
+        "row_number": 2,
+        "item": {
+         "item_id": "demo-m09-thinner",
+         "name": "架空デモ溶剤",
+         "category": "溶剤",
+         "unit": "L",
+         "unit_price": "480",
+         "price_type": "仕入",
+         "source": "simulator:架空値",
+         "updated_at": "2026-10-11"
+        },
+        "source": "simulator:架空値",
+        "status": "pending",
+        "errors": [],
+        "record_id": "6631909dfdcd47f4a866d1b95b6f9aab"
+       }
+      ],
+      "preview_count": 2,
+      "quarantined_count": 1,
+      "items": []
+     }
+    },
+    {
+     "ok": {
+      "items": [
+       {
+        "item_id": "demo-m09-thinner",
+        "name": "架空デモ溶剤",
+        "category": "溶剤",
+        "unit": "L",
+        "unit_price": "480",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "price_version_ids": [
+       "ce528abe3ad24f58aa902f04230c877d"
+      ],
+      "status": "承認済み",
+      "mapping_version": 1
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "取込不備の行は承認できません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "この候補はすでに承認されています"
+    },
+    {
+     "ok": [
+      {
+       "price_version_id": "2f7b746512e94394930e7ed3b4e8dd91",
+       "item": {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "80",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空デモ担当",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "初回登録",
+       "metadata": {}
+      },
+      {
+       "price_version_id": "21f52c6c7a1c42a9bf8c68a8b40974cf",
+       "item": {
+        "item_id": "demo-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "120",
+        "price_type": "販売",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空デモ担当",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "初回登録",
+       "metadata": {}
+      },
+      {
+       "price_version_id": "ce528abe3ad24f58aa902f04230c877d",
+       "item": {
+        "item_id": "demo-m09-thinner",
+        "name": "架空デモ溶剤",
+        "category": "溶剤",
+        "unit": "L",
+        "unit_price": "480",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       },
+       "confirmed_by": "架空確認担当",
+       "supplier_id": "",
+       "valid_from": "2026-10-11",
+       "valid_until": null,
+       "status": "approved",
+       "reason": "取込候補を人が確認",
+       "metadata": {}
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "再取込で列対応の版が増える",
+   "expected": [
+    {
+     "ok": {
+      "status": "人の確認待ち",
+      "source_key": "demo-m09-csv",
+      "mapping_version": 1,
+      "mapping_record_id": "demo-m09-csv",
+      "field_map": {
+       "item_id": "商品コード",
+       "name": "品名",
+       "category": "分類",
+       "unit": "単位",
+       "unit_price": "単価",
+       "price_type": "価格区分",
+       "source": "出所",
+       "updated_at": "確認日"
+      },
+      "staged_rows": [
+       {
+        "row_number": 1,
+        "item": {
+         "item_id": "demo-m09-paint",
+         "name": "架空デモ塗料",
+         "category": "塗料",
+         "unit": "ml",
+         "unit_price": "95",
+         "price_type": "仕入",
+         "source": "simulator:架空値",
+         "updated_at": "2026-10-11"
+        },
+        "source": "simulator:架空値",
+        "status": "pending",
+        "errors": [],
+        "record_id": "22e8bfb2e280444d961d94eec1e92087"
+       },
+       {
+        "row_number": 2,
+        "item": {
+         "item_id": "demo-m09-thinner",
+         "name": "架空デモ溶剤",
+         "category": "溶剤",
+         "unit": "L",
+         "unit_price": "480",
+         "price_type": "仕入",
+         "source": "simulator:架空値",
+         "updated_at": "2026-10-11"
+        },
+        "source": "simulator:架空値",
+        "status": "pending",
+        "errors": [],
+        "record_id": "a80f36c7e9244932b6dbb1b8a0b74ee6"
+       }
+      ],
+      "preview_count": 2,
+      "quarantined_count": 0,
+      "items": []
+     }
+    },
+    {
+     "ok": {
+      "status": "人の確認待ち",
+      "source_key": "demo-m09-csv",
+      "mapping_version": 2,
+      "mapping_record_id": "demo-m09-csv",
+      "field_map": {
+       "item_id": "商品コード",
+       "name": "品名",
+       "category": "分類",
+       "unit": "単位",
+       "unit_price": "単価",
+       "price_type": "価格区分",
+       "source": "出所",
+       "updated_at": "確認日"
+      },
+      "staged_rows": [
+       {
+        "row_number": 1,
+        "item": {
+         "item_id": "demo-m09-paint",
+         "name": "架空デモ塗料",
+         "category": "塗料",
+         "unit": "ml",
+         "unit_price": "95",
+         "price_type": "仕入",
+         "source": "simulator:架空値",
+         "updated_at": "2026-10-11"
+        },
+        "source": "simulator:架空値",
+        "status": "pending",
+        "errors": [],
+        "record_id": "638175cb90f44b479e32d2aad17e3184"
+       },
+       {
+        "row_number": 2,
+        "item": {
+         "item_id": "demo-m09-thinner",
+         "name": "架空デモ溶剤",
+         "category": "溶剤",
+         "unit": "L",
+         "unit_price": "480",
+         "price_type": "仕入",
+         "source": "simulator:架空値",
+         "updated_at": "2026-10-11"
+        },
+        "source": "simulator:架空値",
+        "status": "pending",
+        "errors": [],
+        "record_id": "12b9e87dd33942b9860d4fd99f959063"
+       }
+      ],
+      "preview_count": 2,
+      "quarantined_count": 0,
+      "items": []
+     }
+    },
+    {
+     "ok": [
+      {
+       "source_key": "demo-m09-csv",
+       "field_map": {
+        "item_id": "商品コード",
+        "name": "品名",
+        "category": "分類",
+        "unit": "単位",
+        "unit_price": "単価",
+        "price_type": "価格区分",
+        "source": "出所",
+        "updated_at": "確認日"
+       },
+       "version": 1,
+       "record_id": "demo-m09-csv"
+      },
+      {
+       "source_key": "demo-m09-csv",
+       "field_map": {
+        "item_id": "商品コード",
+        "name": "品名",
+        "category": "分類",
+        "unit": "単位",
+        "unit_price": "単価",
+        "price_type": "価格区分",
+        "source": "出所",
+        "updated_at": "確認日"
+       },
+       "version": 2,
+       "record_id": "demo-m09-csv"
+      }
+     ]
+    },
+    {
+     "error": "ValidationError",
+     "message": "mapping_version: 現在の列対応版を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "mapping_version: 現在の列対応版を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "mapping_version: 正の版番号が必要です"
+    },
+    {
+     "ok": {
+      "items": [
+       {
+        "item_id": "demo-m09-paint",
+        "name": "架空デモ塗料",
+        "category": "塗料",
+        "unit": "ml",
+        "unit_price": "95",
+        "price_type": "仕入",
+        "source": "simulator:架空値",
+        "updated_at": "2026-10-11"
+       }
+      ],
+      "price_version_ids": [
+       "45b6adae702e402090e3a0046e1dad85"
+      ],
+      "status": "承認済み",
+      "mapping_version": 2
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "candidate_ids: 重複のない候補IDを選択してください"
+    }
+   ]
+  },
+  {
+   "name": "不正なヘッダー・列対応・CSV・入力",
+   "expected": [
+    {
+     "error": "ValidationError",
+     "message": "payload: 入力を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "csv_text: 重複した列名があります"
+    },
+    {
+     "error": "ValidationError",
+     "message": "field_map: 品目ID・品名・分類・単位・単価・価格区分・出所・確認日の列対応が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "field_map: 共通品目項目への列対応を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "field_map.item_id: CSVに存在する列を選択してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "action: stage または approve を指定してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "csv_text: CSV本文が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "csv_text: ヘッダー行が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "csv_text: 空の列名は使用できません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "csv_text: CSV形式を確認してください (',' expected after '\"')"
+    },
+    {
+     "error": "ValidationError",
+     "message": "csv_text: 予約済み列名が含まれています"
+    },
+    {
+     "error": "ValidationError",
+     "message": "source_key: 128文字以下にしてください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "field_map: 同じCSV列を複数の項目に割り当てられません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "field_map.item_id: 入力が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "field_map: 共通品目項目への列対応を確認してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "csv_text: 1〜1000件の明細が必要です"
+    },
+    {
+     "error": "ValidationError",
+     "message": "candidate_ids: 候補IDを選択してください"
+    },
+    {
+     "error": "ValidationError",
+     "message": "staging_row: 指定した記録がありません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "confirmed_by: 入力が必要です"
+    },
+    {
+     "ok": []
+    }
+   ]
+  },
+  {
+   "name": "既定の列名・引用符・空行・不足列",
+   "expected": [
+    {
+     "ok": {
+      "status": "人の確認待ち",
+      "source_key": "simulator:架空値",
+      "mapping_version": 1,
+      "mapping_record_id": "simulator:架空値",
+      "field_map": {
+       "item_id": "item_id",
+       "name": "name",
+       "category": "category",
+       "unit": "unit",
+       "unit_price": "unit_price",
+       "price_type": "price_type",
+       "source": "source",
+       "updated_at": "updated_at"
+      },
+      "staged_rows": [
+       {
+        "row_number": 1,
+        "item": {
+         "item_id": "m9-a",
+         "name": "架空A",
+         "category": "塗料",
+         "unit": "ml",
+         "unit_price": "10",
+         "price_type": "販売",
+         "source": "s",
+         "updated_at": "2026-10-11"
+        },
+        "source": "simulator:架空値",
+        "status": "pending",
+        "errors": [],
+        "record_id": "8f5111f164374117b06daa787ba6c834"
+       },
+       {
+        "row_number": 2,
+        "item": null,
+        "source": "simulator:架空値",
+        "status": "quarantined",
+        "errors": [
+         "unit_price: 数値を確認してください"
+        ],
+        "record_id": "5baf70750b784e7ca4349da504984521"
+       },
+       {
+        "row_number": 3,
+        "item": null,
+        "source": "simulator:架空値",
+        "status": "quarantined",
+        "errors": [
+         "updated_at: 入力が必要です"
+        ],
+        "record_id": "46d7d015393b4bdf84f3e2aca63df99a"
+       }
+      ],
+      "preview_count": 3,
+      "quarantined_count": 2,
+      "items": []
+     }
+    },
+    {
+     "ok": {
+      "status": "人の確認待ち",
+      "source_key": "架空出所",
+      "mapping_version": 1,
+      "mapping_record_id": "架空出所",
+      "field_map": {
+       "item_id": "item_id",
+       "name": "name",
+       "category": "category",
+       "unit": "unit",
+       "unit_price": "unit_price",
+       "price_type": "price_type",
+       "source": "source",
+       "updated_at": "updated_at"
+      },
+      "staged_rows": [
+       {
+        "row_number": 1,
+        "item": {
+         "item_id": "m9-a",
+         "name": "架空A",
+         "category": "塗料",
+         "unit": "ml",
+         "unit_price": "10",
+         "price_type": "販売",
+         "source": "s",
+         "updated_at": "2026-10-11"
+        },
+        "source": "架空出所",
+        "status": "pending",
+        "errors": [],
+        "record_id": "2d7ad975eaa94ece85b32040e0e16a1e"
+       },
+       {
+        "row_number": 2,
+        "item": null,
+        "source": "架空出所",
+        "status": "quarantined",
+        "errors": [
+         "unit_price: 数値を確認してください"
+        ],
+        "record_id": "b48fd74070f840b994817b589e80eb1f"
+       },
+       {
+        "row_number": 3,
+        "item": null,
+        "source": "架空出所",
+        "status": "quarantined",
+        "errors": [
+         "updated_at: 入力が必要です"
+        ],
+        "record_id": "7486716a2ed049e4837ead36cf59f165"
+       }
+      ],
+      "preview_count": 3,
+      "quarantined_count": 2,
+      "items": []
+     }
+    },
+    {
+     "error": "ValidationError",
+     "message": "取込不備の行は承認できません"
+    },
+    {
+     "error": "ValidationError",
+     "message": "field_map: 品目ID・品名・分類・単位・単価・価格区分・出所・確認日の列対応が必要です"
+    },
+    {
+     "ok": {
+      "status": "人の確認待ち",
+      "source_key": "simulator:架空値",
+      "mapping_version": 2,
+      "mapping_record_id": "simulator:架空値",
+      "field_map": {
+       "item_id": "item_id",
+       "name": "name",
+       "category": "category",
+       "unit": "unit",
+       "unit_price": "unit_price",
+       "price_type": "price_type",
+       "source": "source",
+       "updated_at": "updated_at"
+      },
+      "staged_rows": [
+       {
+        "row_number": 1,
+        "item": {
+         "item_id": "a\nb",
+         "name": "n",
+         "category": "塗料",
+         "unit": "ml",
+         "unit_price": "1",
+         "price_type": "販売",
+         "source": "s",
+         "updated_at": "2026-10-11"
+        },
+        "source": "simulator:架空値",
+        "status": "pending",
+        "errors": [],
+        "record_id": "aa2728e8d9f64f918d18bc28cbba47db"
+       }
+      ],
+      "preview_count": 1,
+      "quarantined_count": 0,
+      "items": []
+     }
+    }
+   ]
+  }
+ ]
+}

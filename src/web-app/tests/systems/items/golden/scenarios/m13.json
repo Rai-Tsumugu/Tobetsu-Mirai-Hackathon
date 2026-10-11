@@ -1,0 +1,653 @@
+{
+ "scenarios": [
+  {
+   "name": "既定は架空の仕入候補だけ",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M13",
+     "payload": {
+      "action": "sample",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "latest",
+     "namespace": "import_batch",
+     "record_id": "$ref:0.import_batch_id"
+    },
+    {
+     "op": "price_versions"
+    }
+   ]
+  },
+  {
+   "name": "明示の対応づけと人の承認",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M13",
+     "payload": {
+      "action": "stage",
+      "feed": {
+       "mode": "fixture",
+       "source": "架空卸A",
+       "terms_status": "approved",
+       "schema_version": "1",
+       "offers": [
+        {
+         "supplier_part_number": "PART-7",
+         "unit_price": "125.50",
+         "currency": "JPY",
+         "updated_at": "2026-10-10",
+         "customer_name": "must never persist",
+         "raw_document": "private source text"
+        }
+       ]
+      },
+      "part_number_mapping": [
+       {
+        "supplier_part_number": "PART-7",
+        "item_id": "part-7",
+        "name": "架空ブレーキ部品",
+        "category": "部品",
+        "unit": "個"
+       }
+      ]
+     }
+    },
+    {
+     "op": "latest",
+     "namespace": "staging_row",
+     "record_id": "$ref:0.staged_rows.0.record_id"
+    },
+    {
+     "op": "run",
+     "module": "M13",
+     "payload": {
+      "action": "approve",
+      "import_batch_id": "$ref:0.import_batch_id",
+      "candidate_ids": [
+       "$ref:0.staged_rows.0.record_id"
+      ],
+      "confirmed_by": "担当者"
+     }
+    },
+    {
+     "op": "price_versions"
+    }
+   ]
+  },
+  {
+   "name": "未許諾・live・schema・不正な対応づけの拒否",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M13",
+     "payload": {
+      "action": "stage",
+      "feed": {
+       "mode": "live",
+       "source": "simulator:架空卸fixture",
+       "terms_status": "approved",
+       "schema_version": "1",
+       "offers": [
+        {
+         "supplier_part_number": "DEMO-PAINT-01",
+         "unit_price": "95",
+         "currency": "JPY",
+         "updated_at": "2026-10-11"
+        }
+       ]
+      },
+      "part_number_mapping": [
+       {
+        "supplier_part_number": "DEMO-PAINT-01",
+        "item_id": "demo-m13-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M13",
+     "payload": {
+      "action": "stage",
+      "feed": {
+       "mode": "fixture",
+       "source": "simulator:架空卸fixture",
+       "terms_status": "unknown",
+       "schema_version": "1",
+       "offers": [
+        {
+         "supplier_part_number": "DEMO-PAINT-01",
+         "unit_price": "95",
+         "currency": "JPY",
+         "updated_at": "2026-10-11"
+        }
+       ]
+      },
+      "part_number_mapping": [
+       {
+        "supplier_part_number": "DEMO-PAINT-01",
+        "item_id": "demo-m13-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M13",
+     "payload": {
+      "action": "stage",
+      "feed": {
+       "mode": "fixture",
+       "source": "simulator:架空卸fixture",
+       "terms_status": "approved",
+       "schema_version": "2",
+       "offers": [
+        {
+         "supplier_part_number": "DEMO-PAINT-01",
+         "unit_price": "95",
+         "currency": "JPY",
+         "updated_at": "2026-10-11"
+        }
+       ]
+      },
+      "part_number_mapping": [
+       {
+        "supplier_part_number": "DEMO-PAINT-01",
+        "item_id": "demo-m13-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M13",
+     "payload": {
+      "action": "stage",
+      "feed": {
+       "mode": "fixture",
+       "source": "simulator:架空卸fixture",
+       "terms_status": "approved",
+       "schema_version": "1",
+       "offers": [
+        {
+         "supplier_part_number": "DEMO-PAINT-01",
+         "unit_price": "95",
+         "currency": "JPY",
+         "updated_at": "2026-10-11"
+        }
+       ]
+      },
+      "part_number_mapping": []
+     }
+    },
+    {
+     "op": "run",
+     "module": "M13",
+     "payload": {
+      "action": "stage",
+      "feed": {
+       "mode": "fixture",
+       "source": "simulator:架空卸fixture",
+       "terms_status": "approved",
+       "schema_version": "1",
+       "offers": [
+        {
+         "supplier_part_number": "DEMO-PAINT-01",
+         "unit_price": "95",
+         "currency": "JPY",
+         "updated_at": "2026-10-11"
+        }
+       ]
+      },
+      "part_number_mapping": [
+       {
+        "supplier_part_number": "DEMO-PAINT-01",
+        "item_id": "demo-m13-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": ""
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M13",
+     "payload": {
+      "action": "stage",
+      "feed": {
+       "mode": "fixture",
+       "source": "simulator:架空卸fixture",
+       "terms_status": "approved",
+       "schema_version": "1",
+       "offers": [
+        {
+         "supplier_part_number": "DEMO-PAINT-01",
+         "unit_price": "0",
+         "currency": "JPY",
+         "updated_at": "2026-10-11"
+        }
+       ]
+      },
+      "part_number_mapping": [
+       {
+        "supplier_part_number": "DEMO-PAINT-01",
+        "item_id": "demo-m13-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M13",
+     "payload": {
+      "action": "stage",
+      "feed": {
+       "mode": "fixture",
+       "source": "simulator:架空卸fixture",
+       "terms_status": "approved",
+       "schema_version": "1",
+       "offers": [
+        {
+         "supplier_part_number": "DEMO-PAINT-01",
+         "unit_price": "95",
+         "currency": "USD",
+         "updated_at": "2026-10-11"
+        }
+       ]
+      },
+      "part_number_mapping": [
+       {
+        "supplier_part_number": "DEMO-PAINT-01",
+        "item_id": "demo-m13-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M13",
+     "payload": {
+      "action": "stage",
+      "feed": {
+       "mode": "fixture",
+       "source": "simulator:架空卸fixture",
+       "terms_status": "approved",
+       "schema_version": "1",
+       "offers": [
+        {
+         "supplier_part_number": "DEMO-PAINT-01",
+         "unit_price": "95",
+         "currency": "JPY",
+         "updated_at": "2026-10-11"
+        },
+        {
+         "supplier_part_number": "DEMO-PAINT-01",
+         "unit_price": "95",
+         "currency": "JPY",
+         "updated_at": "2026-10-11"
+        }
+       ]
+      },
+      "part_number_mapping": [
+       {
+        "supplier_part_number": "DEMO-PAINT-01",
+        "item_id": "demo-m13-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M13",
+     "payload": {
+      "action": "stage",
+      "feed": {
+       "mode": "fixture",
+       "source": "simulator:架空卸fixture",
+       "terms_status": "approved",
+       "schema_version": "1",
+       "offers": [
+        {
+         "supplier_part_number": "OTHER",
+         "unit_price": "95",
+         "currency": "JPY",
+         "updated_at": "2026-10-11"
+        }
+       ]
+      },
+      "part_number_mapping": [
+       {
+        "supplier_part_number": "DEMO-PAINT-01",
+        "item_id": "demo-m13-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M13",
+     "payload": {
+      "action": "stage",
+      "feed": {
+       "mode": "fixture",
+       "source": "simulator:架空卸fixture",
+       "terms_status": "approved",
+       "schema_version": "1",
+       "offers": [
+        {
+         "supplier_part_number": "DEMO-PAINT-01",
+         "unit_price": "95",
+         "currency": "JPY",
+         "updated_at": "2026-10-11"
+        }
+       ]
+      },
+      "part_number_mapping": [
+       {
+        "supplier_part_number": "DEMO-PAINT-01",
+        "item_id": "demo-m13-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml"
+       },
+       {
+        "supplier_part_number": "DEMO-PAINT-01",
+        "item_id": "demo-m13-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M13",
+     "payload": {
+      "action": "stage",
+      "feed": {
+       "mode": "fixture",
+       "source": "simulator:架空卸fixture",
+       "terms_status": "approved",
+       "schema_version": "1",
+       "offers": [
+        {
+         "supplier_part_number": "DEMO-PAINT-01",
+         "unit_price": "95",
+         "currency": "JPY",
+         "updated_at": "2026-10-11"
+        }
+       ]
+      },
+      "part_number_mapping": [
+       {
+        "supplier_part_number": "DEMO-PAINT-01",
+        "item_id": "demo-m13-paint",
+        "name": "架空サンプル塗料",
+        "category": "工具",
+        "unit": "ml"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M13",
+     "payload": {
+      "action": "stage",
+      "feed": {
+       "mode": "fixture",
+       "source": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+       "terms_status": "approved",
+       "schema_version": "1",
+       "offers": [
+        {
+         "supplier_part_number": "DEMO-PAINT-01",
+         "unit_price": "95",
+         "currency": "JPY",
+         "updated_at": "2026-10-11"
+        }
+       ]
+      },
+      "part_number_mapping": [
+       {
+        "supplier_part_number": "DEMO-PAINT-01",
+        "item_id": "demo-m13-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M13",
+     "payload": {
+      "action": "stage",
+      "feed": {
+       "mode": "fixture",
+       "source": "simulator:架空卸fixture",
+       "terms_status": "approved",
+       "schema_version": "1",
+       "offers": [
+        {
+         "supplier_part_number": "DEMO-PAINT-01",
+         "unit_price": 95,
+         "currency": "JPY",
+         "updated_at": "2026-10-11"
+        }
+       ]
+      },
+      "part_number_mapping": [
+       {
+        "supplier_part_number": "DEMO-PAINT-01",
+        "item_id": "demo-m13-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M13",
+     "payload": {
+      "action": "stage",
+      "feed": {
+       "mode": "fixture",
+       "source": "simulator:架空卸fixture",
+       "terms_status": "approved",
+       "schema_version": "1",
+       "offers": [
+        {
+         "supplier_part_number": "DEMO-PAINT-01",
+         "unit_price": "95",
+         "currency": "JPY",
+         "updated_at": "2026/10/11"
+        }
+       ]
+      },
+      "part_number_mapping": [
+       {
+        "supplier_part_number": "DEMO-PAINT-01",
+        "item_id": "demo-m13-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M13",
+     "payload": {
+      "action": "stage",
+      "feed": {
+       "mode": "fixture",
+       "source": "simulator:架空卸fixture",
+       "terms_status": "approved",
+       "schema_version": "1",
+       "offers": [
+        "x"
+       ]
+      },
+      "part_number_mapping": [
+       {
+        "supplier_part_number": "DEMO-PAINT-01",
+        "item_id": "demo-m13-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M13",
+     "payload": {
+      "action": "stage",
+      "feed": {
+       "mode": "fixture",
+       "source": "simulator:架空卸fixture",
+       "terms_status": "approved",
+       "schema_version": "1",
+       "offers": []
+      },
+      "part_number_mapping": [
+       {
+        "supplier_part_number": "DEMO-PAINT-01",
+        "item_id": "demo-m13-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M13",
+     "payload": {
+      "action": "stage",
+      "feed": null,
+      "part_number_mapping": [
+       {
+        "supplier_part_number": "DEMO-PAINT-01",
+        "item_id": "demo-m13-paint",
+        "name": "架空サンプル塗料",
+        "category": "塗料",
+        "unit": "ml"
+       }
+      ]
+     }
+    },
+    {
+     "op": "run",
+     "module": "M13",
+     "payload": {
+      "action": "guess"
+     }
+    },
+    {
+     "op": "price_versions"
+    },
+    {
+     "op": "records",
+     "namespace": "staging_row"
+    }
+   ]
+  },
+  {
+   "name": "別バッチの候補は承認できない",
+   "steps": [
+    {
+     "op": "run",
+     "module": "M13",
+     "payload": {
+      "action": "sample",
+      "confirmed_by": "架空デモ担当"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M13",
+     "payload": {
+      "action": "approve",
+      "import_batch_id": "$ref:0.import_batch_id",
+      "candidate_ids": [
+       "unrelated-candidate"
+      ],
+      "confirmed_by": "担当者"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M13",
+     "payload": {
+      "action": "approve",
+      "import_batch_id": "$ref:0.import_batch_id",
+      "candidate_ids": [],
+      "confirmed_by": "担当者"
+     }
+    },
+    {
+     "op": "run",
+     "module": "M13",
+     "payload": {
+      "action": "approve",
+      "import_batch_id": "$ref:0.import_batch_id",
+      "candidate_ids": [
+       "$ref:0.staged_rows.0.record_id"
+      ],
+      "confirmed_by": ""
+     }
+    },
+    {
+     "op": "run",
+     "module": "M13",
+     "payload": {
+      "action": "approve",
+      "import_batch_id": "$ref:0.import_batch_id",
+      "candidate_ids": [
+       "$ref:0.staged_rows.0.record_id"
+      ],
+      "confirmed_by": "担当者"
+     }
+    },
+    {
+     "op": "price_versions"
+    }
+   ]
+  }
+ ]
+}
